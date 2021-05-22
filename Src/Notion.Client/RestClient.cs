@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
@@ -15,6 +17,11 @@ namespace Notion.Client
         private HttpClient _httpClient;
         private readonly ClientOptions _options;
 
+        // Todo: Is there a better way?
+        private readonly List<JsonConverter> jsonConverters = new List<JsonConverter>{
+            new PropertyConverter()
+        };
+
         public RestClient(ClientOptions options)
         {
             _options = MergeOptions(options);
@@ -22,7 +29,8 @@ namespace Notion.Client
 
         private static ClientOptions MergeOptions(ClientOptions options)
         {
-            return new ClientOptions {
+            return new ClientOptions
+            {
                 AuthToken = options.AuthToken,
                 BaseUrl = options.BaseUrl ?? Constants.BASE_URL,
                 NotionVersion = options.NotionVersion ?? Constants.DEFAULT_NOTION_VERSION
@@ -35,13 +43,13 @@ namespace Notion.Client
 
             using (var stream = await _httpClient.GetStreamAsync(uri))
             {
-                return SerializerHelper.Deserialize<T>(stream);
+                return SerializerHelper.Deserialize<T>(stream, jsonConverters);
             }
         }
 
         private HttpClient EnsureHttpClient()
         {
-            if(_httpClient == null)
+            if (_httpClient == null)
             {
                 _httpClient = new HttpClient();
                 _httpClient.BaseAddress = new Uri(_options.BaseUrl);
