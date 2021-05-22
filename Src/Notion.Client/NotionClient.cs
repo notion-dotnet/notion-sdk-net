@@ -2,10 +2,9 @@
 {
     public class NotionClient : INotionClient
     {
-        public NotionClient(string authToken)
+        public NotionClient(ClientOptions options)
         {
-            AuthToken = authToken;
-            Users = new UsersClient(new RestClient(authToken));
+            Users = new UsersClient(new RestClient(options));
         }
 
         public string AuthToken { get; }
