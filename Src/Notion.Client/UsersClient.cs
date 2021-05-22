@@ -5,6 +5,7 @@ namespace Notion.Client
 {
     public interface IUsersClient
     {
+        Task<User> RetrieveAsync(string userId);
         Task<PaginatedList<User>> ListAsync();
     }
 
@@ -15,6 +16,18 @@ namespace Notion.Client
         public UsersClient(IRestClient client)
         {
             _client = client;
+        }
+
+        public async Task<User> RetrieveAsync(string userId)
+        {
+            try
+            {
+                return await _client.GetAsync<User>($"users/{userId}");
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public async Task<PaginatedList<User>> ListAsync()
