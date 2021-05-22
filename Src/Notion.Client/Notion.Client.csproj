@@ -3,10 +3,29 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
+    
+    <PackageId>Notion.Net</PackageId>
+    <Authors>Vedant Koditkar</Authors>
+    <Description>A Notion API dotnet client</Description>
+    <RepositoryUrl>https://github.com/notion-dotnet/notion-sdk-net</RepositoryUrl>
+    <PackageTags>notion;client;api;json;sdk;notion.net</PackageTags>
+    <PackageIcon>notion-logo.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\notion-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath> 
+    </None>
   </ItemGroup>
 
 </Project>
