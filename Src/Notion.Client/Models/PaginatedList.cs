@@ -5,6 +5,8 @@ namespace Notion.Client
 {
     public class PaginatedList<T>
     {
+        public const string Object = "List";
+
         public List<T> Results { get; set; }
 
         [JsonProperty("has_more")]
