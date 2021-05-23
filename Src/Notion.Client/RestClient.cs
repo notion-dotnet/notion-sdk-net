@@ -57,6 +57,7 @@ namespace Notion.Client
                 _httpClient = new HttpClient();
                 _httpClient.BaseAddress = new Uri(_options.BaseUrl);
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _options.AuthToken);
+                _httpClient.DefaultRequestHeaders.Add("Notion-Version", _options.NotionVersion);
             }
 
             return _httpClient;
