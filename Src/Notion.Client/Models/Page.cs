@@ -37,6 +37,9 @@ namespace Notion.Client
 
     public enum ParentType
     {
+        [EnumMember(Value = null)]
+        Unknown,
+
         [EnumMember(Value = "database_id")]
         DatabaseId,
 

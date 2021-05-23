@@ -4,7 +4,6 @@ using System.Runtime.Serialization;
 using JsonSubTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 
 namespace Notion.Client
 {
@@ -119,6 +118,9 @@ namespace Notion.Client
 
     public enum RichTextType
     {
+        [EnumMember(Value = null)]
+        Unknown,
+
         [EnumMember(Value = "text")]
         Text,
 
@@ -150,21 +152,43 @@ namespace Notion.Client
         public string Color { get; set; }
     }
 
-    public abstract class Property
+    [JsonConverter(typeof(JsonSubtypes), "type")]
+    [JsonSubtypes.KnownSubType(typeof(CheckboxProperty), PropertyType.Checkbox)]
+    [JsonSubtypes.KnownSubType(typeof(CreatedByProperty), PropertyType.CreatedBy)]
+    [JsonSubtypes.KnownSubType(typeof(CreatedTimeProperty), PropertyType.CreatedTime)]
+    [JsonSubtypes.KnownSubType(typeof(DateProperty), PropertyType.Date)]
+    [JsonSubtypes.KnownSubType(typeof(EmailProperty), PropertyType.Email)]
+    [JsonSubtypes.KnownSubType(typeof(FileProperty), PropertyType.File)]
+    [JsonSubtypes.KnownSubType(typeof(FormulaProperty), PropertyType.Formula)]
+    [JsonSubtypes.KnownSubType(typeof(LastEditedByProperty), PropertyType.LastEditedBy)]
+    [JsonSubtypes.KnownSubType(typeof(LastEditedTimeProperty), PropertyType.LastEditedTime)]
+    [JsonSubtypes.KnownSubType(typeof(MultiSelectProperty), PropertyType.MultiSelect)]
+    [JsonSubtypes.KnownSubType(typeof(NumberProperty), PropertyType.Number)]
+    [JsonSubtypes.KnownSubType(typeof(PeopleProperty), PropertyType.People)]
+    [JsonSubtypes.KnownSubType(typeof(PhoneNumberProperty), PropertyType.PhoneNumber)]
+    [JsonSubtypes.KnownSubType(typeof(RelationProperty), PropertyType.Relation)]
+    [JsonSubtypes.KnownSubType(typeof(RichTextProperty), PropertyType.RichText)]
+    [JsonSubtypes.KnownSubType(typeof(RollupProperty), PropertyType.Rollup)]
+    [JsonSubtypes.KnownSubType(typeof(SelectProperty), PropertyType.Select)]
+    [JsonSubtypes.KnownSubType(typeof(TitleProperty), PropertyType.Title)]
+    [JsonSubtypes.KnownSubType(typeof(UrlProperty), PropertyType.Url)]
+    public class Property
     {
         public string Id { get; set; }
-        public virtual string Type { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public virtual PropertyType Type { get; set; }
     }
 
     public class TitleProperty : Property
     {
-        public override string Type => "title";
+        public override PropertyType Type => PropertyType.Title;
         public Dictionary<string, object> Title { get; set; }
     }
 
     public class RichTextProperty : Property
     {
-        public override string Type => "rich_text";
+        public override PropertyType Type => PropertyType.RichText;
 
         [JsonProperty("rich_text")]
         public Dictionary<string, object> RichText { get; set; }
@@ -172,33 +196,46 @@ namespace Notion.Client
 
     public class NumberProperty : Property
     {
-        public override string Type => "number";
+        public override PropertyType Type => PropertyType.Number;
         public Number Number { get; set; }
 
     }
 
     public enum NumberFormat
     {
+        [EnumMember(Value = null)]
+        Unknown,
+
         [EnumMember(Value = "number")]
         Number,
+
         [EnumMember(Value = "number_with_commas")]
         NumberWithCommas,
+
         [EnumMember(Value = "percent")]
         Percent,
+
         [EnumMember(Value = "dollar")]
         Dollar,
+
         [EnumMember(Value = "euro")]
         Euro,
+
         [EnumMember(Value = "pound")]
         Pound,
+
         [EnumMember(Value = "yen")]
         Yen,
+
         [EnumMember(Value = "ruble")]
         Ruble,
+
         [EnumMember(Value = "rupee")]
         Rupee,
+
         [EnumMember(Value = "won")]
         Won,
+
         [EnumMember(Value = "yuan")]
         Yuan
     }
@@ -211,7 +248,7 @@ namespace Notion.Client
 
     public class SelectProperty : Property
     {
-        public override string Type => "select";
+        public override PropertyType Type => PropertyType.Select;
         public OptionWrapper<SelectOption> Select { get; set; }
     }
 
@@ -231,6 +268,9 @@ namespace Notion.Client
 
     public enum Color
     {
+        [EnumMember(Value = null)]
+        Unknown,
+
         [EnumMember(Value = "default")]
         Default,
 
@@ -262,9 +302,9 @@ namespace Notion.Client
         Red
     }
 
-    public class MultiSelctProperty : Property
+    public class MultiSelectProperty : Property
     {
-        public override string Type => "multi_select";
+        public override PropertyType Type => PropertyType.MultiSelect;
 
         [JsonProperty("multi_select")]
         public OptionWrapper<SelectOption> MultiSelect { get; set; }
@@ -272,43 +312,43 @@ namespace Notion.Client
 
     public class DateProperty : Property
     {
-        public override string Type => "date";
+        public override PropertyType Type => PropertyType.MultiSelect;
         public Dictionary<string, object> Date { get; set; }
     }
 
     public class PeopleProperty : Property
     {
-        public override string Type => "people";
+        public override PropertyType Type => PropertyType.People;
         public Dictionary<string, object> People { get; set; }
     }
 
     public class FileProperty : Property
     {
-        public override string Type => "file";
+        public override PropertyType Type => PropertyType.File;
         public Dictionary<string, object> File { get; set; }
     }
 
     public class CheckboxProperty : Property
     {
-        public override string Type => "checkbox";
+        public override PropertyType Type => PropertyType.Checkbox;
         public Dictionary<string, object> Checkbox { get; set; }
     }
 
     public class UrlProperty : Property
     {
-        public override string Type => "url";
+        public override PropertyType Type => PropertyType.Url;
         public Dictionary<string, object> Url { get; set; }
     }
 
     public class EmailProperty : Property
     {
-        public override string Type => "email";
+        public override PropertyType Type => PropertyType.Email;
         public Dictionary<string, object> Email { get; set; }
     }
 
     public class PhoneNumberProperty : Property
     {
-        public override string Type => "phone_number";
+        public override PropertyType Type => PropertyType.PhoneNumber;
 
         [JsonProperty("phone_number")]
         public Dictionary<string, object> PhoneNumber { get; set; }
@@ -316,7 +356,7 @@ namespace Notion.Client
 
     public class FormulaProperty : Property
     {
-        public override string Type => "formula";
+        public override PropertyType Type => PropertyType.Formula;
 
         public Formula Formula { get; set; }
     }
@@ -328,7 +368,7 @@ namespace Notion.Client
 
     public class RelationProperty : Property
     {
-        public override string Type => "relation";
+        public override PropertyType Type => PropertyType.Relation;
 
         public Relation Relation { get; set; }
     }
@@ -347,7 +387,7 @@ namespace Notion.Client
 
     public class RollupProperty : Property
     {
-        public override string Type => "rollup";
+        public override PropertyType Type => PropertyType.Rollup;
 
         public Rollup Rollup { get; set; }
     }
@@ -372,6 +412,9 @@ namespace Notion.Client
 
     public enum Function
     {
+        [EnumMember(Value = null)]
+        Unknown,
+
         [EnumMember(Value = "count_all")]
         CountAll,
         [EnumMember(Value = "count_values")]
@@ -413,7 +456,7 @@ namespace Notion.Client
 
     public class CreatedTimeProperty : Property
     {
-        public override string Type => "created_time";
+        public override PropertyType Type => PropertyType.CreatedTime;
 
         [JsonProperty("created_time")]
         public Dictionary<string, object> CreatedTime { get; set; }
@@ -421,7 +464,7 @@ namespace Notion.Client
 
     public class CreatedByProperty : Property
     {
-        public override string Type => "created_by";
+        public override PropertyType Type => PropertyType.CreatedBy;
 
         [JsonProperty("created_by")]
         public Dictionary<string, object> CreatedBy { get; set; }
@@ -429,7 +472,7 @@ namespace Notion.Client
 
     public class LastEditedTimeProperty : Property
     {
-        public override string Type => "last_edited_time";
+        public override PropertyType Type => PropertyType.LastEditedTime;
 
         [JsonProperty("last_edited_time")]
         public Dictionary<string, object> LastEditedTime { get; set; }
@@ -437,69 +480,73 @@ namespace Notion.Client
 
     public class LastEditedByProperty : Property
     {
-        public override string Type => "last_edited_by";
+        public override PropertyType Type => PropertyType.LastEditedBy;
 
         [JsonProperty("last_edited_by")]
         public Dictionary<string, object> LastEditedBy { get; set; }
     }
 
-    // Todo: Is there a better way?
-    public class PropertyConverter : JsonConverter<Property>
+
+    public enum PropertyType
     {
-        public override Property ReadJson(JsonReader reader, Type objectType, Property existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            var jsonObject = JObject.Load(reader);
-            var type = jsonObject["type"].Value<string>();
+        [EnumMember(Value = null)]
+        Unknown,
 
-            switch (type)
-            {
-                case "title":
-                    return jsonObject.ToObject<TitleProperty>();
-                case "rich_text":
-                    return jsonObject.ToObject<RichTextProperty>();
-                case "number":
-                    return jsonObject.ToObject<NumberProperty>();
-                case "select":
-                    return jsonObject.ToObject<SelectProperty>();
-                case "multi_select":
-                    return jsonObject.ToObject<MultiSelctProperty>();
-                case "date":
-                    return jsonObject.ToObject<DateProperty>();
-                case "people":
-                    return jsonObject.ToObject<PeopleProperty>();
-                case "file":
-                    return jsonObject.ToObject<FileProperty>();
-                case "checkbox":
-                    return jsonObject.ToObject<CheckboxProperty>();
-                case "url":
-                    return jsonObject.ToObject<UrlProperty>();
-                case "email":
-                    return jsonObject.ToObject<EmailProperty>();
-                case "phone_number":
-                    return jsonObject.ToObject<PhoneNumberProperty>();
-                case "formula":
-                    return jsonObject.ToObject<FormulaProperty>();
-                case "relation":
-                    return jsonObject.ToObject<RelationProperty>();
-                case "rollup":
-                    return jsonObject.ToObject<RollupProperty>();
-                case "created_time":
-                    return jsonObject.ToObject<CreatedTimeProperty>();
-                case "created_by":
-                    return jsonObject.ToObject<CreatedByProperty>();
-                case "last_edited_by":
-                    return jsonObject.ToObject<LastEditedByProperty>();
-                case "last_edited_time":
-                    return jsonObject.ToObject<LastEditedTimeProperty>();
+        [EnumMember(Value = "title")]
+        Title,
 
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
+        [EnumMember(Value = "rich_text")]
+        RichText,
 
-        public override void WriteJson(JsonWriter writer, Property value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
+        [EnumMember(Value = "number")]
+        Number,
+
+        [EnumMember(Value = "select")]
+        Select,
+
+        [EnumMember(Value = "multi_select")]
+        MultiSelect,
+
+        [EnumMember(Value = "date")]
+        Date,
+
+        [EnumMember(Value = "people")]
+        People,
+
+        [EnumMember(Value = "file")]
+        File,
+
+        [EnumMember(Value = "checkbox")]
+        Checkbox,
+
+        [EnumMember(Value = "url")]
+        Url,
+
+        [EnumMember(Value = "email")]
+        Email,
+
+        [EnumMember(Value = "phone_number")]
+        PhoneNumber,
+
+        [EnumMember(Value = "formula")]
+        Formula,
+
+        [EnumMember(Value = "relation")]
+        Relation,
+
+        [EnumMember(Value = "rollup")]
+        Rollup,
+
+        [EnumMember(Value = "created_time")]
+        CreatedTime,
+
+        [EnumMember(Value = "created_by")]
+        CreatedBy,
+
+        [EnumMember(Value = "last_edited_by")]
+        LastEditedBy,
+
+        [EnumMember(Value = "last_edited_time")]
+        LastEditedTime
     }
 }

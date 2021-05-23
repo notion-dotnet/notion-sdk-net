@@ -19,11 +19,7 @@ namespace Notion.Client
     {
         private HttpClient _httpClient;
         private readonly ClientOptions _options;
-
-        // Todo: Is there a better way?
-        private readonly List<JsonConverter> jsonConverters = new List<JsonConverter>{
-            new PropertyConverter()
-        };
+        private readonly List<JsonConverter> jsonConverters = new List<JsonConverter>();
 
         private readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
         {

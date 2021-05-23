@@ -207,6 +207,9 @@ namespace Notion.Client
 
     public enum PropertyValueType
     {
+        [EnumMember(Value = null)]
+        Unknown,
+
         [EnumMember(Value = "rich_text")]
         RichText,
 
