@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
-using System.Text.Encodings.Web;
 
 namespace Notion.Client.http
 {
@@ -77,9 +77,9 @@ namespace Notion.Client.http
             foreach (var parameter in queryParams)
             {
                 sb.Append(hasQuery ? '&' : '?');
-                sb.Append(UrlEncoder.Default.Encode(parameter.Key));
+                sb.Append(WebUtility.UrlEncode(parameter.Key));
                 sb.Append('=');
-                sb.Append(UrlEncoder.Default.Encode(parameter.Value));
+                sb.Append(WebUtility.UrlEncode(parameter.Value));
                 hasQuery = true;
             }
 
