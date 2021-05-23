@@ -1,20 +1,21 @@
 ﻿namespace Notion.Client
 {
-    public class NotionClient : INotionClient
-    {
-        public NotionClient(string authToken)
-        {
-            AuthToken = authToken;
-            Users = new UsersClient(new RestClient(authToken));
-        }
-
-        public string AuthToken { get; }
-        public IUsersClient Users { get; }
-    }
-
     public interface INotionClient
     {
-        string AuthToken { get; }
         IUsersClient Users { get; }
+        IDatabasesClient Databases { get; }
+    }
+
+    public class NotionClient : INotionClient
+    {
+        public NotionClient(ClientOptions options)
+        {
+            var restClient = new RestClient(options);
+            Users = new UsersClient(restClient);
+            Databases = new DatabasesClient(restClient);
+        }
+
+        public IUsersClient Users { get; }
+        public IDatabasesClient Databases { get; }
     }
 }

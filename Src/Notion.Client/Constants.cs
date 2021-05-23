@@ -1,9 +1,8 @@
-﻿using System;
-
-namespace Notion.Client
+﻿namespace Notion.Client
 {
     internal class Constants
     {
-        internal static Uri BASE_URL = new Uri("https://api.notion.com/v1/");
+        internal static string BASE_URL = "https://api.notion.com/v1/";
+        internal static string DEFAULT_NOTION_VERSION = "2021-05-13";
     }
 }

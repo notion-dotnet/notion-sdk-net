@@ -6,13 +6,16 @@ namespace Notion.UnitTests
 {
     public class UserClientTest
     {
-        private readonly string _authToken;
         private readonly IUsersClient _client;
 
         public UserClientTest()
         {
-            _authToken = "<Token>";
-            _client = new UsersClient(new RestClient(_authToken));
+            var options = new ClientOptions
+            {
+                AuthToken = "<Token>"
+            };
+
+            _client = new UsersClient(new RestClient(options));
         }
 
         [Fact(Skip = "Internal testing purpose")]
