@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -5,6 +6,7 @@ namespace Notion.Client
 {
     public interface IDatabaseClient
     {
+        Task<Database> RetrieveAsync(string databaseId);
         Task<PaginatedList<Database>> ListAsync(DatabasesListParameters databasesListParameters = null);
     }
 
@@ -15,6 +17,19 @@ namespace Notion.Client
         public DatabaseClient(IRestClient client)
         {
             _client = client;
+        }
+
+        public async Task<Database> RetrieveAsync(string databaseId)
+        {
+            try
+            {
+                return await _client.GetAsync<Database>($"databases/{databaseId}");
+            }
+            catch (Exception e)
+            {
+                // Todo: Throw Custom Exception
+                return null;
+            }
         }
 
         public async Task<PaginatedList<Database>> ListAsync(DatabasesListParameters databasesListParameters = null)
@@ -29,7 +44,7 @@ namespace Notion.Client
 
                 return await _client.GetAsync<PaginatedList<Database>>("databases", queryParams);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 // Todo: Throw Custom Exception
                 return null;

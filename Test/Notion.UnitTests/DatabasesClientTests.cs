@@ -24,5 +24,13 @@ namespace Notion.UnitTests
             var databasesList = await _client.ListAsync();
             Assert.NotNull(databasesList);
         }
+
+        [Fact(Skip =  "Internal Testing Purpose")]
+        public async Task RetrieveDatabaseAsync()
+        {
+            var databaseId = "";
+            var database = await _client.RetrieveAsync(databaseId);
+            Assert.NotNull(database);
+        }
     }
 }
