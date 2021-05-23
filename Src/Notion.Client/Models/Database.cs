@@ -1,15 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using JsonSubTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace Notion.Client
 {
-    public class DatabasesListParameters
+    public interface IDatabasesListQueryParmaters : IPaginationParameters
     {
-        public PaginationParameters PaginationParameters { get; set; }
+
+    }
+
+    public class DatabasesListParameters : IDatabasesListQueryParmaters
+    {
+        public string StartCursor { get; set; }
+        public string PageSize { get; set; }
+    }
+
+
+    public interface IDatabaseQueryBodyParameters : IPaginationParameters
+    {
+        Filter Filter { get; set; }
+        List<Sort> Sorts { get; set; }
+    }
+
+    public class DatabasesQueryParameters : IDatabaseQueryBodyParameters
+    {
+        public Filter Filter { get; set; }
+        public List<Sort> Sorts { get; set; }
+        public string StartCursor { get; set; }
+        public string PageSize { get; set; }
     }
 
     public class Database
@@ -29,6 +51,10 @@ namespace Notion.Client
         public Dictionary<string, Property> Properties { get; set; }
     }
 
+    [JsonConverter(typeof(JsonSubtypes), "type")]
+    [JsonSubtypes.KnownSubType(typeof(RichTextText), RichTextType.Text)]
+    [JsonSubtypes.KnownSubType(typeof(RichTextEquation), RichTextType.Equation)]
+    [JsonSubtypes.KnownSubType(typeof(RichTextMention), RichTextType.Mention)]
     public class RichTextBase
     {
         [JsonProperty("plain_text")]
@@ -38,6 +64,7 @@ namespace Notion.Client
 
         public Annotations Annotations { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public virtual RichTextType Type { get; set; }
     }
 
@@ -62,7 +89,7 @@ namespace Notion.Client
     public class RichTextMention : RichTextBase
     {
         public override RichTextType Type => RichTextType.Mention;
-        public int MyProperty { get; set; }
+        public Mention Mention { get; set; }
     }
 
     public class Mention
@@ -71,29 +98,13 @@ namespace Notion.Client
         public User User { get; set; }
         public ObjectId Page { get; set; }
         public ObjectId Database { get; set; }
-        public PropertyValue Date { get; set; }
+        public DatePropertyValue Date { get; set; }
     }
 
     public class ObjectId
     {
         public string Id { get; set; }
     }
-
-    public class PropertyValue
-    {
-        public string Id { get; set; }
-        public string Type { get; set; }
-
-        // DateProperty Value
-        public Date Date { get; set; }
-    }
-
-    public class Date
-    {
-        public string Start { get; set; }
-        public string End { get; set; }
-    }
-
 
     public class RichTextEquation : RichTextBase
     {
@@ -134,7 +145,7 @@ namespace Notion.Client
 
         [JsonProperty("code")]
         public bool IsCode { get; set; }
-  
+
         // color: Color | BackgroundColor
         public string Color { get; set; }
     }
@@ -437,10 +448,10 @@ namespace Notion.Client
     {
         public override Property ReadJson(JsonReader reader, Type objectType, Property existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var jsonObject  = JObject.Load(reader);
+            var jsonObject = JObject.Load(reader);
             var type = jsonObject["type"].Value<string>();
 
-            switch(type)
+            switch (type)
             {
                 case "title":
                     return jsonObject.ToObject<TitleProperty>();

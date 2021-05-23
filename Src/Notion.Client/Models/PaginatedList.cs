@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Notion.Client
 {
-    public class PaginationParameters
+    public interface IPaginationParameters
     {
-        public string StartCursor { get; set; }
-        public string PageSize { get; set; }
+        string StartCursor { get; set; }
+        string PageSize { get; set; }
     }
 
     public class PaginatedList<T>

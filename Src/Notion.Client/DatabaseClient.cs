@@ -7,6 +7,7 @@ namespace Notion.Client
     public interface IDatabaseClient
     {
         Task<Database> RetrieveAsync(string databaseId);
+        Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters);
         Task<PaginatedList<Database>> ListAsync(DatabasesListParameters databasesListParameters = null);
     }
 
@@ -36,10 +37,11 @@ namespace Notion.Client
         {
             try
             {
+                var databasesListQueryParmaters = (IDatabasesListQueryParmaters)databasesListParameters;
                 var queryParams = new Dictionary<string, string>()
                 {
-                    { "start_cursor", databasesListParameters?.PaginationParameters?.StartCursor },
-                    { "page_size", databasesListParameters?.PaginationParameters?.PageSize }
+                    { "start_cursor", databasesListQueryParmaters?.StartCursor },
+                    { "page_size", databasesListQueryParmaters?.PageSize }
                 };
 
                 return await _client.GetAsync<PaginatedList<Database>>("databases", queryParams);
@@ -47,6 +49,19 @@ namespace Notion.Client
             catch (Exception e)
             {
                 // Todo: Throw Custom Exception
+                return null;
+            }
+        }
+
+        public async Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters)
+        {
+            try
+            {
+                var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
+                return await _client.PostAsync<PaginatedList<Page>>($"databases/{databaseId}/query", body);
+            }
+            catch (Exception e)
+            {
                 return null;
             }
         }
