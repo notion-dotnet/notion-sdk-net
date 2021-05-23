@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 
 namespace Notion.Client
 {
-    public interface IDatabaseClient
+    public interface IDatabasesClient
     {
         Task<Database> RetrieveAsync(string databaseId);
         Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters);
         Task<PaginatedList<Database>> ListAsync(DatabasesListParameters databasesListParameters = null);
     }
 
-    public class DatabaseClient : IDatabaseClient
+    public class DatabasesClient : IDatabasesClient
     {
         private readonly IRestClient _client;
 
-        public DatabaseClient(IRestClient client)
+        public DatabasesClient(IRestClient client)
         {
             _client = client;
         }

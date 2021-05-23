@@ -6,7 +6,7 @@ namespace Notion.UnitTests
 {
     public class DatabasesClientTests
     {
-        private readonly IDatabaseClient _client;
+        private readonly IDatabasesClient _client;
 
         public DatabasesClientTests()
         {
@@ -15,7 +15,7 @@ namespace Notion.UnitTests
                 AuthToken = "<Token>"
             };
 
-            _client = new DatabaseClient(new RestClient(options));
+            _client = new DatabasesClient(new RestClient(options));
         }
 
         [Fact(Skip = "Internal Testing Purpose")]
