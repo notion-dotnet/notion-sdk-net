@@ -4,12 +4,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Notion.Client.http;
 
 namespace Notion.Client
 {
     public interface IRestClient
     {
-        Task<T> GetAsync<T>(string uri);
+        Task<T> GetAsync<T>(string uri, Dictionary<string, string> queryParams = null);
     }
 
     public class RestClient : IRestClient
@@ -37,9 +38,11 @@ namespace Notion.Client
             };
         }
 
-        public async Task<T> GetAsync<T>(string uri)
+        public async Task<T> GetAsync<T>(string uri, Dictionary<string, string> queryParams = null)
         {
             EnsureHttpClient();
+
+            uri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
 
             using (var stream = await _httpClient.GetStreamAsync(uri))
             {

@@ -7,6 +7,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Notion.Client
 {
+    public class DatabasesListParameters
+    {
+        public PaginationParameters PaginationParameters { get; set; }
+    }
+
     public class Database
     {
         public string Object => "database";
