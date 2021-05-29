@@ -15,7 +15,6 @@ namespace Notion.Client.Extensions
                 {
                     using (JsonReader jsonReader = new JsonTextReader(streamReader))
                     {
-
                         JsonSerializer serializer = null;
 
                         if (serializerSettings == null)
