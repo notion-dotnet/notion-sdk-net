@@ -23,48 +23,27 @@ namespace Notion.Client
 
         public async Task<Database> RetrieveAsync(string databaseId)
         {
-            try
-            {
-                return await _client.GetAsync<Database>(DatabasesApiUrls.Retrieve(databaseId));
-            }
-            catch (Exception e)
-            {
-                // Todo: Throw Custom Exception
-                return null;
-            }
+            return await _client.GetAsync<Database>(DatabasesApiUrls.Retrieve(databaseId));
         }
 
         public async Task<PaginatedList<Database>> ListAsync(DatabasesListParameters databasesListParameters = null)
         {
-            try
-            {
-                var databasesListQueryParmaters = (IDatabasesListQueryParmaters)databasesListParameters;
-                var queryParams = new Dictionary<string, string>()
-                {
-                    { "start_cursor", databasesListQueryParmaters?.StartCursor },
-                    { "page_size", databasesListQueryParmaters?.PageSize }
-                };
+            var databasesListQueryParmaters = (IDatabasesListQueryParmaters)databasesListParameters;
 
-                return await _client.GetAsync<PaginatedList<Database>>(DatabasesApiUrls.List(), queryParams);
-            }
-            catch (Exception e)
+            var queryParams = new Dictionary<string, string>()
             {
-                // Todo: Throw Custom Exception
-                return null;
-            }
+                { "start_cursor", databasesListQueryParmaters?.StartCursor },
+                { "page_size", databasesListQueryParmaters?.PageSize }
+            };
+
+            return await _client.GetAsync<PaginatedList<Database>>(DatabasesApiUrls.List(), queryParams);
         }
 
         public async Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters)
         {
-            try
-            {
-                var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
-                return await _client.PostAsync<PaginatedList<Page>>(DatabasesApiUrls.Query(databaseId), body);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
+
+            return await _client.PostAsync<PaginatedList<Page>>(DatabasesApiUrls.Query(databaseId), body);
         }
     }
 }
