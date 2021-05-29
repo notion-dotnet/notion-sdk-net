@@ -33,7 +33,6 @@ namespace Notion.Client
     {
         private HttpClient _httpClient;
         private readonly ClientOptions _options;
-        private readonly List<JsonConverter> jsonConverters = new List<JsonConverter>();
 
         private readonly JsonSerializerSettings defaultSerializerSettings = new JsonSerializerSettings
         {
