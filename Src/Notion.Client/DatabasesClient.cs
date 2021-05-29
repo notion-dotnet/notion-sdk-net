@@ -24,7 +24,7 @@ namespace Notion.Client
         {
             try
             {
-                return await _client.GetAsync<Database>($"databases/{databaseId}");
+                return await _client.GetAsync<Database>($"/v1/databases/{databaseId}");
             }
             catch (Exception e)
             {
@@ -44,7 +44,7 @@ namespace Notion.Client
                     { "page_size", databasesListQueryParmaters?.PageSize }
                 };
 
-                return await _client.GetAsync<PaginatedList<Database>>("databases", queryParams);
+                return await _client.GetAsync<PaginatedList<Database>>("/v1/databases", queryParams);
             }
             catch (Exception e)
             {
@@ -58,7 +58,7 @@ namespace Notion.Client
             try
             {
                 var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
-                return await _client.PostAsync<PaginatedList<Page>>($"databases/{databaseId}/query", body);
+                return await _client.PostAsync<PaginatedList<Page>>($"/v1/databases/{databaseId}/query", body);
             }
             catch (Exception e)
             {

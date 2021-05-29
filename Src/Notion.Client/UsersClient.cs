@@ -22,7 +22,7 @@ namespace Notion.Client
         {
             try
             {
-                return await _client.GetAsync<User>($"users/{userId}");
+                return await _client.GetAsync<User>($"/v1/users/{userId}");
             }
             catch (Exception e)
             {
@@ -34,7 +34,7 @@ namespace Notion.Client
         {
             try
             {
-                return await _client.GetAsync<PaginatedList<User>>("users");
+                return await _client.GetAsync<PaginatedList<User>>("/v1/users");
             }
             catch (Exception e)
             {
