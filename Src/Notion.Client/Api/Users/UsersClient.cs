@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
@@ -20,26 +21,12 @@ namespace Notion.Client
 
         public async Task<User> RetrieveAsync(string userId)
         {
-            try
-            {
-                return await _client.GetAsync<User>($"users/{userId}");
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            return await _client.GetAsync<User>(UsersApiUrls.Retrieve(userId));
         }
 
         public async Task<PaginatedList<User>> ListAsync()
         {
-            try
-            {
-                return await _client.GetAsync<PaginatedList<User>>("users");
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            return await _client.GetAsync<PaginatedList<User>>(UsersApiUrls.List());
         }
     }
 }
