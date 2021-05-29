@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
@@ -24,7 +25,7 @@ namespace Notion.Client
         {
             try
             {
-                return await _client.GetAsync<Database>($"/v1/databases/{databaseId}");
+                return await _client.GetAsync<Database>(DatabasesApiUrls.Retrieve(databaseId));
             }
             catch (Exception e)
             {
@@ -44,7 +45,7 @@ namespace Notion.Client
                     { "page_size", databasesListQueryParmaters?.PageSize }
                 };
 
-                return await _client.GetAsync<PaginatedList<Database>>("/v1/databases", queryParams);
+                return await _client.GetAsync<PaginatedList<Database>>(DatabasesApiUrls.List(), queryParams);
             }
             catch (Exception e)
             {
@@ -58,7 +59,7 @@ namespace Notion.Client
             try
             {
                 var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
-                return await _client.PostAsync<PaginatedList<Page>>($"/v1/databases/{databaseId}/query", body);
+                return await _client.PostAsync<PaginatedList<Page>>(DatabasesApiUrls.Query(databaseId), body);
             }
             catch (Exception e)
             {
