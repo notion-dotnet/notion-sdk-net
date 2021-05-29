@@ -14,5 +14,10 @@
             public static string Retrieve(string userId) => $"/v1/users/{userId}";
             public static string List() => "/v1/users";
         }
+
+        public static class BlocksApiUrls
+        {
+            public static string RetrieveChildren(string blockId) => $"/v1/blocks/{blockId}/children";
+        }
     }
 }
