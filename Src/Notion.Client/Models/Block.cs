@@ -23,7 +23,7 @@ namespace Notion.Client
         public string Id { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public BlockType Type { get; set; }
+        public virtual BlockType Type { get; set; }
 
         [JsonProperty("created_time")]
         public string CreatedTime { get; set; }
@@ -40,6 +40,8 @@ namespace Notion.Client
 
     public class ParagraphBlock : BlockBase
     {
+        public override BlockType Type => BlockType.Paragraph;
+
         public ParagraphClass Paragraph { get; set; }
 
         public class ParagraphClass
@@ -51,6 +53,8 @@ namespace Notion.Client
 
     public class HeadingOneBlock : BlockBase
     {
+        public override BlockType Type => BlockType.Heading_1;
+
         [JsonProperty("heading_1")]
         public HeadingOneClass Heading_1 { get; set; }
 
@@ -64,6 +68,8 @@ namespace Notion.Client
 
     public class HeadingTwoBlock : BlockBase
     {
+        public override BlockType Type => BlockType.Heading_2;
+
         [JsonProperty("heading_2")]
         public HeadingTwoClass Heading_2 { get; set; }
 
@@ -77,6 +83,8 @@ namespace Notion.Client
 
     public class HeadingThreeeBlock : BlockBase
     {
+        public override BlockType Type => BlockType.Heading_3;
+
         [JsonProperty("heading_3")]
         public HeadingThreeClass Heading_3 { get; set; }
 
@@ -90,6 +98,8 @@ namespace Notion.Client
 
     public class BulletedListItemBlock : BlockBase
     {
+        public override BlockType Type => BlockType.BulletedListItem;
+
         [JsonProperty("bulleted_list_item")]
         public BulletedListItemClass BulletedListItem { get; set; }
 
@@ -103,6 +113,8 @@ namespace Notion.Client
     public class NumberedListItemBlock : BlockBase
     {
 
+        public override BlockType Type => BlockType.NumberedListItem;
+
         [JsonProperty("numbered_list_item")]
         public NumberedListItemClass NumberedListItem { get; set; }
 
@@ -115,6 +127,8 @@ namespace Notion.Client
 
     public class ToDoBlock : BlockBase
     {
+        public override BlockType Type => BlockType.ToDo;
+
         [JsonProperty("to_do")]
         public ToDoClass ToDo { get; set; }
 
@@ -131,6 +145,8 @@ namespace Notion.Client
 
     public class ToggleBlock : BlockBase
     {
+        public override BlockType Type => BlockType.Toggle;
+
         public ToggleClass Toggle { get; set; }
 
         public class ToggleClass
@@ -142,6 +158,8 @@ namespace Notion.Client
 
     public class ChildPageBlock : BlockBase
     {
+        public override BlockType Type => BlockType.ChildPage;
+
 
         [JsonProperty("child_page")]
         public ChildPageClass ChildPage { get; set; }
@@ -154,6 +172,7 @@ namespace Notion.Client
 
     public class UnsupportedBlock : BlockBase
     {
+        public override BlockType Type => BlockType.Unsupported;
     }
 
     public enum BlockType

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Notion.Client.Extensions;
 using Notion.Client.http;
 
@@ -27,6 +28,14 @@ namespace Notion.Client
             IDictionary<string, string> headers = null,
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default);
+
+        Task<T> PatchAsync<T>(
+            string uri,
+            object body,
+            IDictionary<string, string> queryParams = null,
+            IDictionary<string, string> headers = null,
+            JsonSerializerSettings serializerSettings = null,
+            CancellationToken cancellationToken = default);
     }
 
     public class RestClient : IRestClient
@@ -36,7 +45,11 @@ namespace Notion.Client
 
         private readonly JsonSerializerSettings defaultSerializerSettings = new JsonSerializerSettings
         {
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            }
         };
 
         public RestClient(ClientOptions options)
@@ -135,6 +148,34 @@ namespace Notion.Client
             var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
                     ? response.ReasonPhrase
                     : await response.Content.ReadAsStringAsync();
+
+            throw new NotionApiException(response.StatusCode, message);
+        }
+
+        public async Task<T> PatchAsync<T>(string uri, object body, IDictionary<string, string> queryParams = null, IDictionary<string, string> headers = null, JsonSerializerSettings serializerSettings = null, CancellationToken cancellationToken = default)
+        {
+            EnsureHttpClient();
+
+            void AttachContent(HttpRequestMessage httpRequest)
+            {
+                var serializedBody = JsonConvert.SerializeObject(body, defaultSerializerSettings);
+                httpRequest.Content = new StringContent(serializedBody, Encoding.UTF8, "application/json");
+            }
+
+            string requestUri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
+
+            var response = await SendAsync(requestUri, new HttpMethod("PATCH"), headers, AttachContent, cancellationToken: cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.ParseStreamAsync<T>(serializerSettings);
+            }
+
+            var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
+                    ? response.ReasonPhrase
+                    : await response.Content.ReadAsStringAsync();
+
+            var errorMessage = await response.Content.ReadAsStringAsync();
 
             throw new NotionApiException(response.StatusCode, message);
         }

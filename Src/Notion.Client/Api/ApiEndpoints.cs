@@ -18,6 +18,7 @@
         public static class BlocksApiUrls
         {
             public static string RetrieveChildren(string blockId) => $"/v1/blocks/{blockId}/children";
+            public static string AppendChildren(string blockId) => $"/v1/blocks/{blockId}/children";
         }
     }
 }
