@@ -11,7 +11,7 @@ namespace Notion.Client
 
     public class PaginatedList<T>
     {
-        public const string Object = "List";
+        public const string Object = "list";
 
         public List<T> Results { get; set; }
 
