@@ -7,7 +7,7 @@ namespace Notion.Client
 {
     public interface IBlocksClient
     {
-        Task<PaginatedList<BlockBase>> RetrieveChildrenAsync(string blockId, BlockRetrieveChildrenParameters parameters = null);
+        Task<PaginatedList<BlockBase>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null);
         Task<BlockBase> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null);
     }
 
@@ -20,7 +20,7 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<PaginatedList<BlockBase>> RetrieveChildrenAsync(string blockId, BlockRetrieveChildrenParameters parameters = null)
+        public async Task<PaginatedList<BlockBase>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -29,7 +29,7 @@ namespace Notion.Client
 
             var url = BlocksApiUrls.RetrieveChildren(blockId);
 
-            var queryParameters = (IBlockRetrieveChildrenQueryParameters)parameters;
+            var queryParameters = (IBlocksRetrieveChildrenQueryParameters)parameters;
 
             var queryParams = new Dictionary<string, string>()
             {
@@ -53,31 +53,5 @@ namespace Notion.Client
 
             return await _client.PatchAsync<BlockBase>(url, body);
         }
-    }
-
-    public interface IBlockRetrieveChildrenQueryParameters : IPaginationParameters
-    {
-    }
-
-    public interface IBlockRetrieveChildrenParameters : IBlockRetrieveChildrenQueryParameters
-    {
-    }
-
-    public class BlockRetrieveChildrenParameters : IBlockRetrieveChildrenParameters
-    {
-        public string StartCursor { get; set; }
-        public string PageSize { get; set; }
-    }
-
-
-    // TODO: need an input version of Block
-    public interface IBlocksAppendChildrenBodyParameters
-    {
-        IEnumerable<BlockBase> Children { get; set; }
-    }
-
-    public class BlocksAppendChildrenParameters : IBlocksAppendChildrenBodyParameters
-    {
-        public IEnumerable<BlockBase> Children { get; set; }
     }
 }

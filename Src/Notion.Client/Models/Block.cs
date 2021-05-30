@@ -35,7 +35,6 @@ namespace Notion.Client
 
         [JsonProperty("has_children")]
         public virtual bool HasChildren { get; set; }
-
     }
 
     public class ParagraphBlock : BlockBase
@@ -159,7 +158,6 @@ namespace Notion.Client
     public class ChildPageBlock : BlockBase
     {
         public override BlockType Type => BlockType.ChildPage;
-
 
         [JsonProperty("child_page")]
         public ChildPageClass ChildPage { get; set; }
