@@ -28,10 +28,8 @@ namespace Notion.Client
         [JsonProperty("created_time")]
         public string CreatedTime { get; set; }
 
-
         [JsonProperty("last_edited_time")]
         public string LastEditedTime { get; set; }
-
 
         [JsonProperty("has_children")]
         public virtual bool HasChildren { get; set; }
@@ -111,7 +109,6 @@ namespace Notion.Client
 
     public class NumberedListItemBlock : BlockBase
     {
-
         public override BlockType Type => BlockType.NumberedListItem;
 
         [JsonProperty("numbered_list_item")]
