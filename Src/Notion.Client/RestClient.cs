@@ -43,7 +43,7 @@ namespace Notion.Client
         private HttpClient _httpClient;
         private readonly ClientOptions _options;
 
-        private readonly JsonSerializerSettings defaultSerializerSettings = new JsonSerializerSettings
+        protected readonly JsonSerializerSettings defaultSerializerSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
             ContractResolver = new DefaultContractResolver
