@@ -7,25 +7,30 @@ namespace Notion.Client
 {
     public class DateFilter : SinglePropertyFilter
     {
+        public DateFilterCondition Date { get; set; }
+    }
+
+    public class DateFilterCondition
+    {
         [JsonProperty("equals")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime Equal { get; set; }
+        public Nullable<DateTime> Equal { get; set; }
 
         [JsonProperty("before")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime Before { get; set; }
+        public Nullable<DateTime> Before { get; set; }
 
         [JsonProperty("after")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime After { get; set; }
+        public Nullable<DateTime> After { get; set; }
 
         [JsonProperty("on_or_before")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime OnOrBefore { get; set; }
+        public Nullable<DateTime> OnOrBefore { get; set; }
 
         [JsonProperty("on_or_after")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime OnOrAfter { get; set; }
+        public Nullable<DateTime> OnOrAfter { get; set; }
 
         [JsonProperty("past_week")]
         public Dictionary<string, object> PastWeek { get; set; }
@@ -46,9 +51,9 @@ namespace Notion.Client
         public Dictionary<string, object> NextYear { get; set; }
 
         [JsonProperty("is_empty")]
-        public bool IsEmpty => true;
+        public Nullable<bool> IsEmpty { get; set; }
 
         [JsonProperty("is_not_empty")]
-        public bool IsNotEmpty => true;
+        public Nullable<bool> IsNotEmpty { get; set; }
     }
 }

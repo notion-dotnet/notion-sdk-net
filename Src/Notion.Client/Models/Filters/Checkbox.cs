@@ -1,13 +1,19 @@
+using System;
 using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public class CheckboxFilter : SinglePropertyFilter
     {
+        public CheckboxFilterCondition Checkbox { get; set; }
+    }
+
+    public class CheckboxFilterCondition
+    {
         [JsonProperty("equals")]
-        public bool Equal { get; set; }
+        public Nullable<bool> Equal { get; set; }
 
         [JsonProperty("does_not_equal")]
-        public bool DoesNotEqual { get; set; }
+        public Nullable<bool> DoesNotEqual { get; set; }
     }
 }

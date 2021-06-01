@@ -2,9 +2,14 @@ namespace Notion.Client
 {
     public class FormulaFilter : SinglePropertyFilter
     {
-        public TextFilter Text { get; set; }
-        public CheckboxFilter checkbox { get; set; }
-        public NumberFilter number { get; set; }
-        public DateFilter date { get; set; }
+        public FormulaFilterCondition Formula { get; set; }
+    }
+
+    public class FormulaFilterCondition
+    {
+        public TextFilterCondition Text { get; set; }
+        public CheckboxFilterCondition Checkbox { get; set; }
+        public NumberFilterCondition Number { get; set; }
+        public DateFilterCondition Date { get; set; }
     }
 }

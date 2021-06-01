@@ -1,8 +1,14 @@
+using System;
 using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public class SelectFilter : SinglePropertyFilter
+    {
+        public SelectFilterCondition Select { get; set; }
+    }
+
+    public class SelectFilterCondition
     {
         [JsonProperty("equals")]
         public string Equal { get; set; }
@@ -11,9 +17,9 @@ namespace Notion.Client
         public string DoesNotEqual { get; set; }
 
         [JsonProperty("is_empty")]
-        public bool IsEmpty => true;
+        public Nullable<bool> IsEmpty { get; set; }
 
         [JsonProperty("is_not_empty")]
-        public bool IsNotEmpty => true;
+        public Nullable<bool> IsNotEmpty { get; set; }
     }
 }
