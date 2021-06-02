@@ -40,7 +40,7 @@ namespace Notion.UnitTests
                 {
                     new HeadingTwoBlock()
                     {
-                        Heading_2 = new HeadingTwoBlock.HeadingTwoClass
+                        Heading_2 = new HeadingTwoBlock.Info
                         {
                             Text = new List<RichTextBase>
                             {

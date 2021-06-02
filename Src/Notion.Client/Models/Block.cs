@@ -39,9 +39,9 @@ namespace Notion.Client
     {
         public override BlockType Type => BlockType.Paragraph;
 
-        public ParagraphClass Paragraph { get; set; }
+        public Info Paragraph { get; set; }
 
-        public class ParagraphClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
             public IEnumerable<BlockBase> Children { get; set; }
@@ -53,11 +53,11 @@ namespace Notion.Client
         public override BlockType Type => BlockType.Heading_1;
 
         [JsonProperty("heading_1")]
-        public HeadingOneClass Heading_1 { get; set; }
+        public Info Heading_1 { get; set; }
 
         public override bool HasChildren => false;
 
-        public class HeadingOneClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
         }
@@ -68,11 +68,11 @@ namespace Notion.Client
         public override BlockType Type => BlockType.Heading_2;
 
         [JsonProperty("heading_2")]
-        public HeadingTwoClass Heading_2 { get; set; }
+        public Info Heading_2 { get; set; }
 
         public override bool HasChildren => false;
 
-        public class HeadingTwoClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
         }
@@ -83,11 +83,11 @@ namespace Notion.Client
         public override BlockType Type => BlockType.Heading_3;
 
         [JsonProperty("heading_3")]
-        public HeadingThreeClass Heading_3 { get; set; }
+        public Info Heading_3 { get; set; }
 
         public override bool HasChildren => false;
 
-        public class HeadingThreeClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
         }
@@ -98,9 +98,9 @@ namespace Notion.Client
         public override BlockType Type => BlockType.BulletedListItem;
 
         [JsonProperty("bulleted_list_item")]
-        public BulletedListItemClass BulletedListItem { get; set; }
+        public Info BulletedListItem { get; set; }
 
-        public class BulletedListItemClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
             public IEnumerable<BlockBase> Children { get; set; }
@@ -112,9 +112,9 @@ namespace Notion.Client
         public override BlockType Type => BlockType.NumberedListItem;
 
         [JsonProperty("numbered_list_item")]
-        public NumberedListItemClass NumberedListItem { get; set; }
+        public Info NumberedListItem { get; set; }
 
-        public class NumberedListItemClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
             public IEnumerable<BlockBase> Children { get; set; }
@@ -126,9 +126,9 @@ namespace Notion.Client
         public override BlockType Type => BlockType.ToDo;
 
         [JsonProperty("to_do")]
-        public ToDoClass ToDo { get; set; }
+        public Info ToDo { get; set; }
 
-        public class ToDoClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
 
@@ -143,9 +143,9 @@ namespace Notion.Client
     {
         public override BlockType Type => BlockType.Toggle;
 
-        public ToggleClass Toggle { get; set; }
+        public Info Toggle { get; set; }
 
-        public class ToggleClass
+        public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
             public IEnumerable<BlockBase> Children { get; set; }
@@ -157,9 +157,9 @@ namespace Notion.Client
         public override BlockType Type => BlockType.ChildPage;
 
         [JsonProperty("child_page")]
-        public ChildPageClass ChildPage { get; set; }
+        public Info ChildPage { get; set; }
 
-        public class ChildPageClass
+        public class Info
         {
             public string Title { get; set; }
         }
