@@ -6,5 +6,4 @@
 
         public bool Checkbox { get; set; }
     }
-
 }

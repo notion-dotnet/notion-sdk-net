@@ -9,5 +9,4 @@ namespace Notion.Client
         [JsonProperty("created_time")]
         public string CreatedTime { get; set; }
     }
-
 }

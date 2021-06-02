@@ -5,5 +5,4 @@
         public override PropertyValueType Type => PropertyValueType.Number;
         public double Number { get; set; }
     }
-
 }

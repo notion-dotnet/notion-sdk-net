@@ -10,5 +10,4 @@ namespace Notion.Client
         [JsonProperty("multi_select")]
         public List<SelectOption> MultiSelect { get; set; }
     }
-
 }

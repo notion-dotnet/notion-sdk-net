@@ -9,5 +9,4 @@ namespace Notion.Client
         [JsonProperty("last_edited_by")]
         public User LastEditedBy { get; set; }
     }
-
 }

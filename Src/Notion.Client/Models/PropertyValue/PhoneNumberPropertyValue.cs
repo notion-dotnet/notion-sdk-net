@@ -10,5 +10,4 @@ namespace Notion.Client
         [JsonProperty("phone_number")]
         public string PhoneNumber { get; set; }
     }
-
 }

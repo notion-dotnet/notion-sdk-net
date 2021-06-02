@@ -10,5 +10,4 @@ namespace Notion.Client
         [JsonProperty("rich_text")]
         public List<RichTextBase> RichText { get; set; }
     }
-
 }

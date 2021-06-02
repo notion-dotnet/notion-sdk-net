@@ -7,5 +7,4 @@ namespace Notion.Client
         public override PropertyValueType Type => PropertyValueType.People;
         public List<User> People { get; set; }
     }
-
 }

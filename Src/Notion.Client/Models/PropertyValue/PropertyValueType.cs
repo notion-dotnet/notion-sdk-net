@@ -64,5 +64,4 @@ namespace Notion.Client
         [EnumMember(Value = "last_edited_by")]
         LastEditedBy
     }
-
 }

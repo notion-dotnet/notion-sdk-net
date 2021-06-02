@@ -7,5 +7,4 @@ namespace Notion.Client
         public override PropertyValueType Type => PropertyValueType.Title;
         public List<RichTextBase> Title { get; set; }
     }
-
 }

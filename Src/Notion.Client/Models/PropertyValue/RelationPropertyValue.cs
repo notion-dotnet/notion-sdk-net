@@ -11,5 +11,4 @@ namespace Notion.Client
         /// </summary>
         public List<ObjectId> Relation { get; set; }
     }
-
 }

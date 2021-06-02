@@ -9,5 +9,4 @@ namespace Notion.Client
         [JsonProperty("created_by")]
         public User CreatedBy { get; set; }
     }
-
 }
