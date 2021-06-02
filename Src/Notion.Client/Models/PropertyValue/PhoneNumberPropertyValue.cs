@@ -6,7 +6,6 @@ namespace Notion.Client
     {
         public override PropertyValueType Type => PropertyValueType.PhoneNumber;
 
-
         [JsonProperty("phone_number")]
         public string PhoneNumber { get; set; }
     }

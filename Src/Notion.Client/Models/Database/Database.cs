@@ -1,9 +1,6 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using JsonSubTypes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -18,7 +15,6 @@ namespace Notion.Client
         public string PageSize { get; set; }
     }
 
-
     public interface IDatabaseQueryBodyParameters : IPaginationParameters
     {
         Filter Filter { get; set; }
@@ -32,7 +28,6 @@ namespace Notion.Client
         public string StartCursor { get; set; }
         public string PageSize { get; set; }
     }
-
     public class Database
     {
         public string Object => "database";
@@ -40,7 +35,6 @@ namespace Notion.Client
 
         [JsonProperty("created_time")]
         public DateTime CreatedTime { get; set; }
-
 
         [JsonProperty("last_edited_time")]
         public DateTime LastEditedTime { get; set; }
