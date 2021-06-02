@@ -5,12 +5,6 @@ using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public interface IBlocksClient
-    {
-        Task<PaginatedList<BlockBase>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null);
-        Task<BlockBase> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null);
-    }
-
     public class BlocksClient : IBlocksClient
     {
         private readonly IRestClient _client;
@@ -20,7 +14,7 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<PaginatedList<BlockBase>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null)
+        public async Task<PaginatedList<Block>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -37,10 +31,10 @@ namespace Notion.Client
                 { "page_size", queryParameters?.PageSize?.ToString() }
             };
 
-            return await _client.GetAsync<PaginatedList<BlockBase>>(url, queryParams);
+            return await _client.GetAsync<PaginatedList<Block>>(url, queryParams);
         }
 
-        public async Task<BlockBase> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null)
+        public async Task<Block> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -51,7 +45,7 @@ namespace Notion.Client
 
             var body = (IBlocksAppendChildrenBodyParameters)parameters;
 
-            return await _client.PatchAsync<BlockBase>(url, body);
+            return await _client.PatchAsync<Block>(url, body);
         }
     }
 }

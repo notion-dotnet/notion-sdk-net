@@ -1,17 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public interface IDatabasesClient
-    {
-        Task<Database> RetrieveAsync(string databaseId);
-        Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters);
-        Task<PaginatedList<Database>> ListAsync(DatabasesListParameters databasesListParameters = null);
-    }
-
     public class DatabasesClient : IDatabasesClient
     {
         private readonly IRestClient _client;
