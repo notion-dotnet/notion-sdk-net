@@ -1,15 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public interface IUsersClient
-    {
-        Task<User> RetrieveAsync(string userId);
-        Task<PaginatedList<User>> ListAsync();
-    }
-
     public class UsersClient : IUsersClient
     {
         private readonly IRestClient _client;

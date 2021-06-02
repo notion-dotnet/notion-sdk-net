@@ -5,12 +5,6 @@ using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public interface IBlocksClient
-    {
-        Task<PaginatedList<Block>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null);
-        Task<Block> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null);
-    }
-
     public class BlocksClient : IBlocksClient
     {
         private readonly IRestClient _client;
