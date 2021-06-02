@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
-using Xunit;
+﻿using System.Threading.Tasks;
 using Notion.Client;
+using Xunit;
 
 namespace Notion.UnitTests
 {
