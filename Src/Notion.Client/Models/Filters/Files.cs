@@ -6,15 +6,15 @@ namespace Notion.Client
 
     public class FilesFilter : SinglePropertyFilter
     {
-        public FilesFilterCondition Files { get; set; }
-    }
+        public Condition Files { get; set; }
 
-    public class FilesFilterCondition
-    {
-        [JsonProperty("is_empty")]
-        public Nullable<bool> IsEmpty { get; set; }
+        public class Condition
+        {
+            [JsonProperty("is_empty")]
+            public Nullable<bool> IsEmpty { get; set; }
 
-        [JsonProperty("is_not_empty")]
-        public Nullable<bool> IsNotEmpty { get; set; }
+            [JsonProperty("is_not_empty")]
+            public Nullable<bool> IsNotEmpty { get; set; }
+        }
     }
 }

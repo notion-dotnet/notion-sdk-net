@@ -3,23 +3,22 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-
     public class RelationFilter : SinglePropertyFilter
     {
-        public RelationFilterCondition Relation { get; set; }
-    }
+        public Condition Relation { get; set; }
 
-    public class RelationFilterCondition
-    {
-        public string Contains { get; set; }
+        public class Condition
+        {
+            public string Contains { get; set; }
 
-        [JsonProperty("does_not_contain")]
-        public string DoesNotContain { get; set; }
+            [JsonProperty("does_not_contain")]
+            public string DoesNotContain { get; set; }
 
-        [JsonProperty("is_empty")]
-        public Nullable<bool> IsEmpty { get; set; }
+            [JsonProperty("is_empty")]
+            public Nullable<bool> IsEmpty { get; set; }
 
-        [JsonProperty("is_not_empty")]
-        public Nullable<bool> IsNotEmpty { get; set; }
+            [JsonProperty("is_not_empty")]
+            public Nullable<bool> IsNotEmpty { get; set; }
+        }
     }
 }

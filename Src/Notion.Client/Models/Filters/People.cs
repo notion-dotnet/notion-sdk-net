@@ -5,20 +5,20 @@ namespace Notion.Client
 {
     public class PeopleFilter : SinglePropertyFilter
     {
-        public PeopleFilterCondition People { get; set; }
-    }
+        public Condition People { get; set; }
 
-    public class PeopleFilterCondition
-    {
-        public string Contains { get; set; }
+        public class Condition
+        {
+            public string Contains { get; set; }
 
-        [JsonProperty("does_not_contain")]
-        public string DoesNotContain { get; set; }
+            [JsonProperty("does_not_contain")]
+            public string DoesNotContain { get; set; }
 
-        [JsonProperty("is_empty")]
-        public Nullable<bool> IsEmpty { get; set; }
+            [JsonProperty("is_empty")]
+            public Nullable<bool> IsEmpty { get; set; }
 
-        [JsonProperty("is_not_empty")]
-        public Nullable<bool> IsNotEmpty { get; set; }
+            [JsonProperty("is_not_empty")]
+            public Nullable<bool> IsNotEmpty { get; set; }
+        }
     }
 }
