@@ -12,32 +12,6 @@ using Notion.Client.http;
 
 namespace Notion.Client
 {
-    public interface IRestClient
-    {
-        Task<T> GetAsync<T>(
-            string uri,
-            IDictionary<string, string> queryParams = null,
-            IDictionary<string, string> headers = null,
-            JsonSerializerSettings serializerSettings = null,
-            CancellationToken cancellationToken = default);
-
-        Task<T> PostAsync<T>(
-            string uri,
-            object body,
-            IDictionary<string, string> queryParams = null,
-            IDictionary<string, string> headers = null,
-            JsonSerializerSettings serializerSettings = null,
-            CancellationToken cancellationToken = default);
-
-        Task<T> PatchAsync<T>(
-            string uri,
-            object body,
-            IDictionary<string, string> queryParams = null,
-            IDictionary<string, string> headers = null,
-            JsonSerializerSettings serializerSettings = null,
-            CancellationToken cancellationToken = default);
-    }
-
     public class RestClient : IRestClient
     {
         private HttpClient _httpClient;
@@ -190,12 +164,5 @@ namespace Notion.Client
 
             return _httpClient;
         }
-    }
-
-    public class ClientOptions
-    {
-        public string BaseUrl { get; set; }
-        public string NotionVersion { get; set; }
-        public string AuthToken { get; set; }
     }
 }

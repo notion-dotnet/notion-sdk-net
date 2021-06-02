@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Notion.Client;
 using Xunit;
@@ -36,11 +36,11 @@ namespace Notion.UnitTests
 
             var parameters = new BlocksAppendChildrenParameters()
             {
-                Children = new List<BlockBase>
+                Children = new List<Block>
                 {
                     new HeadingTwoBlock()
                     {
-                        Heading_2 = new HeadingTwoBlock.HeadingTwoClass
+                        Heading_2 = new HeadingTwoBlock.Info
                         {
                             Text = new List<RichTextBase>
                             {

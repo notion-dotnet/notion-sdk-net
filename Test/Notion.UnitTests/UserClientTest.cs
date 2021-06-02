@@ -1,5 +1,5 @@
+﻿using System.Threading.Tasks;
 using Notion.Client;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Notion.UnitTests
