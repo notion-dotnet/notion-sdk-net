@@ -1,4 +1,4 @@
-using JsonSubTypes;
+﻿using JsonSubTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
