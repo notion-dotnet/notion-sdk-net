@@ -6,7 +6,6 @@ namespace Notion.Client
 {
     public interface IDatabasesListQueryParmaters : IPaginationParameters
     {
-
     }
 
     public class DatabasesListParameters : IDatabasesListQueryParmaters
@@ -28,6 +27,7 @@ namespace Notion.Client
         public string StartCursor { get; set; }
         public string PageSize { get; set; }
     }
+
     public class Database
     {
         public string Object => "database";
