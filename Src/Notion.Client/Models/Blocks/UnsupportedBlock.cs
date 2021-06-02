@@ -1,6 +1,6 @@
 ﻿namespace Notion.Client
 {
-    public class UnsupportedBlock : BlockBase
+    public class UnsupportedBlock : Block
     {
         public override BlockType Type => BlockType.Unsupported;
     }

@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class ChildPageBlock : BlockBase
+    public class ChildPageBlock : Block
     {
         public override BlockType Type => BlockType.ChildPage;
 

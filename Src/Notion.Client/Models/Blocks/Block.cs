@@ -15,7 +15,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(ToDoBlock), BlockType.ToDo)]
     [JsonSubtypes.KnownSubType(typeof(ToggleBlock), BlockType.Toggle)]
     [JsonSubtypes.KnownSubType(typeof(UnsupportedBlock), BlockType.Unsupported)]
-    public class BlockBase
+    public class Block
     {
         public string Object => "block";
         public string Id { get; set; }

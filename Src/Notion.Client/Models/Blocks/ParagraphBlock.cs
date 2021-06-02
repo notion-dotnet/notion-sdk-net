@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class ParagraphBlock : BlockBase
+    public class ParagraphBlock : Block
     {
         public override BlockType Type => BlockType.Paragraph;
 
@@ -11,7 +11,7 @@ namespace Notion.Client
         public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
-            public IEnumerable<BlockBase> Children { get; set; }
+            public IEnumerable<Block> Children { get; set; }
         }
     }
 }

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class ToDoBlock : BlockBase
+    public class ToDoBlock : Block
     {
         public override BlockType Type => BlockType.ToDo;
 
@@ -17,7 +17,7 @@ namespace Notion.Client
             [JsonProperty("checked")]
             public bool IsChecked { get; set; }
 
-            public IEnumerable<BlockBase> Children { get; set; }
+            public IEnumerable<Block> Children { get; set; }
         }
     }
 }

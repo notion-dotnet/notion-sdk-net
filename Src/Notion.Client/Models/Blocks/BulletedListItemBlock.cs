@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class BulletedListItemBlock : BlockBase
+    public class BulletedListItemBlock : Block
     {
         public override BlockType Type => BlockType.BulletedListItem;
 
@@ -13,7 +13,7 @@ namespace Notion.Client
         public class Info
         {
             public IEnumerable<RichTextBase> Text { get; set; }
-            public IEnumerable<BlockBase> Children { get; set; }
+            public IEnumerable<Block> Children { get; set; }
         }
     }
 }

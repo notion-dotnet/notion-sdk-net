@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class HeadingThreeeBlock : BlockBase
+    public class HeadingThreeeBlock : Block
     {
         public override BlockType Type => BlockType.Heading_3;
 
