@@ -24,11 +24,18 @@ dotnet add package Notion.Net
 
 Import and initialize the client using the integration token created above.
 
-![image](https://user-images.githubusercontent.com/18693839/119268863-79925b00-bc12-11eb-92cb-d5a9a8c57fdc.png)
+```csharp
+var client = new NotionClient(new ClientOptions
+{
+    AuthToken = "<Token>"
+});
+```
 
 Make A request to any Endpoint. For example you can call below to fetch the paginated list of users.
 
-![image](https://user-images.githubusercontent.com/18693839/119268924-ae9ead80-bc12-11eb-9d1a-925267896d9e.png)
+```csharp
+var usersList = await client.Users.ListAsync();
+```
 
 ### Querying a database
 
