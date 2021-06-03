@@ -1,7 +1,7 @@
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Notion.Client;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Notion.UnitTests
