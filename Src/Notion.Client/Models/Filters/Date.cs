@@ -9,27 +9,61 @@ namespace Notion.Client
     {
         public Condition Date { get; set; }
 
+        public DateFilter(
+            string propertyName,
+            DateTime? equal = null,
+            DateTime? before = null,
+            DateTime? after = null,
+            DateTime? onOrBefore = null,
+            DateTime? onOrAfter = null,
+            Dictionary<string, object> pastWeek = null,
+            Dictionary<string, object> pastMonth = null,
+            Dictionary<string, object> pastYear = null,
+            Dictionary<string, object> nextWeek = null,
+            Dictionary<string, object> nextMonth = null,
+            Dictionary<string, object> nextYear = null,
+            bool? isEmpty = null,
+            bool? isNotEmpty = null)
+        {
+            Property = propertyName;
+            Date = new Condition(
+                equal: equal,
+                before: before,
+                after: after,
+                onOrBefore: onOrBefore,
+                onOrAfter: onOrAfter,
+                pastWeek: pastWeek,
+                pastMonth: pastMonth,
+                pastYear: pastYear,
+                nextWeek: nextWeek,
+                nextMonth: nextMonth,
+                nextYear: nextYear,
+                isEmpty: isEmpty,
+                isNotEmpty: isNotEmpty
+            );
+        }
+
         public class Condition
         {
             [JsonProperty("equals")]
             [JsonConverter(typeof(IsoDateTimeConverter))]
-            public Nullable<DateTime> Equal { get; set; }
+            public DateTime? Equal { get; set; }
 
             [JsonProperty("before")]
             [JsonConverter(typeof(IsoDateTimeConverter))]
-            public Nullable<DateTime> Before { get; set; }
+            public DateTime? Before { get; set; }
 
             [JsonProperty("after")]
             [JsonConverter(typeof(IsoDateTimeConverter))]
-            public Nullable<DateTime> After { get; set; }
+            public DateTime? After { get; set; }
 
             [JsonProperty("on_or_before")]
             [JsonConverter(typeof(IsoDateTimeConverter))]
-            public Nullable<DateTime> OnOrBefore { get; set; }
+            public DateTime? OnOrBefore { get; set; }
 
             [JsonProperty("on_or_after")]
             [JsonConverter(typeof(IsoDateTimeConverter))]
-            public Nullable<DateTime> OnOrAfter { get; set; }
+            public DateTime? OnOrAfter { get; set; }
 
             [JsonProperty("past_week")]
             public Dictionary<string, object> PastWeek { get; set; }
@@ -50,10 +84,40 @@ namespace Notion.Client
             public Dictionary<string, object> NextYear { get; set; }
 
             [JsonProperty("is_empty")]
-            public Nullable<bool> IsEmpty { get; set; }
+            public bool? IsEmpty { get; set; }
 
             [JsonProperty("is_not_empty")]
-            public Nullable<bool> IsNotEmpty { get; set; }
+            public bool? IsNotEmpty { get; set; }
+
+            public Condition(
+                DateTime? equal = null,
+                DateTime? before = null,
+                DateTime? after = null,
+                DateTime? onOrBefore = null,
+                DateTime? onOrAfter = null,
+                Dictionary<string, object> pastWeek = null,
+                Dictionary<string, object> pastMonth = null,
+                Dictionary<string, object> pastYear = null,
+                Dictionary<string, object> nextWeek = null,
+                Dictionary<string, object> nextMonth = null,
+                Dictionary<string, object> nextYear = null,
+                bool? isEmpty = null,
+                bool? isNotEmpty = null)
+            {
+                Equal = equal;
+                Before = before;
+                After = after;
+                OnOrBefore = onOrBefore;
+                OnOrAfter = onOrAfter;
+                PastWeek = pastWeek;
+                PastMonth = pastMonth;
+                PastYear = pastYear;
+                NextWeek = nextWeek;
+                NextMonth = nextMonth;
+                NextYear = nextYear;
+                IsEmpty = isEmpty;
+                IsNotEmpty = isNotEmpty;
+            }
         }
     }
 }

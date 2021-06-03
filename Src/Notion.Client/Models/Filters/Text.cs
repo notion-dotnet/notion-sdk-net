@@ -7,6 +7,30 @@ namespace Notion.Client
     {
         public Condition Text { get; set; }
 
+        public TextFilter(
+            string propertyName,
+            string equal = null,
+            string doesNotEqual = null,
+            string contains = null,
+            string doesNotContain = null,
+            string startsWith = null,
+            string endsWith = null,
+            bool? isEmpty = null,
+            bool? isNotEmpty = null)
+        {
+            Property = propertyName;
+            Text = new Condition(
+                equal: equal,
+                doesNotEqual: doesNotEqual,
+                contains: contains,
+                doesNotContain: doesNotContain,
+                startsWith: startsWith,
+                endsWith: endsWith,
+                isEmpty: isEmpty,
+                isNotEmpty: isNotEmpty
+            );
+        }
+
         public class Condition
         {
             [JsonProperty("equals")]
@@ -27,10 +51,30 @@ namespace Notion.Client
             public string EndsWith { get; set; }
 
             [JsonProperty("is_empty")]
-            public Nullable<bool> IsEmpty { get; set; }
+            public bool? IsEmpty { get; set; }
 
             [JsonProperty("is_not_empty")]
-            public Nullable<bool> IsNotEmpty { get; set; }
+            public bool? IsNotEmpty { get; set; }
+
+            public Condition(
+                string equal = null,
+                string doesNotEqual = null,
+                string contains = null,
+                string doesNotContain = null,
+                string startsWith = null,
+                string endsWith = null,
+                bool? isEmpty = null,
+                bool? isNotEmpty = null)
+            {
+                Equal = equal;
+                DoesNotEqual = doesNotEqual;
+                Contains = contains;
+                DoesNotContain = doesNotContain;
+                StartsWith = startsWith;
+                EndsWith = endsWith;
+                IsEmpty = isEmpty;
+                IsNotEmpty = isNotEmpty;
+            }
         }
     }
 }

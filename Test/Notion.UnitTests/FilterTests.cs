@@ -31,40 +31,14 @@ namespace Notion.UnitTests
         [Fact]
         public void CompoundFilterTest()
         {
-            var selectFilter = new SelectFilter
-            {
-                Property = "A select",
-                Select = new SelectFilterCondition
-                {
-                    Equal = "Option"
-                }
-            };
-            var relationFilter = new RelationFilter
-            {
-                Property = "Link",
-                Relation = new RelationFilterCondition
-                {
-                    Contains = "subtask#1"
-                }
-            };
-            var dateFilter = new DateFilter
-            {
-                Property = "Due",
-                Date = new DateFilterCondition
-                {
-                    PastMonth = new Dictionary<string, object>()
-                }
-            };
+            var selectFilter = new SelectFilter("A select", equal: "Option");
+            var relationFilter = new RelationFilter("Link", contains: "subtask#1");
+            var dateFilter = new DateFilter("Due", pastMonth: new Dictionary<string, object>());
 
-            var complexFiler = new CompoundFilter
-            {
-                And = new List<Filter> {
-                    dateFilter,
-                    new CompoundFilter {
-                        Or = new List<Filter> {relationFilter, selectFilter}
-                    }
-                }
-            };
+            var filterGroup = new List<Filter> { relationFilter, selectFilter };
+            var complexFiler = new CompoundFilter(
+                and: new List<Filter> { dateFilter, new CompoundFilter(or: filterGroup) }
+            );
 
             Assert.Equal(
                 "{\"and\":[{\"date\":{\"past_month\":{}},\"property\":\"Due\"},"
@@ -77,15 +51,7 @@ namespace Notion.UnitTests
         [Fact]
         public void CheckboxFilterTest()
         {
-            var filter = new CheckboxFilter
-            {
-                Property = "Property name",
-                Checkbox = new CheckboxFilterCondition
-                {
-                    Equal = false
-                },
-            };
-
+            var filter = new CheckboxFilter("Property name", equal: false);
             Assert.Equal(
                 "{\"checkbox\":{\"equals\":false},\"property\":\"Property name\"}",
                 SerializeFilter(filter)
@@ -95,15 +61,7 @@ namespace Notion.UnitTests
         [Fact]
         public void DateFilterTest()
         {
-            var filter = new DateFilter
-            {
-                Property = "When",
-                Date = new DateFilterCondition
-                {
-                    OnOrAfter = new DateTime(2042, 11, 29)
-                },
-            };
-
+            var filter = new DateFilter("When", onOrAfter: new DateTime(2042, 11, 29));
             Assert.Equal(
                 "{\"date\":{\"on_or_after\":\"2042-11-29T00:00:00\"},\"property\":\"When\"}",
                 SerializeFilter(filter)
@@ -113,15 +71,7 @@ namespace Notion.UnitTests
         [Fact]
         public void FilesFilterTest()
         {
-            var filter = new FilesFilter
-            {
-                Property = "Attachments",
-                Files = new FilesFilterCondition
-                {
-                    IsNotEmpty = false
-                },
-            };
-
+            var filter = new FilesFilter("Attachments", isNotEmpty: false);
             Assert.Equal(
                 "{\"files\":{\"is_not_empty\":false},\"property\":\"Attachments\"}",
                 SerializeFilter(filter)
@@ -131,18 +81,10 @@ namespace Notion.UnitTests
         [Fact]
         public void FormulaFilterTest()
         {
-            var filter = new FormulaFilter
-            {
-                Property = "Some",
-                Formula = new FormulaFilterCondition
-                {
-                    Number = new NumberFilterCondition
-                    {
-                        IsEmpty = true
-                    }
-                },
-            };
-
+            var filter = new FormulaFilter(
+                "Some",
+                number: new NumberFilter.Condition(isEmpty: true)
+            );
             Assert.Equal(
                 "{\"formula\":{\"number\":{\"is_empty\":true}},\"property\":\"Some\"}",
                 SerializeFilter(filter)
@@ -152,15 +94,7 @@ namespace Notion.UnitTests
         [Fact]
         public void MultiSelectFilterTest()
         {
-            var filter = new MultiSelectFilter
-            {
-                Property = "category 1",
-                MultiSelect = new MultiSelectFilterCondition
-                {
-                    DoesNotContain = "tag"
-                },
-            };
-
+            var filter = new MultiSelectFilter("category 1", doesNotContain: "tag");
             Assert.Equal(
                 "{\"multi_select\":{\"does_not_contain\":\"tag\"},\"property\":\"category 1\"}",
                 SerializeFilter(filter)
@@ -170,15 +104,7 @@ namespace Notion.UnitTests
         [Fact(Skip = "Not sure if integer should be serialized as a number with decimals")]
         public void NumberFilterTest()
         {
-            var filter = new NumberFilter
-            {
-                Property = "sum",
-                Number = new NumberFilterCondition
-                {
-                    GreaterThanOrEqualTo = -54
-                },
-            };
-
+            var filter = new NumberFilter("sum", greaterThanOrEqualTo: -54);
             Assert.Equal(
                 "{\"number\":{\"greater_than_or_equal_to\":-54.0},\"property\":\"sum\"}",
                 SerializeFilter(filter)
@@ -188,15 +114,7 @@ namespace Notion.UnitTests
         [Fact]
         public void PeopleFilter()
         {
-            var filter = new PeopleFilter
-            {
-                Property = "assignee PM",
-                People = new PeopleFilterCondition
-                {
-                    DoesNotContain = "some-uuid"
-                },
-            };
-
+            var filter = new PeopleFilter("assignee PM", doesNotContain: "some-uuid");
             Assert.Equal(
                 "{\"people\":{\"does_not_contain\":\"some-uuid\"},\"property\":\"assignee PM\"}",
                 SerializeFilter(filter)
@@ -206,17 +124,9 @@ namespace Notion.UnitTests
         [Fact]
         public void TextFilterTest()
         {
-            var filter = new TextFilter
-            {
-                Property = "Some property",
-                Text = new TextFilterCondition
-                {
-                    DoesNotContain = "Example text"
-                },
-            };
-
+            var filter = new TextFilter("Some property", doesNotEqual: "Example text");
             Assert.Equal(
-                "{\"text\":{\"does_not_contain\":\"Example text\"},\"property\":\"Some property\"}",
+                "{\"text\":{\"does_not_equal\":\"Example text\"},\"property\":\"Some property\"}",
                 SerializeFilter(filter)
             );
         }

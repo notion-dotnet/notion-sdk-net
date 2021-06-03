@@ -7,6 +7,22 @@ namespace Notion.Client
     {
         public Condition Select { get; set; }
 
+        public SelectFilter(
+            string propertyName,
+            string equal = null,
+            string doesNotEqual = null,
+            bool? isEmpty = null,
+            bool? isNotEmpty = null)
+        {
+            Property = propertyName;
+            Select = new Condition(
+                equal: equal,
+                doesNotEqual: doesNotEqual,
+                isEmpty: isEmpty,
+                isNotEmpty: isNotEmpty
+            );
+        }
+
         public class Condition
         {
             [JsonProperty("equals")]
@@ -16,10 +32,22 @@ namespace Notion.Client
             public string DoesNotEqual { get; set; }
 
             [JsonProperty("is_empty")]
-            public Nullable<bool> IsEmpty { get; set; }
+            public bool? IsEmpty { get; set; }
 
             [JsonProperty("is_not_empty")]
-            public Nullable<bool> IsNotEmpty { get; set; }
+            public bool? IsNotEmpty { get; set; }
+
+            public Condition(
+                string equal = null,
+                string doesNotEqual = null,
+                bool? isEmpty = null,
+                bool? isNotEmpty = null)
+            {
+                Equal = equal;
+                DoesNotEqual = doesNotEqual;
+                IsEmpty = isEmpty;
+                IsNotEmpty = isNotEmpty;
+            }
         }
     }
 }

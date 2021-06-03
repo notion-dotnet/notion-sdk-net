@@ -16,5 +16,11 @@ namespace Notion.Client
     {
         public List<Filter> Or { get; set; }
         public List<Filter> And { get; set; }
+
+        public CompoundFilter(List<Filter> or = null, List<Filter> and = null)
+        {
+            Or = or;
+            And = and;
+        }
     }
 }
