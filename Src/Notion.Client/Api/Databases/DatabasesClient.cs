@@ -31,11 +31,11 @@ namespace Notion.Client
             return await _client.GetAsync<PaginatedList<Database>>(DatabasesApiUrls.List(), queryParams);
         }
 
-        public async Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters)
+        public async Task<PaginatedList<RetrievedPage>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters)
         {
             var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
 
-            return await _client.PostAsync<PaginatedList<Page>>(DatabasesApiUrls.Query(databaseId), body);
+            return await _client.PostAsync<PaginatedList<RetrievedPage>>(DatabasesApiUrls.Query(databaseId), body);
         }
     }
 }

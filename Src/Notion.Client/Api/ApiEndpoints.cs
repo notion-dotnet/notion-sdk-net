@@ -20,5 +20,10 @@
             public static string RetrieveChildren(string blockId) => $"/v1/blocks/{blockId}/children";
             public static string AppendChildren(string blockId) => $"/v1/blocks/{blockId}/children";
         }
+
+        public static class PagesApiUrls
+        {
+            public static string Create() => $"/v1/pages";
+        }
     }
 }
