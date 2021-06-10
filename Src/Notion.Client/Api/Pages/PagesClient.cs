@@ -18,17 +18,17 @@ namespace Notion.Client
             return await _client.PostAsync<RetrievedPage>(PagesApiUrls.Create(), page);
         }
 
-        public async Task<RetrievedPage> UpdatePagePropertiesAsync(
+        public async Task<RetrievedPage> UpdatePropertiesAsync(
             string pageId,
             IDictionary<string, PropertyValue> updatedProperties)
         {
-            var url = PagesApiUrls.UpdatePageProperties(pageId);
-            var body = new PageUpdatePropertiesParameters { Properties = updatedProperties };
+            var url = PagesApiUrls.UpdateProperties(pageId);
+            var body = new UpdatePropertiesParameters { Properties = updatedProperties };
 
             return await _client.PatchAsync<RetrievedPage>(url, body);
         }
 
-        private class PageUpdatePropertiesParameters
+        private class UpdatePropertiesParameters
         {
             public IDictionary<string, PropertyValue> Properties { get; set; }
         }
