@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
@@ -16,6 +17,20 @@ namespace Notion.Client
         {
             return await _client.PostAsync<RetrievedPage>(PagesApiUrls.Create(), page);
         }
-    }
 
+        public async Task<RetrievedPage> UpdatePagePropertiesAsync(
+            string pageId,
+            IDictionary<string, PropertyValue> updatedProperties)
+        {
+            var url = PagesApiUrls.UpdatePageProperties(pageId);
+            var body = new PageUpdatePropertiesParameters { Properties = updatedProperties };
+
+            return await _client.PatchAsync<RetrievedPage>(url, body);
+        }
+
+        private class PageUpdatePropertiesParameters
+        {
+            public IDictionary<string, PropertyValue> Properties { get; set; }
+        }
+    }
 }

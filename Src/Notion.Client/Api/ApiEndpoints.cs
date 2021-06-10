@@ -24,6 +24,7 @@
         public static class PagesApiUrls
         {
             public static string Create() => $"/v1/pages";
+            public static string UpdatePageProperties(string pageId) => $"/v1/pages/{pageId}";
         }
     }
 }
