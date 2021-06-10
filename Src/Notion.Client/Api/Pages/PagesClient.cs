@@ -18,6 +18,12 @@ namespace Notion.Client
             return await _client.PostAsync<RetrievedPage>(PagesApiUrls.Create(), page);
         }
 
+        public async Task<RetrievedPage> RetrieveAsync(string pageId)
+        {
+            var url = PagesApiUrls.Retrieve(pageId);
+            return await _client.GetAsync<RetrievedPage>(url);
+        }
+
         public async Task<RetrievedPage> UpdatePropertiesAsync(
             string pageId,
             IDictionary<string, PropertyValue> updatedProperties)

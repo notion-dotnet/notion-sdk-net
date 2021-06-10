@@ -6,6 +6,8 @@ namespace Notion.Client
     public interface IPagesClient
     {
         Task<RetrievedPage> CreateAsync(CreatedPage page);
+        Task<RetrievedPage> RetrieveAsync(string pageId);
+
         Task<RetrievedPage> UpdatePropertiesAsync(
             string pageId,
             IDictionary<string, PropertyValue> updatedProperties
