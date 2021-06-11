@@ -13,25 +13,25 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<RetrievedPage> CreateAsync(CreatedPage page)
+        public async Task<Page> CreateAsync(NewPage page)
         {
-            return await _client.PostAsync<RetrievedPage>(PagesApiUrls.Create(), page);
+            return await _client.PostAsync<Page>(PagesApiUrls.Create(), page);
         }
 
-        public async Task<RetrievedPage> RetrieveAsync(string pageId)
+        public async Task<Page> RetrieveAsync(string pageId)
         {
             var url = PagesApiUrls.Retrieve(pageId);
-            return await _client.GetAsync<RetrievedPage>(url);
+            return await _client.GetAsync<Page>(url);
         }
 
-        public async Task<RetrievedPage> UpdatePropertiesAsync(
+        public async Task<Page> UpdatePropertiesAsync(
             string pageId,
             IDictionary<string, PropertyValue> updatedProperties)
         {
             var url = PagesApiUrls.UpdateProperties(pageId);
             var body = new UpdatePropertiesParameters { Properties = updatedProperties };
 
-            return await _client.PatchAsync<RetrievedPage>(url, body);
+            return await _client.PatchAsync<Page>(url, body);
         }
 
         private class UpdatePropertiesParameters
