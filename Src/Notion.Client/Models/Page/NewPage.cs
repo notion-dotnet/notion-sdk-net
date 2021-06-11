@@ -4,7 +4,6 @@ namespace Notion.Client
 {
     public class NewPage
     {
-
         /// <summary>
         /// Constructor without arguments: added for class initializations using class literals.
         /// </summary>
