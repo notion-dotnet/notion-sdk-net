@@ -6,7 +6,7 @@ namespace Notion.Client
 {
     public class Database
     {
-        public string Object => "database";
+        public ObjectType Object => ObjectType.Database;
         public string Id { get; set; }
 
         [JsonProperty("created_time")]

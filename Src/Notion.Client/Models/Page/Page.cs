@@ -6,7 +6,7 @@ namespace Notion.Client
 {
     public class Page
     {
-        public string Object => "page";
+        public ObjectType Object => ObjectType.Page;
         public string Id { get; set; }
         public Parent Parent { get; set; }
 

@@ -17,7 +17,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(UnsupportedBlock), BlockType.Unsupported)]
     public class Block
     {
-        public string Object => "block";
+        public ObjectType Object => ObjectType.Block;
         public string Id { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
