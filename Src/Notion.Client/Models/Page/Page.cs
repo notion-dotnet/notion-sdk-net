@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Page
+    public class Page : IObject
     {
         public ObjectType Object => ObjectType.Page;
         public string Id { get; set; }
