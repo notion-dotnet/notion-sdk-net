@@ -21,6 +21,13 @@
             public static string AppendChildren(string blockId) => $"/v1/blocks/{blockId}/children";
         }
 
+        public static class PagesApiUrls
+        {
+            public static string Create() => $"/v1/pages";
+            public static string Retrieve(string pageId) => $"/v1/pages/{pageId}";
+            public static string UpdateProperties(string pageId) => $"/v1/pages/{pageId}";
+        }
+
         public static class SearchApiUrls
         {
             public static string Search() => "/v1/search";
