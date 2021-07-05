@@ -50,9 +50,7 @@ namespace Notion.Client
         {
             EnsureHttpClient();
 
-            string requestUri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
-
-            var response = await SendAsync(requestUri, HttpMethod.Get, headers, cancellationToken: cancellationToken);
+            var response = await SendAsync(uri, HttpMethod.Get, queryParams, headers, cancellationToken: cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
         }
@@ -79,10 +77,13 @@ namespace Notion.Client
         private async Task<HttpResponseMessage> SendAsync(
             string requestUri,
             HttpMethod httpMethod,
+            IDictionary<string, string> queryParams = null,
             IDictionary<string, string> headers = null,
             Action<HttpRequestMessage> attachContent = null,
             CancellationToken cancellationToken = default)
         {
+            requestUri = AddQueryString(requestUri, queryParams);
+
             HttpRequestMessage httpRequest = new HttpRequestMessage(httpMethod, requestUri);
             httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _options.AuthToken);
             httpRequest.Headers.Add("Notion-Version", _options.NotionVersion);
@@ -127,9 +128,7 @@ namespace Notion.Client
                 httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body, defaultSerializerSettings), Encoding.UTF8, "application/json");
             }
 
-            string requestUri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
-
-            var response = await SendAsync(requestUri, HttpMethod.Post, headers, AttachContent, cancellationToken: cancellationToken);
+            var response = await SendAsync(uri, HttpMethod.Post, queryParams, headers, AttachContent, cancellationToken: cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
         }
@@ -144,9 +143,7 @@ namespace Notion.Client
                 httpRequest.Content = new StringContent(serializedBody, Encoding.UTF8, "application/json");
             }
 
-            string requestUri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
-
-            var response = await SendAsync(requestUri, new HttpMethod("PATCH"), headers, AttachContent, cancellationToken: cancellationToken);
+            var response = await SendAsync(uri, new HttpMethod("PATCH"), queryParams, headers, AttachContent, cancellationToken: cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
         }
@@ -160,6 +157,11 @@ namespace Notion.Client
             }
 
             return _httpClient;
+        }
+
+        private static string AddQueryString(string uri, IDictionary<string, string> queryParams)
+        {
+            return queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
         }
     }
 }
