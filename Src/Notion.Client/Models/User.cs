@@ -2,9 +2,9 @@
 
 namespace Notion.Client
 {
-    public class User
+    public class User : IObject
     {
-        public string Object => "user";
+        public ObjectType Object => ObjectType.User;
         public string Id { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }

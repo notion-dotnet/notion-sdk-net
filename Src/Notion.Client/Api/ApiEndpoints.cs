@@ -27,5 +27,10 @@
             public static string Retrieve(string pageId) => $"/v1/pages/{pageId}";
             public static string UpdateProperties(string pageId) => $"/v1/pages/{pageId}";
         }
+
+        public static class SearchApiUrls
+        {
+            public static string Search() => "/v1/search";
+        }
     }
 }

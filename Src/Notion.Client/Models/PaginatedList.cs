@@ -5,7 +5,10 @@ namespace Notion.Client
 {
     public interface IPaginationParameters
     {
+        [JsonProperty("start_cursor")]
         string StartCursor { get; set; }
+
+        [JsonProperty("page_size")]
         string PageSize { get; set; }
     }
 
