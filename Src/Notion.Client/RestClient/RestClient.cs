@@ -48,31 +48,42 @@ namespace Notion.Client
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
+            var response = await SendAsync(uri, HttpMethod.Get, queryParams, headers, cancellationToken: cancellationToken);
 
-            string requestUri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
+            return await response.ParseStreamAsync<T>(serializerSettings);
+        }
 
-            var response = await SendAsync(requestUri, HttpMethod.Get, headers, cancellationToken: cancellationToken);
+        private static async Task<Exception> BuildException(HttpResponseMessage response)
+        {
+            var errorBody = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
+            NotionApiErrorResponse errorResponse = null;
+            if (!string.IsNullOrWhiteSpace(errorBody))
             {
-                return await response.ParseStreamAsync<T>(serializerSettings);
+                try
+                {
+                    errorResponse = JsonConvert.DeserializeObject<NotionApiErrorResponse>(errorBody);
+                }
+                catch
+                {
+                }
             }
 
-            var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
-                    ? response.ReasonPhrase
-                    : await response.Content.ReadAsStringAsync();
-
-            throw new NotionApiException(response.StatusCode, message);
+            return new NotionApiException(response.StatusCode, errorResponse?.ErrorCode, errorResponse.Message);
         }
 
         private async Task<HttpResponseMessage> SendAsync(
             string requestUri,
             HttpMethod httpMethod,
+            IDictionary<string, string> queryParams = null,
             IDictionary<string, string> headers = null,
             Action<HttpRequestMessage> attachContent = null,
             CancellationToken cancellationToken = default)
         {
+            EnsureHttpClient();
+
+            requestUri = AddQueryString(requestUri, queryParams);
+
             HttpRequestMessage httpRequest = new HttpRequestMessage(httpMethod, requestUri);
             httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _options.AuthToken);
             httpRequest.Headers.Add("Notion-Version", _options.NotionVersion);
@@ -84,7 +95,14 @@ namespace Notion.Client
 
             attachContent?.Invoke(httpRequest);
 
-            return await _httpClient.SendAsync(httpRequest, cancellationToken);
+            var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw await BuildException(response);
+            }
+
+            return response;
         }
 
         private static void AddHeaders(HttpRequestMessage request, IDictionary<string, string> headers)
@@ -103,55 +121,27 @@ namespace Notion.Client
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
-
             void AttachContent(HttpRequestMessage httpRequest)
             {
                 httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body, defaultSerializerSettings), Encoding.UTF8, "application/json");
             }
 
-            string requestUri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
+            var response = await SendAsync(uri, HttpMethod.Post, queryParams, headers, AttachContent, cancellationToken: cancellationToken);
 
-            var response = await SendAsync(requestUri, HttpMethod.Post, headers, AttachContent, cancellationToken: cancellationToken);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.ParseStreamAsync<T>(serializerSettings);
-            }
-
-            var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
-                    ? response.ReasonPhrase
-                    : await response.Content.ReadAsStringAsync();
-
-            throw new NotionApiException(response.StatusCode, message);
+            return await response.ParseStreamAsync<T>(serializerSettings);
         }
 
         public async Task<T> PatchAsync<T>(string uri, object body, IDictionary<string, string> queryParams = null, IDictionary<string, string> headers = null, JsonSerializerSettings serializerSettings = null, CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
-
             void AttachContent(HttpRequestMessage httpRequest)
             {
                 var serializedBody = JsonConvert.SerializeObject(body, defaultSerializerSettings);
                 httpRequest.Content = new StringContent(serializedBody, Encoding.UTF8, "application/json");
             }
 
-            string requestUri = queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
+            var response = await SendAsync(uri, new HttpMethod("PATCH"), queryParams, headers, AttachContent, cancellationToken: cancellationToken);
 
-            var response = await SendAsync(requestUri, new HttpMethod("PATCH"), headers, AttachContent, cancellationToken: cancellationToken);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.ParseStreamAsync<T>(serializerSettings);
-            }
-
-            var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
-                    ? response.ReasonPhrase
-                    : await response.Content.ReadAsStringAsync();
-
-            var errorMessage = await response.Content.ReadAsStringAsync();
-
-            throw new NotionApiException(response.StatusCode, message);
+            return await response.ParseStreamAsync<T>(serializerSettings);
         }
 
         private HttpClient EnsureHttpClient()
@@ -163,6 +153,11 @@ namespace Notion.Client
             }
 
             return _httpClient;
+        }
+
+        private static string AddQueryString(string uri, IDictionary<string, string> queryParams)
+        {
+            return queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
         }
     }
 }
