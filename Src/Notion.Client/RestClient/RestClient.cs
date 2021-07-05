@@ -48,8 +48,6 @@ namespace Notion.Client
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
-
             var response = await SendAsync(uri, HttpMethod.Get, queryParams, headers, cancellationToken: cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
@@ -82,6 +80,8 @@ namespace Notion.Client
             Action<HttpRequestMessage> attachContent = null,
             CancellationToken cancellationToken = default)
         {
+            EnsureHttpClient();
+
             requestUri = AddQueryString(requestUri, queryParams);
 
             HttpRequestMessage httpRequest = new HttpRequestMessage(httpMethod, requestUri);
@@ -121,8 +121,6 @@ namespace Notion.Client
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
-
             void AttachContent(HttpRequestMessage httpRequest)
             {
                 httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body, defaultSerializerSettings), Encoding.UTF8, "application/json");
@@ -135,8 +133,6 @@ namespace Notion.Client
 
         public async Task<T> PatchAsync<T>(string uri, object body, IDictionary<string, string> queryParams = null, IDictionary<string, string> headers = null, JsonSerializerSettings serializerSettings = null, CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
-
             void AttachContent(HttpRequestMessage httpRequest)
             {
                 var serializedBody = JsonConvert.SerializeObject(body, defaultSerializerSettings);
