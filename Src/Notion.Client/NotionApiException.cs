@@ -3,15 +3,32 @@ using System.Net;
 
 namespace Notion.Client
 {
-    class NotionApiException : Exception
+    public class NotionApiException : Exception
     {
-        public NotionApiException(HttpStatusCode statusCode, string message) : this(statusCode, message, null)
+        public NotionApiException(HttpStatusCode statusCode, NotionAPIErrorCode? notionAPIErrorCode, string message)
+            : this(statusCode, notionAPIErrorCode, message, null)
         {
         }
 
-        public NotionApiException(HttpStatusCode statusCode, string message, Exception innerException) : base(message, innerException)
+        public NotionApiException(HttpStatusCode statusCode, string message)
+            : this(statusCode, null, message, null)
         {
-            Data.Add("StatusCode", statusCode);
         }
+
+        public NotionApiException(
+            HttpStatusCode statusCode,
+            NotionAPIErrorCode? notionAPIErrorCode,
+            string message,
+            Exception innerException) : base(message, innerException)
+        {
+            NotionAPIErrorCode = notionAPIErrorCode;
+            StatusCode = statusCode;
+
+            Data.Add("StatusCode", statusCode);
+            Data.Add("NotionApiErrorCode", NotionAPIErrorCode);
+        }
+
+        public NotionAPIErrorCode? NotionAPIErrorCode { get; }
+        public HttpStatusCode StatusCode { get; }
     }
 }

@@ -54,16 +54,26 @@ namespace Notion.Client
 
             var response = await SendAsync(requestUri, HttpMethod.Get, headers, cancellationToken: cancellationToken);
 
-            if (response.IsSuccessStatusCode)
+            return await response.ParseStreamAsync<T>(serializerSettings);
+        }
+
+        private static async Task<Exception> BuildException(HttpResponseMessage response)
+        {
+            var errorBody = await response.Content.ReadAsStringAsync();
+
+            NotionApiErrorResponse errorResponse = null;
+            if (!string.IsNullOrWhiteSpace(errorBody))
             {
-                return await response.ParseStreamAsync<T>(serializerSettings);
+                try
+                {
+                    errorResponse = JsonConvert.DeserializeObject<NotionApiErrorResponse>(errorBody);
+                }
+                catch
+                {
+                }
             }
 
-            var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
-                    ? response.ReasonPhrase
-                    : await response.Content.ReadAsStringAsync();
-
-            throw new NotionApiException(response.StatusCode, message);
+            return new NotionApiException(response.StatusCode, errorResponse?.ErrorCode, errorResponse.Message);
         }
 
         private async Task<HttpResponseMessage> SendAsync(
@@ -84,7 +94,14 @@ namespace Notion.Client
 
             attachContent?.Invoke(httpRequest);
 
-            return await _httpClient.SendAsync(httpRequest, cancellationToken);
+            var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw await BuildException(response);
+            }
+
+            return response;
         }
 
         private static void AddHeaders(HttpRequestMessage request, IDictionary<string, string> headers)
@@ -114,16 +131,7 @@ namespace Notion.Client
 
             var response = await SendAsync(requestUri, HttpMethod.Post, headers, AttachContent, cancellationToken: cancellationToken);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.ParseStreamAsync<T>(serializerSettings);
-            }
-
-            var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
-                    ? response.ReasonPhrase
-                    : await response.Content.ReadAsStringAsync();
-
-            throw new NotionApiException(response.StatusCode, message);
+            return await response.ParseStreamAsync<T>(serializerSettings);
         }
 
         public async Task<T> PatchAsync<T>(string uri, object body, IDictionary<string, string> queryParams = null, IDictionary<string, string> headers = null, JsonSerializerSettings serializerSettings = null, CancellationToken cancellationToken = default)
@@ -140,18 +148,7 @@ namespace Notion.Client
 
             var response = await SendAsync(requestUri, new HttpMethod("PATCH"), headers, AttachContent, cancellationToken: cancellationToken);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.ParseStreamAsync<T>(serializerSettings);
-            }
-
-            var message = !string.IsNullOrWhiteSpace(response.ReasonPhrase)
-                    ? response.ReasonPhrase
-                    : await response.Content.ReadAsStringAsync();
-
-            var errorMessage = await response.Content.ReadAsStringAsync();
-
-            throw new NotionApiException(response.StatusCode, message);
+            return await response.ParseStreamAsync<T>(serializerSettings);
         }
 
         private HttpClient EnsureHttpClient()
