@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
@@ -36,6 +37,23 @@ namespace Notion.Client
             var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
 
             return await _client.PostAsync<PaginatedList<Page>>(DatabasesApiUrls.Query(databaseId), body);
+        }
+        
+        public async Task QueryToEndAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters, Action<List<Page>> onPartReceived)
+        {
+            databasesQueryParameters = databasesQueryParameters.CreateCopy();
+            List<List<Page>> results = new List<List<Page>>(1);
+            
+            while(true)
+            {
+                var paginatedList = await QueryAsync(databaseId, databasesQueryParameters);
+                results.Add(paginatedList.Results);
+                
+                if (!paginatedList.HasMore) break;
+                
+                onPartReceived.Invoke(paginatedList.Results);
+                databasesQueryParameters.StartCursor = paginatedList.NextCursor;
+            }
         }
     }
 }
