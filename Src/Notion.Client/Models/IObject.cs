@@ -1,5 +1,6 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -11,6 +12,8 @@ namespace Notion.Client
     public interface IObject
     {
         string Id { get; set; }
+        
+        [JsonConverter(typeof(StringEnumConverter))]
         ObjectType Object { get; }
     }
 }
