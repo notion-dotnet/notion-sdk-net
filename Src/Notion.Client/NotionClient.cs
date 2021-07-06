@@ -5,6 +5,7 @@
         IUsersClient Users { get; }
         IDatabasesClient Databases { get; }
         IPagesClient Pages { get; }
+        ISearchClient Search { get; }
         IBlocksClient Blocks { get; }
     }
 
@@ -16,12 +17,14 @@
             Users = new UsersClient(restClient);
             Databases = new DatabasesClient(restClient);
             Pages = new PagesClient(restClient);
+            Search = new SearchClient(restClient);
             Blocks = new BlocksClient(restClient);
         }
 
         public IUsersClient Users { get; }
         public IDatabasesClient Databases { get; }
         public IPagesClient Pages { get; }
+        public ISearchClient Search { get; }
         public IBlocksClient Blocks { get; }
     }
 }
