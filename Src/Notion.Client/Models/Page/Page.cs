@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -19,6 +20,40 @@ namespace Notion.Client
         [JsonProperty("archived")]
         public bool IsArchived { get; set; }
 
-        public IDictionary<string, PropertyValue> Properties { get; set; }
+        private IDictionary<string, PropertyValue> _properties;
+        public IDictionary<string, PropertyValue> Properties
+        {
+            get => _properties;
+            set
+            {
+                _titlePropertyValue = null;
+                _properties = value;
+            }
+        }
+
+        private string _titlePropertyKey;
+        private TitlePropertyValue _titlePropertyValue;
+        public TitlePropertyValue Title
+        {
+            get
+            {
+                if (_titlePropertyKey == null)
+                {
+                    var titleProperty = Properties.First(x =>
+                        x.Value.Type == PropertyValueType.Title);
+                    _titlePropertyKey = titleProperty.Key;
+                    _titlePropertyValue = (TitlePropertyValue) titleProperty.Value;
+                }
+                return _titlePropertyValue;
+            }
+            set
+            {
+                if (_titlePropertyKey == null)
+                    _titlePropertyKey = Properties.First(x => x.Value.Type == PropertyValueType.Title).Key;
+                    
+                Properties[_titlePropertyKey] = value;
+                _titlePropertyValue = value;
+            }
+        }
     }
 }
