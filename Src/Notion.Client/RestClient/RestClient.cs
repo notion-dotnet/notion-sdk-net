@@ -69,7 +69,7 @@ namespace Notion.Client
                 }
             }
 
-            return new NotionApiException(response.StatusCode, errorResponse?.ErrorCode, errorResponse.Message);
+            return new NotionApiException(response.StatusCode, errorResponse?.ErrorCode, errorResponse?.Message);
         }
 
         private async Task<HttpResponseMessage> SendAsync(
