@@ -1,5 +1,6 @@
 ﻿using System;
 using Notion.Client;
+using Notion.Client.Extensions;
 using Xunit;
 
 namespace Notion.UnitTests
@@ -30,6 +31,34 @@ namespace Notion.UnitTests
             var typeInstance = (Property)Activator.CreateInstance(type);
 
             var actualPropertyType = typeInstance.Type;
+
+            Assert.Equal(expectedPropertyType, actualPropertyType);
+        }
+
+        [Theory]
+        [InlineData(typeof(CheckboxProperty), "checkbox")]
+        [InlineData(typeof(CreatedByProperty), "created_by")]
+        [InlineData(typeof(CreatedTimeProperty), "created_time")]
+        [InlineData(typeof(DateProperty), "date")]
+        [InlineData(typeof(EmailProperty), "email")]
+        [InlineData(typeof(FileProperty), "file")]
+        [InlineData(typeof(FormulaProperty), "formula")]
+        [InlineData(typeof(LastEditedByProperty), "last_edited_by")]
+        [InlineData(typeof(LastEditedTimeProperty), "last_edited_time")]
+        [InlineData(typeof(NumberProperty), "number")]
+        [InlineData(typeof(PeopleProperty), "people")]
+        [InlineData(typeof(PhoneNumberProperty), "phone_number")]
+        [InlineData(typeof(RelationProperty), "relation")]
+        [InlineData(typeof(RichTextProperty), "rich_text")]
+        [InlineData(typeof(RollupProperty), "rollup")]
+        [InlineData(typeof(SelectProperty), "select")]
+        [InlineData(typeof(TitleProperty), "title")]
+        [InlineData(typeof(UrlProperty), "url")]
+        public void TestPropertyTypeText(Type type, string expectedPropertyType)
+        {
+            var typeInstance = (Property)Activator.CreateInstance(type);
+
+            var actualPropertyType = typeInstance.Type.GetEnumMemberValue();
 
             Assert.Equal(expectedPropertyType, actualPropertyType);
         }
