@@ -12,7 +12,7 @@ namespace Notion.Client
     public interface IObject
     {
         string Id { get; set; }
-        
+
         [JsonConverter(typeof(StringEnumConverter))]
         ObjectType Object { get; }
     }
