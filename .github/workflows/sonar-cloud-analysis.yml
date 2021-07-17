@@ -45,5 +45,5 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"notion-dotnet_notion-sdk-net" /o:"notion-dotnet" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet restore
           dotnet build --no-restore
-          dotnet test --no-build
+          dotnet test --no-build --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage/ /p:MergeWith=./coverage/ --collect "Code coverage"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
