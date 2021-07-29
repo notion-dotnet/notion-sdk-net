@@ -12,7 +12,7 @@
         public string Type { get; set; }
         public string String { get; set; }
         public double? Number { get; set; }
-        public bool Boolean { get; set; }
+        public bool? Boolean { get; set; }
         public DatePropertyValue Date { get; set; }
     }
 }
