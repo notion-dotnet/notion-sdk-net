@@ -42,7 +42,28 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"notion-dotnet_notion-sdk-net" /n:"notion-sdk-net" /o:"notion-dotnet" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          sonar_begin_cmd="./.sonar/scanner/dotnet-sonarscanner begin /k:\"notion-dotnet_notion-sdk-net\" /n:\"notion-sdk-net\" /o:\"notion-dotnet\" /d:sonar.login=\"${{ secrets.SONAR_TOKEN }}\" /d:sonar.host.url=\"https://sonarcloud.io\""
+          
+          # Check Github environment variable GITHUB_EVENT_NAME to determine if this is a pull request or not. 
+          if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+              # Sonarqube wants these variables if build is started for a pull request
+              # Sonarcloud parameters: https://sonarcloud.io/documentation/analysis/pull-request/
+              # sonar.pullrequest.key	                Unique identifier of your PR. Must correspond to the key of the PR in GitHub or TFS. E.G.: 5
+              # sonar.pullrequest.branch	            The name of your PR Ex: feature/my-new-feature
+              # sonar.pullrequest.base	            The long-lived branch into which the PR will be merged. Default: master E.G.: master
+              # sonar.pullrequest.github.repository	SLUG of the GitHub Repo (owner/repo)
+
+              # Extract Pull Request numer from the GITHUB_REF variable
+              PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+
+              # Add pull request specific parameters in sonar scanner
+              sonar_begin_cmd="$sonar_begin_cmd /d:sonar.pullrequest.key=$PR_NUMBER /d:sonar.pullrequest.branch=$GITHUB_HEAD_REF /d:sonar.pullrequest.base=$GITHUB_BASE_REF /d:sonar.pullrequest.github.repository=$GITHUB_REPOSITORY /d:sonar.pullrequest.provider=github"
+
+          fi
+          sonar_end_cmd="./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login=\"${{ secrets.SONAR_TOKEN }}\""
+          
+          sh -c "$sonar_begin_cmd"
           dotnet restore
           dotnet build --no-restore
-          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          sh -c "$sonar_end_cmd"
+          
