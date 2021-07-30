@@ -42,7 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          sonar_begin_cmd="./.sonar/scanner/dotnet-sonarscanner begin /k:"notion-dotnet_notion-sdk-net" /n:"notion-sdk-net" /o:"notion-dotnet" /d:sonar.login="${{ secrets.SONAR_TOKEN }}\" /d:sonar.host.url=\"https://sonarcloud.io""
+          sonar_begin_cmd="./.sonar/scanner/dotnet-sonarscanner begin /k:"notion-dotnet_notion-sdk-net" /n:"notion-sdk-net" /o:"notion-dotnet" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io""
 
           # Check Github environment variable GITHUB_EVENT_NAME to determine if this is a pull request or not.
           echo "GitHub Event name"
