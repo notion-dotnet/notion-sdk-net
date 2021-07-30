@@ -70,6 +70,12 @@ namespace Notion.Client
         Max,
 
         [EnumMember(Value = "range")]
-        Range
+        Range,
+
+        [EnumMember(Value = "show_original")]
+        ShowOriginal,
+
+        [EnumMember(Value = "show_unique")]
+        ShowUnique
     }
 }
