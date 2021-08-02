@@ -28,8 +28,8 @@ namespace Notion.Client
         [EnumMember(Value = "people")]
         People,
 
-        [EnumMember(Value = "file")]
-        File,
+        [EnumMember(Value = "files")]
+        Files,
 
         [EnumMember(Value = "checkbox")]
         Checkbox,

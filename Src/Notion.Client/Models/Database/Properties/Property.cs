@@ -10,7 +10,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(CreatedTimeProperty), PropertyType.CreatedTime)]
     [JsonSubtypes.KnownSubType(typeof(DateProperty), PropertyType.Date)]
     [JsonSubtypes.KnownSubType(typeof(EmailProperty), PropertyType.Email)]
-    [JsonSubtypes.KnownSubType(typeof(FileProperty), PropertyType.File)]
+    [JsonSubtypes.KnownSubType(typeof(FilesProperty), PropertyType.Files)]
     [JsonSubtypes.KnownSubType(typeof(FormulaProperty), PropertyType.Formula)]
     [JsonSubtypes.KnownSubType(typeof(LastEditedByProperty), PropertyType.LastEditedBy)]
     [JsonSubtypes.KnownSubType(typeof(LastEditedTimeProperty), PropertyType.LastEditedTime)]

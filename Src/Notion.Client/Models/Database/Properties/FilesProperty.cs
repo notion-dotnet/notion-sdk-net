@@ -2,9 +2,9 @@
 
 namespace Notion.Client
 {
-    public class FileProperty : Property
+    public class FilesProperty : Property
     {
-        public override PropertyType Type => PropertyType.File;
+        public override PropertyType Type => PropertyType.Files;
         public Dictionary<string, object> File { get; set; }
     }
 }
