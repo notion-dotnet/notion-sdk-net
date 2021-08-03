@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Notion.Client.Extensions
