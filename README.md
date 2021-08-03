@@ -70,6 +70,24 @@ var complexFiler = new CompoundFilter(
 );
 ```
 
+## Supported Endpoints
+- [ ] Databases
+  - [x] Retrieve a database
+  - [x] Query a database
+  - [x] List databases
+  - [ ] Create a Database
+- [x] Pages
+  - [x] Retrieve a page
+  - [x] Create a page
+  - [x] Update page
+- [x] Blocks
+  - [x] Retrieve Block Children
+  - [x] Append Block Children
+- [x] Users
+  - [x] Retrieve a User
+  - [x] List all users
+- [x] Search
+
 ## Contribution Guideline
 
 At the moment I haven't got any specific guidelines for the project. Everyone are welcome to contribute.
