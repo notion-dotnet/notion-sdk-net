@@ -20,5 +20,7 @@ namespace Notion.Client
         public bool IsArchived { get; set; }
 
         public IDictionary<string, PropertyValue> Properties { get; set; }
+
+        public string Url { get; set; }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Notion.Client
+﻿using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Notion.UnitTests")]
+namespace Notion.Client
 {
     internal class Constants
     {
