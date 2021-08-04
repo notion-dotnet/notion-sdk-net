@@ -39,7 +39,6 @@ namespace Notion.UnitTests
             page.Parent.Type.Should().Be(ParentType.DatabaseId);
             ((DatabaseParent)page.Parent).DatabaseId.Should().Be("48f8fee9-cd79-4180-bc2f-ec0398253067");
             page.IsArchived.Should().BeFalse();
-
         }
 
         [Fact]
@@ -48,7 +47,6 @@ namespace Notion.UnitTests
             var path = ApiEndpoints.PagesApiUrls.Create();
 
             var jsonData = await File.ReadAllTextAsync("data/pages/CreatePageResponse.json");
-
 
             Server.Given(CreatePostRequestBuilder(path))
                 .RespondWith(
@@ -79,7 +77,6 @@ namespace Notion.UnitTests
             page.Properties.Should().HaveCount(1);
             page.Properties.First().Key.Should().Be("Name");
             page.IsArchived.Should().BeFalse();
-
         }
 
         [Fact]
@@ -127,7 +124,6 @@ namespace Notion.UnitTests
             var page = await _client.RetrieveAsync(pageId);
 
             page.Url.Should().Be("https://www.notion.so/Avocado-251d2b5f268c4de2afe9c71ff92ca95c");
-
         }
     }
 }
