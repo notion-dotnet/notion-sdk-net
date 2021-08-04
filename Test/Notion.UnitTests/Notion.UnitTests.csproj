@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="16.0.0" />
+    <PackageReference Include="WireMock.Net" Version="1.4.19" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,6 +23,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Src\Notion.Client\Notion.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="data\pages\PageObjectShouldHaveUrlPropertyResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
