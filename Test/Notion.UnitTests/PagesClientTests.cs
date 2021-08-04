@@ -83,6 +83,34 @@ namespace Notion.UnitTests
         }
 
         [Fact]
+        public async Task UpdatePropertiesAsync()
+        {
+            var pageId = "251d2b5f-268c-4de2-afe9-c71ff92ca95c";
+            var path = ApiEndpoints.PagesApiUrls.UpdateProperties(pageId);
+
+            var jsonData = await File.ReadAllTextAsync("data/pages/UpdatePagePropertiesResponse.json");
+
+            Server.Given(CreatePatchRequestBuilder(path))
+                .RespondWith(
+                    Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var updatedProperties = new Dictionary<string, PropertyValue>()
+            {
+                { "In stock", new CheckboxPropertyValue() { Checkbox = true } }
+            };
+
+            var page = await _client.UpdatePropertiesAsync(pageId, updatedProperties);
+
+            page.Id.Should().Be(pageId);
+            page.Properties.Should().HaveCount(2);
+            var updatedProperty = page.Properties.First(x => x.Key == "In stock");
+            ((CheckboxPropertyValue)updatedProperty.Value).Checkbox.Should().BeTrue();
+        }
+
+        [Fact]
         public async Task PageObjectShouldHaveUrlProperty()
         {
             var pageId = "251d2b5f-268c-4de2-afe9-c71ff92ca95c";

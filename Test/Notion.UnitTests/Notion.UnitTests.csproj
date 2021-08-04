@@ -33,6 +33,9 @@
     <None Update="data\pages\PageObjectShouldHaveUrlPropertyResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\pages\UpdatePagePropertiesResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
