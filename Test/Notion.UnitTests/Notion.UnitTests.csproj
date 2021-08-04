@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="data\pages\CreatePageResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\pages\PageObjectShouldHaveUrlPropertyResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

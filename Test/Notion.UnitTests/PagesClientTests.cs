@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Notion.Client;
@@ -36,6 +38,46 @@ namespace Notion.UnitTests
             page.Id.Should().Be(pageId);
             page.Parent.Type.Should().Be(ParentType.DatabaseId);
             ((DatabaseParent)page.Parent).DatabaseId.Should().Be("48f8fee9-cd79-4180-bc2f-ec0398253067");
+            page.IsArchived.Should().BeFalse();
+
+        }
+
+        [Fact]
+        public async Task CreateAsync()
+        {
+            var path = ApiEndpoints.PagesApiUrls.Create();
+
+            var jsonData = await File.ReadAllTextAsync("data/pages/CreatePageResponse.json");
+
+
+            Server.Given(CreatePostRequestBuilder(path))
+                .RespondWith(
+                    Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var newPage = new NewPage();
+            newPage.AddProperty("Name", new TitlePropertyValue()
+            {
+                Title = new List<RichTextBase>()
+                {
+                    new RichTextText()
+                    {
+                        Text = new Text
+                        {
+                            Content = "Test"
+                        }
+                    }
+                }
+            });
+
+            var page = await _client.CreateAsync(newPage);
+
+            page.Id.Should().NotBeNullOrEmpty();
+            page.Url.Should().NotBeNullOrEmpty();
+            page.Properties.Should().HaveCount(1);
+            page.Properties.First().Key.Should().Be("Name");
             page.IsArchived.Should().BeFalse();
 
         }
