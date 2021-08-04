@@ -48,5 +48,23 @@ namespace Notion.UnitTests
                     .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
                     .WithHeader("Notion-Version", Constants.DEFAULT_NOTION_VERSION, MatchBehaviour.AcceptOnMatch);
         }
+
+        protected IRequestBuilder CreatePostRequestBuilder(string path)
+        {
+            return Request.Create()
+                    .WithPath(path)
+                    .UsingPost()
+                    .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
+                    .WithHeader("Notion-Version", Constants.DEFAULT_NOTION_VERSION, MatchBehaviour.AcceptOnMatch);
+        }
+
+        protected IRequestBuilder CreatePatchRequestBuilder(string path)
+        {
+            return Request.Create()
+                    .WithPath(path)
+                    .UsingPatch()
+                    .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
+                    .WithHeader("Notion-Version", Constants.DEFAULT_NOTION_VERSION, MatchBehaviour.AcceptOnMatch);
+        }
     }
 }

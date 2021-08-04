@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="16.0.0" />
     <PackageReference Include="WireMock.Net" Version="1.4.19" />
@@ -26,7 +27,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="data\pages\CreatePageResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\pages\PageObjectShouldHaveUrlPropertyResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\pages\UpdatePagePropertiesResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
