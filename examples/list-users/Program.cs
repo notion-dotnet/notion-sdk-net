@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using Notion.Client;
 
 namespace list_users
