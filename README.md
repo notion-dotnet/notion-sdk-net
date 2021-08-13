@@ -90,4 +90,5 @@ var complexFiler = new CompoundFilter(
 
 ## Contribution Guideline
 
-At the moment I haven't got any specific guidelines for the project. Everyone are welcome to contribute.
+Hello! Thank you for choosing to help contribute to this open source library. There are many ways you can contribute and help is always welcome. You can read the detailed [Contribution Guideline](https://github.com/notion-dotnet/notion-sdk-net/blob/main/CONTRIBUTION.md) defined here - we will continue to improve it.
+
