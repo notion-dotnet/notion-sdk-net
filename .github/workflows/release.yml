@@ -26,7 +26,9 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     
     - name: Create NuGet Package
-      run: dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}"
+      run: |
+        dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg
+        dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" /p:PackageReadmeFile=README.md
       working-directory: ./
 
     - name: Archive NuGet Package
