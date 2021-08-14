@@ -12,11 +12,6 @@
     <PackageIcon>notion-logo.png</PackageIcon>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    
-    <!--Start: Create symbol package-->
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <!--End: Create symbol package-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +29,10 @@
       <PackagePath></PackagePath>
     </None>
     <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath> 
+    </None>
+    <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath> 
     </None>
