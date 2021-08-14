@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class PageParent : IPageParent
+    public class PageParent : IPageParent, IDatabaseParent
     {
         [JsonProperty("page_id")]
         public string PageId { get; set; }
