@@ -12,6 +12,11 @@
     <PackageIcon>notion-logo.png</PackageIcon>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    
+    <!--Start: Create symbol package-->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!--End: Create symbol package-->
   </PropertyGroup>
 
   <ItemGroup>
