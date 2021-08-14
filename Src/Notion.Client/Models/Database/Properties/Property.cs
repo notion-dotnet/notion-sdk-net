@@ -30,5 +30,7 @@ namespace Notion.Client
 
         [JsonConverter(typeof(StringEnumConverter))]
         public virtual PropertyType Type { get; set; }
+
+        public string Name { get; set; }
     }
 }

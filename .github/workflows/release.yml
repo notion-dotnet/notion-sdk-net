@@ -41,5 +41,3 @@ jobs:
 
     - name: Publish Nuget Package
       run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.nuget_api_key }} --source https://api.nuget.org/v3/index.json
-
-    - name: Publish Symbol Package

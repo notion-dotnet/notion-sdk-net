@@ -36,6 +36,9 @@
     <None Update="data\pages\UpdatePagePropertiesResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\databases\DatabasePropertyObjectContainNameProperty.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
