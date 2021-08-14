@@ -7,6 +7,7 @@ namespace Notion.Client
     public class Database : IObject
     {
         public ObjectType Object => ObjectType.Database;
+
         public string Id { get; set; }
 
         [JsonProperty("created_time")]
@@ -18,5 +19,7 @@ namespace Notion.Client
         public List<RichTextBase> Title { get; set; }
 
         public Dictionary<string, Property> Properties { get; set; }
+
+        public IDatabaseParent Parent { get; set; }
     }
 }

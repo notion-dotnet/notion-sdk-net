@@ -7,8 +7,10 @@ namespace Notion.Client
     public class Page : IObject
     {
         public ObjectType Object => ObjectType.Page;
+
         public string Id { get; set; }
-        public Parent Parent { get; set; }
+
+        public IPageParent Parent { get; set; }
 
         [JsonProperty("created_time")]
         public DateTime CreatedTime { get; set; }
