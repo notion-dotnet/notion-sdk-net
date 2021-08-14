@@ -62,5 +62,26 @@ namespace Notion.UnitTests
                 property.Key.Should().Be(property.Value.Name);
             }
         }
+
+        [Fact]
+        public async Task DatabasePropertyObjectContainParentProperty()
+        {
+            var databaseId = "f0212efc-caf6-4afc-87f6-1c06f1dfc8a1";
+            var path = ApiEndpoints.DatabasesApiUrls.Retrieve(databaseId);
+            var jsonData = await File.ReadAllTextAsync("data/databases/DatabasePropertyObjectContainParentProperty.json");
+
+            Server.Given(CreateGetRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var database = await _client.RetrieveAsync(databaseId);
+
+            database.Parent.Type.Should().Be(ParentType.PageId);
+            database.Parent.Should().BeOfType<PageParent>();
+            ((PageParent)database.Parent).PageId.Should().Be("649089db-8984-4051-98fb-a03593b852d8");
+        }
     }
 }
