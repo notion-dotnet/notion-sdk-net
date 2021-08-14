@@ -83,7 +83,7 @@ namespace Notion.Client
 
         [EnumMember(Value = "baht")]
         Baht,
-        
+
         [EnumMember(Value = "forint")]
         Forint,
 
