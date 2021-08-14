@@ -17,14 +17,14 @@ namespace Notion.Client
         /// Constructor that adds required <c>Parent</c> property. Used when you don't want to
         /// assign properties in separate operations.
         /// </summary>
-        public NewPage(Parent parent)
+        public NewPage(IPageParent parent)
         {
             Parent = parent;
             Properties = new Dictionary<string, PropertyValue>();
             Children = new List<Block>();
         }
 
-        public Parent Parent { get; set; }
+        public IPageParent Parent { get; set; }
 
         public Dictionary<string, PropertyValue> Properties { get; set; }
 

@@ -12,6 +12,7 @@ namespace Notion.Client
 
         [EnumMember(Value = "page_id")]
         PageId,
+
         [EnumMember(Value = "workspace")]
         Workspace
     }

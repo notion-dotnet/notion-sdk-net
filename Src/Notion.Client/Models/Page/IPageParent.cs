@@ -1,6 +1,5 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -8,9 +7,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(DatabaseParent), ParentType.DatabaseId)]
     [JsonSubtypes.KnownSubType(typeof(PageParent), ParentType.PageId)]
     [JsonSubtypes.KnownSubType(typeof(WorkspaceParent), ParentType.Workspace)]
-    public class Parent
+    public interface IPageParent : IParent
     {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ParentType Type { get; set; }
     }
 }
