@@ -33,7 +33,11 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Notion.Net
-        path: ./Src/Notion.Client/bin/Release/Notion.Net.${{ github.event.release.tag_name }}.nupkg
+        path: |
+          ./Src/Notion.Client/bin/Release/Notion.Net.${{ github.event.release.tag_name }}.nupkg
+          ./Src/Notion.Client/bin/Release/Notion.Net.${{ github.event.release.tag_name }}.snupkg
 
     - name: Publish Nuget Package
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.nuget_api_key }} --source https://api.nuget.org/v3/index.json --no-symbols true
+      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.nuget_api_key }} --source https://api.nuget.org/v3/index.json
+
+    - name: Publish Symbol Package
