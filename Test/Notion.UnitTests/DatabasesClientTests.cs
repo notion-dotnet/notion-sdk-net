@@ -1,21 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Notion.Client;
+using WireMock.ResponseBuilders;
 using Xunit;
 
 namespace Notion.UnitTests
 {
-    public class DatabasesClientTests
+    public class DatabasesClientTests : ApiTestBase
     {
         private readonly IDatabasesClient _client;
 
         public DatabasesClientTests()
         {
-            var options = new ClientOptions()
-            {
-                AuthToken = "<Token>"
-            };
-
-            _client = new DatabasesClient(new RestClient(options));
+            _client = new DatabasesClient(new RestClient(ClientOptions));
         }
 
         [Fact(Skip = "Internal Testing Purpose")]
@@ -41,6 +39,28 @@ namespace Notion.UnitTests
             var pagesList = await _client.QueryAsync(databaseId, databasesQueryParameters);
 
             Assert.NotNull(pagesList);
+        }
+
+        [Fact]
+        public async Task DatabasePropertyObjectContainNameProperty()
+        {
+            var databaseId = "f0212efc-caf6-4afc-87f6-1c06f1dfc8a1";
+            var path = ApiEndpoints.DatabasesApiUrls.Retrieve(databaseId);
+            var jsonData = await File.ReadAllTextAsync("data/databases/DatabasePropertyObjectContainNameProperty.json");
+
+            Server.Given(CreateGetRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var database = await _client.RetrieveAsync(databaseId);
+
+            foreach (var property in database.Properties)
+            {
+                property.Key.Should().Be(property.Value.Name);
+            }
         }
     }
 }
