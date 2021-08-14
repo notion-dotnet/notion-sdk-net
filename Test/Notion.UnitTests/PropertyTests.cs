@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Notion.Client;
 using Notion.Client.Extensions;
 using Xunit;
@@ -61,6 +62,44 @@ namespace Notion.UnitTests
             var actualPropertyType = typeInstance.Type.GetEnumMemberValue();
 
             Assert.Equal(expectedPropertyType, actualPropertyType);
+        }
+
+        [Theory]
+        [InlineData(null, NumberFormat.Unknown)]
+        [InlineData("number", NumberFormat.Number)]
+        [InlineData("number_with_commas", NumberFormat.NumberWithCommas)]
+        [InlineData("percent", NumberFormat.Percent)]
+        [InlineData("dollar", NumberFormat.Dollar)]
+        [InlineData("euro", NumberFormat.Euro)]
+        [InlineData("pound", NumberFormat.Pound)]
+        [InlineData("yen", NumberFormat.Yen)]
+        [InlineData("ruble", NumberFormat.Ruble)]
+        [InlineData("rupee", NumberFormat.Rupee)]
+        [InlineData("won", NumberFormat.Won)]
+        [InlineData("yuan", NumberFormat.Yuan)]
+        [InlineData("hong_kong_dollar", NumberFormat.HongKongDollar)]
+        [InlineData("new_zealand_dollar", NumberFormat.NewZealandDollar)]
+        [InlineData("krona", NumberFormat.Krona)]
+        [InlineData("norwegian_krone", NumberFormat.NorwegianKrone)]
+        [InlineData("mexican_peso", NumberFormat.MexicanPeso)]
+        [InlineData("rand", NumberFormat.Rand)]
+        [InlineData("new_taiwan_dollar", NumberFormat.NewTaiwanDollar)]
+        [InlineData("danish_krone", NumberFormat.DanishKrone)]
+        [InlineData("zloty", NumberFormat.Zloty)]
+        [InlineData("baht", NumberFormat.Baht)]
+        [InlineData("forint", NumberFormat.Forint)]
+        [InlineData("koruna", NumberFormat.Koruna)]
+        [InlineData("shekel", NumberFormat.Shekel)]
+        [InlineData("chilean_peso", NumberFormat.ChileanPeso)]
+        [InlineData("philippine_peso", NumberFormat.PhilippinePeso)]
+        [InlineData("dirham", NumberFormat.Dirham)]
+        [InlineData("colombian_peso", NumberFormat.ColombianPeso)]
+        [InlineData("riyal", NumberFormat.Riyal)]
+        [InlineData("ringgit", NumberFormat.Ringgit)]
+        [InlineData("leu", NumberFormat.Leu)]
+        public void NumberFormatEnumTypes(string textValue, NumberFormat numberFormat)
+        {
+            numberFormat.GetEnumMemberValue().Should().Be(textValue);
         }
     }
 }
