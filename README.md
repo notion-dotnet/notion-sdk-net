@@ -9,7 +9,7 @@
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/notion-dotnet/notion-sdk-net)
 ![GitHub](https://img.shields.io/github/license/notion-dotnet/notion-sdk-net)
 
-![Build Status](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/ci_build.yml/badge.svg)
+[![Build Status](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/ci-build.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/ci-build.yml)
 [![Build artifacts](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/build-artifacts-code.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/build-artifacts-code.yml)
 [![Release to NuGet](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/release.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/release.yml)
 [![CodeQL](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml)
