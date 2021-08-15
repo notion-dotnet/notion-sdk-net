@@ -72,7 +72,6 @@ namespace Notion.UnitTests
                             greaterThanOrEqualTo: 2
                         )
                     },
-
                 },
                 Sorts = new List<Sort>
                 {
