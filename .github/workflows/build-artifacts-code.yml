@@ -35,19 +35,14 @@ jobs:
 
       - name: Pack solution [Release]
         run: |
-          dotnet pack --no-restore --no-build -c Release -p:VersionSuffix=$GITHUB_RUN_NUMBER -p:PackageReadmeFile=README.md -o out
-
-      - name: List Files
-        run: |
-          ls -l
+          dotnet pack --no-restore --no-build -c Release -p:VersionSuffix=$GITHUB_RUN_NUMBER -p:PackageReadmeFile=README.md -o PackOutputs
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Nuget packages
           path: |
-            src/out/*
+            PackOutputs/*
 
       - name: Publish Nuget packages to GitHub registry
-        working-directory: Src
-        run: dotnet nuget push "out/*" -k ${{secrets.GITHUB_TOKEN}}
+        run: dotnet nuget push "PackOutputs/*" -k ${{secrets.GITHUB_TOKEN}}
