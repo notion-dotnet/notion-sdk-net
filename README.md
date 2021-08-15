@@ -11,7 +11,7 @@
 
 [![Build Status](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/ci-build.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/ci-build.yml)
 [![Build artifacts](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/build-artifacts-code.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/build-artifacts-code.yml)
-[![Release to NuGet](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/release.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/release.yml)
+[![Publish Code](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/publish-code.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/publish-code.yml)
 [![CodeQL](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml)
 
 ![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/notion-dotnet/notion-sdk-net)
