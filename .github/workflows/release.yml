@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -16,28 +15,47 @@ jobs:
       with:
         dotnet-version: 5.0.x
         
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Install dependencies
+      run: |
+        dotnet restore
       
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build solution [Release]
+      run: dotnet build --no-restore -c Release
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
     
-    - name: Create NuGet Package
+    - name: Pack solution [Release]
       run: |
-        dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg
-        dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" /p:PackageReadmeFile=README.md
-      working-directory: ./
+        dotnet pack --no-restore --no-build -o PackOutputs -c Release -p:Version=${{ github.event.release.tag_name }} -p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
+        rm "PackOutputs/*.nupkg"
+        dotnet pack --no-restore --no-build -o PackOutputs -c Release -p:Version=${{ github.event.release.tag_name }} -p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" -p:PackageReadmeFile=README.md
 
     - name: Archive NuGet Package
       uses: actions/upload-artifact@v1
       with:
         name: Notion.Net
         path: |
-          ./Src/Notion.Client/bin/Release/Notion.Net.${{ github.event.release.tag_name }}.nupkg
-          ./Src/Notion.Client/bin/Release/Notion.Net.${{ github.event.release.tag_name }}.snupkg
+          PackOutputs/*
 
     - name: Publish Nuget Package
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.nuget_api_key }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "PackOutputs/*" --api-key ${{ secrets.nuget_api_key }} --source https://api.nuget.org/v3/index.json
+
+    - name: Upload Nuget packages and documentation as release artifacts
+      uses: actions/github-script@v2
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          console.log('environment', process.versions);
+          const fs = require('fs').promises;
+          const { repo: { owner, repo }, sha } = context;
+          for (let file of await fs.readdir('PackOutputs')) {
+            console.log('uploading', file);
+            await github.repos.uploadReleaseAsset({
+              owner,
+              repo,
+              release_id: ${{ github.event.release.id }},
+              name: file,
+              data: await fs.readFile(`PackOutputs/${file}`)
+            });
+          }
