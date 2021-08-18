@@ -7,8 +7,4 @@ namespace Notion.Client
         [JsonProperty("multi_select")]
         public OptionWrapper<MultiSelectOptionSchema> MultiSelect { get; set; }
     }
-
-    public class MultiSelectOptionSchema : SelectOptionSchema
-    {
-    }
 }
