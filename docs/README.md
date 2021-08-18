@@ -73,9 +73,11 @@ var complexFiler = new CompoundFilter(
   - [x] Retrieve a page
   - [x] Create a page
   - [x] Update page
-- [x] Blocks
-  - [x] Retrieve Block Children
-  - [x] Append Block Children
+- [ ] Blocks
+  - [x] Retrieve a block
+  - [ ] Update a block
+  - [x] Retrieve block children
+  - [x] Append block children
 - [x] Users
   - [x] Retrieve a User
   - [x] List all users
