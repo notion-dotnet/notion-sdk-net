@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,6 +57,11 @@ namespace Notion.UnitTests
             );
 
             var newPage = new NewPage();
+            newPage.Parent = new PageParent
+            {
+                PageId = "3c357473-a281-49a4-88c0-10d2b245a589"
+            };
+
             newPage.AddProperty("Name", new TitlePropertyValue()
             {
                 Title = new List<RichTextBase>()
@@ -77,6 +83,8 @@ namespace Notion.UnitTests
             page.Properties.Should().HaveCount(1);
             page.Properties.First().Key.Should().Be("Name");
             page.IsArchived.Should().BeFalse();
+            page.Parent.Should().NotBeNull();
+            ((PageParent)page.Parent).PageId.Should().Be("3c357473-a281-49a4-88c0-10d2b245a589");
         }
 
         [Fact]
@@ -189,6 +197,39 @@ namespace Notion.UnitTests
             page.Properties.Should().HaveCount(2);
             var updatedProperty = page.Properties.First(x => x.Key == "In stock");
             ((CheckboxPropertyValue)updatedProperty.Value).Checkbox.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task CreateAsync_Throws_ArgumentNullException_When_Parameter_Is_Null()
+        {
+            Func<Task> act = async () => await _client.CreateAsync(null);
+
+            (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("page");
+        }
+
+        [Fact]
+        public async Task CreateAsync_Throws_ArgumentNullException_When_Parent_Is_Missing()
+        {
+            var newPage = new NewPage();
+
+            Func<Task> act = async () => await _client.CreateAsync(newPage);
+
+            (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("Parent");
+        }
+
+        [Fact]
+        public async Task CreateAsync_Throws_ArgumentNullException_When_Properties_Is_Missing()
+        {
+            var newPage = new NewPage(new PageParent()
+            {
+                PageId = "3c357473-a281-49a4-88c0-10d2b245a589"
+            });
+
+            newPage.Properties = null;
+
+            Func<Task> act = async () => await _client.CreateAsync(newPage);
+
+            (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("Properties");
         }
     }
 }
