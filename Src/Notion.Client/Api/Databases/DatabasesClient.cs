@@ -44,5 +44,12 @@ namespace Notion.Client
 
             return await _client.PostAsync<Database>(DatabasesApiUrls.Create, body);
         }
+
+        public async Task<Database> UpdateAsync(string databaseId, DatabasesUpdateParameters databasesUpdateParameters)
+        {
+            var body = (IDatabasesUpdateBodyParameters)databasesUpdateParameters;
+
+            return await _client.PatchAsync<Database>(DatabasesApiUrls.Update(databaseId), body);
+        }
     }
 }
