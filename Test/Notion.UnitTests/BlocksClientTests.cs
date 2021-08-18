@@ -86,5 +86,49 @@ namespace Notion.UnitTests
             todoBlock.ToDo.Text.First().Should().BeAssignableTo<RichTextText>();
             ((RichTextText)todoBlock.ToDo.Text.First()).Text.Content.Should().Be("Lacinato kale");
         }
+
+        [Fact]
+        public async Task UpdateAsync()
+        {
+            string blockId = "9bc30ad4-9373-46a5-84ab-0a7845ee52e6";
+            var path = ApiEndpoints.BlocksApiUrls.Update(blockId);
+            var jsonData = await File.ReadAllTextAsync("data/blocks/UpdateBlockResponse.json");
+
+            Server.Given(CreatePatchRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var updateBlock = new ToDoUpdateBlock
+            {
+                ToDo = new ToDoUpdateBlock.Info
+                {
+                    Text = new List<RichTextBaseInput>()
+                    {
+                        new RichTextTextInput
+                        {
+                            Text = new Text
+                            {
+                                Content = "Lacinato kale"
+                            },
+                        }
+                    },
+                    IsChecked = true
+                }
+            };
+
+            var block = await _client.UpdateAsync(blockId, updateBlock);
+
+            block.Id.Should().Be(blockId);
+            block.HasChildren.Should().BeFalse();
+            block.Type.Should().Be(BlockType.ToDo);
+
+            var todoBlock = ((ToDoBlock)block);
+            todoBlock.ToDo.Text.Should().ContainSingle();
+            todoBlock.ToDo.Text.First().Should().BeAssignableTo<RichTextText>();
+            ((RichTextText)todoBlock.ToDo.Text.First()).Text.Content.Should().Be("Lacinato kale");
+        }
     }
 }
