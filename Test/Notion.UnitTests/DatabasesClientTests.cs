@@ -255,5 +255,106 @@ namespace Notion.UnitTests
                 }
             );
         }
+
+        [Fact]
+        public async Task UpdateDatabaseAsync()
+        {
+            var databaseId = "1e9eee34-9c5c-4fe6-a4e1-8244eb141ed8";
+            var path = ApiEndpoints.DatabasesApiUrls.Update(databaseId);
+            var jsonData = await File.ReadAllTextAsync("data/databases/UpdateDatabaseResponse.json");
+
+            Server.Given(CreatePatchRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var updateDatabaseParameters = new DatabasesUpdateParameters();
+
+            updateDatabaseParameters.Title = new List<RichTextBaseInput>
+            {
+                new RichTextTextInput
+                {
+                    Text = new Text
+                    {
+                        Content = "Grocery List New",
+                        Link = null
+                    }
+                }
+            };
+
+            updateDatabaseParameters.Properties = new Dictionary<string, IUpdatePropertySchema>
+            {
+                { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
+                { "Price", new NumberUpdatePropertySchema { Number = new Number { Format = NumberFormat.Yen } } },
+                { "Food group", new SelectUpdatePropertySchema
+                    {
+                        Select = new OptionWrapper<SelectOption>
+                        {
+                            Options = new List<SelectOption>
+                            {
+                                new SelectOption
+                                {
+                                    Color = Color.Green,
+                                    Name = "🥦Vegetables"
+                                },
+                                new SelectOption
+                                {
+                                    Color = Color.Red,
+                                    Name = "🍎Fruit"
+                                },
+                                new SelectOption
+                                {
+                                    Color = Color.Yellow,
+                                    Name = "💪Protein"
+                                }
+                            }
+                        }
+                    }
+                },
+                { "Last ordered", new DateUpdatePropertySchema{ Date = new Dictionary<string, object>() } }
+            };
+
+            var database = await _client.UpdateAsync(databaseId, updateDatabaseParameters);
+
+            database.Parent.Type.Should().Be(ParentType.PageId);
+            database.Parent.Should().BeOfType<PageParent>();
+            ((PageParent)database.Parent).PageId.Should().Be("533578e3-edf1-4c0a-91a9-da6b09bac3ee");
+
+            database.Properties.Should().HaveCount(4);
+
+            database.Title.Should().ContainSingle();
+            database.Title.Should().SatisfyRespectively(
+                title =>
+                {
+                    title.Should().BeAssignableTo<RichTextText>();
+                    ((RichTextText)title).Text.Content.Should().Be("Grocery List New");
+                }
+            );
+
+            var selectOptions = (SelectProperty)database.Properties["Food group"];
+            selectOptions.Name.Should().Be("Food group");
+            selectOptions.Select.Options.Should().SatisfyRespectively(
+                option =>
+                {
+                    option.Name.Should().Be("🥦Vegetables");
+                    option.Color.Should().Be(Color.Green);
+                },
+                option =>
+                {
+                    option.Name.Should().Be("🍎Fruit");
+                    option.Color.Should().Be(Color.Red);
+                },
+                option =>
+                {
+                    option.Name.Should().Be("💪Protein");
+                    option.Color.Should().Be(Color.Yellow);
+                }
+            );
+
+            var price = (NumberProperty)database.Properties["Price"];
+            price.Number.Format.Should().Be(NumberFormat.Yen);
+        }
     }
 }

@@ -8,6 +8,7 @@
             public static string List() => "/v1/databases";
             public static string Query(string databaseId) => $"/v1/databases/{databaseId}/query";
             public static string Create => "/v1/databases";
+            public static string Update(string databaseId) => $"/v1/databases/{databaseId}";
         }
 
         public static class UsersApiUrls

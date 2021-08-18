@@ -14,5 +14,13 @@ namespace Notion.Client
         /// <param name="databasesCreateParameters"></param>
         /// <returns>Database</returns>
         Task<Database> CreateAsync(DatabasesCreateParameters databasesCreateParameters);
+
+        /// <summary>
+        /// Updates an existing database as specified by the parameters.
+        /// </summary>
+        /// <param name="databaseId"></param>
+        /// <param name="databasesUpdateParameters"></param>
+        /// <returns>Database</returns>
+        Task<Database> UpdateAsync(string databaseId, DatabasesUpdateParameters databasesUpdateParameters);
     }
 }

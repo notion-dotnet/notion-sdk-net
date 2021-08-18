@@ -93,11 +93,12 @@ var complexFiler = new CompoundFilter(
 ```
 
 ## Supported Endpoints
-- [ ] Databases
+- [x] Databases
   - [x] Retrieve a database
   - [x] Query a database
   - [x] List databases
-  - [x] Create a Database
+  - [x] Create a database
+  - [x] Update database
 - [x] Pages
   - [x] Retrieve a page
   - [x] Create a page
