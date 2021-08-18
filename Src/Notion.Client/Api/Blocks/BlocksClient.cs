@@ -47,5 +47,17 @@ namespace Notion.Client
 
             return await _client.PatchAsync<Block>(url, body);
         }
+
+        public async Task<Block> Retrieve(string blockId)
+        {
+            if (string.IsNullOrWhiteSpace(blockId))
+            {
+                throw new ArgumentNullException(nameof(blockId));
+            }
+
+            var url = BlocksApiUrls.Retrieve(blockId);
+
+            return await _client.GetAsync<Block>(url);
+        }
     }
 }
