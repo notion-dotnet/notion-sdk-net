@@ -33,6 +33,9 @@
     <None Update="data\databases\DatabasePropertyObjectContainParentProperty.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\databases\UpdateDatabaseResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\pages\CreatePageResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
