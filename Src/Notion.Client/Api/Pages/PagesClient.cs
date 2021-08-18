@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
@@ -32,6 +33,7 @@ namespace Notion.Client
             return await _client.PatchAsync<Page>(url, body);
         }
 
+        [Obsolete("This method is obsolute. Use UpdateAsync instead. This API will be removed in future release")]
         public async Task<Page> UpdatePropertiesAsync(
             string pageId,
             IDictionary<string, PropertyValue> updatedProperties)
