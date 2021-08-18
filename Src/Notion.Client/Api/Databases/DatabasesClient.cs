@@ -37,5 +37,12 @@ namespace Notion.Client
 
             return await _client.PostAsync<PaginatedList<Page>>(DatabasesApiUrls.Query(databaseId), body);
         }
+
+        public async Task<Database> CreateAsync(DatabasesCreateParameters databasesCreateParameters)
+        {
+            var body = (IDatabasesCreateBodyParameters)databasesCreateParameters;
+
+            return await _client.PostAsync<Database>(DatabasesApiUrls.Create, body);
+        }
     }
 }
