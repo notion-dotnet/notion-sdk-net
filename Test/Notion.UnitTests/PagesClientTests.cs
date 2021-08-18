@@ -125,5 +125,70 @@ namespace Notion.UnitTests
 
             page.Url.Should().Be("https://www.notion.so/Avocado-251d2b5f268c4de2afe9c71ff92ca95c");
         }
+
+        [Fact]
+        public async Task UpdatePageAsync()
+        {
+            var pageId = "251d2b5f-268c-4de2-afe9-c71ff92ca95c";
+            var path = ApiEndpoints.PagesApiUrls.UpdateProperties(pageId);
+
+            var jsonData = await File.ReadAllTextAsync("data/pages/UpdatePagePropertiesResponse.json");
+
+            Server.Given(CreatePatchRequestBuilder(path))
+                .RespondWith(
+                    Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var pagesUpdateParameters = new PagesUpdateParameters
+            {
+                Properties = new Dictionary<string, PropertyValue>()
+                {
+                    { "In stock", new CheckboxPropertyValue() { Checkbox = true } }
+                }
+            };
+
+            var page = await _client.UpdateAsync(pageId, pagesUpdateParameters);
+
+            page.Id.Should().Be(pageId);
+            page.IsArchived.Should().BeFalse();
+            page.Properties.Should().HaveCount(2);
+            var updatedProperty = page.Properties.First(x => x.Key == "In stock");
+            ((CheckboxPropertyValue)updatedProperty.Value).Checkbox.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task ArchivePageAsync()
+        {
+            var pageId = "251d2b5f-268c-4de2-afe9-c71ff92ca95c";
+            var path = ApiEndpoints.PagesApiUrls.UpdateProperties(pageId);
+
+            var jsonData = await File.ReadAllTextAsync("data/pages/ArchivePageResponse.json");
+
+            Server.Given(CreatePatchRequestBuilder(path))
+                .RespondWith(
+                    Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var pagesUpdateParameters = new PagesUpdateParameters
+            {
+                Archived = true,
+                Properties = new Dictionary<string, PropertyValue>()
+                {
+                    { "In stock", new CheckboxPropertyValue() { Checkbox = true } }
+                }
+            };
+
+            var page = await _client.UpdateAsync(pageId, pagesUpdateParameters);
+
+            page.Id.Should().Be(pageId);
+            page.IsArchived.Should().BeTrue();
+            page.Properties.Should().HaveCount(2);
+            var updatedProperty = page.Properties.First(x => x.Key == "In stock");
+            ((CheckboxPropertyValue)updatedProperty.Value).Checkbox.Should().BeTrue();
+        }
     }
 }
