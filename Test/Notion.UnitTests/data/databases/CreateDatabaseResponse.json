@@ -1,0 +1,75 @@
+﻿{
+  "object": "database",
+  "id": "1e9eee34-9c5c-4fe6-a4e1-8244eb141ed8",
+  "created_time": "2021-08-18T17:39:00.000Z",
+  "last_edited_time": "2021-08-18T17:39:00.000Z",
+  "title": [
+    {
+      "type": "text",
+      "text": {
+        "content": "Grocery List",
+        "link": null
+      },
+      "annotations": {
+        "bold": false,
+        "italic": false,
+        "strikethrough": false,
+        "underline": false,
+        "code": false,
+        "color": "default"
+      },
+      "plain_text": "Grocery List",
+      "href": null
+    }
+  ],
+  "properties": {
+    "Price": {
+      "id": "@xZm",
+      "name": "Price",
+      "type": "number",
+      "number": {
+        "format": "dollar"
+      }
+    },
+    "Last ordered": {
+      "id": "SN;?",
+      "name": "Last ordered",
+      "type": "date",
+      "date": {}
+    },
+    "Food group": {
+      "id": "zIZQ",
+      "name": "Food group",
+      "type": "select",
+      "select": {
+        "options": [
+          {
+            "id": "49ca815e-c37a-4dce-9033-32a62233f483",
+            "name": "🥦Vegetable",
+            "color": "green"
+          },
+          {
+            "id": "9fa8d118-59fb-47c7-b4c7-a8523609e37f",
+            "name": "🍎Fruit",
+            "color": "red"
+          },
+          {
+            "id": "ef3c69d2-0cd1-4540-82fd-03ff9650fc44",
+            "name": "💪Protein",
+            "color": "yellow"
+          }
+        ]
+      }
+    },
+    "Name": {
+      "id": "title",
+      "name": "Name",
+      "type": "title",
+      "title": {}
+    }
+  },
+  "parent": {
+    "type": "page_id",
+    "page_id": "533578e3-edf1-4c0a-91a9-da6b09bac3ee"
+  }
+}

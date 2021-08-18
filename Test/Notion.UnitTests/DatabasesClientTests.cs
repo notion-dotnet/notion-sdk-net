@@ -161,5 +161,99 @@ namespace Notion.UnitTests
             database.Parent.Should().BeOfType<PageParent>();
             ((PageParent)database.Parent).PageId.Should().Be("649089db-8984-4051-98fb-a03593b852d8");
         }
+
+        [Fact]
+        public async Task CreateDatabaseAsync()
+        {
+            var pageId = "533578e3-edf1-4c0a-91a9-da6b09bac3ee";
+            var path = ApiEndpoints.DatabasesApiUrls.Create;
+            var jsonData = await File.ReadAllTextAsync("data/databases/CreateDatabaseResponse.json");
+
+            Server.Given(CreatePostRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var createDatabaseParameters = new DatabasesCreateParameters();
+
+            createDatabaseParameters.Parent = new ParentPageInput
+            {
+                PageId = pageId
+            };
+
+            createDatabaseParameters.Title = new List<RichTextBaseInput>
+            {
+                new RichTextTextInput
+                {
+                    Text = new Text
+                    {
+                        Content = "Grocery List",
+                        Link = null
+                    }
+                }
+            };
+
+            createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
+            {
+                { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+                { "Price", new NumberPropertySchema { Number = new Number { Format = NumberFormat.Dollar } } },
+                { "Food group", new SelectPropertySchema
+                    {
+                        Select = new OptionWrapper<SelectOptionSchema>
+                        {
+                            Options = new List<SelectOptionSchema>
+                            {
+                                new SelectOptionSchema
+                                {
+                                    Color = Color.Green,
+                                    Name = "🥦Vegetable"
+                                },
+                                new SelectOptionSchema
+                                {
+                                    Color = Color.Red,
+                                    Name = "🍎Fruit"
+                                },
+                                new SelectOptionSchema
+                                {
+                                    Color = Color.Yellow,
+                                    Name = "💪Protein"
+                                }
+                            }
+                        }
+                    }
+                },
+                { "Last ordered", new DatePropertySchema{ Date = new Dictionary<string, object>() } }
+            };
+
+            var database = await _client.CreateAsync(createDatabaseParameters);
+
+            database.Parent.Type.Should().Be(ParentType.PageId);
+            database.Parent.Should().BeOfType<PageParent>();
+            ((PageParent)database.Parent).PageId.Should().Be(pageId);
+
+            database.Properties.Should().HaveCount(4);
+
+            var selectOptions = (SelectProperty)database.Properties["Food group"];
+            selectOptions.Name.Should().Be("Food group");
+            selectOptions.Select.Options.Should().SatisfyRespectively(
+                option =>
+                {
+                    option.Name.Should().Be("🥦Vegetable");
+                    option.Color.Should().Be(Color.Green);
+                },
+                option =>
+                {
+                    option.Name.Should().Be("🍎Fruit");
+                    option.Color.Should().Be(Color.Red);
+                },
+                option =>
+                {
+                    option.Name.Should().Be("💪Protein");
+                    option.Color.Should().Be(Color.Yellow);
+                }
+            );
+        }
     }
 }
