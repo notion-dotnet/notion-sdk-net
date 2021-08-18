@@ -75,7 +75,7 @@ namespace Notion.UnitTests
                     .WithBody(jsonData)
             );
 
-            var block = await _client.Retrieve(blockId);
+            var block = await _client.RetrieveAsync(blockId);
 
             block.Id.Should().Be(blockId);
             block.HasChildren.Should().BeFalse();

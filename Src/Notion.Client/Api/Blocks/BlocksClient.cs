@@ -48,7 +48,7 @@ namespace Notion.Client
             return await _client.PatchAsync<Block>(url, body);
         }
 
-        public async Task<Block> Retrieve(string blockId)
+        public async Task<Block> RetrieveAsync(string blockId)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {

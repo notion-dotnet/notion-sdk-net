@@ -9,7 +9,7 @@ namespace Notion.Client
         /// </summary>
         /// <param name="blockId"></param>
         /// <returns>Block</returns>
-        Task<Block> Retrieve(string blockId);
+        Task<Block> RetrieveAsync(string blockId);
 
         Task<Block> UpdateAsync(string blockId, IUpdateBlock updateBlock);
 
