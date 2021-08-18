@@ -27,6 +27,7 @@
         {
             public static string Create() => $"/v1/pages";
             public static string Retrieve(string pageId) => $"/v1/pages/{pageId}";
+            public static string Update(string pageId) => $"/v1/pages/{pageId}";
             public static string UpdateProperties(string pageId) => $"/v1/pages/{pageId}";
         }
 
