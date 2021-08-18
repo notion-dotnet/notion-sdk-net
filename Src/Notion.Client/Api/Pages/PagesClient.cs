@@ -16,6 +16,21 @@ namespace Notion.Client
 
         public async Task<Page> CreateAsync(NewPage page)
         {
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
+            if (page.Parent == null)
+            {
+                throw new ArgumentNullException(nameof(page.Parent), "Parent is required!");
+            }
+
+            if (page.Properties == null)
+            {
+                throw new ArgumentNullException(nameof(page.Properties), "Properties are required!");
+            }
+
             return await _client.PostAsync<Page>(PagesApiUrls.Create(), page);
         }
 
