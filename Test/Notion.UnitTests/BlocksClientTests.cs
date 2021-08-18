@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Notion.Client;
+using WireMock.ResponseBuilders;
 using Xunit;
 
 namespace Notion.UnitTests
 {
-    public class BlocksClientTests
+    public class BlocksClientTests : ApiTestBase
     {
         private readonly IBlocksClient _client;
 
         public BlocksClientTests()
         {
-            var options = new ClientOptions()
-            {
-                AuthToken = "<Token>"
-            };
-
-            _client = new BlocksClient(new RestClient(options));
+            _client = new BlocksClient(new RestClient(ClientOptions));
         }
 
         [Fact(Skip = "Dev only")]
@@ -60,6 +59,32 @@ namespace Notion.UnitTests
             var block = await _client.AppendChildrenAsync(blockId, parameters);
 
             Assert.NotNull(block);
+        }
+
+        [Fact]
+        public async Task RetrieveAsync()
+        {
+            string blockId = "9bc30ad4-9373-46a5-84ab-0a7845ee52e6";
+            var path = ApiEndpoints.BlocksApiUrls.Retrieve(blockId);
+            var jsonData = await File.ReadAllTextAsync("data/blocks/RetrieveBlockResponse.json");
+
+            Server.Given(CreateGetRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var block = await _client.Retrieve(blockId);
+
+            block.Id.Should().Be(blockId);
+            block.HasChildren.Should().BeFalse();
+            block.Type.Should().Be(BlockType.ToDo);
+
+            var todoBlock = ((ToDoBlock)block);
+            todoBlock.ToDo.Text.Should().ContainSingle();
+            todoBlock.ToDo.Text.First().Should().BeAssignableTo<RichTextText>();
+            ((RichTextText)todoBlock.ToDo.Text.First()).Text.Content.Should().Be("Lacinato kale");
         }
     }
 }
