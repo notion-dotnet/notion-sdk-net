@@ -324,7 +324,6 @@ namespace Notion.UnitTests
 
             database.Properties.Should().HaveCount(4);
 
-
             database.Title.Should().ContainSingle();
             database.Title.Should().SatisfyRespectively(
                 title =>
@@ -333,7 +332,6 @@ namespace Notion.UnitTests
                     ((RichTextText)title).Text.Content.Should().Be("Grocery List New");
                 }
             );
-
 
             var selectOptions = (SelectProperty)database.Properties["Food group"];
             selectOptions.Name.Should().Be("Food group");
