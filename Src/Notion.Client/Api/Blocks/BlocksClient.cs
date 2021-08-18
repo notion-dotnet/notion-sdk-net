@@ -48,7 +48,7 @@ namespace Notion.Client
             return await _client.PatchAsync<Block>(url, body);
         }
 
-        public async Task<Block> Retrieve(string blockId)
+        public async Task<Block> RetrieveAsync(string blockId)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -58,6 +58,18 @@ namespace Notion.Client
             var url = BlocksApiUrls.Retrieve(blockId);
 
             return await _client.GetAsync<Block>(url);
+        }
+
+        public async Task<Block> UpdateAsync(string blockId, IUpdateBlock updateBlock)
+        {
+            if (string.IsNullOrWhiteSpace(blockId))
+            {
+                throw new ArgumentNullException(nameof(blockId));
+            }
+
+            var url = BlocksApiUrls.Update(blockId);
+
+            return await _client.PatchAsync<Block>(url, updateBlock);
         }
     }
 }

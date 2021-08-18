@@ -9,7 +9,15 @@ namespace Notion.Client
         /// </summary>
         /// <param name="blockId"></param>
         /// <returns>Block</returns>
-        Task<Block> Retrieve(string blockId);
+        Task<Block> RetrieveAsync(string blockId);
+
+        /// <summary>
+        /// Updates the content for the specified block_id based on the block type.
+        /// </summary>
+        /// <param name="blockId"></param>
+        /// <param name="updateBlock"></param>
+        /// <returns>Block</returns>
+        Task<Block> UpdateAsync(string blockId, IUpdateBlock updateBlock);
 
         Task<PaginatedList<Block>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null);
         Task<Block> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null);
