@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="data\databases\CreateDatabaseResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\databases\DatabasePropertyObjectContainParentProperty.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
