@@ -8,7 +8,6 @@ namespace Notion.Client
     {
         public SearchDirection Direction { get; set; }
 
-        [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime Timestamp { get; set; }
+        public string Timestamp { get; set; }
     }
 }
