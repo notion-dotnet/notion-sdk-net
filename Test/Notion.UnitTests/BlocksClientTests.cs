@@ -18,20 +18,44 @@ namespace Notion.UnitTests
             _client = new BlocksClient(new RestClient(ClientOptions));
         }
 
-        [Fact(Skip = "Dev only")]
+        [Fact]
         public async Task RetrieveBlockChildren()
         {
+            // Arrange
             string blockId = "3c357473-a281-49a4-88c0-10d2b245a589";
+            var path = ApiEndpoints.BlocksApiUrls.RetrieveChildren(blockId);
+            var jsonData = await File.ReadAllTextAsync("data/blocks/RetrieveBlockChildrenResponse.json");
 
-            var children = await _client.RetrieveChildrenAsync(blockId, new BlocksRetrieveChildrenParameters());
+            Server.Given(CreateGetRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
 
-            Assert.NotNull(children);
+            // Act
+            var childrenResult = await _client.RetrieveChildrenAsync(blockId, new BlocksRetrieveChildrenParameters());
+
+            // Assert
+            var children = childrenResult.Results;
+            children.Should().HaveCount(7);
         }
 
-        [Fact(Skip = "Dev only")]
+        [Fact]
         public async Task AppendBlockChildren()
         {
-            string blockId = "3c357473-a281-49a4-88c0-10d2b245a589";
+            // Arrange
+            string blockId = "7face6fd-3ef4-4b38-b1dc-c5044988eec0";
+            var path = ApiEndpoints.BlocksApiUrls.AppendChildren(blockId);
+
+            var jsonData = await File.ReadAllTextAsync("data/blocks/AppendBlockChildrenResponse.json");
+
+            Server.Given(CreatePatchRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
 
             var parameters = new BlocksAppendChildrenParameters()
             {
@@ -52,13 +76,52 @@ namespace Notion.UnitTests
                                 }
                             }
                         }
+                    },
+                    new ParagraphBlock()
+                    {
+                        Paragraph = new ParagraphBlock.Info
+                        {
+                            Text = new List<RichTextBase>
+                            {
+                                new RichTextText
+                                {
+                                    Text = new Text
+                                    {
+                                        Content = "Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.",
+                                        Link = new Link
+                                        {
+                                            Url = "https://en.wikipedia.org/wiki/Lacinato_kale"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             };
 
-            var block = await _client.AppendChildrenAsync(blockId, parameters);
+            // Act
+            var blocksResult = await _client.AppendChildrenAsync(blockId, parameters);
 
-            Assert.NotNull(block);
+            // Assert
+            var blocks = blocksResult.Results;
+            blocks.Should().SatisfyRespectively(
+                block =>
+                {
+                    block.Type.Should().Be(BlockType.Heading_2);
+                    var headingBlock = (HeadingTwoBlock)block;
+                    var text = headingBlock.Heading_2.Text.OfType<RichTextText>().FirstOrDefault();
+                    text.Text.Content.Should().Be("Lacinato kale");
+                },
+                block =>
+                {
+                    block.Type.Should().Be(BlockType.Paragraph);
+                    var paragraphBlock = (ParagraphBlock)block;
+                    var text = paragraphBlock.Paragraph.Text.OfType<RichTextText>().LastOrDefault();
+                    text.Text.Content.Should().Be("Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.");
+                    text.Text.Link.Url.Should().Be("https://en.wikipedia.org/wiki/Lacinato_kale");
+                }
+            );
         }
 
         [Fact]
