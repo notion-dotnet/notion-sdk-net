@@ -1,0 +1,10 @@
+{
+  "object": "user",
+  "id": "5e37c1b4-630f-4e81-bd6b-296af31e345f",
+  "name": "Vedant Koditkar",
+  "avatar_url": "https://lh3.googleusercontent.com/a-/AOh14Gg4lnfwJviST_tKZZpMfKrgmjp8wRzPBg9ec6sG7w=s100",
+  "type": "person",
+  "person": {
+    "email": "vedkoditkar@gmail.com"
+  }
+}
