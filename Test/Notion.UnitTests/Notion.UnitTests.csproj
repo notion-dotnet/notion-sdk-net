@@ -33,6 +33,12 @@
     <None Update="data\blocks\UpdateBlockResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data/blocks/RetrieveBlockChildrenResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data/blocks/AppendBlockChildrenResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\databases\CreateDatabaseResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
