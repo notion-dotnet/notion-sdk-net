@@ -32,7 +32,7 @@ jobs:
       - name: Pack solution [Release]
         run: |
           dotnet pack --no-restore --no-build -o PackOutputs -c Release -p:Version=${{ github.event.release.tag_name }} -p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
-          rm "PackOutputs/*.nupkg"
+          rm -f PackOutputs/*.nupkg
           dotnet pack --no-restore --no-build -o PackOutputs -c Release -p:Version=${{ github.event.release.tag_name }} -p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" -p:PackageReadmeFile=README.md
 
       - name: Upload artifacts
