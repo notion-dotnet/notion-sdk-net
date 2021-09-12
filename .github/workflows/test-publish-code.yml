@@ -1,12 +1,10 @@
 name: Test Publish Code
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
     inputs:
       version:
-        description: 'Person to greet'
+        description: 'Version'
         required: true
 
 jobs:
@@ -37,8 +35,14 @@ jobs:
       - name: Pack solution [Release]
         run: |
           dotnet pack --no-restore --no-build -o PackOutputs -c Release -p:Version=${{ github.event.inputs.version }} -p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.inputs.version }}" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
+          echo 'Generated Packages'
+          ls -l PackOutputs/
           rm -f PackOutputs/*.nupkg
+          echo 'Packages After Removing nupkg'
+          ls -l PackOutputs/
           dotnet pack --no-restore --no-build -o PackOutputs -c Release -p:Version=${{ github.event.inputs.version }} -p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.inputs.version }}" -p:PackageReadmeFile=README.md
+          echo 'Final Packages'
+          ls -l PackOutputs/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
