@@ -36,11 +36,10 @@ jobs:
           dotnet pack --no-restore --no-build -o PackOutputs -c Release -p:Version=${{ github.event.release.tag_name }} -p:PackageReleaseNotes="See https://github.com/notion-dotnet/notion-sdk-net/releases/tag/${{ github.event.release.tag_name }}" -p:PackageReadmeFile=README.md
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: Notion.Net
-          path: |
-            PackOutputs/*
+          path: PackOutputs/*
 
       - name: Publish Nuget Package
         run: dotnet nuget push PackOutputs/* --api-key ${{ secrets.NUGET_API_KEY }}
