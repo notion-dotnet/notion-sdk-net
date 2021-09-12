@@ -20,6 +20,6 @@ namespace Notion.Client
         Task<Block> UpdateAsync(string blockId, IUpdateBlock updateBlock);
 
         Task<PaginatedList<Block>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null);
-        Task<PaginatedList<Block>> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null);
+        Task<Block> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null);
     }
 }

@@ -101,27 +101,14 @@ namespace Notion.UnitTests
             };
 
             // Act
-            var blocksResult = await _client.AppendChildrenAsync(blockId, parameters);
+            var block = await _client.AppendChildrenAsync(blockId, parameters);
 
-            // Assert
-            var blocks = blocksResult.Results;
-            blocks.Should().SatisfyRespectively(
-                block =>
-                {
-                    block.Type.Should().Be(BlockType.Heading_2);
-                    var headingBlock = (HeadingTwoBlock)block;
-                    var text = headingBlock.Heading_2.Text.OfType<RichTextText>().FirstOrDefault();
-                    text.Text.Content.Should().Be("Lacinato kale");
-                },
-                block =>
-                {
-                    block.Type.Should().Be(BlockType.Paragraph);
-                    var paragraphBlock = (ParagraphBlock)block;
-                    var text = paragraphBlock.Paragraph.Text.OfType<RichTextText>().LastOrDefault();
-                    text.Text.Content.Should().Be("Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.");
-                    text.Text.Link.Url.Should().Be("https://en.wikipedia.org/wiki/Lacinato_kale");
-                }
-            );
+            // Assert    
+            block.Type.Should().Be(BlockType.Paragraph);
+            var paragraphBlock = (ParagraphBlock)block;
+            var text = paragraphBlock.Paragraph.Text.OfType<RichTextText>().LastOrDefault();
+            text.Text.Content.Should().Be("Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.");
+            text.Text.Link.Url.Should().Be("https://en.wikipedia.org/wiki/Lacinato_kale");
         }
 
         [Fact]
