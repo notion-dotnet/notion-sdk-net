@@ -42,7 +42,7 @@ jobs:
           path: PackOutputs/*
 
       - name: Publish Nuget Package
-        run: dotnet nuget push PackOutputs/* --api-key ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push PackOutputs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }}
 
       - name: Upload Nuget packages as release artifacts
         uses: actions/github-script@v2
