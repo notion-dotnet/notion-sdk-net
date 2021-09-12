@@ -356,5 +356,56 @@ namespace Notion.UnitTests
             var price = (NumberProperty)database.Properties["Price"];
             price.Number.Format.Should().Be(NumberFormat.Yen);
         }
+
+        [Fact]
+        public async Task FormulaPropertyCanBeSetWhenCreatingDatabase()
+        {
+            var pageId = "98ad959b-2b6a-4774-80ee-00246fb0ea9b";
+            var path = ApiEndpoints.DatabasesApiUrls.Create;
+            var jsonData = await File.ReadAllTextAsync("data/databases/FormulaPropertyCanBeSetWhenCreatingDatabaseResponse.json");
+
+            Server.Given(CreatePostRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var createDatabaseParameters = new DatabasesCreateParameters();
+
+            createDatabaseParameters.Parent = new ParentPageInput
+            {
+                PageId = pageId
+            };
+
+            createDatabaseParameters.Title = new List<RichTextBaseInput>
+            {
+                new RichTextTextInput
+                {
+                    Text = new Text
+                    {
+                        Content = "Grocery List",
+                        Link = null
+                    }
+                }
+            };
+
+            createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
+            {
+                { "Cost of next trip", new FormulaPropertySchema { Formula = new Formula { Expression = "if(prop(\"In stock\"), 0, prop(\"Price\"))" } } },
+                { "Price", new NumberPropertySchema { Number = new Number { Format = NumberFormat.Dollar } } }
+            };
+
+            var database = await _client.CreateAsync(createDatabaseParameters);
+
+            database.Parent.Type.Should().Be(ParentType.PageId);
+            database.Parent.Should().BeOfType<PageParent>();
+            ((PageParent)database.Parent).PageId.Should().Be(pageId);
+
+            database.Properties.Should().HaveCount(2);
+
+            var formulaProperty = (FormulaProperty)database.Properties["Cost of next trip"];
+            formulaProperty.Formula.Expression.Should().Be("if(prop(\"In stock\"), 0, prop(\"Price\"))");
+        }
     }
 }

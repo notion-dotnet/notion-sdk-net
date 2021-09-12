@@ -1,0 +1,47 @@
+{
+    "object": "database",
+    "id": "c23f0085-a061-41c0-b8a6-cbe14d15a4de",
+    "created_time": "2021-08-20T16:08:00.000Z",
+    "last_edited_time": "2021-08-20T16:08:00.000Z",
+    "title": [
+        {
+            "type": "text",
+            "text": {
+                "content": "Grocery List",
+                "link": null
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            },
+            "plain_text": "Grocery List",
+            "href": null
+        }
+    ],
+    "properties": {
+        "Cost of next trip": {
+            "id": "Rbq\\",
+            "name": "Cost of next trip",
+            "type": "formula",
+            "formula": {
+                "expression": "if(prop(\"In stock\"), 0, prop(\"Price\"))"
+            }
+        },
+        "Price": {
+            "id": "u|<{",
+            "name": "Price",
+            "type": "number",
+            "number": {
+                "format": "dollar"
+            }
+        }
+    },
+    "parent": {
+        "type": "page_id",
+        "page_id": "98ad959b-2b6a-4774-80ee-00246fb0ea9b"
+    }
+}

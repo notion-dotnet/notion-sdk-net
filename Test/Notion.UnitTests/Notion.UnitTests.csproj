@@ -81,6 +81,9 @@
     <None Update="data\search\SearchResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\databases\FormulaPropertyCanBeSetWhenCreatingDatabaseResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
