@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -406,6 +407,60 @@ namespace Notion.UnitTests
 
             var formulaProperty = (FormulaProperty)database.Properties["Cost of next trip"];
             formulaProperty.Formula.Expression.Should().Be("if(prop(\"In stock\"), 0, prop(\"Price\"))");
+        }
+
+        [Fact]
+        public async Task Fix123_QueryAsync_DateFormulaValue_Returns_Null()
+        {
+            var databaseId = "f86f2262-0751-40f2-8f63-e3f7a3c39fcb";
+            var path = ApiEndpoints.DatabasesApiUrls.Query(databaseId);
+            var jsonData = await File.ReadAllTextAsync("data/databases/Fix123QueryAsyncDateFormulaValueReturnsNullResponse.json");
+
+            Server.Given(CreatePostRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var databasesQueryParams = new DatabasesQueryParameters
+            {
+                Filter = new CompoundFilter
+                {
+                    Or = new List<Filter> {
+                        new CheckboxFilter(
+                            "In stock",
+                            true
+                        ),
+                        new NumberFilter(
+                            "Cost of next trip",
+                            greaterThanOrEqualTo: 2
+                        )
+                    },
+                },
+                Sorts = new List<Sort>
+                {
+                    new Sort
+                    {
+                        Property = "Last ordered",
+                        Direction = Direction.Ascending
+                    }
+                }
+            };
+
+            var pagesPaginatedList = await _client.QueryAsync(databaseId, databasesQueryParams);
+
+            pagesPaginatedList.Results.Should().ContainSingle();
+
+            foreach (var page in pagesPaginatedList.Results)
+            {
+                page.Parent.Should().BeAssignableTo<IPageParent>();
+                page.Object.Should().Be(ObjectType.Page);
+
+                var formulaPropertyValue = (FormulaPropertyValue)page.Properties["FormulaProp"];
+                formulaPropertyValue.Formula.Date.Start.Should().Be(DateTime.Parse("2021-06-28"));
+                formulaPropertyValue.Formula.Date.End.Should().BeNull();
+            }
         }
     }
 }

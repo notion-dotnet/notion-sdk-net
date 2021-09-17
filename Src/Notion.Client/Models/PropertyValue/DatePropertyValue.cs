@@ -1,4 +1,6 @@
-﻿namespace Notion.Client
+﻿using System;
+
+namespace Notion.Client
 {
     public class DatePropertyValue : PropertyValue
     {
@@ -8,7 +10,7 @@
 
     public class Date
     {
-        public string Start { get; set; }
-        public string End { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
     }
 }
