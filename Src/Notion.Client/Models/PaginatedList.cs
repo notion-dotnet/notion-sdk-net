@@ -9,7 +9,7 @@ namespace Notion.Client
         string StartCursor { get; set; }
 
         [JsonProperty("page_size")]
-        string PageSize { get; set; }
+        int? PageSize { get; set; }
     }
 
     public class PaginatedList<T>
