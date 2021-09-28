@@ -3,6 +3,6 @@
     public class DatabasesListParameters : IDatabasesListQueryParmaters
     {
         public string StartCursor { get; set; }
-        public string PageSize { get; set; }
+        public int? PageSize { get; set; }
     }
 }
