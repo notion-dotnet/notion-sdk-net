@@ -5,7 +5,7 @@ namespace Notion.Client
 {
     public class FilesUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
     {
-        [JsonProperty("file")]
-        public Dictionary<string, object> File { get; set; }
+        [JsonProperty("files")]
+        public Dictionary<string, object> Files { get; set; }
     }
 }
