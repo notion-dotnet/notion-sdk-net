@@ -71,5 +71,17 @@ namespace Notion.Client
 
             return await _client.PatchAsync<Block>(url, updateBlock);
         }
+
+        public async Task DeleteAsync(string blockId)
+        {
+            if (string.IsNullOrWhiteSpace(blockId))
+            {
+                throw new ArgumentNullException(nameof(blockId));
+            }
+
+            var url = BlocksApiUrls.Delete(blockId);
+
+            await _client.DeleteAsync(url);
+        }
     }
 }

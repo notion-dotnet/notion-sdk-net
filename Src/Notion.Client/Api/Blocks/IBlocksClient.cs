@@ -28,5 +28,11 @@ namespace Notion.Client
         /// <param name="parameters"></param>
         /// <returns>A paginated list of newly created first level children block objects.</returns>
         Task<PaginatedList<Block>> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null);
+
+        /// <summary>
+        /// Sets a Block object, including page blocks, to archived: true using the ID specified.
+        /// </summary>
+        /// <param name="blockId">Identifier for a Notion block</param>
+        Task DeleteAsync(string blockId);
     }
 }
