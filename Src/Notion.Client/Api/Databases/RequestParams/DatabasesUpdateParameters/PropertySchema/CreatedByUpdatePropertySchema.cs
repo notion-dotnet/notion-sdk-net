@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class CreatedByUpdatePropertySchema : IUpdatePropertySchema
+    public class CreatedByUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
     {
         [JsonProperty("created_by")]
         public Dictionary<string, object> CreatedBy { get; set; }
