@@ -1,7 +1,10 @@
-﻿namespace Notion.Client
+﻿using Newtonsoft.Json;
+
+namespace Notion.Client
 {
-    public class NumberUpdatePropertySchema : IUpdatePropertySchema
+    public class NumberUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
     {
+        [JsonProperty("number")]
         public Number Number { get; set; }
     }
 }
