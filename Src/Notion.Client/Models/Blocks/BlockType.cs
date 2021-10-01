@@ -31,6 +31,33 @@ namespace Notion.Client
         [EnumMember(Value = "child_page")]
         ChildPage,
 
+        [EnumMember(Value = "code")]
+        Code,
+
+        [EnumMember(Value = "child_database")]
+        ChildDatabase,
+
+        [EnumMember(Value = "embed")]
+        Embed,
+
+        [EnumMember(Value = "image")]
+        Image,
+
+        [EnumMember(Value = "video")]
+        Video,
+
+        [EnumMember(Value = "file")]
+        File,
+
+        [EnumMember(Value = "pdf")]
+        PDF,
+
+        [EnumMember(Value = "bookmark")]
+        Bookmark,
+
+        [EnumMember(Value = "equation")]
+        Equation,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }
