@@ -14,11 +14,6 @@ namespace Notion.Client
         /// Array of File Object with name.
         /// </summary>
         [JsonProperty("files")]
-        public List<FileValue> Files { get; set; }
-    }
-
-    public class FileValue
-    {
-        public string Name { get; set; }
+        public List<FileObjectWithName> Files { get; set; }
     }
 }

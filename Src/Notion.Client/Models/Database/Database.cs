@@ -30,5 +30,11 @@ namespace Notion.Client
 
         [JsonProperty("cover")]
         public FileObject Cover { get; set; }
+
+        /// <summary>
+        /// The URL of the Notion database.
+        /// </summary>
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
 }
