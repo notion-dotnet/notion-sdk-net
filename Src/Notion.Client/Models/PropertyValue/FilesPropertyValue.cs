@@ -6,11 +6,6 @@ namespace Notion.Client
     {
         public override PropertyValueType Type => PropertyValueType.Files;
 
-        public List<FileValue> Files { get; set; }
-    }
-
-    public class FileValue
-    {
-        public string Name { get; set; }
+        public List<FileObjectWithName> Files { get; set; }
     }
 }
