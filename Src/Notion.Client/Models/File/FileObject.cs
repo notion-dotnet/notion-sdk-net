@@ -1,7 +1,6 @@
 ﻿using System;
 using JsonSubTypes;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -11,7 +10,6 @@ namespace Notion.Client
     public abstract class FileObject : IPageIcon
     {
         [JsonProperty("type")]
-        [JsonConverter(typeof(StringEnumConverter))]
         public virtual string Type { get; set; }
 
         [JsonProperty("url")]
