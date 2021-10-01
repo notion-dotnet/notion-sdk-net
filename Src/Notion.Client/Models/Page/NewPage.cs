@@ -6,15 +6,6 @@ namespace Notion.Client
     public class NewPage
     {
         /// <summary>
-        /// Constructor without arguments: added for class initializations using class literals.
-        /// </summary>
-        public NewPage()
-        {
-            Properties = new Dictionary<string, PropertyValue>();
-            Children = new List<Block>();
-        }
-
-        /// <summary>
         /// Constructor that adds required <c>Parent</c> property. Used when you don't want to
         /// assign properties in separate operations.
         /// </summary>
