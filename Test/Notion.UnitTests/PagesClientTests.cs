@@ -56,11 +56,10 @@ namespace Notion.UnitTests
                     .WithBody(jsonData)
             );
 
-            var newPage = new NewPage();
-            newPage.Parent = new PageParent
+            var newPage = new NewPage(new PageParent
             {
                 PageId = "3c357473-a281-49a4-88c0-10d2b245a589"
-            };
+            });
 
             newPage.AddProperty("Name", new TitlePropertyValue()
             {
@@ -210,7 +209,7 @@ namespace Notion.UnitTests
         [Fact]
         public async Task CreateAsync_Throws_ArgumentNullException_When_Parent_Is_Missing()
         {
-            var newPage = new NewPage();
+            var newPage = new NewPage(null);
 
             Func<Task> act = async () => await _client.CreateAsync(newPage);
 

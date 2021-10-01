@@ -1,18 +1,10 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public class NewPage
     {
-        /// <summary>
-        /// Constructor without arguments: added for class initializations using class literals.
-        /// </summary>
-        public NewPage()
-        {
-            Properties = new Dictionary<string, PropertyValue>();
-            Children = new List<Block>();
-        }
-
         /// <summary>
         /// Constructor that adds required <c>Parent</c> property. Used when you don't want to
         /// assign properties in separate operations.
@@ -24,11 +16,20 @@ namespace Notion.Client
             Children = new List<Block>();
         }
 
+        [JsonProperty("parent")]
         public IPageParent Parent { get; set; }
 
+        [JsonProperty("properties")]
         public Dictionary<string, PropertyValue> Properties { get; set; }
 
+        [JsonProperty("children")]
         public List<Block> Children { get; set; }
+
+        [JsonProperty("icon")]
+        public IPageIcon Icon { get; set; }
+
+        [JsonProperty("cover")]
+        public FileObject Cover { get; set; }
 
         public NewPage AddProperty(string nameOrId, PropertyValue value)
         {
