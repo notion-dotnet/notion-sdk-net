@@ -26,6 +26,7 @@ namespace Notion.Client
 
         public class Condition
         {
+            [JsonProperty("contains")]
             public string Contains { get; set; }
 
             [JsonProperty("does_not_contain")]

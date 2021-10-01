@@ -4,6 +4,7 @@ namespace Notion.Client
 {
     public class RelationFilter : SinglePropertyFilter
     {
+        [JsonProperty("relation")]
         public Condition Relation { get; set; }
 
         public RelationFilter(
@@ -24,6 +25,7 @@ namespace Notion.Client
 
         public class Condition
         {
+            [JsonProperty("contains")]
             public string Contains { get; set; }
 
             [JsonProperty("does_not_contain")]

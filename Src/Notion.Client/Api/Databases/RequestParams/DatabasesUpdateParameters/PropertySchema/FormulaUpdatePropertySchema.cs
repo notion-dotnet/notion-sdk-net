@@ -4,7 +4,7 @@ namespace Notion.Client
 {
     public class FormulaUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
     {
-        [JsonProperty("checkbox")]
+        [JsonProperty("formula")]
         public Formula Formula { get; set; }
     }
 }

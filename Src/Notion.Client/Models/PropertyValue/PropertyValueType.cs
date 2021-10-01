@@ -2,6 +2,9 @@
 
 namespace Notion.Client
 {
+    /// <summary>
+    /// Types of Property Value
+    /// </summary>
     public enum PropertyValueType
     {
         [EnumMember(Value = null)]

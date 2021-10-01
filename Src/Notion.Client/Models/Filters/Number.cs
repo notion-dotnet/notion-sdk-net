@@ -4,6 +4,7 @@ namespace Notion.Client
 {
     public class NumberFilter : SinglePropertyFilter
     {
+        [JsonProperty("number")]
         public Condition Number { get; set; }
 
         public NumberFilter(

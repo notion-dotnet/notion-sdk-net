@@ -4,6 +4,7 @@ namespace Notion.Client
 {
     public class SelectFilter : SinglePropertyFilter
     {
+        [JsonProperty("select")]
         public Condition Select { get; set; }
 
         public SelectFilter(

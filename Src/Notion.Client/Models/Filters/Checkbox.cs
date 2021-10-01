@@ -5,6 +5,7 @@ namespace Notion.Client
 {
     public class CheckboxFilter : SinglePropertyFilter
     {
+        [JsonProperty("checkbox")]
         public Condition Checkbox { get; set; }
 
         public CheckboxFilter(

@@ -5,6 +5,7 @@ namespace Notion.Client
 
     public class FilesFilter : SinglePropertyFilter
     {
+        [JsonProperty("files")]
         public Condition Files { get; set; }
 
         public FilesFilter(

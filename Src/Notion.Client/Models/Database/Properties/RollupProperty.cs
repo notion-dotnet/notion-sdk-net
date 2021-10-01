@@ -8,6 +8,7 @@ namespace Notion.Client
     {
         public override PropertyType Type => PropertyType.Rollup;
 
+        [JsonProperty("rollup")]
         public Rollup Rollup { get; set; }
     }
 
