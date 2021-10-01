@@ -1,7 +1,10 @@
-﻿namespace Notion.Client
+﻿using Newtonsoft.Json;
+
+namespace Notion.Client
 {
-    public class FormulaUpdatePropertySchema : IUpdatePropertySchema
+    public class FormulaUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
     {
+        [JsonProperty("checkbox")]
         public Formula Formula { get; set; }
     }
 }
