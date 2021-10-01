@@ -1,5 +1,4 @@
-﻿using System;
-using JsonSubTypes;
+﻿using JsonSubTypes;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -11,21 +10,5 @@ namespace Notion.Client
     {
         [JsonProperty("type")]
         public virtual string Type { get; set; }
-
-        [JsonProperty("url")]
-        public string Url { get; set; }
-    }
-
-    public class UploadedFile : FileObject
-    {
-        public override string Type => "file";
-
-        [JsonProperty("expiry_time")]
-        public DateTime ExpiryTime { get; set; }
-    }
-
-    public class ExternalFile : FileObject
-    {
-        public override string Type => "external";
     }
 }
