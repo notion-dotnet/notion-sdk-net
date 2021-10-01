@@ -144,6 +144,11 @@ namespace Notion.Client
             return await response.ParseStreamAsync<T>(serializerSettings);
         }
 
+        public async Task DeleteAsync(string uri, IDictionary<string, string> queryParams = null, IDictionary<string, string> headers = null, JsonSerializerSettings serializerSettings = null, CancellationToken cancellationToken = default)
+        {
+            await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null, cancellationToken);
+        }
+
         private HttpClient EnsureHttpClient()
         {
             if (_httpClient == null)
