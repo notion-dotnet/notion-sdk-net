@@ -26,6 +26,7 @@ namespace Notion.Client
         [JsonProperty("rollup_property_id")]
         public string RollupPropertyId { get; set; }
 
+        [JsonProperty("function")]
         [JsonConverter(typeof(StringEnumConverter))]
         public Function Function { get; set; }
     }
