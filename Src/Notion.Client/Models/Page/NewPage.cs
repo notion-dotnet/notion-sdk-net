@@ -16,10 +16,13 @@ namespace Notion.Client
             Children = new List<Block>();
         }
 
+        [JsonProperty("parent")]
         public IPageParent Parent { get; set; }
 
+        [JsonProperty("properties")]
         public Dictionary<string, PropertyValue> Properties { get; set; }
 
+        [JsonProperty("children")]
         public List<Block> Children { get; set; }
 
         [JsonProperty("icon")]

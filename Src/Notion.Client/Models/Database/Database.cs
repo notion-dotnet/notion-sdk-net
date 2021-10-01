@@ -16,10 +16,13 @@ namespace Notion.Client
         [JsonProperty("last_edited_time")]
         public DateTime LastEditedTime { get; set; }
 
+        [JsonProperty("title")]
         public List<RichTextBase> Title { get; set; }
 
+        [JsonProperty("properties")]
         public Dictionary<string, Property> Properties { get; set; }
 
+        [JsonProperty("parent")]
         public IDatabaseParent Parent { get; set; }
 
         [JsonProperty("icon")]

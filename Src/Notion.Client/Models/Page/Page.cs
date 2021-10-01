@@ -10,6 +10,7 @@ namespace Notion.Client
 
         public string Id { get; set; }
 
+        [JsonProperty("parent")]
         public IPageParent Parent { get; set; }
 
         [JsonProperty("created_time")]
@@ -21,8 +22,10 @@ namespace Notion.Client
         [JsonProperty("archived")]
         public bool IsArchived { get; set; }
 
+        [JsonProperty("properties")]
         public IDictionary<string, PropertyValue> Properties { get; set; }
 
+        [JsonProperty("url")]
         public string Url { get; set; }
 
         [JsonProperty("icon")]

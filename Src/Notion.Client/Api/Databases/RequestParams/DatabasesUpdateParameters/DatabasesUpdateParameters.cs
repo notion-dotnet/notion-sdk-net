@@ -5,7 +5,10 @@ namespace Notion.Client
 {
     public interface IDatabasesUpdateBodyParameters
     {
+        [JsonProperty("properties")]
         Dictionary<string, IUpdatePropertySchema> Properties { get; set; }
+
+        [JsonProperty("title")]
         List<RichTextBaseInput> Title { get; set; }
 
         [JsonProperty("icon")]
