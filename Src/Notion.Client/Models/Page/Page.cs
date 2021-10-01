@@ -24,5 +24,11 @@ namespace Notion.Client
         public IDictionary<string, PropertyValue> Properties { get; set; }
 
         public string Url { get; set; }
+
+        [JsonProperty("icon")]
+        public IPageIcon Icon { get; set; }
+
+        [JsonProperty("cover")]
+        public FileObject Cover { get; set; }
     }
 }

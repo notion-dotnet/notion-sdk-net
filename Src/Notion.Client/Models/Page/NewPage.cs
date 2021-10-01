@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
@@ -29,6 +30,12 @@ namespace Notion.Client
         public Dictionary<string, PropertyValue> Properties { get; set; }
 
         public List<Block> Children { get; set; }
+
+        [JsonProperty("icon")]
+        public IPageIcon Icon { get; set; }
+
+        [JsonProperty("cover")]
+        public FileObject Cover { get; set; }
 
         public NewPage AddProperty(string nameOrId, PropertyValue value)
         {
