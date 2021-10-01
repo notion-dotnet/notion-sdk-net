@@ -21,5 +21,11 @@ namespace Notion.Client
         public Dictionary<string, Property> Properties { get; set; }
 
         public IDatabaseParent Parent { get; set; }
+
+        [JsonProperty("icon")]
+        public IPageIcon Icon { get; set; }
+
+        [JsonProperty("cover")]
+        public FileObject Cover { get; set; }
     }
 }
