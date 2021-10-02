@@ -66,11 +66,11 @@ var complexFiler = new CompoundFilter(
 ## Supported Endpoints
 
 - [x] Databases
-  - [x] Retrieve a database
   - [x] Query a database
-  - [x] List databases
   - [x] Create a database
   - [x] Update database
+  - [x] Retrieve a database
+  - [x] List databases
 - [x] Pages
   - [x] Retrieve a page
   - [x] Create a page
@@ -80,6 +80,7 @@ var complexFiler = new CompoundFilter(
   - [x] Update a block
   - [x] Retrieve block children
   - [x] Append block children
+  - [x] Delete a block
 - [x] Users
   - [x] Retrieve a User
   - [x] List all users
