@@ -11,8 +11,10 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(User), ObjectType.User)]
     public interface IObject
     {
+        [JsonProperty("id")]
         string Id { get; set; }
 
+        [JsonProperty("object")]
         [JsonConverter(typeof(StringEnumConverter))]
         ObjectType Object { get; }
     }

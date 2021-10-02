@@ -4,6 +4,7 @@ namespace Notion.Client
 {
     public class TextFilter : SinglePropertyFilter
     {
+        [JsonProperty("text")]
         public Condition Text { get; set; }
 
         public TextFilter(
@@ -38,6 +39,7 @@ namespace Notion.Client
             [JsonProperty("does_not_equal")]
             public string DoesNotEqual { get; set; }
 
+            [JsonProperty("contains")]
             public string Contains { get; set; }
 
             [JsonProperty("does_not_contain")]

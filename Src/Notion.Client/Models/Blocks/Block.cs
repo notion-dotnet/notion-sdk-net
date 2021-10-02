@@ -29,6 +29,7 @@ namespace Notion.Client
         public ObjectType Object => ObjectType.Block;
         public string Id { get; set; }
 
+        [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
         public virtual BlockType Type { get; set; }
 

@@ -4,6 +4,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
+    /// <summary>
+    /// An object describing the identifier, type, and value of a page property.
+    /// </summary>
     [JsonConverter(typeof(JsonSubtypes), "type")]
     [JsonSubtypes.KnownSubType(typeof(CheckboxPropertyValue), PropertyValueType.Checkbox)]
     [JsonSubtypes.KnownSubType(typeof(CreatedByPropertyValue), PropertyValueType.CreatedBy)]
@@ -26,6 +29,10 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(UrlPropertyValue), PropertyValueType.Url)]
     public class PropertyValue
     {
+        /// <summary>
+        /// Underlying identifier of the property.
+        /// </summary>
+        [JsonProperty("id")]
         public string Id { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]

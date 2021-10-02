@@ -10,6 +10,7 @@ namespace Notion.Client
 
         public class Info
         {
+            [JsonProperty("text")]
             public IEnumerable<RichTextBaseInput> Text { get; set; }
 
             [JsonProperty("checked")]

@@ -1,7 +1,10 @@
-﻿namespace Notion.Client
+﻿using Newtonsoft.Json;
+
+namespace Notion.Client
 {
     public class FormulaFilter : SinglePropertyFilter
     {
+        [JsonProperty("formula")]
         public Condition Formula { get; set; }
 
         public FormulaFilter(
@@ -22,9 +25,16 @@
 
         public class Condition
         {
+            [JsonProperty("text")]
             public TextFilter.Condition Text { get; set; }
+
+            [JsonProperty("checkbox")]
             public CheckboxFilter.Condition Checkbox { get; set; }
+
+            [JsonProperty("number")]
             public NumberFilter.Condition Number { get; set; }
+
+            [JsonProperty("date")]
             public DateFilter.Condition Date { get; set; }
 
             public Condition(

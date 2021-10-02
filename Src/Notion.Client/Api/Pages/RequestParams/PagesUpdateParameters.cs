@@ -5,8 +5,10 @@ namespace Notion.Client
 {
     public class PagesUpdateParameters : IPagesUpdateBodyParameters
     {
+        [JsonProperty("archived")]
         public bool Archived { get; set; }
 
+        [JsonProperty("properties")]
         public IDictionary<string, PropertyValue> Properties { get; set; }
 
         [JsonProperty("icon")]

@@ -7,6 +7,7 @@ namespace Notion.Client
 {
     public class DateFilter : SinglePropertyFilter
     {
+        [JsonProperty("date")]
         public Condition Date { get; set; }
 
         public DateFilter(
