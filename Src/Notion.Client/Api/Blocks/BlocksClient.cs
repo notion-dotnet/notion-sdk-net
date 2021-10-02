@@ -34,7 +34,7 @@ namespace Notion.Client
             return await _client.GetAsync<PaginatedList<Block>>(url, queryParams);
         }
 
-        public async Task<Block> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null)
+        public async Task<PaginatedList<Block>> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -45,7 +45,7 @@ namespace Notion.Client
 
             var body = (IBlocksAppendChildrenBodyParameters)parameters;
 
-            return await _client.PatchAsync<Block>(url, body);
+            return await _client.PatchAsync<PaginatedList<Block>>(url, body);
         }
 
         public async Task<Block> RetrieveAsync(string blockId)
@@ -70,6 +70,18 @@ namespace Notion.Client
             var url = BlocksApiUrls.Update(blockId);
 
             return await _client.PatchAsync<Block>(url, updateBlock);
+        }
+
+        public async Task DeleteAsync(string blockId)
+        {
+            if (string.IsNullOrWhiteSpace(blockId))
+            {
+                throw new ArgumentNullException(nameof(blockId));
+            }
+
+            var url = BlocksApiUrls.Delete(blockId);
+
+            await _client.DeleteAsync(url);
         }
     }
 }

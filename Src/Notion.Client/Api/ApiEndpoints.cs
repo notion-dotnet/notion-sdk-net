@@ -21,6 +21,14 @@
         {
             public static string Retrieve(string blockId) => $"/v1/blocks/{blockId}";
             public static string Update(string blockId) => $"/v1/blocks/{blockId}";
+
+            /// <summary>
+            /// Get the <see cref="uri string"/> for deleting a block.
+            /// </summary>
+            /// <param name="blockId">Identifier for a Notion block</param>
+            /// <returns>Returns a <see cref="uri string"/> for deleting a block.</returns>
+            public static string Delete(string blockId) => $"/v1/blocks/{blockId}";
+
             public static string RetrieveChildren(string blockId) => $"/v1/blocks/{blockId}/children";
             public static string AppendChildren(string blockId) => $"/v1/blocks/{blockId}/children";
         }

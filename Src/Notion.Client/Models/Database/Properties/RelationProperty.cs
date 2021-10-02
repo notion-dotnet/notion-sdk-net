@@ -6,6 +6,8 @@ namespace Notion.Client
     {
         public override PropertyType Type => PropertyType.Relation;
 
+
+        [JsonProperty("relation")]
         public Relation Relation { get; set; }
     }
 

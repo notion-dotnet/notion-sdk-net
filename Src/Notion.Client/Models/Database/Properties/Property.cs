@@ -26,11 +26,14 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(UrlProperty), PropertyType.Url)]
     public class Property
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
 
+        [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
         public virtual PropertyType Type { get; set; }
 
+        [JsonProperty("name")]
         public string Name { get; set; }
     }
 }

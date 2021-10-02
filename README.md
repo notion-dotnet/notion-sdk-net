@@ -41,6 +41,10 @@ Provides the following packages:
 dotnet add package Notion.Net
 ```
 
+> Note: From Nuget 2.0.0 notion client sdk default sets the Notion-Version header to 2021-08-16.
+
+
+
 ## Usage
 
 > Before getting started, you need to [create an integration](https://www.notion.com/my-integrations) and find the token. You can learn more about authorization [here](https://developers.notion.com/docs/authorization).
@@ -93,12 +97,13 @@ var complexFiler = new CompoundFilter(
 ```
 
 ## Supported Endpoints
+
 - [x] Databases
-  - [x] Retrieve a database
   - [x] Query a database
-  - [x] List databases
   - [x] Create a database
   - [x] Update database
+  - [x] Retrieve a database
+  - [x] List databases  (Deprecated: use Search API instead)
 - [x] Pages
   - [x] Retrieve a page
   - [x] Create a page
@@ -108,6 +113,7 @@ var complexFiler = new CompoundFilter(
   - [x] Update a block
   - [x] Retrieve block children
   - [x] Append block children
+  - [x] Delete a block
 - [x] Users
   - [x] Retrieve a User
   - [x] List all users
@@ -116,4 +122,3 @@ var complexFiler = new CompoundFilter(
 ## Contribution Guideline
 
 Hello! Thank you for choosing to help contribute to this open source library. There are many ways you can contribute and help is always welcome. You can read the detailed [Contribution Guideline](https://github.com/notion-dotnet/notion-sdk-net/blob/main/CONTRIBUTING.md) defined here - we will continue to improve it.
-

@@ -13,10 +13,13 @@ namespace Notion.Client
         [JsonProperty("plain_text")]
         public string PlainText { get; set; }
 
+        [JsonProperty("href")]
         public string Href { get; set; }
 
+        [JsonProperty("annotations")]
         public Annotations Annotations { get; set; }
 
+        [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
         public virtual RichTextType Type { get; set; }
     }
@@ -38,6 +41,7 @@ namespace Notion.Client
         [JsonProperty("code")]
         public bool IsCode { get; set; }
 
+        [JsonProperty("color")]
         // color: Color | BackgroundColor
         public string Color { get; set; }
     }

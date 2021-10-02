@@ -11,6 +11,7 @@ namespace Notion.Client
 
         public class Info
         {
+            [JsonProperty("title")]
             public string Title { get; set; }
         }
     }
