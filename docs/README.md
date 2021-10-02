@@ -70,7 +70,7 @@ var complexFiler = new CompoundFilter(
   - [x] Create a database
   - [x] Update database
   - [x] Retrieve a database
-  - [x] List databases
+  - [x] List databases (Deprecated: use Search API instead)
 - [x] Pages
   - [x] Retrieve a page
   - [x] Create a page
