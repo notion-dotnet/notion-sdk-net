@@ -19,6 +19,7 @@ namespace Notion.UnitTests
         }
 
         [Fact]
+        [Obsolete]
         public async Task ListDatabasesAsync()
         {
             var path = ApiEndpoints.DatabasesApiUrls.List();
