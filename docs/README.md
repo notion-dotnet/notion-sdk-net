@@ -10,6 +10,8 @@ A simple and easy to use client for the [Notion API](https://developers.notion.c
 dotnet add package Notion.Net
 ```
 
+> Note: From Nuget 2.0.0 notion client sdk default sets the Notion-Version header to 2021-08-16.
+
 ## Usage
 
 > Before getting started, you need to [create an integration](https://www.notion.com/my-integrations) and find the token. You can learn more about authorization [here](https://developers.notion.com/docs/authorization).

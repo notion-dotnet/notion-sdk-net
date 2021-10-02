@@ -41,6 +41,10 @@ Provides the following packages:
 dotnet add package Notion.Net
 ```
 
+> Note: From Nuget 2.0.0 notion client sdk default sets the Notion-Version header to 2021-08-16.
+
+
+
 ## Usage
 
 > Before getting started, you need to [create an integration](https://www.notion.com/my-integrations) and find the token. You can learn more about authorization [here](https://developers.notion.com/docs/authorization).
@@ -116,4 +120,3 @@ var complexFiler = new CompoundFilter(
 ## Contribution Guideline
 
 Hello! Thank you for choosing to help contribute to this open source library. There are many ways you can contribute and help is always welcome. You can read the detailed [Contribution Guideline](https://github.com/notion-dotnet/notion-sdk-net/blob/main/CONTRIBUTING.md) defined here - we will continue to improve it.
-
