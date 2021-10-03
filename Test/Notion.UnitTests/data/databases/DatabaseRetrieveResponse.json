@@ -22,6 +22,17 @@
       "href": null
     }
   ],
+  "icon": {
+    "type": "emoji",
+    "emoji": "🎉"
+  },
+  "cover": {
+    "type": "external",
+    "external": {
+	  	"url": "https://website.domain/images/image.png"
+    }
+  },
+  "url": "https://www.notion.so/668d797c76fa49349b05ad288df2d136",
   "properties": {
     "Tags": {
       "id": "YG~h",

@@ -119,6 +119,9 @@ namespace Notion.UnitTests
             {
                 property.Key.Should().Be(property.Value.Name);
             }
+
+            HelperAsserts.IPageIconAsserts(database.Icon);
+            HelperAsserts.FileObjectAsserts(database.Cover);
         }
 
         [Fact]
