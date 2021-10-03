@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Notion.Client;
 
 namespace Notion.UnitTests
