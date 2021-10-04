@@ -12,7 +12,6 @@
 
     public class NotionClient : INotionClient
     {
-
         public NotionClient(ClientOptions options)
         {
             RestClient = new RestClient(options);
