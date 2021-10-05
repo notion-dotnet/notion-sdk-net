@@ -14,7 +14,7 @@ namespace Notion.Client
         /// Date
         /// </summary>
         [JsonProperty("date")]
-        public Date Date { get; set; }
+        public Date? Date { get; set; }
     }
 
     /// <summary>
