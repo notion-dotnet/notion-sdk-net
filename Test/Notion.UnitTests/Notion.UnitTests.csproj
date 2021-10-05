@@ -81,6 +81,12 @@
     <None Update="data\users\RetrieveUserResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="data\users\MeResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data\users\MeUserLevelResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="data\search\SearchResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
