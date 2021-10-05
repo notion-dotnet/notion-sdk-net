@@ -13,6 +13,6 @@ namespace Notion.Client
         /// Value of number
         /// </summary>
         [JsonProperty("number")]
-        public double Number { get; set; }
+        public double? Number { get; set; }
     }
 }
