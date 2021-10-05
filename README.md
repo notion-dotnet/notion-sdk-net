@@ -120,6 +120,12 @@ var complexFiler = new CompoundFilter(
   - [x] Retrieve your token's bot user
 - [x] Search
 
+
+## Contributors
+This project exists thanks to all the people who contribute.
+
+[![contributor image](https://contrib.rocks/image?repo=notion-dotnet/notion-sdk-net)](https://github.com/notion-dotnet/notion-sdk-net/graphs/contributors)
+
 ## Contribution Guideline
 
 Hello! Thank you for choosing to help contribute to this open source library. There are many ways you can contribute and help is always welcome. You can read the detailed [Contribution Guideline](https://github.com/notion-dotnet/notion-sdk-net/blob/main/CONTRIBUTING.md) defined here - we will continue to improve it.
