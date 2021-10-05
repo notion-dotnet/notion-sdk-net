@@ -29,7 +29,7 @@ namespace Notion.Client
         /// Number rollup property values contain a number
         /// </summary>
         [JsonProperty("number")]
-        public double Number { get; set; }
+        public double? Number { get; set; }
 
         /// <summary>
         /// Date rollup property values contain a date property value.

@@ -1,0 +1,22 @@
+{
+    "object": "user",
+    "id": "16d84278-ab0e-484c-9bdd-b35da3bd8905",
+    "name": "pied piper",
+    "avatar_url": null,
+    "type": "bot",
+    "bot": {
+        "owner": {
+            "type": "user",
+            "user": {
+                "object": "user",
+                "id": "5389a034-eb5c-47b5-8a9e-f79c99ef166c",
+                "name": "christine makenotion",
+                "avatar_url": null,
+                "type": "person",
+                "person": {
+                    "email": "christine@makenotion.com"
+                }
+            }
+        }
+    }
+}

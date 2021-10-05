@@ -22,15 +22,4 @@ namespace Notion.Client
         [JsonProperty("bot")]
         public Bot Bot { get; set; }
     }
-
-    public class Person
-    {
-        [JsonProperty("email")]
-        public string Email { get; set; }
-    }
-
-    public class Bot
-    {
-
-    }
 }
