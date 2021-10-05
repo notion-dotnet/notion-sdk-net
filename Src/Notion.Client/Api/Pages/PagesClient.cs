@@ -34,6 +34,37 @@ namespace Notion.Client
             return await _client.PostAsync<Page>(PagesApiUrls.Create(), page);
         }
 
+        /// <summary>
+        /// Creates a new page in the specified database or as a child of an existing page.
+        /// 
+        /// If the parent is a database, the <see href="https://developers.notion.com/reference-link/page#property-value-object">property values</see> of the new page in the properties parameter must conform to the parent <see href="https://developers.notion.com/reference-link/database">database</see>'s property schema.
+        /// 
+        /// If the parent is a page, the only valid property is <strong>title</strong>.
+        /// </summary>
+        /// <param name="pagesCreateParameters">Create page parameters</param>
+        /// <returns>Created page.</returns>
+        public async Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters)
+        {
+            if (pagesCreateParameters is null)
+            {
+                throw new ArgumentNullException(nameof(pagesCreateParameters));
+            }
+
+            var bodyParameters = (IPagesCreateBodyParameters)pagesCreateParameters;
+
+            if (bodyParameters.Parent == null)
+            {
+                throw new ArgumentNullException(nameof(bodyParameters.Parent), "Parent is required!");
+            }
+
+            if (bodyParameters.Properties == null)
+            {
+                throw new ArgumentNullException(nameof(bodyParameters.Properties), "Properties are required!");
+            }
+
+            return await _client.PostAsync<Page>(PagesApiUrls.Create(), bodyParameters);
+        }
+
         public async Task<Page> RetrieveAsync(string pageId)
         {
             var url = PagesApiUrls.Retrieve(pageId);

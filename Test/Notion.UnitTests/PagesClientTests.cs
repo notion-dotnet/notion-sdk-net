@@ -201,7 +201,7 @@ namespace Notion.UnitTests
         [Fact]
         public async Task CreateAsync_Throws_ArgumentNullException_When_Parameter_Is_Null()
         {
-            Func<Task> act = async () => await _client.CreateAsync(null);
+            Func<Task> act = async () => await _client.CreateAsync(page: null);
 
             (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("page");
         }
