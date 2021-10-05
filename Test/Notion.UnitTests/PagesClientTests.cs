@@ -222,7 +222,6 @@ namespace Notion.UnitTests
                 Parent = new ParentPageInput()
                 {
                     PageId = "3c357473-a281-49a4-88c0-10d2b245a589",
-
                 },
                 Properties = null
             };
