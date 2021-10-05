@@ -56,12 +56,10 @@ namespace Notion.UnitTests
                     .WithBody(jsonData)
             );
 
-            var newPage = new NewPage(new PageParent
+            var pagesCreateParameters = PagesCreateParametersBuilder.Create(new DatabaseParentInput
             {
-                PageId = "3c357473-a281-49a4-88c0-10d2b245a589"
-            });
-
-            newPage.AddProperty("Name", new TitlePropertyValue()
+                DatabaseId = "3c357473-a281-49a4-88c0-10d2b245a589"
+            }).AddProperty("Name", new TitlePropertyValue()
             {
                 Title = new List<RichTextBase>()
                 {
@@ -73,9 +71,9 @@ namespace Notion.UnitTests
                         }
                     }
                 }
-            });
+            }).Build();
 
-            var page = await _client.CreateAsync(newPage);
+            var page = await _client.CreateAsync(pagesCreateParameters);
 
             page.Id.Should().NotBeNullOrEmpty();
             page.Url.Should().NotBeNullOrEmpty();
@@ -83,7 +81,7 @@ namespace Notion.UnitTests
             page.Properties.First().Key.Should().Be("Name");
             page.IsArchived.Should().BeFalse();
             page.Parent.Should().NotBeNull();
-            ((PageParent)page.Parent).PageId.Should().Be("3c357473-a281-49a4-88c0-10d2b245a589");
+            ((DatabaseParent)page.Parent).DatabaseId.Should().Be("3c357473-a281-49a4-88c0-10d2b245a589");
         }
 
         [Fact]
@@ -203,15 +201,15 @@ namespace Notion.UnitTests
         {
             Func<Task> act = async () => await _client.CreateAsync(null);
 
-            (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("page");
+            (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("pagesCreateParameters");
         }
 
         [Fact]
         public async Task CreateAsync_Throws_ArgumentNullException_When_Parent_Is_Missing()
         {
-            var newPage = new NewPage(null);
+            var pagesCreateParameters = PagesCreateParametersBuilder.Create(null).Build();
 
-            Func<Task> act = async () => await _client.CreateAsync(newPage);
+            Func<Task> act = async () => await _client.CreateAsync(pagesCreateParameters);
 
             (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("Parent");
         }
@@ -219,14 +217,16 @@ namespace Notion.UnitTests
         [Fact]
         public async Task CreateAsync_Throws_ArgumentNullException_When_Properties_Is_Missing()
         {
-            var newPage = new NewPage(new PageParent()
+            var pagesCreateParameters = new PagesCreateParameters
             {
-                PageId = "3c357473-a281-49a4-88c0-10d2b245a589"
-            });
+                Parent = new ParentPageInput()
+                {
+                    PageId = "3c357473-a281-49a4-88c0-10d2b245a589",
+                },
+                Properties = null
+            };
 
-            newPage.Properties = null;
-
-            Func<Task> act = async () => await _client.CreateAsync(newPage);
+            Func<Task> act = async () => await _client.CreateAsync(pagesCreateParameters);
 
             (await act.Should().ThrowAsync<ArgumentNullException>()).And.ParamName.Should().Be("Properties");
         }

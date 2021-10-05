@@ -31,7 +31,7 @@
     }
   },
   "parent": {
-    "page_id": "3c357473-a281-49a4-88c0-10d2b245a589",
-    "type": "page_id"
+    "database_id": "3c357473-a281-49a4-88c0-10d2b245a589",
+    "type": "database_id"
   }
 }

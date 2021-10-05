@@ -5,7 +5,17 @@ namespace Notion.Client
 {
     public interface IPagesClient
     {
-        Task<Page> CreateAsync(NewPage page);
+        /// <summary>
+        /// Creates a new page in the specified database or as a child of an existing page.
+        /// 
+        /// If the parent is a database, the <see href="https://developers.notion.com/reference-link/page#property-value-object">property values</see> of the new page in the properties parameter must conform to the parent <see href="https://developers.notion.com/reference-link/database">database</see>'s property schema.
+        /// 
+        /// If the parent is a page, the only valid property is <strong>title</strong>.
+        /// </summary>
+        /// <param name="pagesCreateParameters">Create page parameters</param>
+        /// <returns>Created page.</returns>
+        Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters);
+
         Task<Page> RetrieveAsync(string pageId);
 
         Task<Page> UpdatePropertiesAsync(

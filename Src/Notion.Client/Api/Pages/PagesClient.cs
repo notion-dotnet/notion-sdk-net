@@ -14,24 +14,35 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<Page> CreateAsync(NewPage page)
+        /// <summary>
+        /// Creates a new page in the specified database or as a child of an existing page.
+        /// 
+        /// If the parent is a database, the <see href="https://developers.notion.com/reference-link/page#property-value-object">property values</see> of the new page in the properties parameter must conform to the parent <see href="https://developers.notion.com/reference-link/database">database</see>'s property schema.
+        /// 
+        /// If the parent is a page, the only valid property is <strong>title</strong>.
+        /// </summary>
+        /// <param name="pagesCreateParameters">Create page parameters</param>
+        /// <returns>Created page.</returns>
+        public async Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters)
         {
-            if (page == null)
+            if (pagesCreateParameters is null)
             {
-                throw new ArgumentNullException(nameof(page));
+                throw new ArgumentNullException(nameof(pagesCreateParameters));
             }
 
-            if (page.Parent == null)
+            var bodyParameters = (IPagesCreateBodyParameters)pagesCreateParameters;
+
+            if (bodyParameters.Parent == null)
             {
-                throw new ArgumentNullException(nameof(page.Parent), "Parent is required!");
+                throw new ArgumentNullException(nameof(bodyParameters.Parent), "Parent is required!");
             }
 
-            if (page.Properties == null)
+            if (bodyParameters.Properties == null)
             {
-                throw new ArgumentNullException(nameof(page.Properties), "Properties are required!");
+                throw new ArgumentNullException(nameof(bodyParameters.Properties), "Properties are required!");
             }
 
-            return await _client.PostAsync<Page>(PagesApiUrls.Create(), page);
+            return await _client.PostAsync<Page>(PagesApiUrls.Create(), bodyParameters);
         }
 
         public async Task<Page> RetrieveAsync(string pageId)
