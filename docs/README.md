@@ -84,6 +84,7 @@ var complexFiler = new CompoundFilter(
 - [x] Users
   - [x] Retrieve a User
   - [x] List all users
+  - [x] Retrieve your token's bot user
 - [x] Search
 
 ## Contribution Guideline
