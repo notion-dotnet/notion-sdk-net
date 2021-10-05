@@ -5,8 +5,6 @@ namespace Notion.Client
 {
     public interface IPagesClient
     {
-        Task<Page> CreateAsync(NewPage page);
-
         /// <summary>
         /// Creates a new page in the specified database or as a child of an existing page.
         /// 
