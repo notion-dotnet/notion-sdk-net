@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -15,6 +15,6 @@ namespace Notion.Client
 
             [JsonProperty("language")]
             public string Language { get; set; }
-        }        
+        }
     }
 }
