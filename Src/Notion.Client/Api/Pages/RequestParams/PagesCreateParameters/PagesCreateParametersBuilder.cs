@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Notion.Client
 {
     public class PagesCreateParametersBuilder
     {
-        private IPageParent parent;
+        private IPageParentInput parent;
         private Dictionary<string, PropertyValue> properties = new Dictionary<string, PropertyValue>();
         private IList<Block> children = new List<Block>();
         private IPageIcon icon;
@@ -14,9 +14,10 @@ namespace Notion.Client
         {
         }
 
-        public static PagesCreateParametersBuilder Create(IPageParent parent)
+        public static PagesCreateParametersBuilder Create(IPageParentInput parent)
         {
-            return new PagesCreateParametersBuilder {
+            return new PagesCreateParametersBuilder
+            {
                 parent = parent
             };
         }

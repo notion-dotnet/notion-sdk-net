@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -6,8 +6,8 @@ namespace Notion.Client
     public interface IPagesCreateBodyParameters
     {
         [JsonProperty("parent")]
-        IPageParent Parent { get; set; }
-        
+        IPageParentInput Parent { get; set; }
+
         [JsonProperty("properties")]
         IDictionary<string, PropertyValue> Properties { get; set; }
 
