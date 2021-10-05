@@ -21,5 +21,14 @@ namespace Notion.Client
         {
             return await _client.GetAsync<PaginatedList<User>>(UsersApiUrls.List());
         }
+
+        /// <summary>
+        /// Retrieves the bot User associated with the API token provided in the authorization header.
+        /// </summary>
+        /// <returns>User object of type bot having an owner field with information about the person who authorized the integration.</returns>
+        public async Task<User> MeAsync()
+        {
+            return await _client.GetAsync<User>(UsersApiUrls.Me());
+        }
     }
 }

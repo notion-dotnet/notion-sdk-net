@@ -1,4 +1,6 @@
-﻿namespace Notion.Client
+﻿using System;
+
+namespace Notion.Client
 {
     public static class ApiEndpoints
     {
@@ -15,6 +17,12 @@
         {
             public static string Retrieve(string userId) => $"/v1/users/{userId}";
             public static string List() => "/v1/users";
+
+            /// <summary>
+            /// Get the <see cref="uri string"/> for retrieve your token's bot user.
+            /// </summary>
+            /// <returns>Returns a <see cref="uri string"/> retrieve your token's bot user.</returns>
+            public static string Me() => "/v1/users/me";
         }
 
         public static class BlocksApiUrls

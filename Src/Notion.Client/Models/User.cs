@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JsonSubTypes;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
@@ -31,6 +32,32 @@ namespace Notion.Client
 
     public class Bot
     {
+        [JsonProperty("owner")]
+        public IBotOwner Owner { get; set; }
+    }
 
+    [JsonConverter(typeof(JsonSubtypes), "type")]
+    [JsonSubtypes.KnownSubType(typeof(UserOwner), "user")]
+    [JsonSubtypes.KnownSubType(typeof(WorkspaceIntegrationOwner), "workspace")]
+    public interface IBotOwner
+    {
+        [JsonProperty("type")]
+        string Type { get; set; }
+    }
+
+    public class WorkspaceIntegrationOwner : IBotOwner
+    {
+        public string Type { get; set; }
+
+        [JsonProperty("workspace")]
+        public bool Workspace { get; set; }
+    }
+
+    public class UserOwner : IBotOwner
+    {
+        public string Type { get; set; }
+
+        [JsonProperty("user")]
+        public User User { get; set; }
     }
 }
