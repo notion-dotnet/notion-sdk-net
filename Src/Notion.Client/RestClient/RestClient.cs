@@ -72,7 +72,7 @@ namespace Notion.Client
             return new NotionApiException(response.StatusCode, errorResponse?.ErrorCode, errorResponse?.Message);
         }
 
-        private async Task<HttpResponseMessage> SendAsync(
+        public async Task<HttpResponseMessage> SendAsync(
             string requestUri,
             HttpMethod httpMethod,
             IDictionary<string, string> queryParams = null,

@@ -7,18 +7,19 @@
         IPagesClient Pages { get; }
         ISearchClient Search { get; }
         IBlocksClient Blocks { get; }
+        IRestClient RestClient { get; }
     }
 
     public class NotionClient : INotionClient
     {
         public NotionClient(ClientOptions options)
         {
-            var restClient = new RestClient(options);
-            Users = new UsersClient(restClient);
-            Databases = new DatabasesClient(restClient);
-            Pages = new PagesClient(restClient);
-            Search = new SearchClient(restClient);
-            Blocks = new BlocksClient(restClient);
+            RestClient = new RestClient(options);
+            Users = new UsersClient(RestClient);
+            Databases = new DatabasesClient(RestClient);
+            Pages = new PagesClient(RestClient);
+            Search = new SearchClient(RestClient);
+            Blocks = new BlocksClient(RestClient);
         }
 
         public IUsersClient Users { get; }
@@ -26,5 +27,6 @@
         public IPagesClient Pages { get; }
         public ISearchClient Search { get; }
         public IBlocksClient Blocks { get; }
+        public IRestClient RestClient { get; }
     }
 }
