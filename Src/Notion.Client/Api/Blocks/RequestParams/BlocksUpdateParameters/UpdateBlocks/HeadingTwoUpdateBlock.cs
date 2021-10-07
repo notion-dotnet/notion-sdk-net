@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class HeadingTwoUpdateBlock : IUpdateBlock
+    public class HeadingTwoUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("heading_2")]
         public TextContentUpdate Heading_2 { get; set; }

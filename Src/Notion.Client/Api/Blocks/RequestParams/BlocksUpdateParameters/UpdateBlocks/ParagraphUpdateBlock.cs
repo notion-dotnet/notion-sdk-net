@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class ParagraphUpdateBlock : IUpdateBlock
+    public class ParagraphUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("paragraph")]
         public TextContentUpdate Paragraph { get; set; }
