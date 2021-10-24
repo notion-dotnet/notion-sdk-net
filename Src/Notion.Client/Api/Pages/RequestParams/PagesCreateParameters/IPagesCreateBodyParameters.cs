@@ -9,7 +9,7 @@ namespace Notion.Client
         IPageParentInput Parent { get; set; }
 
         [JsonProperty("properties")]
-        IDictionary<string, PropertyValue> Properties { get; set; }
+        IDictionary<string, PropertyInputValue> Properties { get; set; }
 
         [JsonProperty("children")]
         IList<Block> Children { get; set; }

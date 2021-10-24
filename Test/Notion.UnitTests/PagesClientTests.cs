@@ -59,7 +59,7 @@ namespace Notion.UnitTests
             var pagesCreateParameters = PagesCreateParametersBuilder.Create(new DatabaseParentInput
             {
                 DatabaseId = "3c357473-a281-49a4-88c0-10d2b245a589"
-            }).AddProperty("Name", new TitlePropertyValue()
+            }).AddProperty("Name", new TitlePropertyInputValue()
             {
                 Title = new List<RichTextBase>()
                 {
