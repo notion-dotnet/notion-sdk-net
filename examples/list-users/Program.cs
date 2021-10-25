@@ -28,7 +28,7 @@ namespace list_users
                 builder.AddConsole();
             });
 
-            NotionLogging.ConfigureLogger(factory);
+            NotionClientLogging.ConfigureLogger(factory);
 
             var usersList = await client.Users.ListAsync();
 
