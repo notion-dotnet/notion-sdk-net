@@ -87,6 +87,30 @@ var complexFiler = new CompoundFilter(
   - [x] Retrieve your token's bot user
 - [x] Search
 
+## Enable internal logs
+The library make use of `ILoggerFactory` interface exposed by `Microsoft.Extensions.Logging`. Which allow you to have ability to enable the internal logs when developing application to get additional information.
+
+To enable logging you need to add the below code at startup of the application.
+
+```csharp
+// pass the ILoggerFactory instance
+NotionClientLogging.ConfigureLogger(logger);
+
+```
+
+You can set the LogLevel in config file.
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Notion.Client": "Trace"
+    }
+  }
+}
+```
+
+You can also refer `examples/list-users` example.
+
 ## Contribution Guideline
 
 Hello! Thank you for choosing to help contribute to this open source library. There are many ways you can contribute and help is always welcome. You can read the detailed [Contribution Guideline](https://github.com/notion-dotnet/notion-sdk-net/blob/main/CONTRIBUTING.md) defined here - we will continue to improve it.
