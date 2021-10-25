@@ -63,7 +63,7 @@ namespace Notion.IntegrationTests
                 AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
             };
 
-            INotionClient _client = new NotionClient(options);
+            INotionClient _client = NotionClientFactory.Create(options);
 
             PagesCreateParameters pagesCreateParameters = PagesCreateParametersBuilder.Create(new DatabaseParentInput
             {
