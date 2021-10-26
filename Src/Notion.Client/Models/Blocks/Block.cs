@@ -23,6 +23,8 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(ToDoBlock), BlockType.ToDo)]
     [JsonSubtypes.KnownSubType(typeof(ToggleBlock), BlockType.Toggle)]
     [JsonSubtypes.KnownSubType(typeof(VideoBlock), BlockType.Video)]
+    [JsonSubtypes.KnownSubType(typeof(CalloutBlock), BlockType.Callout)]
+    [JsonSubtypes.KnownSubType(typeof(QuoteBlock), BlockType.Quote)]
     [JsonSubtypes.KnownSubType(typeof(UnsupportedBlock), BlockType.Unsupported)]
     public class Block : IObject
     {
