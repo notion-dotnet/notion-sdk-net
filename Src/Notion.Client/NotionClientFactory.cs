@@ -1,4 +1,4 @@
-namespace Notion.Client
+﻿namespace Notion.Client
 {
     public static class NotionClientFactory
     {
