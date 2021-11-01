@@ -12,14 +12,20 @@
 
     public class NotionClient : INotionClient
     {
-        public NotionClient(ClientOptions options)
+        public NotionClient(
+            RestClient restClient,
+            UsersClient users,
+            DatabasesClient databases,
+            PagesClient pages,
+            SearchClient search,
+            BlocksClient blocks)
         {
-            RestClient = new RestClient(options);
-            Users = new UsersClient(RestClient);
-            Databases = new DatabasesClient(RestClient);
-            Pages = new PagesClient(RestClient);
-            Search = new SearchClient(RestClient);
-            Blocks = new BlocksClient(RestClient);
+            RestClient = restClient;
+            Users = users;
+            Databases = databases;
+            Pages = pages;
+            Search = search;
+            Blocks = blocks;
         }
 
         public IUsersClient Users { get; }

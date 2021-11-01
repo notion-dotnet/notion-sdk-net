@@ -52,7 +52,7 @@ dotnet add package Notion.Net
 Import and initialize the client using the integration token created above.
 
 ```csharp
-var client = new NotionClient(new ClientOptions
+var client = NotionClientFactory.Create(new ClientOptions
 {
     AuthToken = "<Token>"
 });
@@ -62,6 +62,16 @@ Make A request to any Endpoint. For example you can call below to fetch the pagi
 
 ```csharp
 var usersList = await client.Users.ListAsync();
+```
+
+## Dependency Injection
+
+Library also provides extension method to register NotionClient with Microsoft dependency injection.
+
+```
+services.AddNotionClient(options => {
+  AuthToken = "<Token>"
+});
 ```
 
 ### Querying a database
