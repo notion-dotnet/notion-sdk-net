@@ -11,7 +11,6 @@ namespace Notion.Client
 
         public class Data
         {
-
         }
     }
 }

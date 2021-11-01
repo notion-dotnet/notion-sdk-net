@@ -68,7 +68,6 @@ namespace Notion.IntegrationTests
             var blockId = blocks.Results.First().Id;
             await _client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
 
-
             blocks = await _client.Blocks.RetrieveChildrenAsync(pageId);
             blocks.Results.Should().HaveCount(1);
 
