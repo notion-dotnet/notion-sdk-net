@@ -58,6 +58,9 @@ namespace Notion.Client
         [EnumMember(Value = "equation")]
         Equation,
 
+        [EnumMember(Value = "breadcrumb")]
+        Breadcrumb,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }
