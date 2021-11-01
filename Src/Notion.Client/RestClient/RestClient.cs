@@ -153,7 +153,8 @@ namespace Notion.Client
         {
             if (_httpClient == null)
             {
-                _httpClient = new HttpClient();
+                var pipeline = new LoggingHandler() { InnerHandler = new HttpClientHandler() };
+                _httpClient = new HttpClient(pipeline);
                 _httpClient.BaseAddress = new Uri(_options.BaseUrl);
             }
 
