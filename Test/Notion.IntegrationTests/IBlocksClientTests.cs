@@ -17,7 +17,7 @@ namespace Notion.IntegrationTests
             {
                 AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
             };
-            INotionClient _client = new NotionClient(options);
+            INotionClient _client = NotionClientFactory.Create(options);
 
             var pageId = "3c357473a28149a488c010d2b245a589";
             var blocks = await _client.Blocks.AppendChildrenAsync(
@@ -48,7 +48,7 @@ namespace Notion.IntegrationTests
             {
                 AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
             };
-            INotionClient _client = new NotionClient(options);
+            INotionClient _client = NotionClientFactory.Create(options);
 
             var pageId = "3c357473a28149a488c010d2b245a589";
             var blocks = await _client.Blocks.AppendChildrenAsync(
