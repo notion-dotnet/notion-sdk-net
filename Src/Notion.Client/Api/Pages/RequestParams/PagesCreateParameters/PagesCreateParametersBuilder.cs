@@ -34,6 +34,18 @@ namespace Notion.Client
             return this;
         }
 
+        public PagesCreateParametersBuilder SetIcon(IPageIcon pageIcon)
+        {
+            icon = pageIcon;
+            return this;
+        }
+
+        public PagesCreateParametersBuilder SetCover(FileObject pageCover)
+        {
+            cover = pageCover;
+            return this;
+        }
+
         public PagesCreateParameters Build()
         {
             return new PagesCreateParameters
