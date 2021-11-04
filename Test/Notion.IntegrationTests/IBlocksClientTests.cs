@@ -20,8 +20,18 @@ namespace Notion.IntegrationTests
             INotionClient _client = NotionClientFactory.Create(options);
 
             var pageId = "3c357473a28149a488c010d2b245a589";
+
+            var page = await _client.Pages.CreateAsync(
+                PagesCreateParametersBuilder.Create(
+                    new ParentPageInput()
+                    {
+                        PageId = pageId
+                    }
+                ).Build()
+            );
+
             var blocks = await _client.Blocks.AppendChildrenAsync(
-                pageId,
+                page.Id,
                 new BlocksAppendChildrenParameters
                 {
                     Children = new List<Block>()
@@ -29,20 +39,26 @@ namespace Notion.IntegrationTests
                         new BreadcrumbBlock
                         {
                             Breadcrumb = new BreadcrumbBlock.Data()
+                        },
+                        new DividerBlock
+                        {
+                            Divider = new DividerBlock.Data()
                         }
                     }
                 }
             );
 
-            blocks.Results.Should().HaveCount(1);
+            blocks.Results.Should().HaveCount(2);
 
             // cleanup
-            var tasks = blocks.Results.Select(x => _client.Blocks.DeleteAsync(x.Id));
-            await Task.WhenAll(tasks);
+            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
+            {
+                Archived = true
+            });
         }
 
         [Fact]
-        public async Task UpdateBlobkAsync_UpdatesGivenBlock()
+        public async Task UpdateBlockAsync_UpdatesGivenBlock()
         {
             var options = new ClientOptions
             {
@@ -51,8 +67,18 @@ namespace Notion.IntegrationTests
             INotionClient _client = NotionClientFactory.Create(options);
 
             var pageId = "3c357473a28149a488c010d2b245a589";
+
+            var page = await _client.Pages.CreateAsync(
+                            PagesCreateParametersBuilder.Create(
+                                new ParentPageInput()
+                                {
+                                    PageId = pageId
+                                }
+                            ).Build()
+                        );
+
             var blocks = await _client.Blocks.AppendChildrenAsync(
-                pageId,
+                page.Id,
                 new BlocksAppendChildrenParameters
                 {
                     Children = new List<Block>()
@@ -72,8 +98,53 @@ namespace Notion.IntegrationTests
             blocks.Results.Should().HaveCount(1);
 
             // cleanup
-            var tasks = blocks.Results.Select(x => _client.Blocks.DeleteAsync(x.Id));
-            await Task.WhenAll(tasks);
+            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
+            {
+                Archived = true
+            });
+        }
+
+        [Fact]
+        public async Task DeleteAsync_DeleteBlockWithGivenId()
+        {
+            var options = new ClientOptions
+            {
+                AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
+            };
+            INotionClient _client = NotionClientFactory.Create(options);
+
+            var pageId = "3c357473a28149a488c010d2b245a589";
+
+            var page = await _client.Pages.CreateAsync(
+                PagesCreateParametersBuilder.Create(
+                    new ParentPageInput()
+                    {
+                        PageId = pageId
+                    }
+                ).Build()
+            );
+
+            var blocks = await _client.Blocks.AppendChildrenAsync(
+                page.Id,
+                new BlocksAppendChildrenParameters
+                {
+                    Children = new List<Block>()
+                    {
+                        new DividerBlock
+                        {
+                            Divider = new DividerBlock.Data()
+                        }
+                    }
+                }
+            );
+
+            blocks.Results.Should().HaveCount(1);
+
+            // cleanup
+            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
+            {
+                Archived = true
+            });
         }
     }
 }
