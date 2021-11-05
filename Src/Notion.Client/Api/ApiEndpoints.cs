@@ -47,6 +47,14 @@ namespace Notion.Client
             public static string Retrieve(string pageId) => $"/v1/pages/{pageId}";
             public static string Update(string pageId) => $"/v1/pages/{pageId}";
             public static string UpdateProperties(string pageId) => $"/v1/pages/{pageId}";
+
+            /// <summary>
+            /// Get the <see cref="uri string"/> for retrieve page property item
+            /// </summary>
+            /// <param name="pageId">Identifier for a Notion Page</param>
+            /// <param name="propertyId">Identifier for a Notion Property</param>
+            /// <returns></returns>
+            public static string RetrievePropertyItem(string pageId, string propertyId) => $"/v1/pages/{pageId}/properties/{propertyId}";
         }
 
         public static class SearchApiUrls
