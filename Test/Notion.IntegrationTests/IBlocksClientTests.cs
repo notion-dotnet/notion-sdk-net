@@ -290,7 +290,6 @@ namespace Notion.IntegrationTests
                         block.Should().BeOfType<AudioBlock>().Subject
                             .Audio.Should().BeOfType<ExternalFile>().Subject
                             .External.Url.Should().Be("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
-
                     })
                 }
             };
