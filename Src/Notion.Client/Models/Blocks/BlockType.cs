@@ -61,6 +61,9 @@ namespace Notion.Client
         [EnumMember(Value = "breadcrumb")]
         Breadcrumb,
 
+        [EnumMember(Value = "divider")]
+        Divider,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }
