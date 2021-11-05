@@ -239,6 +239,25 @@ namespace Notion.IntegrationTests
                         Assert.Equal("https://github.com/notion-dotnet/notion-sdk-net", updatedBlock.Bookmark.Url);
                         Assert.Equal("Github", updatedBlock.Bookmark.Caption.OfType<RichTextText>().First().Text.Content);
                     })
+                },
+                new object[] {
+                    new EquationBlock
+                    {
+                        Equation = new EquationBlock.Info
+                        {
+                            Expression = "e=mc^3"
+                        }
+                    },
+                    new EquationUpdateBlock {
+                        Equation = new EquationUpdateBlock.Data
+                        {
+                            Expression = "e=mc^2"
+                        }
+                    },
+                    new Action<Block>((block) => {
+                        var updatedBlock = (EquationBlock)block;
+                        Assert.Equal("e=mc^2", updatedBlock.Equation.Expression);
+                    })
                 }
             };
         }
