@@ -239,6 +239,16 @@ namespace Notion.IntegrationTests
                         Assert.Equal("https://github.com/notion-dotnet/notion-sdk-net", updatedBlock.Bookmark.Url);
                         Assert.Equal("Github", updatedBlock.Bookmark.Caption.OfType<RichTextText>().First().Text.Content);
                     })
+                },
+                new object[] {
+                    new DividerBlock {
+                        Divider = new DividerBlock.Data()
+                    },
+                    new DividerUpdateBlock(),
+                    new Action<Block>((block) => {
+                        Assert.NotNull(block);
+                        Assert.IsType<DividerBlock>(block);
+                    })
                 }
             };
         }

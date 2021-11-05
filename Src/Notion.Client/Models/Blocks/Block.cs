@@ -10,6 +10,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(ChildPageBlock), BlockType.ChildPage)]
     [JsonSubtypes.KnownSubType(typeof(ChildDatabaseBlock), BlockType.ChildDatabase)]
     [JsonSubtypes.KnownSubType(typeof(CodeBlock), BlockType.Code)]
+    [JsonSubtypes.KnownSubType(typeof(DividerBlock), BlockType.Divider)]
     [JsonSubtypes.KnownSubType(typeof(EmbedBlock), BlockType.Embed)]
     [JsonSubtypes.KnownSubType(typeof(EquationBlock), BlockType.Equation)]
     [JsonSubtypes.KnownSubType(typeof(FileBlock), BlockType.File)]
