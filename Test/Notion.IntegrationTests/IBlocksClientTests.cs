@@ -258,6 +258,16 @@ namespace Notion.IntegrationTests
                         var updatedBlock = (EquationBlock)block;
                         Assert.Equal("e=mc^2", updatedBlock.Equation.Expression);
                     })
+                },
+                new object[] {
+                    new DividerBlock {
+                        Divider = new DividerBlock.Data()
+                    },
+                    new DividerUpdateBlock(),
+                    new Action<Block>((block) => {
+                        Assert.NotNull(block);
+                        Assert.IsType<DividerBlock>(block);
+                    })
                 }
             };
         }
