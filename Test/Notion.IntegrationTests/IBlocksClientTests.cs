@@ -268,6 +268,29 @@ namespace Notion.IntegrationTests
                         Assert.NotNull(block);
                         Assert.IsType<DividerBlock>(block);
                     })
+                },
+                new object[] {
+                    new AudioBlock {
+                        Audio = new ExternalFile {
+                            External = new ExternalFile.Info {
+                                Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                            }
+                        }
+                    },
+                    new AudioUpdateBlock {
+                        Audio = new ExternalFileInput {
+                            External = new ExternalFileInput.Data {
+                                Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+                            }
+                        }
+                    },
+                    new Action<Block>((block) => {
+                        block.Should().NotBeNull();
+
+                        block.Should().BeOfType<AudioBlock>().Subject
+                            .Audio.Should().BeOfType<ExternalFile>().Subject
+                            .External.Url.Should().Be("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
+                    })
                 }
             };
         }

@@ -64,6 +64,9 @@ namespace Notion.Client
         [EnumMember(Value = "divider")]
         Divider,
 
+        [EnumMember(Value = "audio")]
+        Audio,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }

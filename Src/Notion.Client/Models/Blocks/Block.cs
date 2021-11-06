@@ -5,6 +5,7 @@ using Newtonsoft.Json.Converters;
 namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "type")]
+    [JsonSubtypes.KnownSubType(typeof(AudioBlock), BlockType.Audio)]
     [JsonSubtypes.KnownSubType(typeof(BookmarkBlock), BlockType.Bookmark)]
     [JsonSubtypes.KnownSubType(typeof(BulletedListItemBlock), BlockType.BulletedListItem)]
     [JsonSubtypes.KnownSubType(typeof(ChildPageBlock), BlockType.ChildPage)]
