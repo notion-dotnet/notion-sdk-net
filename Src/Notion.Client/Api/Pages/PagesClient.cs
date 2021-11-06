@@ -51,6 +51,22 @@ namespace Notion.Client
             return await _client.GetAsync<Page>(url);
         }
 
+        public async Task<IPropertyItemObject> RetrievePagePropertyItem(RetrievePropertyItemParameters retrievePropertyItemParameters)
+        {
+            var pathParameters = (IRetrievePropertyItemPathParameters)retrievePropertyItemParameters;
+            var queryParameters = (IRetrievePropertyQueryParameters)retrievePropertyItemParameters;
+
+            var url = PagesApiUrls.RetrievePropertyItem(pathParameters.PageId, pathParameters.PropertyId);
+
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "start_cursor", queryParameters?.StartCursor },
+                { "page_size", queryParameters?.PageSize?.ToString() }
+            };
+
+            return await _client.GetAsync<IPropertyItemObject>(url, queryParams);
+        }
+
         public async Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters)
         {
             var url = PagesApiUrls.Update(pageId);

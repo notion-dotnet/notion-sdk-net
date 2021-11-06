@@ -31,5 +31,12 @@ namespace Notion.Client
         /// <param name="pagesUpdateParameters"></param>
         /// <returns>Updated page.</returns>
         Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters);
+
+        /// <summary>
+        /// Retrieves a property_item object for a given pageId and propertyId. Depending on the property type, the object returned will either be a value or a paginated list of property item values.
+        /// </summary>
+        /// <param name="retrievePropertyItemParameters">sdf sd</param>
+        /// <returns><see cref="IPropertyItemObject"/></returns>
+        Task<IPropertyItemObject> RetrievePagePropertyItem(RetrievePropertyItemParameters retrievePropertyItemParameters);
     }
 }
