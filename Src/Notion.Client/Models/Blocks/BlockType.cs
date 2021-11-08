@@ -67,6 +67,9 @@ namespace Notion.Client
         [EnumMember(Value = "audio")]
         Audio,
 
+        [EnumMember(Value = "table_of_contents")]
+        TableOfContents,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }

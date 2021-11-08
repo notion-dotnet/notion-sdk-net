@@ -43,12 +43,16 @@ namespace Notion.IntegrationTests
                         new DividerBlock
                         {
                             Divider = new DividerBlock.Data()
+                        },
+                        new TableOfContentsBlock
+                        {
+                            TableOfContents = new TableOfContentsBlock.Data()
                         }
                     }
                 }
             );
 
-            blocks.Results.Should().HaveCount(2);
+            blocks.Results.Should().HaveCount(3);
 
             // cleanup
             await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
@@ -133,12 +137,16 @@ namespace Notion.IntegrationTests
                         new DividerBlock
                         {
                             Divider = new DividerBlock.Data()
-                        }
+                        },
+                        new TableOfContentsBlock
+                        {
+                            TableOfContents = new TableOfContentsBlock.Data()
+                        },
                     }
                 }
             );
 
-            blocks.Results.Should().HaveCount(1);
+            blocks.Results.Should().HaveCount(2);
 
             // cleanup
             await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
@@ -290,6 +298,18 @@ namespace Notion.IntegrationTests
                         block.Should().BeOfType<AudioBlock>().Subject
                             .Audio.Should().BeOfType<ExternalFile>().Subject
                             .External.Url.Should().Be("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
+                    })
+                },
+                new object[]
+                {
+                    new TableOfContentsBlock {
+                        TableOfContents = new TableOfContentsBlock.Data()
+                    },
+                    new TableOfContentsUpdateBlock(),
+                    new Action<Block>((block) =>
+                    {
+                        Assert.NotNull(block);
+                        Assert.IsType<TableOfContentsBlock>(block);
                     })
                 }
             };
