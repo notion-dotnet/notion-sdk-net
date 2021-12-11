@@ -25,13 +25,13 @@ namespace Notion.IntegrationTests
         [Fact]
         public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
         {
-            var pageId = "3c357473a28149a488c010d2b245a589";
+            var pageParentId = "3c357473a28149a488c010d2b245a589";
 
             var page = await _client.Pages.CreateAsync(
                 PagesCreateParametersBuilder.Create(
                     new ParentPageInput()
                     {
-                        PageId = pageId
+                        PageId = pageParentId
                     }
                 ).Build()
             );
@@ -85,13 +85,13 @@ namespace Notion.IntegrationTests
         [Fact]
         public async Task UpdateBlockAsync_UpdatesGivenBlock()
         {
-            var pageId = "3c357473a28149a488c010d2b245a589";
+            var pageParentId = "3c357473a28149a488c010d2b245a589";
 
             var page = await _client.Pages.CreateAsync(
                             PagesCreateParametersBuilder.Create(
                                 new ParentPageInput()
                                 {
-                                    PageId = pageId
+                                    PageId = pageParentId
                                 }
                             ).Build()
                         );
@@ -113,7 +113,7 @@ namespace Notion.IntegrationTests
             var blockId = blocks.Results.First().Id;
             await _client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
 
-            blocks = await _client.Blocks.RetrieveChildrenAsync(pageId);
+            blocks = await _client.Blocks.RetrieveChildrenAsync(page.Id);
             blocks.Results.Should().HaveCount(1);
 
             // cleanup
@@ -126,13 +126,13 @@ namespace Notion.IntegrationTests
         [Fact]
         public async Task DeleteAsync_DeleteBlockWithGivenId()
         {
-            var pageId = "3c357473a28149a488c010d2b245a589";
+            var pageParentId = "3c357473a28149a488c010d2b245a589";
 
             var page = await _client.Pages.CreateAsync(
                 PagesCreateParametersBuilder.Create(
                     new ParentPageInput()
                     {
-                        PageId = pageId
+                        PageId = pageParentId
                     }
                 ).Build()
             );
@@ -355,6 +355,48 @@ namespace Notion.IntegrationTests
                         var calloutBlock = Assert.IsType<CalloutBlock>(block);
 
                         Assert.Equal("Test 2", calloutBlock.Callout.Text.OfType<RichTextText>().First().Text.Content);
+                    })
+                },
+                new object[]
+                {
+                    new QuoteBlock
+                    {
+                        Quote = new QuoteBlock.Info
+                        {
+                            Text = new List<RichTextBaseInput>
+                            {
+                                new RichTextTextInput
+                                {
+                                    Text = new Text
+                                    {
+                                        Content = "Test"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new QuoteUpdateBlock()
+                    {
+                        Quote = new QuoteUpdateBlock.Info
+                        {
+                            Text = new List<RichTextBaseInput>
+                            {
+                                new RichTextTextInput
+                                {
+                                    Text = new Text
+                                    {
+                                        Content = "Test 2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new Action<Block>((block) =>
+                    {
+                        Assert.NotNull(block);
+                        var quoteBlock = Assert.IsType<QuoteBlock>(block);
+
+                        Assert.Equal("Test 2", quoteBlock.Quote.Text.OfType<RichTextText>().First().Text.Content);
                     })
                 }
             };
