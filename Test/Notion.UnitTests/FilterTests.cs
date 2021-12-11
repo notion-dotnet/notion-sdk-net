@@ -21,7 +21,7 @@ namespace Notion.UnitTests
     }
     public class FilterTests
     {
-        private SerializerSettingsSource _settingsSource = new SerializerSettingsSource(new ClientOptions());
+        private readonly SerializerSettingsSource _settingsSource = new SerializerSettingsSource(new ClientOptions());
 
         private string SerializeFilter(Filter filter)
         {
