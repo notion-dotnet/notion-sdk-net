@@ -70,6 +70,9 @@ namespace Notion.Client
         [EnumMember(Value = "table_of_contents")]
         TableOfContents,
 
+        [EnumMember(Value = "callout")]
+        Callout,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }

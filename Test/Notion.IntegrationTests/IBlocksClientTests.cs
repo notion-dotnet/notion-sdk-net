@@ -10,15 +10,21 @@ namespace Notion.IntegrationTests
 {
     public class IBlocksClientTests
     {
-        [Fact]
-        public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
+        private readonly INotionClient _client;
+
+        public IBlocksClientTests()
         {
             var options = new ClientOptions
             {
                 AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
             };
-            INotionClient _client = NotionClientFactory.Create(options);
 
+            _client = NotionClientFactory.Create(options);
+        }
+
+        [Fact]
+        public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
+        {
             var pageId = "3c357473a28149a488c010d2b245a589";
 
             var page = await _client.Pages.CreateAsync(
@@ -47,12 +53,27 @@ namespace Notion.IntegrationTests
                         new TableOfContentsBlock
                         {
                             TableOfContents = new TableOfContentsBlock.Data()
+                        },
+                        new CalloutBlock
+                        {
+                            Callout = new CalloutBlock.Info
+                            {
+                                Text = new List<RichTextBaseInput> {
+                                    new RichTextTextInput
+                                    {
+                                        Text = new Text
+                                        {
+                                            Content = "Test"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             );
 
-            blocks.Results.Should().HaveCount(3);
+            blocks.Results.Should().HaveCount(4);
 
             // cleanup
             await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
@@ -64,12 +85,6 @@ namespace Notion.IntegrationTests
         [Fact]
         public async Task UpdateBlockAsync_UpdatesGivenBlock()
         {
-            var options = new ClientOptions
-            {
-                AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
-            };
-            INotionClient _client = NotionClientFactory.Create(options);
-
             var pageId = "3c357473a28149a488c010d2b245a589";
 
             var page = await _client.Pages.CreateAsync(
@@ -111,12 +126,6 @@ namespace Notion.IntegrationTests
         [Fact]
         public async Task DeleteAsync_DeleteBlockWithGivenId()
         {
-            var options = new ClientOptions
-            {
-                AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
-            };
-            INotionClient _client = NotionClientFactory.Create(options);
-
             var pageId = "3c357473a28149a488c010d2b245a589";
 
             var page = await _client.Pages.CreateAsync(
@@ -159,12 +168,6 @@ namespace Notion.IntegrationTests
         [MemberData(nameof(BlockData))]
         public async Task UpdateAsync_UpdatesGivenBlock(Block block, IUpdateBlock updateBlock, Action<Block> assert)
         {
-            var options = new ClientOptions
-            {
-                AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
-            };
-            INotionClient _client = NotionClientFactory.Create(options);
-
             var pageParentId = "3c357473a28149a488c010d2b245a589";
 
             var page = await _client.Pages.CreateAsync(
@@ -310,6 +313,48 @@ namespace Notion.IntegrationTests
                     {
                         Assert.NotNull(block);
                         Assert.IsType<TableOfContentsBlock>(block);
+                    })
+                },
+                new object[]
+                {
+                    new CalloutBlock
+                    {
+                        Callout = new CalloutBlock.Info
+                        {
+                            Text = new List<RichTextBaseInput>
+                            {
+                                new RichTextTextInput
+                                {
+                                    Text = new Text
+                                    {
+                                        Content = "Test"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new CalloutUpdateBlock()
+                    {
+                        Callout = new CalloutUpdateBlock.Info
+                        {
+                            Text = new List<RichTextBaseInput>
+                            {
+                                new RichTextTextInput
+                                {
+                                    Text = new Text
+                                    {
+                                        Content = "Test 2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new Action<Block>((block) =>
+                    {
+                        Assert.NotNull(block);
+                        var calloutBlock = Assert.IsType<CalloutBlock>(block);
+
+                        Assert.Equal("Test 2", calloutBlock.Callout.Text.OfType<RichTextText>().First().Text.Content);
                     })
                 }
             };
