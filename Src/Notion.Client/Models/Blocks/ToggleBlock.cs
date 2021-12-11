@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class ToggleBlock : Block
+    public class ToggleBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Toggle;
 
@@ -16,7 +16,7 @@ namespace Notion.Client
             public IEnumerable<RichTextBase> Text { get; set; }
 
             [JsonProperty("children")]
-            public IEnumerable<Block> Children { get; set; }
+            public IEnumerable<INonColumnBlock> Children { get; set; }
         }
     }
 }

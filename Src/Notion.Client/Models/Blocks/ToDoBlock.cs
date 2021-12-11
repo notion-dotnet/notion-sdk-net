@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class ToDoBlock : Block
+    public class ToDoBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.ToDo;
 
@@ -19,7 +19,7 @@ namespace Notion.Client
             public bool IsChecked { get; set; }
 
             [JsonProperty("children")]
-            public IEnumerable<Block> Children { get; set; }
+            public IEnumerable<INonColumnBlock> Children { get; set; }
         }
     }
 }

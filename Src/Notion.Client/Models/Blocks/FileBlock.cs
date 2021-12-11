@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class FileBlock : Block
+    public class FileBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.File;
 

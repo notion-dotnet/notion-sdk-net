@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class TableOfContentsBlock : Block
+    public class TableOfContentsBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.TableOfContents;
 

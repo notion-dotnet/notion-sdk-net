@@ -6,7 +6,7 @@ namespace Notion.Client
     {
         public IPageParentInput Parent { get; set; }
         public IDictionary<string, PropertyValue> Properties { get; set; }
-        public IList<Block> Children { get; set; }
+        public IList<IBlock> Children { get; set; }
         public IPageIcon Icon { get; set; }
         public FileObject Cover { get; set; }
     }

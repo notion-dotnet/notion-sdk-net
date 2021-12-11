@@ -40,7 +40,7 @@ namespace Notion.IntegrationTests
                 page.Id,
                 new BlocksAppendChildrenParameters
                 {
-                    Children = new List<Block>()
+                    Children = new List<IBlock>()
                     {
                         new BreadcrumbBlock
                         {
@@ -100,7 +100,7 @@ namespace Notion.IntegrationTests
                 page.Id,
                 new BlocksAppendChildrenParameters
                 {
-                    Children = new List<Block>()
+                    Children = new List<IBlock>()
                     {
                         new BreadcrumbBlock
                         {
@@ -141,7 +141,7 @@ namespace Notion.IntegrationTests
                 page.Id,
                 new BlocksAppendChildrenParameters
                 {
-                    Children = new List<Block>()
+                    Children = new List<IBlock>()
                     {
                         new DividerBlock
                         {
@@ -166,7 +166,7 @@ namespace Notion.IntegrationTests
 
         [Theory]
         [MemberData(nameof(BlockData))]
-        public async Task UpdateAsync_UpdatesGivenBlock(Block block, IUpdateBlock updateBlock, Action<Block> assert)
+        public async Task UpdateAsync_UpdatesGivenBlock(IBlock block, IUpdateBlock updateBlock, Action<IBlock> assert)
         {
             var pageParentId = "3c357473a28149a488c010d2b245a589";
 
@@ -183,7 +183,7 @@ namespace Notion.IntegrationTests
                 page.Id,
                 new BlocksAppendChildrenParameters
                 {
-                    Children = new List<Block>()
+                    Children = new List<IBlock>()
                     {
                         block
                     }
@@ -245,7 +245,7 @@ namespace Notion.IntegrationTests
                             }
                         }
                     },
-                    new Action<Block>((block) => {
+                    new Action<IBlock>((block) => {
                         var updatedBlock = (BookmarkBlock)block;
                         Assert.Equal("https://github.com/notion-dotnet/notion-sdk-net", updatedBlock.Bookmark.Url);
                         Assert.Equal("Github", updatedBlock.Bookmark.Caption.OfType<RichTextText>().First().Text.Content);
@@ -265,7 +265,7 @@ namespace Notion.IntegrationTests
                             Expression = "e=mc^2"
                         }
                     },
-                    new Action<Block>((block) => {
+                    new Action<IBlock>((block) => {
                         var updatedBlock = (EquationBlock)block;
                         Assert.Equal("e=mc^2", updatedBlock.Equation.Expression);
                     })
@@ -275,7 +275,7 @@ namespace Notion.IntegrationTests
                         Divider = new DividerBlock.Data()
                     },
                     new DividerUpdateBlock(),
-                    new Action<Block>((block) => {
+                    new Action<IBlock>((block) => {
                         Assert.NotNull(block);
                         Assert.IsType<DividerBlock>(block);
                     })
@@ -295,7 +295,7 @@ namespace Notion.IntegrationTests
                             }
                         }
                     },
-                    new Action<Block>((block) => {
+                    new Action<IBlock>((block) => {
                         block.Should().NotBeNull();
 
                         block.Should().BeOfType<AudioBlock>().Subject
@@ -309,7 +309,7 @@ namespace Notion.IntegrationTests
                         TableOfContents = new TableOfContentsBlock.Data()
                     },
                     new TableOfContentsUpdateBlock(),
-                    new Action<Block>((block) =>
+                    new Action<IBlock>((block) =>
                     {
                         Assert.NotNull(block);
                         Assert.IsType<TableOfContentsBlock>(block);
@@ -349,7 +349,7 @@ namespace Notion.IntegrationTests
                             }
                         }
                     },
-                    new Action<Block>((block) =>
+                    new Action<IBlock>((block) =>
                     {
                         Assert.NotNull(block);
                         var calloutBlock = Assert.IsType<CalloutBlock>(block);
@@ -391,7 +391,7 @@ namespace Notion.IntegrationTests
                             }
                         }
                     },
-                    new Action<Block>((block) =>
+                    new Action<IBlock>((block) =>
                     {
                         Assert.NotNull(block);
                         var quoteBlock = Assert.IsType<QuoteBlock>(block);

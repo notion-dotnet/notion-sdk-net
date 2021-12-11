@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class VideoBlock : Block
+    public class VideoBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Video;
 

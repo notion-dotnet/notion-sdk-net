@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class PDFBlock : Block
+    public class PDFBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.PDF;
 
