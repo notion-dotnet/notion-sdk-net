@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class BreadcrumbBlock : Block
+    public class BreadcrumbBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Breadcrumb;
 

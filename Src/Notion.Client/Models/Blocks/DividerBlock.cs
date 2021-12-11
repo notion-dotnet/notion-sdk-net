@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class DividerBlock : Block
+    public class DividerBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Divider;
 

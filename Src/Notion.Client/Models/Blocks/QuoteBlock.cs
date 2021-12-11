@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class QuoteBlock : Block
+    public class QuoteBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Quote;
 
@@ -16,7 +16,7 @@ namespace Notion.Client
             public IEnumerable<RichTextBaseInput> Text { get; set; }
 
             [JsonProperty("children")]
-            public IEnumerable<Block> Children { get; set; }
+            public IEnumerable<INonColumnBlock> Children { get; set; }
         }
     }
 }

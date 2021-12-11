@@ -76,6 +76,12 @@ namespace Notion.Client
         [EnumMember(Value = "quote")]
         Quote,
 
+        [EnumMember(Value = "column")]
+        Column,
+
+        [EnumMember(Value = "column_list")]
+        ColumnList,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }

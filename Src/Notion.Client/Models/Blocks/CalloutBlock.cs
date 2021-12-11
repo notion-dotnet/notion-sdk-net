@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class CalloutBlock : Block
+    public class CalloutBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Callout;
 
@@ -19,7 +19,7 @@ namespace Notion.Client
             public IPageIcon Icon { get; set; }
 
             [JsonProperty("children")]
-            public IEnumerable<Block> Children { get; set; }
+            public IEnumerable<INonColumnBlock> Children { get; set; }
         }
     }
 }

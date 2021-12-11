@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class EmbedBlock : Block
+    public class EmbedBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Embed;
 

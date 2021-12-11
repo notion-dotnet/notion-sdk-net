@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class EquationBlock : Block
+    public class EquationBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         public override BlockType Type => BlockType.Equation;
 
