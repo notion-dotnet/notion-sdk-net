@@ -73,6 +73,9 @@ namespace Notion.Client
         [EnumMember(Value = "callout")]
         Callout,
 
+        [EnumMember(Value = "quote")]
+        Quote,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }
