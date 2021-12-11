@@ -7,6 +7,6 @@ namespace Notion.Client
     public interface IBlocksAppendChildrenBodyParameters
     {
         [JsonProperty("children")]
-        IEnumerable<Block> Children { get; set; }
+        IEnumerable<IBlock> Children { get; set; }
     }
 }

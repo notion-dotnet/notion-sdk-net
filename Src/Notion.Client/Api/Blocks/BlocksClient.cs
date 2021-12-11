@@ -14,7 +14,7 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<PaginatedList<Block>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null)
+        public async Task<PaginatedList<IBlock>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -31,10 +31,10 @@ namespace Notion.Client
                 { "page_size", queryParameters?.PageSize?.ToString() }
             };
 
-            return await _client.GetAsync<PaginatedList<Block>>(url, queryParams);
+            return await _client.GetAsync<PaginatedList<IBlock>>(url, queryParams);
         }
 
-        public async Task<PaginatedList<Block>> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null)
+        public async Task<PaginatedList<IBlock>> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -45,10 +45,10 @@ namespace Notion.Client
 
             var body = (IBlocksAppendChildrenBodyParameters)parameters;
 
-            return await _client.PatchAsync<PaginatedList<Block>>(url, body);
+            return await _client.PatchAsync<PaginatedList<IBlock>>(url, body);
         }
 
-        public async Task<Block> RetrieveAsync(string blockId)
+        public async Task<IBlock> RetrieveAsync(string blockId)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -57,10 +57,10 @@ namespace Notion.Client
 
             var url = BlocksApiUrls.Retrieve(blockId);
 
-            return await _client.GetAsync<Block>(url);
+            return await _client.GetAsync<IBlock>(url);
         }
 
-        public async Task<Block> UpdateAsync(string blockId, IUpdateBlock updateBlock)
+        public async Task<IBlock> UpdateAsync(string blockId, IUpdateBlock updateBlock)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -69,7 +69,7 @@ namespace Notion.Client
 
             var url = BlocksApiUrls.Update(blockId);
 
-            return await _client.PatchAsync<Block>(url, updateBlock);
+            return await _client.PatchAsync<IBlock>(url, updateBlock);
         }
 
         public async Task DeleteAsync(string blockId)

@@ -12,7 +12,7 @@ namespace Notion.Client
         IDictionary<string, PropertyValue> Properties { get; set; }
 
         [JsonProperty("children")]
-        IList<Block> Children { get; set; }
+        IList<IBlock> Children { get; set; }
 
         [JsonProperty("icon")]
         IPageIcon Icon { get; set; }

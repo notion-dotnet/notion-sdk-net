@@ -6,7 +6,7 @@ namespace Notion.Client
     {
         private IPageParentInput parent;
         private readonly Dictionary<string, PropertyValue> properties = new Dictionary<string, PropertyValue>();
-        private readonly IList<Block> children = new List<Block>();
+        private readonly IList<IBlock> children = new List<IBlock>();
         private IPageIcon icon;
         private FileObject cover;
 
@@ -28,7 +28,7 @@ namespace Notion.Client
             return this;
         }
 
-        public PagesCreateParametersBuilder AddPageContent(Block block)
+        public PagesCreateParametersBuilder AddPageContent(IBlock block)
         {
             children.Add(block);
             return this;

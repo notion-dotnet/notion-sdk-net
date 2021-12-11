@@ -59,7 +59,7 @@ namespace Notion.UnitTests
 
             var parameters = new BlocksAppendChildrenParameters()
             {
-                Children = new List<Block>
+                Children = new List<IBlock>
                 {
                     new HeadingTwoBlock()
                     {
