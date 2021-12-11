@@ -8,6 +8,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(AudioBlock), BlockType.Audio)]
     [JsonSubtypes.KnownSubType(typeof(BookmarkBlock), BlockType.Bookmark)]
     [JsonSubtypes.KnownSubType(typeof(BulletedListItemBlock), BlockType.BulletedListItem)]
+    [JsonSubtypes.KnownSubType(typeof(CalloutBlock), BlockType.Callout)]
     [JsonSubtypes.KnownSubType(typeof(ChildPageBlock), BlockType.ChildPage)]
     [JsonSubtypes.KnownSubType(typeof(ChildDatabaseBlock), BlockType.ChildDatabase)]
     [JsonSubtypes.KnownSubType(typeof(CodeBlock), BlockType.Code)]

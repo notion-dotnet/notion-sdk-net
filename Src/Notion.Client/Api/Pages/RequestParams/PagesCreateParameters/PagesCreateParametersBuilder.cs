@@ -5,8 +5,8 @@ namespace Notion.Client
     public class PagesCreateParametersBuilder
     {
         private IPageParentInput parent;
-        private Dictionary<string, PropertyValue> properties = new Dictionary<string, PropertyValue>();
-        private IList<Block> children = new List<Block>();
+        private readonly Dictionary<string, PropertyValue> properties = new Dictionary<string, PropertyValue>();
+        private readonly IList<Block> children = new List<Block>();
         private IPageIcon icon;
         private FileObject cover;
 
