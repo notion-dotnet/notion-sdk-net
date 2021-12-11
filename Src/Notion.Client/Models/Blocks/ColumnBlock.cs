@@ -16,18 +16,4 @@ namespace Notion.Client
             public IEnumerable<IColumnChildrenBlock> Children { get; set; }
         }
     }
-
-    public class ColumnListBlock : Block, INonColumnBlock
-    {
-        public override BlockType Type => BlockType.ColumnList;
-
-        [JsonProperty("column_list")]
-        public Info ColumnList { get; set; }
-
-        public class Info
-        {
-            [JsonProperty("children")]
-            public IEnumerable<ColumnBlock> Children { get; set; }
-        }
-    }
 }
