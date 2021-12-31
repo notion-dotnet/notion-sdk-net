@@ -398,6 +398,36 @@ namespace Notion.IntegrationTests
 
                         Assert.Equal("Test 2", quoteBlock.Quote.Text.OfType<RichTextText>().First().Text.Content);
                     })
+                },
+                new object[]
+                {
+                    new ImageBlock() {
+                        Image = new ExternalFile
+                        {
+                            External = new ExternalFile.Info
+                            {
+                                Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
+                            }
+                        }
+                    },
+                    new ImageUpdateBlock()
+                    {
+                        Image = new ExternalFileInput
+                        {
+                            External = new ExternalFileInput.Data
+                            {
+                                Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                            }
+                        }
+                    },
+                    new Action<IBlock> (block =>
+                    {
+                        Assert.NotNull(block);
+                        var imageBlock = Assert.IsType<ImageBlock>(block);
+                        var imageFile = Assert.IsType<ExternalFile>(imageBlock.Image);
+
+                        Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg", imageFile.External.Url);
+                    })
                 }
             };
         }
