@@ -85,6 +85,9 @@ namespace Notion.Client
         [EnumMember(Value = "template")]
         Template,
 
+        [EnumMember(Value = "link_to_page")]
+        LinkToPage,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }
