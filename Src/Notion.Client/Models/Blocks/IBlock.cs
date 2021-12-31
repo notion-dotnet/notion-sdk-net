@@ -23,6 +23,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(HeadingTwoBlock), BlockType.Heading_2)]
     [JsonSubtypes.KnownSubType(typeof(HeadingThreeeBlock), BlockType.Heading_3)]
     [JsonSubtypes.KnownSubType(typeof(ImageBlock), BlockType.Image)]
+    [JsonSubtypes.KnownSubType(typeof(LinkToPageBlock), BlockType.LinkToPage)]
     [JsonSubtypes.KnownSubType(typeof(NumberedListItemBlock), BlockType.NumberedListItem)]
     [JsonSubtypes.KnownSubType(typeof(ParagraphBlock), BlockType.Paragraph)]
     [JsonSubtypes.KnownSubType(typeof(PDFBlock), BlockType.PDF)]
