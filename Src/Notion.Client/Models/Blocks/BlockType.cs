@@ -88,6 +88,9 @@ namespace Notion.Client
         [EnumMember(Value = "link_to_page")]
         LinkToPage,
 
+        [EnumMember(Value = "synced_block")]
+        SyncedBlock,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }

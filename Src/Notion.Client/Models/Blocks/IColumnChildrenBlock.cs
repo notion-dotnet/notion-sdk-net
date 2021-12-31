@@ -4,7 +4,11 @@
     {
     }
 
-    public interface IColumnChildrenBlock : IBlock, ITemplateChildrendBlock
+    public interface ISyncedBlockChildren : IBlock
+    {
+    }
+
+    public interface IColumnChildrenBlock : IBlock, ITemplateChildrendBlock, ISyncedBlockChildren
     {
     }
 
