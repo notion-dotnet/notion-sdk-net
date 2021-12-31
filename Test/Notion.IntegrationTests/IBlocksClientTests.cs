@@ -452,6 +452,60 @@ namespace Notion.IntegrationTests
 
                         Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg", embedBlock.Embed.Url);
                     })
+                },
+                new object[]
+                {
+                    new TemplateBlock()
+                    {
+                        Template = new TemplateBlock.Data
+                        {
+                            Text = new List<RichTextBase>
+                            {
+                                new RichTextText
+                                {
+                                    Text = new Text
+                                    {
+                                        Content = "Test Template"
+                                    }
+                                }
+                            },
+                            Children = new List<ITemplateChildrendBlock>
+                            {
+                                new EmbedBlock()
+                                {
+                                    Embed = new EmbedBlock.Info
+                                    {
+                                        Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new TemplateUpdateBlock()
+                    {
+                        Template = new TemplateUpdateBlock.Data
+                        {
+                            Text = new List<RichTextBaseInput>
+                            {
+                                new RichTextTextInput
+                                {
+                                    Text = new Text
+                                    {
+                                        Content = "Test Template 2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new Action<IBlock> (block =>
+                    {
+                        Assert.NotNull(block);
+                        var templateBlock = Assert.IsType<TemplateBlock>(block);
+
+                        Assert.Single(templateBlock.Template.Text);
+                        Assert.Null(templateBlock.Template.Children);
+                        Assert.Equal("Test Template 2", templateBlock.Template.Text.OfType<RichTextText>().First().Text.Content);
+                    })
                 }
             };
         }
