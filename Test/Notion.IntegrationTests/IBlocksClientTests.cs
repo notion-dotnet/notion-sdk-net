@@ -428,6 +428,30 @@ namespace Notion.IntegrationTests
 
                         Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg", imageFile.External.Url);
                     })
+                },
+                new object[]
+                {
+                    new EmbedBlock()
+                    {
+                        Embed = new EmbedBlock.Info
+                        {
+                            Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
+                        }
+                    },
+                    new EmbedUpdateBlock()
+                    {
+                        Embed = new EmbedUpdateBlock.Data
+                        {
+                            Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                        }
+                    },
+                    new Action<IBlock> (block =>
+                    {
+                        Assert.NotNull(block);
+                        var embedBlock = Assert.IsType<EmbedBlock>(block);
+
+                        Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg", embedBlock.Embed.Url);
+                    })
                 }
             };
         }
