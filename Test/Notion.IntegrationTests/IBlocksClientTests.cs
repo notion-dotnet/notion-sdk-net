@@ -506,6 +506,35 @@ namespace Notion.IntegrationTests
                         Assert.Null(templateBlock.Template.Children);
                         Assert.Equal("Test Template 2", templateBlock.Template.Text.OfType<RichTextText>().First().Text.Content);
                     })
+                },
+                new object[]
+                {
+                    new LinkToPageBlock()
+                    {
+                        LinkToPage = new PageParent
+                        {
+                            Type =  ParentType.PageId,
+                            PageId = "533578e3edf14c0a91a9da6b09bac3ee"
+                        }
+                    },
+                    new LinkToPageUpdateBlock()
+                    {
+                        LinkToPage = new ParentPageInput
+                        {
+                            PageId = "3c357473a28149a488c010d2b245a589"
+                        }
+                    },
+                    new Action<IBlock>(block =>
+                    {
+                        Assert.NotNull(block);
+                        var linkToPageBlock = Assert.IsType<LinkToPageBlock>(block);
+
+                        var pageParent = Assert.IsType<PageParent>(linkToPageBlock.LinkToPage);
+
+                        // TODO: Currently the api doesn't allow to update the link_to_page block type
+                        // This will change to updated ID once api start to support
+                        Assert.Equal(Guid.Parse("533578e3edf14c0a91a9da6b09bac3ee"), Guid.Parse(pageParent.PageId));
+                    })
                 }
             };
         }
