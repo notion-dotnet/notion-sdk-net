@@ -13,7 +13,7 @@ namespace Notion.Client
         public class Info
         {
             [JsonProperty("text")]
-            public IEnumerable<RichTextBaseInput> Text { get; set; }
+            public IEnumerable<RichTextBase> Text { get; set; }
 
             [JsonProperty("children")]
             public IEnumerable<INonColumnBlock> Children { get; set; }
