@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -9,7 +8,6 @@ namespace Notion.Client
         public string Name { get; set; }
 
         [JsonProperty("color")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Color Color { get; set; }
+        public string Color { get; set; }
     }
 }
