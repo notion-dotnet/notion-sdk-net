@@ -203,7 +203,7 @@ namespace Notion.UnitTests
             createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
             {
                 { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
-                { "Price", new NumberPropertySchema { Number = new Number { Format = NumberFormat.Dollar } } },
+                { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } },
                 { "Food group", new SelectPropertySchema
                     {
                         Select = new OptionWrapper<SelectOptionSchema>
@@ -212,17 +212,17 @@ namespace Notion.UnitTests
                             {
                                 new SelectOptionSchema
                                 {
-                                    Color = Color.Green,
+                                    Color = "green",
                                     Name = "🥦Vegetable"
                                 },
                                 new SelectOptionSchema
                                 {
-                                    Color = Color.Red,
+                                    Color = "red",
                                     Name = "🍎Fruit"
                                 },
                                 new SelectOptionSchema
                                 {
-                                    Color = Color.Yellow,
+                                    Color = "yellow",
                                     Name = "💪Protein"
                                 }
                             }
@@ -246,17 +246,17 @@ namespace Notion.UnitTests
                 option =>
                 {
                     option.Name.Should().Be("🥦Vegetable");
-                    option.Color.Should().Be(Color.Green);
+                    option.Color.Should().Be("green");
                 },
                 option =>
                 {
                     option.Name.Should().Be("🍎Fruit");
-                    option.Color.Should().Be(Color.Red);
+                    option.Color.Should().Be("red");
                 },
                 option =>
                 {
                     option.Name.Should().Be("💪Protein");
-                    option.Color.Should().Be(Color.Yellow);
+                    option.Color.Should().Be("yellow");
                 }
             );
         }
@@ -292,7 +292,7 @@ namespace Notion.UnitTests
             updateDatabaseParameters.Properties = new Dictionary<string, IUpdatePropertySchema>
             {
                 { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
-                { "Price", new NumberUpdatePropertySchema { Number = new Number { Format = NumberFormat.Yen } } },
+                { "Price", new NumberUpdatePropertySchema { Number = new Number { Format = "yen" } } },
                 { "Food group", new SelectUpdatePropertySchema
                     {
                         Select = new OptionWrapper<SelectOption>
@@ -301,17 +301,17 @@ namespace Notion.UnitTests
                             {
                                 new SelectOption
                                 {
-                                    Color = Color.Green,
+                                    Color = "green",
                                     Name = "🥦Vegetables"
                                 },
                                 new SelectOption
                                 {
-                                    Color = Color.Red,
+                                    Color = "red",
                                     Name = "🍎Fruit"
                                 },
                                 new SelectOption
                                 {
-                                    Color = Color.Yellow,
+                                    Color = "yellow",
                                     Name = "💪Protein"
                                 }
                             }
@@ -344,22 +344,22 @@ namespace Notion.UnitTests
                 option =>
                 {
                     option.Name.Should().Be("🥦Vegetables");
-                    option.Color.Should().Be(Color.Green);
+                    option.Color.Should().Be("green");
                 },
                 option =>
                 {
                     option.Name.Should().Be("🍎Fruit");
-                    option.Color.Should().Be(Color.Red);
+                    option.Color.Should().Be("red");
                 },
                 option =>
                 {
                     option.Name.Should().Be("💪Protein");
-                    option.Color.Should().Be(Color.Yellow);
+                    option.Color.Should().Be("yellow");
                 }
             );
 
             var price = (NumberProperty)database.Properties["Price"];
-            price.Number.Format.Should().Be(NumberFormat.Yen);
+            price.Number.Format.Should().Be("yen");
         }
 
         [Fact]
@@ -398,7 +398,7 @@ namespace Notion.UnitTests
             createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
             {
                 { "Cost of next trip", new FormulaPropertySchema { Formula = new Formula { Expression = "if(prop(\"In stock\"), 0, prop(\"Price\"))" } } },
-                { "Price", new NumberPropertySchema { Number = new Number { Format = NumberFormat.Dollar } } }
+                { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } }
             };
 
             var database = await _client.CreateAsync(createDatabaseParameters);
