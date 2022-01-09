@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -18,7 +17,6 @@ namespace Notion.Client
         public string RollupPropertyId { get; set; }
 
         [JsonProperty("function")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Function Function { get; set; }
+        public string Function { get; set; }
     }
 }
