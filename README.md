@@ -6,30 +6,30 @@
 	<br>
 </div>
 
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/notion-dotnet/notion-sdk-net)
-![GitHub](https://img.shields.io/github/license/notion-dotnet/notion-sdk-net)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/notion-dotnet/notion-sdk-net)]()
+[![GitHub](https://img.shields.io/github/license/notion-dotnet/notion-sdk-net)]()
 
 [![Build Status](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/ci-build.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/ci-build.yml)
 [![Build artifacts](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/build-artifacts-code.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/build-artifacts-code.yml)
 [![Publish Code](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/publish-code.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/publish-code.yml)
 [![CodeQL](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml)
 
-![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/notion-dotnet/notion-sdk-net)
-![LGTM Grade](https://img.shields.io/lgtm/grade/csharp/github/notion-dotnet/notion-sdk-net)
+[![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/notion-dotnet/notion-sdk-net)](https://lgtm.com/projects/g/notion-dotnet/notion-sdk-net/alerts/?mode=list)
+[![LGTM Grade](https://img.shields.io/lgtm/grade/csharp/github/notion-dotnet/notion-sdk-net)](https://lgtm.com/projects/g/notion-dotnet/notion-sdk-net/alerts/?mode=list)
 
-![GitHub last commit](https://img.shields.io/github/last-commit/notion-dotnet/notion-sdk-net)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/notion-dotnet/notion-sdk-net)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/notion-dotnet/notion-sdk-net)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/notion-dotnet/notion-sdk-net)
+[![GitHub last commit](https://img.shields.io/github/last-commit/notion-dotnet/notion-sdk-net)]()
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/notion-dotnet/notion-sdk-net)]()
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/notion-dotnet/notion-sdk-net)]()
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/notion-dotnet/notion-sdk-net)]()
 
-![GitHub repo size](https://img.shields.io/github/repo-size/notion-dotnet/notion-sdk-net)
-![Lines of code](https://img.shields.io/tokei/lines/github/notion-dotnet/notion-sdk-net)
+[![GitHub repo size](https://img.shields.io/github/repo-size/notion-dotnet/notion-sdk-net)]()
+[![Lines of code](https://img.shields.io/tokei/lines/github/notion-dotnet/notion-sdk-net)]()
 
 Provides the following packages:
 
 | Package | Downloads | Nuget |
 |---|---|---|
-| Notion.Net | ![Nuget](https://img.shields.io/nuget/dt/Notion.Net?color=success) | ![Nuget](https://img.shields.io/nuget/v/Notion.Net) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Notion.Net) |
+| Notion.Net | [![Nuget](https://img.shields.io/nuget/dt/Notion.Net?color=success)](https://www.nuget.org/packages/Notion.Net) | [![Nuget](https://img.shields.io/nuget/v/Notion.Net) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Notion.Net)](https://www.nuget.org/packages/Notion.Net) |
 
 
 
