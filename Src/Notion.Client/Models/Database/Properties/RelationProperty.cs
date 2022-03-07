@@ -13,7 +13,7 @@ namespace Notion.Client
 
     public class Relation
     {
-        [JsonProperty("datebase_id")]
+        [JsonProperty("database_id")]
         public string DatabaseId { get; set; }
 
         [JsonProperty("synced_property_name")]
