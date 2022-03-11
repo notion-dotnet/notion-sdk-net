@@ -147,6 +147,36 @@ namespace Notion.UnitTests
         }
 
         [Fact]
+        public async Task DatabasePropertyObjectContainRelationProperty()
+        {
+            var databaseId = "f0212efc-caf6-4afc-87f6-1c06f1dfc8a1";
+            var path = ApiEndpoints.DatabasesApiUrls.Retrieve(databaseId);
+            var jsonData = await File.ReadAllTextAsync("data/databases/DatabasePropertyObjectContainRelation.json");
+
+            Server.Given(CreateGetRequestBuilder(path))
+                .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(jsonData)
+            );
+
+            var database = await _client.RetrieveAsync(databaseId);
+
+            database.Properties.Should().ContainKey("Property").WhichValue.Should().BeEquivalentTo(
+                    new RelationProperty()
+                    {
+                        Id = "zDGa",
+                        Name = "Property",
+                        Relation = new Relation()
+                        {
+                            DatabaseId = "f86f2262-0751-40f2-8f63-e3f7a3c39fcb",
+                            SyncedPropertyName = "Related to sample table (Property)",
+                            SyncedPropertyId = "VQ}{"
+                        }
+                    });
+        }
+
+        [Fact]
         public async Task DatabasePropertyObjectContainParentProperty()
         {
             var databaseId = "f0212efc-caf6-4afc-87f6-1c06f1dfc8a1";
