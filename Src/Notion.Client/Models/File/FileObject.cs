@@ -1,4 +1,5 @@
-﻿using JsonSubTypes;
+﻿using System.Collections.Generic;
+using JsonSubTypes;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -10,5 +11,8 @@ namespace Notion.Client
     {
         [JsonProperty("type")]
         public virtual string Type { get; set; }
+
+        [JsonProperty("caption")]
+        public IEnumerable<RichTextBase> Caption { get; set; }
     }
 }
