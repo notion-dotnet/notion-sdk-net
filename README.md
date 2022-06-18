@@ -70,7 +70,7 @@ Library also provides extension method to register NotionClient with Microsoft d
 
 ```
 services.AddNotionClient(options => {
-  AuthToken = "<Token>"
+  options.AuthToken = "<Token>";
 });
 ```
 
