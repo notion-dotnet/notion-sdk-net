@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class URLPropertyScheam : IPropertySchema
+    public class UrlPropertySchema : IPropertySchema
     {
         [JsonProperty("url")]
         public Dictionary<string, object> Url { get; set; }
