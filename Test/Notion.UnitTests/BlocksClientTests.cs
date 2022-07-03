@@ -38,7 +38,7 @@ namespace Notion.UnitTests
 
             // Assert
             var children = childrenResult.Results;
-            children.Should().HaveCount(7);
+            children.Should().HaveCount(8);
         }
 
         [Fact]

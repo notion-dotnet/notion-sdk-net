@@ -120,6 +120,41 @@
       "paragraph": {
         "text": []
       }
+    },
+    {
+      "object": "block",
+      "id": "ABD0E698-ABE6-42F2-80B1-24497AAE16F1",
+      "created_time": "2022-05-03T13:28:00.000Z",
+      "last_edited_time": "2022-05-03T13:29:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "image",
+      "image": {
+        "caption": [
+          {
+            "type": "text",
+            "text": {
+              "content": "caption text",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "caption text",
+            "href": null
+          }
+        ],
+        "type": "file",
+        "file": {
+          "url": "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/xxx",
+          "expiry_time": "2022-05-11T17:55:32.613Z"
+        }
+      }
     }
   ],
   "next_cursor": null,
