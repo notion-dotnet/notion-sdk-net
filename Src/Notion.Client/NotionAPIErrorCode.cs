@@ -8,7 +8,7 @@ namespace Notion.Client
         InvalidJSON,
 
         [EnumMember(Value = "invalid_request_url")]
-        InvalidRequestURL,
+        InvalidRequestUrl,
 
         [EnumMember(Value = "invalid_request")]
         InvalidRequest,
