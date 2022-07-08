@@ -155,5 +155,70 @@ namespace Notion.IntegrationTests
                 Archived = true
             });
         }
+
+        [Fact]
+        public async Task Test_UpdatePageProperty_with_date_as_null()
+        {
+            // setup - add property to db and create a page with the property having a date
+            string databaseId = "f86f2262-0751-40f2-8f63-e3f7a3c39fcb";
+            string datePropertyName = "Test Date Property";
+            var updateDatabaseParameters = new DatabasesUpdateParameters();
+            updateDatabaseParameters.Properties = new Dictionary<string, IUpdatePropertySchema>
+            {
+                { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
+                { "Test Date Property", new DateUpdatePropertySchema{ Date = new Dictionary<string, object>() } }
+            };
+
+            PagesCreateParameters pagesCreateParameters = PagesCreateParametersBuilder.Create(new DatabaseParentInput
+            {
+                DatabaseId = databaseId
+            })
+            .AddProperty("Name", new TitlePropertyValue
+            {
+                Title = new List<RichTextBase>
+                 {
+                     new RichTextText
+                     {
+                         Text = new Text
+                         {
+                             Content = "Test Page Title"
+                         }
+                     }
+                 }
+            })
+            .AddProperty(datePropertyName, new DatePropertyValue
+            {
+                Date = new Date()
+                {
+                    Start = Convert.ToDateTime("2020-12-08T12:00:00Z"),
+                    End = Convert.ToDateTime("2025-12-08T12:00:00Z")
+                }
+            })
+            .Build();
+
+            var updatedDb = await _client.Databases.UpdateAsync(databaseId, updateDatabaseParameters);
+
+            var page = await _client.Pages.CreateAsync(pagesCreateParameters);
+
+            page.Properties.TryGetValue(datePropertyName, out var tester);
+            DatePropertyValue setDate = (DatePropertyValue) tester;
+            setDate?.Date?.Start.Should().Be(Convert.ToDateTime("2020-12-08T12:00:00Z"));
+
+            // verify
+            IDictionary<string, PropertyValue> testProps = new Dictionary<string, PropertyValue>();
+            testProps.Add(datePropertyName, new DatePropertyValue() { Date = null });
+
+            var updatedPage = await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
+            {
+                Properties = testProps
+            });
+
+            updatedPage.Properties.TryGetValue(datePropertyName, out var updatePropertyToNull);
+            DatePropertyValue verifyDate = (DatePropertyValue)updatePropertyToNull;
+            verifyDate?.Date.Should().BeNull();
+
+            //cleanup
+            await _client.Blocks.DeleteAsync(page.Id);
+        }
     }
 }
