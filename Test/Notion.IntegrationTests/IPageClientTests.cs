@@ -201,7 +201,7 @@ namespace Notion.IntegrationTests
             var page = await _client.Pages.CreateAsync(pagesCreateParameters);
 
             page.Properties.TryGetValue(datePropertyName, out var tester);
-            DatePropertyValue setDate = (DatePropertyValue) tester;
+            DatePropertyValue setDate = (DatePropertyValue)tester;
             setDate?.Date?.Start.Should().Be(Convert.ToDateTime("2020-12-08T12:00:00Z"));
 
             // verify
