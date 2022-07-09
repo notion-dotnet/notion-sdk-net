@@ -34,6 +34,8 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(ToggleBlock), BlockType.Toggle)]
     [JsonSubtypes.KnownSubType(typeof(VideoBlock), BlockType.Video)]
     [JsonSubtypes.KnownSubType(typeof(UnsupportedBlock), BlockType.Unsupported)]
+    [JsonSubtypes.KnownSubType(typeof(TableBlock), BlockType.Table)]
+    [JsonSubtypes.KnownSubType(typeof(TableRowBlock), BlockType.TableRow)]
     public interface IBlock : IObject
     {
         [JsonProperty("type")]

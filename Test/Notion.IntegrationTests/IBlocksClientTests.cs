@@ -11,6 +11,7 @@ namespace Notion.IntegrationTests
     public class IBlocksClientTests
     {
         private readonly INotionClient _client;
+        private readonly string _tableBlockId;
 
         public IBlocksClientTests()
         {
@@ -20,6 +21,9 @@ namespace Notion.IntegrationTests
             };
 
             _client = NotionClientFactory.Create(options);
+
+            // Create Table API is not supported by Notion. So, please create a Table and provide the block id for it.
+            _tableBlockId = "b23ea341-95e4-4aa0-a448-e8c572d83a18";
         }
 
         [Fact]
@@ -205,6 +209,112 @@ namespace Notion.IntegrationTests
             {
                 Archived = true
             });
+        }
+
+        [Fact]
+        public async Task RetrieveAsync_Table_Table_Row()
+        {
+            // verify
+            var tableData = await _client.Blocks.RetrieveAsync(_tableBlockId);
+
+            var tableRowData = await _client.Blocks.RetrieveChildrenAsync(_tableBlockId);
+
+            tableData.Should().NotBeNull();
+            tableData.HasChildren.Should().BeTrue();
+            tableRowData.Should().NotBeNull();
+            tableRowData.Results.Count.Should().BeGreaterThan(0);
+        }
+
+        [Fact]
+        public async Task AppendChildrenAsync_Table_row()
+        {
+            // setup
+            var initialTableRows = await _client.Blocks.RetrieveChildrenAsync(_tableBlockId);
+
+            ICollection<RichTextText> cell1 = new List<RichTextText>();
+            cell1.Add(new RichTextText()
+            {
+                PlainText = "rowtest1",
+                Type = RichTextType.Text,
+                Text = new Text()
+                {
+                    Content = "rowtest1",
+                    Link = null
+                },
+                Href = null,
+                Annotations = new Annotations()
+                {
+                    IsBold = false,
+                    IsCode = false,
+                    IsItalic = false,
+                    IsStrikeThrough = true,
+                    IsUnderline = true,
+                    Color = "default"
+                },
+            });
+            ICollection<RichTextText> cell2 = new List<RichTextText>();
+            cell2.Add(new RichTextText()
+            {
+                PlainText = "r100",
+                Type = RichTextType.Text,
+                Text = new Text()
+                {
+                    Content = "r100",
+                    Link = null
+                },
+                Annotations = new Annotations()
+                {
+                    IsBold = false,
+                    IsCode = false,
+                    IsItalic = false,
+                    IsStrikeThrough = true,
+                    IsUnderline = true,
+                    Color = "default"
+                },
+            });
+            ICollection<RichTextText> cell3 = new List<RichTextText>();
+            cell3.Add(new RichTextText()
+            {
+                PlainText = "r101",
+                Type = RichTextType.Text,
+                Text = new Text()
+                {
+                    Content = "r101",
+                    Link = null
+                },
+                Annotations = new Annotations()
+                {
+                    IsBold = false,
+                    IsCode = false,
+                    IsItalic = false,
+                    IsStrikeThrough = true,
+                    IsUnderline = true,
+                    Color = "default"
+                },
+            });
+            ICollection<ICollection<RichTextText>> newTableRows = new List<ICollection<RichTextText>>();
+            newTableRows.Add(cell1);
+            newTableRows.Add(cell2);
+            newTableRows.Add(cell3);
+
+            // act
+            var appendedTableRows = await _client.Blocks.AppendChildrenAsync(_tableBlockId, new BlocksAppendChildrenParameters
+            {
+                Children = new List<IBlock>()
+                    {
+                        new TableRowBlock
+                        {
+                            TableRow = new TableRowBlock.Info()
+                            {
+                                Cells = newTableRows,
+                            }
+                        }
+                    }
+            });
+
+            // verify
+            var updatedTableRows = await _client.Blocks.RetrieveChildrenAsync(_tableBlockId);
+            updatedTableRows.Results.Count.Should().Be(initialTableRows.Results.Count + 1);
         }
 
         private static IEnumerable<object[]> BlockData()
