@@ -19,6 +19,9 @@ namespace Notion.Client
         [JsonProperty("title")]
         public List<RichTextBase> Title { get; set; }
 
+        [JsonProperty("description")]
+        public List<RichTextBase> Description { get; set; }
+
         [JsonProperty("properties")]
         public Dictionary<string, Property> Properties { get; set; }
 
