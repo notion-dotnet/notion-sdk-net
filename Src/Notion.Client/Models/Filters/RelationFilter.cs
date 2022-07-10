@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class RelationFilter : SinglePropertyFilter
+    public class RelationFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
         [JsonProperty("relation")]
         public Condition Relation { get; set; }

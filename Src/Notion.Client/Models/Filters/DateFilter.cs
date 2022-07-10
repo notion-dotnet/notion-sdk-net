@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
-    public class DateFilter : SinglePropertyFilter
+    public class DateFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
         [JsonProperty("date")]
         public Condition Date { get; set; }

@@ -6,7 +6,7 @@
   "has_children": false,
   "type": "to_do",
   "to_do": {
-    "text": [
+    "rich_text": [
       {
         "type": "text",
         "text": {

@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class PeopleFilter : SinglePropertyFilter
+    public class PeopleFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
         [JsonProperty("people")]
         public Condition People { get; set; }

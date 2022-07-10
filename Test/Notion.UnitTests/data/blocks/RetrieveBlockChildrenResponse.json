@@ -10,7 +10,7 @@
       "archived": false,
       "type": "paragraph",
       "paragraph": {
-        "text": []
+        "rich_text": []
       }
     },
     {
@@ -22,7 +22,7 @@
       "archived": false,
       "type": "heading_2",
       "heading_2": {
-        "text": [
+        "rich_text": [
           {
             "type": "text",
             "text": {
@@ -52,7 +52,7 @@
       "archived": false,
       "type": "heading_2",
       "heading_2": {
-        "text": [
+        "rich_text": [
           {
             "type": "text",
             "text": {
@@ -82,7 +82,7 @@
       "archived": false,
       "type": "paragraph",
       "paragraph": {
-        "text": []
+        "rich_text": []
       }
     },
     {
@@ -118,7 +118,7 @@
       "archived": false,
       "type": "paragraph",
       "paragraph": {
-        "text": []
+        "rich_text": []
       }
     },
     {
