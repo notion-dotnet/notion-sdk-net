@@ -5,9 +5,9 @@ namespace Notion.Client
     public class SyncedBlockUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("synced_block")]
-        public Data SyncedBlock { get; set; }
+        public Info SyncedBlock { get; set; }
 
-        public class Data
+        public class Info
         {
             [JsonProperty("synced_from")]
             public SyncedFromBlockId SyncedFrom { get; set; }

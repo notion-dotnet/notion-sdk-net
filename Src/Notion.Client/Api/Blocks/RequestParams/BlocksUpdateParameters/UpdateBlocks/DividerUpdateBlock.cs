@@ -7,15 +7,15 @@ namespace Notion.Client
         public bool Archived { get; set; }
 
         [JsonProperty("divider")]
-        public Data Divider { get; set; }
+        public Info Divider { get; set; }
 
-        public class Data
+        public class Info
         {
         }
 
         public DividerUpdateBlock()
         {
-            Divider = new Data();
+            Divider = new Info();
         }
     }
 }

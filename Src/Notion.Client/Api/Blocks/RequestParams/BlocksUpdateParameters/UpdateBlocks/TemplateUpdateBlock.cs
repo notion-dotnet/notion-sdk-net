@@ -6,12 +6,12 @@ namespace Notion.Client
     public class TemplateUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("template")]
-        public Data Template { get; set; }
+        public Info Template { get; set; }
 
-        public class Data
+        public class Info
         {
-            [JsonProperty("text")]
-            public IEnumerable<RichTextBaseInput> Text { get; set; }
+            [JsonProperty("rich_text")]
+            public IEnumerable<RichTextBaseInput> RichText { get; set; }
         }
     }
 }
