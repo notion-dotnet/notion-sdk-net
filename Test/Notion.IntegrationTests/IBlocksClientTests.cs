@@ -230,7 +230,7 @@ namespace Notion.IntegrationTests
                         }
                     },
                     new BookmarkUpdateBlock {
-                        Bookmark = new BookmarkUpdateBlock.Data
+                        Bookmark = new BookmarkUpdateBlock.Info
                         {
                             Url = "https://github.com/notion-dotnet/notion-sdk-net",
                             Caption = new List<RichTextBaseInput>
@@ -260,7 +260,7 @@ namespace Notion.IntegrationTests
                         }
                     },
                     new EquationUpdateBlock {
-                        Equation = new EquationUpdateBlock.Data
+                        Equation = new EquationUpdateBlock.Info
                         {
                             Expression = "e=mc^2"
                         }
@@ -337,7 +337,7 @@ namespace Notion.IntegrationTests
                     {
                         Callout = new CalloutUpdateBlock.Info
                         {
-                            Text = new List<RichTextBaseInput>
+                            RichText = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -379,7 +379,7 @@ namespace Notion.IntegrationTests
                     {
                         Quote = new QuoteUpdateBlock.Info
                         {
-                            Text = new List<RichTextBaseInput>
+                            RichText = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -440,7 +440,7 @@ namespace Notion.IntegrationTests
                     },
                     new EmbedUpdateBlock()
                     {
-                        Embed = new EmbedUpdateBlock.Data
+                        Embed = new EmbedUpdateBlock.Info
                         {
                             Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
                         }
@@ -483,9 +483,9 @@ namespace Notion.IntegrationTests
                     },
                     new TemplateUpdateBlock()
                     {
-                        Template = new TemplateUpdateBlock.Data
+                        Template = new TemplateUpdateBlock.Info
                         {
-                            Text = new List<RichTextBaseInput>
+                            RichText = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {

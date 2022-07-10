@@ -1,10 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public class ParagraphUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("paragraph")]
-        public TextContentUpdate Paragraph { get; set; }
+        public Info Paragraph { get; set; }
+
+        public class Info
+        {
+            [JsonProperty("rich_text")]
+            public IEnumerable<RichTextBaseInput> RichText { get; set; }
+        }
     }
 }

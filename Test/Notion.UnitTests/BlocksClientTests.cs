@@ -168,7 +168,7 @@ namespace Notion.UnitTests
             {
                 ToDo = new ToDoUpdateBlock.Info
                 {
-                    Text = new List<RichTextBaseInput>()
+                    RichText = new List<RichTextBaseInput>()
                     {
                         new RichTextTextInput
                         {
