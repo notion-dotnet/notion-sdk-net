@@ -58,7 +58,7 @@ namespace Notion.IntegrationTests
                         {
                             Callout = new CalloutBlock.Info
                             {
-                                Text = new List<RichTextBaseInput> {
+                                RichText = new List<RichTextBaseInput> {
                                     new RichTextTextInput
                                     {
                                         Text = new Text
@@ -321,7 +321,7 @@ namespace Notion.IntegrationTests
                     {
                         Callout = new CalloutBlock.Info
                         {
-                            Text = new List<RichTextBaseInput>
+                            RichText = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -354,7 +354,7 @@ namespace Notion.IntegrationTests
                         Assert.NotNull(block);
                         var calloutBlock = Assert.IsType<CalloutBlock>(block);
 
-                        Assert.Equal("Test 2", calloutBlock.Callout.Text.OfType<RichTextText>().First().Text.Content);
+                        Assert.Equal("Test 2", calloutBlock.Callout.RichText.OfType<RichTextText>().First().Text.Content);
                     })
                 },
                 new object[]
@@ -363,7 +363,7 @@ namespace Notion.IntegrationTests
                     {
                         Quote = new QuoteBlock.Info
                         {
-                            Text = new List<RichTextBaseInput>
+                            RichText = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -396,7 +396,7 @@ namespace Notion.IntegrationTests
                         Assert.NotNull(block);
                         var quoteBlock = Assert.IsType<QuoteBlock>(block);
 
-                        Assert.Equal("Test 2", quoteBlock.Quote.Text.OfType<RichTextText>().First().Text.Content);
+                        Assert.Equal("Test 2", quoteBlock.Quote.RichText.OfType<RichTextText>().First().Text.Content);
                     })
                 },
                 new object[]
@@ -459,7 +459,7 @@ namespace Notion.IntegrationTests
                     {
                         Template = new TemplateBlock.Data
                         {
-                            Text = new List<RichTextBase>
+                            RichText = new List<RichTextBase>
                             {
                                 new RichTextText
                                 {
@@ -502,9 +502,9 @@ namespace Notion.IntegrationTests
                         Assert.NotNull(block);
                         var templateBlock = Assert.IsType<TemplateBlock>(block);
 
-                        Assert.Single(templateBlock.Template.Text);
+                        Assert.Single(templateBlock.Template.RichText);
                         Assert.Null(templateBlock.Template.Children);
-                        Assert.Equal("Test Template 2", templateBlock.Template.Text.OfType<RichTextText>().First().Text.Content);
+                        Assert.Equal("Test Template 2", templateBlock.Template.RichText.OfType<RichTextText>().First().Text.Content);
                     })
                 },
                 new object[]
