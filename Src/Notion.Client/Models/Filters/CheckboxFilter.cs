@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class CheckboxFilter : SinglePropertyFilter
+    public class CheckboxFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
         [JsonProperty("checkbox")]
         public Condition Checkbox { get; set; }

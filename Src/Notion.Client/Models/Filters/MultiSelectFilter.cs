@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class MultiSelectFilter : SinglePropertyFilter
+    public class MultiSelectFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
         [JsonProperty("multi_select")]
         public Condition MultiSelect { get; set; }

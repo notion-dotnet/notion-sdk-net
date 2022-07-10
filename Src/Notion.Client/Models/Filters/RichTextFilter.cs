@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class RichTextFilter : SinglePropertyFilter
+    public class RichTextFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
         [JsonProperty("rich_text")]
         public TextFilter.Condition RichText { get; set; }
