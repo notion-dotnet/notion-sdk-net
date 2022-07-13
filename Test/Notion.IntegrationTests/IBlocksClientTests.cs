@@ -58,7 +58,7 @@ namespace Notion.IntegrationTests
                         {
                             Callout = new CalloutBlock.Info
                             {
-                                RichText = new List<RichTextBaseInput> {
+                                Text = new List<RichTextBaseInput> {
                                     new RichTextTextInput
                                     {
                                         Text = new Text
@@ -230,7 +230,7 @@ namespace Notion.IntegrationTests
                         }
                     },
                     new BookmarkUpdateBlock {
-                        Bookmark = new BookmarkUpdateBlock.Info
+                        Bookmark = new BookmarkUpdateBlock.Data
                         {
                             Url = "https://github.com/notion-dotnet/notion-sdk-net",
                             Caption = new List<RichTextBaseInput>
@@ -260,7 +260,7 @@ namespace Notion.IntegrationTests
                         }
                     },
                     new EquationUpdateBlock {
-                        Equation = new EquationUpdateBlock.Info
+                        Equation = new EquationUpdateBlock.Data
                         {
                             Expression = "e=mc^2"
                         }
@@ -321,7 +321,7 @@ namespace Notion.IntegrationTests
                     {
                         Callout = new CalloutBlock.Info
                         {
-                            RichText = new List<RichTextBaseInput>
+                            Text = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -337,7 +337,7 @@ namespace Notion.IntegrationTests
                     {
                         Callout = new CalloutUpdateBlock.Info
                         {
-                            RichText = new List<RichTextBaseInput>
+                            Text = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -354,7 +354,7 @@ namespace Notion.IntegrationTests
                         Assert.NotNull(block);
                         var calloutBlock = Assert.IsType<CalloutBlock>(block);
 
-                        Assert.Equal("Test 2", calloutBlock.Callout.RichText.OfType<RichTextText>().First().Text.Content);
+                        Assert.Equal("Test 2", calloutBlock.Callout.Text.OfType<RichTextText>().First().Text.Content);
                     })
                 },
                 new object[]
@@ -363,7 +363,7 @@ namespace Notion.IntegrationTests
                     {
                         Quote = new QuoteBlock.Info
                         {
-                            RichText = new List<RichTextBaseInput>
+                            Text = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -379,7 +379,7 @@ namespace Notion.IntegrationTests
                     {
                         Quote = new QuoteUpdateBlock.Info
                         {
-                            RichText = new List<RichTextBaseInput>
+                            Text = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -396,7 +396,7 @@ namespace Notion.IntegrationTests
                         Assert.NotNull(block);
                         var quoteBlock = Assert.IsType<QuoteBlock>(block);
 
-                        Assert.Equal("Test 2", quoteBlock.Quote.RichText.OfType<RichTextText>().First().Text.Content);
+                        Assert.Equal("Test 2", quoteBlock.Quote.Text.OfType<RichTextText>().First().Text.Content);
                     })
                 },
                 new object[]
@@ -440,7 +440,7 @@ namespace Notion.IntegrationTests
                     },
                     new EmbedUpdateBlock()
                     {
-                        Embed = new EmbedUpdateBlock.Info
+                        Embed = new EmbedUpdateBlock.Data
                         {
                             Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
                         }
@@ -459,7 +459,7 @@ namespace Notion.IntegrationTests
                     {
                         Template = new TemplateBlock.Data
                         {
-                            RichText = new List<RichTextBase>
+                            Text = new List<RichTextBase>
                             {
                                 new RichTextText
                                 {
@@ -483,9 +483,9 @@ namespace Notion.IntegrationTests
                     },
                     new TemplateUpdateBlock()
                     {
-                        Template = new TemplateUpdateBlock.Info
+                        Template = new TemplateUpdateBlock.Data
                         {
-                            RichText = new List<RichTextBaseInput>
+                            Text = new List<RichTextBaseInput>
                             {
                                 new RichTextTextInput
                                 {
@@ -502,9 +502,9 @@ namespace Notion.IntegrationTests
                         Assert.NotNull(block);
                         var templateBlock = Assert.IsType<TemplateBlock>(block);
 
-                        Assert.Single(templateBlock.Template.RichText);
+                        Assert.Single(templateBlock.Template.Text);
                         Assert.Null(templateBlock.Template.Children);
-                        Assert.Equal("Test Template 2", templateBlock.Template.RichText.OfType<RichTextText>().First().Text.Content);
+                        Assert.Equal("Test Template 2", templateBlock.Template.Text.OfType<RichTextText>().First().Text.Content);
                     })
                 },
                 new object[]

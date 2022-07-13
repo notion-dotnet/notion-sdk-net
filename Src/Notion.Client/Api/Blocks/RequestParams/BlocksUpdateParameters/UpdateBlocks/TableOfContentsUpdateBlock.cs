@@ -7,15 +7,15 @@ namespace Notion.Client
         public bool Archived { get; set; }
 
         [JsonProperty("table_of_contents")]
-        public Info TableOfContents { get; set; }
+        public Data TableOfContents { get; set; }
 
-        public class Info
+        public class Data
         {
         }
 
         public TableOfContentsUpdateBlock()
         {
-            TableOfContents = new Info();
+            TableOfContents = new Data();
         }
     }
 }

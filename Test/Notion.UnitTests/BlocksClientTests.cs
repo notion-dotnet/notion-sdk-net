@@ -65,7 +65,7 @@ namespace Notion.UnitTests
                     {
                         Heading_2 = new HeadingTwoBlock.Info
                         {
-                            RichText = new List<RichTextBase>
+                            Text = new List<RichTextBase>
                             {
                                 new RichTextText
                                 {
@@ -81,7 +81,7 @@ namespace Notion.UnitTests
                     {
                         Paragraph = new ParagraphBlock.Info
                         {
-                            RichText = new List<RichTextBase>
+                            Text = new List<RichTextBase>
                             {
                                 new RichTextText
                                 {
@@ -110,14 +110,14 @@ namespace Notion.UnitTests
                 {
                     block.Type.Should().Be(BlockType.Heading_2);
                     var headingBlock = (HeadingTwoBlock)block;
-                    var text = headingBlock.Heading_2.RichText.OfType<RichTextText>().FirstOrDefault();
+                    var text = headingBlock.Heading_2.Text.OfType<RichTextText>().FirstOrDefault();
                     text.Text.Content.Should().Be("Lacinato kale");
                 },
                 block =>
                 {
                     block.Type.Should().Be(BlockType.Paragraph);
                     var paragraphBlock = (ParagraphBlock)block;
-                    var text = paragraphBlock.Paragraph.RichText.OfType<RichTextText>().LastOrDefault();
+                    var text = paragraphBlock.Paragraph.Text.OfType<RichTextText>().LastOrDefault();
                     text.Text.Content.Should().Be("Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.");
                     text.Text.Link.Url.Should().Be("https://en.wikipedia.org/wiki/Lacinato_kale");
                 }
@@ -145,9 +145,9 @@ namespace Notion.UnitTests
             block.Type.Should().Be(BlockType.ToDo);
 
             var todoBlock = ((ToDoBlock)block);
-            todoBlock.ToDo.RichText.Should().ContainSingle();
-            todoBlock.ToDo.RichText.First().Should().BeAssignableTo<RichTextText>();
-            ((RichTextText)todoBlock.ToDo.RichText.First()).Text.Content.Should().Be("Lacinato kale");
+            todoBlock.ToDo.Text.Should().ContainSingle();
+            todoBlock.ToDo.Text.First().Should().BeAssignableTo<RichTextText>();
+            ((RichTextText)todoBlock.ToDo.Text.First()).Text.Content.Should().Be("Lacinato kale");
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace Notion.UnitTests
             {
                 ToDo = new ToDoUpdateBlock.Info
                 {
-                    RichText = new List<RichTextBaseInput>()
+                    Text = new List<RichTextBaseInput>()
                     {
                         new RichTextTextInput
                         {
@@ -189,9 +189,9 @@ namespace Notion.UnitTests
             block.Type.Should().Be(BlockType.ToDo);
 
             var todoBlock = ((ToDoBlock)block);
-            todoBlock.ToDo.RichText.Should().ContainSingle();
-            todoBlock.ToDo.RichText.First().Should().BeAssignableTo<RichTextText>();
-            ((RichTextText)todoBlock.ToDo.RichText.First()).Text.Content.Should().Be("Lacinato kale");
+            todoBlock.ToDo.Text.Should().ContainSingle();
+            todoBlock.ToDo.Text.First().Should().BeAssignableTo<RichTextText>();
+            ((RichTextText)todoBlock.ToDo.Text.First()).Text.Content.Should().Be("Lacinato kale");
         }
     }
 }

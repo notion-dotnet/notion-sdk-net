@@ -27,9 +27,5 @@ namespace Notion.Client
         public string Object => "property_item";
 
         public abstract string Type { get; }
-
-        public string Id { get; set; }
-
-        public string NextURL { get; set; }
     }
 }

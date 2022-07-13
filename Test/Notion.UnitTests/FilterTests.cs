@@ -122,11 +122,11 @@ namespace Notion.UnitTests
         }
 
         [Fact]
-        public void RichTextFilterTest()
+        public void TextFilterTest()
         {
-            var filter = new RichTextFilter("Some property", doesNotEqual: "Example text");
+            var filter = new TextFilter("Some property", doesNotEqual: "Example text");
             Assert.Equal(
-                "{\"rich_text\":{\"does_not_equal\":\"Example text\"},\"property\":\"Some property\"}",
+                "{\"text\":{\"does_not_equal\":\"Example text\"},\"property\":\"Some property\"}",
                 SerializeFilter(filter)
             );
         }

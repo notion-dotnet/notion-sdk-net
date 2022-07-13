@@ -9,7 +9,7 @@
       "has_children": false,
       "type": "heading_2",
       "heading_2": {
-        "rich_text": [
+        "text": [
           {
             "type": "text",
             "text": {
@@ -38,7 +38,7 @@
       "has_children": false,
       "type": "paragraph",
       "paragraph": {
-        "rich_text": [
+        "text": [
           {
             "type": "text",
             "text": {

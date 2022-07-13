@@ -10,8 +10,8 @@ namespace Notion.Client
 
         public class Info
         {
-            [JsonProperty("rich_text")]
-            public IEnumerable<RichTextBaseInput> RichText { get; set; }
+            [JsonProperty("text")]
+            public IEnumerable<RichTextBaseInput> Text { get; set; }
         }
     }
 }

@@ -5,9 +5,9 @@ namespace Notion.Client
     public class EmbedUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("embed")]
-        public Info Embed { get; set; }
+        public Data Embed { get; set; }
 
-        public class Info
+        public class Data
         {
             [JsonProperty("url")]
             public string Url { get; set; }

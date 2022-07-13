@@ -7,15 +7,15 @@ namespace Notion.Client
         public bool Archived { get; set; }
 
         [JsonProperty("breadcrumb")]
-        public Info Breadcrumb { get; set; }
+        public Data Breadcrumb { get; set; }
 
-        public class Info
+        public class Data
         {
         }
 
         public BreadcrumbUpdateBlock()
         {
-            Breadcrumb = new Info();
+            Breadcrumb = new Data();
         }
     }
 }

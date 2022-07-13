@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public class NumberedListItemUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("numbered_list_item")]
-        public Info NumberedListItem { get; set; }
-
-        public class Info
-        {
-            [JsonProperty("rich_text")]
-            public IEnumerable<RichTextBaseInput> RichText { get; set; }
-        }
+        public TextContentUpdate NumberedListItem { get; set; }
     }
 }

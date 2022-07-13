@@ -12,8 +12,8 @@ namespace Notion.Client
 
         public class Info
         {
-            [JsonProperty("rich_text")]
-            public IEnumerable<RichTextBase> RichText { get; set; }
+            [JsonProperty("text")]
+            public IEnumerable<RichTextBase> Text { get; set; }
 
             [JsonProperty("checked")]
             public bool IsChecked { get; set; }

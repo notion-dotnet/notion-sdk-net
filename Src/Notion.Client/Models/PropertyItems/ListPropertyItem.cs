@@ -4,15 +4,13 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
+    [JsonConverter(typeof(JsonSubtypes), "type")]
+    [JsonSubtypes.KnownSubType(typeof(RollupPropertyItem), "rollup")]
+    [JsonSubtypes.FallBackSubType(typeof(ListPropertyItem))]
     public class ListPropertyItem : IPropertyItemObject
     {
         public string Object => "list";
-
         public virtual string Type { get; set; }
-
-        public string Id { get; set; }
-
-        public string NextURL { get; set; }
 
         [JsonProperty("results")]
         public IEnumerable<SimplePropertyItem> Results { get; set; }
@@ -22,8 +20,5 @@ namespace Notion.Client
 
         [JsonProperty("next_cursor")]
         public string NextCursor { get; set; }
-
-        [JsonProperty("property_item")]
-        public SimplePropertyItem PropertyItem { get; set; }
     }
 }
