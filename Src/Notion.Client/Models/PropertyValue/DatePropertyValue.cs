@@ -33,5 +33,11 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("end")]
         public DateTime? End { get; set; }
+
+        /// <summary>
+        /// Optional time zone information for start and end. Possible values are extracted from the IANA database and they are based on the time zones from Moment.js.
+        /// </summary>
+        [JsonProperty("time_zone")]
+        public string TimeZone { get; set; }
     }
 }
