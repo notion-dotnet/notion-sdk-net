@@ -15,6 +15,9 @@ namespace Notion.Client
 
             [JsonProperty("language")]
             public string Language { get; set; }
+
+            [JsonProperty("caption")]
+            public IEnumerable<RichTextBaseInput> Caption { get; set; }
         }
     }
 }
