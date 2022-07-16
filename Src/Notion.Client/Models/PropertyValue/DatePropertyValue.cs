@@ -13,7 +13,7 @@ namespace Notion.Client
         /// <summary>
         /// Date
         /// </summary>
-        [JsonProperty("date")]
+        [JsonProperty("date", NullValueHandling = NullValueHandling.Include)]
         public Date Date { get; set; }
     }
 
