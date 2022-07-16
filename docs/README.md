@@ -10,7 +10,12 @@ A simple and easy to use client for the [Notion API](https://developers.notion.c
 dotnet add package Notion.Net
 ```
 
-> Note: From Nuget 2.0.0 notion client sdk default sets the Notion-Version header to 2021-08-16.
+> Note: default Notion-Version used by NuGet package versions
+> | Package version | Notion-Version |
+> | --- | --- |
+> | 3.0.0+ | 2022-02-22 |
+> | 2.0.0+ | 2021-08-16 |
+> | 1.0.0+ | 2021-05-13 |
 
 ## Usage
 
