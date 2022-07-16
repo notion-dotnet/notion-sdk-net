@@ -19,34 +19,6 @@ namespace Notion.UnitTests
         }
 
         [Fact]
-        [Obsolete]
-        public async Task ListDatabasesAsync()
-        {
-            var path = ApiEndpoints.DatabasesApiUrls.List();
-            var jsonData = await File.ReadAllTextAsync("data/databases/DatabasesListResponse.json");
-
-            Server.Given(CreateGetRequestBuilder(path))
-                .RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithBody(jsonData)
-            );
-
-            var databases = await _client.ListAsync();
-
-            databases.Results.Should().HaveCount(3);
-
-            foreach (var database in databases.Results)
-            {
-                database.Parent.Should().BeAssignableTo<IDatabaseParent>();
-                foreach (var property in database.Properties)
-                {
-                    property.Key.Should().Be(property.Value.Name);
-                }
-            }
-        }
-
-        [Fact]
         public async Task QueryAsync()
         {
             var databaseId = "f0212efc-caf6-4afc-87f6-1c06f1dfc8a1";
