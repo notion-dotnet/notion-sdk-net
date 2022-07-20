@@ -41,6 +41,6 @@ namespace Notion.Client
         /// The archived status of the database.
         /// </summary>
         [JsonProperty("archived")]
-        public bool IsArchived { get; set; }
+        public bool Archived { get; set; }
     }
 }
