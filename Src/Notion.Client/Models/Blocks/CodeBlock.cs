@@ -12,11 +12,14 @@ namespace Notion.Client
 
         public class Info
         {
-            [JsonProperty("text")]
-            public IEnumerable<RichTextBase> Text { get; set; }
+            [JsonProperty("rich_text")]
+            public IEnumerable<RichTextBase> RichText { get; set; }
 
             [JsonProperty("language")]
             public string Language { get; set; }
+
+            [JsonProperty("caption")]
+            public IEnumerable<RichTextBase> Caption { get; set; }
         }
     }
 }

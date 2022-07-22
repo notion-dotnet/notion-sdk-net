@@ -5,9 +5,9 @@ namespace Notion.Client
     public class EquationUpdateBlock : UpdateBlock, IUpdateBlock
     {
         [JsonProperty("equation")]
-        public Data Equation { get; set; }
+        public Info Equation { get; set; }
 
-        public class Data
+        public class Info
         {
             [JsonProperty("expression")]
             public string Expression { get; set; }

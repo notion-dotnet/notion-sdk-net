@@ -91,6 +91,12 @@ namespace Notion.Client
         [EnumMember(Value = "synced_block")]
         SyncedBlock,
 
+        [EnumMember(Value = "table")]
+        Table,
+
+        [EnumMember(Value = "table_row")]
+        TableRow,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }

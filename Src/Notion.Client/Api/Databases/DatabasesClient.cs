@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
@@ -17,20 +15,6 @@ namespace Notion.Client
         public async Task<Database> RetrieveAsync(string databaseId)
         {
             return await _client.GetAsync<Database>(DatabasesApiUrls.Retrieve(databaseId));
-        }
-
-        [Obsolete("This endpoint is no longer recommended, use Search instead. This endpoint will only return explicitly shared pages, while search will also return child pages within explicitly shared pages. This endpoint's results cannot be filtered, while search can be used to match on page title.", false)]
-        public async Task<PaginatedList<Database>> ListAsync(DatabasesListParameters databasesListParameters = null)
-        {
-            var databasesListQueryParmaters = (IDatabasesListQueryParmaters)databasesListParameters;
-
-            var queryParams = new Dictionary<string, string>()
-            {
-                { "start_cursor", databasesListQueryParmaters?.StartCursor },
-                { "page_size", databasesListQueryParmaters?.PageSize?.ToString() }
-            };
-
-            return await _client.GetAsync<PaginatedList<Database>>(DatabasesApiUrls.List(), queryParams);
         }
 
         public async Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters)
