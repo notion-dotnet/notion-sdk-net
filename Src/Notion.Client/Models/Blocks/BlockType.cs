@@ -100,5 +100,4 @@ namespace Notion.Client
         [EnumMember(Value = "unsupported")]
         Unsupported
     }
-  
 }
