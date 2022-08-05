@@ -42,7 +42,7 @@ namespace Notion.Client
         public bool IsCode { get; set; }
 
         [JsonProperty("color")]
-        // color: Color | BackgroundColor
-        public string Color { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Color Color { get; set; }
     }
 }
