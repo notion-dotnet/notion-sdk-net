@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -33,7 +34,8 @@ namespace Notion.Client
         /// Color of the option. Possible values are: "default", "gray", "brown", "red", "orange", "yellow", "green", "blue", "purple", "pink". Defaults to "default".
         /// </summary>
         [JsonProperty("color")]
-        public string Color { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Color Color { get; set; }
     }
 
     public class MultiSelectProperty : Property

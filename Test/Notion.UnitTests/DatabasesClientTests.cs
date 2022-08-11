@@ -214,17 +214,17 @@ namespace Notion.UnitTests
                             {
                                 new SelectOptionSchema
                                 {
-                                    Color = "green",
+                                    Color = Color.Green,
                                     Name = "🥦Vegetable"
                                 },
                                 new SelectOptionSchema
                                 {
-                                    Color = "red",
+                                    Color = Color.Red,
                                     Name = "🍎Fruit"
                                 },
                                 new SelectOptionSchema
                                 {
-                                    Color = "yellow",
+                                    Color = Color.Yellow,
                                     Name = "💪Protein"
                                 }
                             }
@@ -248,17 +248,17 @@ namespace Notion.UnitTests
                 option =>
                 {
                     option.Name.Should().Be("🥦Vegetable");
-                    option.Color.Should().Be("green");
+                    option.Color.Should().Be(Color.Green);
                 },
                 option =>
                 {
                     option.Name.Should().Be("🍎Fruit");
-                    option.Color.Should().Be("red");
+                    option.Color.Should().Be(Color.Red);
                 },
                 option =>
                 {
                     option.Name.Should().Be("💪Protein");
-                    option.Color.Should().Be("yellow");
+                    option.Color.Should().Be(Color.Yellow);
                 }
             );
         }
@@ -303,17 +303,17 @@ namespace Notion.UnitTests
                             {
                                 new SelectOption
                                 {
-                                    Color = "green",
+                                    Color = Color.Green,
                                     Name = "🥦Vegetables"
                                 },
                                 new SelectOption
                                 {
-                                    Color = "red",
+                                    Color = Color.Red,
                                     Name = "🍎Fruit"
                                 },
                                 new SelectOption
                                 {
-                                    Color = "yellow",
+                                    Color = Color.Yellow,
                                     Name = "💪Protein"
                                 }
                             }
@@ -346,17 +346,17 @@ namespace Notion.UnitTests
                 option =>
                 {
                     option.Name.Should().Be("🥦Vegetables");
-                    option.Color.Should().Be("green");
+                    option.Color.Should().Be(Color.Green);
                 },
                 option =>
                 {
                     option.Name.Should().Be("🍎Fruit");
-                    option.Color.Should().Be("red");
+                    option.Color.Should().Be(Color.Red);
                 },
                 option =>
                 {
                     option.Name.Should().Be("💪Protein");
-                    option.Color.Should().Be("yellow");
+                    option.Color.Should().Be(Color.Yellow);
                 }
             );
 
