@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Database : IObject
+    public class Database : IObject, IObjectModificationData
     {
         public ObjectType Object => ObjectType.Database;
 
