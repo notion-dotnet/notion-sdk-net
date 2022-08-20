@@ -1,4 +1,5 @@
 ﻿using System;
+using Notion.Client.Models.Blocks;
 
 namespace Notion.Client
 {
@@ -19,5 +20,10 @@ namespace Notion.Client
         public PartialUser CreatedBy { get; set; }
 
         public PartialUser LastEditedBy { get; set; }
+
+        /// <summary>
+        /// Information about the block's parent.
+        /// </summary>
+        public IBlockParent Parent { get; set; }
     }
 }
