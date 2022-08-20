@@ -464,7 +464,14 @@ namespace Notion.UnitTests
                 page.Parent.Should().BeAssignableTo<IPageParent>();
                 page.Object.Should().Be(ObjectType.Page);
 
-                var formulaPropertyValue = (FormulaPropertyValue)await _pagesClient.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+                Server.Given(CreateGetRequestBuilder(ApiEndpoints.PagesApiUrls.RetrievePropertyItem(page.Id, page.Properties["FormulaProp"].Id)))
+                .RespondWith(
+                    Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody("{\"object\":\"property_item\",\"id\":\"JwY^\",\"type\":\"formula\",\"formula\":{\"type\":\"date\",\"date\":{\"start\":\"2021-06-28\",\"end\":null}}}")
+                );
+
+                var formulaPropertyValue = (FormulaPropertyItem)await _pagesClient.RetrievePagePropertyItem(new RetrievePropertyItemParameters
                 {
                     PageId = page.Id,
                     PropertyId = page.Properties["FormulaProp"].Id
