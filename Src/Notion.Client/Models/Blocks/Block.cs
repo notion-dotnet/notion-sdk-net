@@ -1,5 +1,4 @@
 ﻿using System;
-using Notion.Client.Models.Blocks;
 
 namespace Notion.Client
 {

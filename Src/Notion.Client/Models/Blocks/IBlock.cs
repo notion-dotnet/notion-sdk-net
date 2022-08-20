@@ -1,7 +1,6 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Notion.Client.Models.Blocks;
 
 namespace Notion.Client
 {
