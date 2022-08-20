@@ -22,6 +22,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(RichTextProperty), PropertyType.RichText)]
     [JsonSubtypes.KnownSubType(typeof(RollupProperty), PropertyType.Rollup)]
     [JsonSubtypes.KnownSubType(typeof(SelectProperty), PropertyType.Select)]
+    [JsonSubtypes.KnownSubType(typeof(StatusProperty), PropertyType.Status)]
     [JsonSubtypes.KnownSubType(typeof(TitleProperty), PropertyType.Title)]
     [JsonSubtypes.KnownSubType(typeof(UrlProperty), PropertyType.Url)]
     public class Property
