@@ -65,6 +65,9 @@ namespace Notion.Client
         LastEditedTime,
 
         [EnumMember(Value = "last_edited_by")]
-        LastEditedBy
+        LastEditedBy,
+
+        [EnumMember(Value = "status")]
+        Status,
     }
 }
