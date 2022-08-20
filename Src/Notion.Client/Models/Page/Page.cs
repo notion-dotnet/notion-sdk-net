@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Page : IObject
+    public class Page : IObject, IObjectModificationData
     {
         /// <summary>
         /// Object type
@@ -63,5 +63,9 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("cover")]
         public FileObject Cover { get; set; }
+
+        public PartialUser CreatedBy { get; set; }
+
+        public PartialUser LastEditedBy { get; set; }
     }
 }
