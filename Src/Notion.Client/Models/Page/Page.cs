@@ -63,5 +63,9 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("cover")]
         public FileObject Cover { get; set; }
+
+        public PartialUser CreatedBy { get; set; }
+
+        public PartialUser LastEditedBy { get; set; }
     }
 }

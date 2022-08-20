@@ -16,5 +16,17 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("last_edited_time")]
         DateTime LastEditedTime { get; set; }
+
+        /// <summary>
+        /// User who created the object.
+        /// </summary>
+        [JsonProperty("created_by")]
+        PartialUser CreatedBy { get; set; }
+
+        /// <summary>
+        /// User who last modified the object.
+        /// </summary>
+        [JsonProperty("last_edited_by")]
+        PartialUser LastEditedBy { get; set; }
     }
 }

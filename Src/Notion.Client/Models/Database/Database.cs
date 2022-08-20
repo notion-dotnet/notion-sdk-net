@@ -36,5 +36,9 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("url")]
         public string Url { get; set; }
+
+        public PartialUser CreatedBy { get; set; }
+
+        public PartialUser LastEditedBy { get; set; }
     }
 }
