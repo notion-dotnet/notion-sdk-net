@@ -202,7 +202,6 @@ namespace Notion.IntegrationTests
 
             var page = await _client.Pages.CreateAsync(pagesCreateParameters);
 
-
             var setDate = (DatePropertyValue)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
@@ -219,7 +218,6 @@ namespace Notion.IntegrationTests
             {
                 Properties = testProps
             });
-
 
             var verifyDate = (DatePropertyValue)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
             {
