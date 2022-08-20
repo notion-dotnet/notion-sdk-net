@@ -19,5 +19,7 @@ namespace Notion.Client
 
         [JsonProperty("cover")]
         public FileObject Cover { get; set; }
+
+        public bool? IsInline { get; set; }
     }
 }

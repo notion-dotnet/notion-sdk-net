@@ -16,6 +16,9 @@ namespace Notion.Client
 
         [JsonProperty("cover")]
         FileObject Cover { get; set; }
+
+        [JsonProperty("is_inline")]
+        bool? IsInline { get; set; }
     }
 
     public class DatabasesUpdateParameters : IDatabasesUpdateBodyParameters
@@ -24,5 +27,6 @@ namespace Notion.Client
         public List<RichTextBaseInput> Title { get; set; }
         public IPageIcon Icon { get; set; }
         public FileObject Cover { get; set; }
+        public bool? IsInline { get; set; }
     }
 }
