@@ -36,17 +36,11 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(ToggleBlock), BlockType.Toggle)]
     [JsonSubtypes.KnownSubType(typeof(VideoBlock), BlockType.Video)]
     [JsonSubtypes.KnownSubType(typeof(UnsupportedBlock), BlockType.Unsupported)]
-    public interface IBlock : IObject
+    public interface IBlock : IObject, IObjectModificationData
     {
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
         BlockType Type { get; set; }
-
-        [JsonProperty("created_time")]
-        string CreatedTime { get; set; }
-
-        [JsonProperty("last_edited_time")]
-        string LastEditedTime { get; set; }
 
         [JsonProperty("has_children")]
         bool HasChildren { get; set; }
