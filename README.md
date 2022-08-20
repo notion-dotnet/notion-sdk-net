@@ -41,12 +41,12 @@ Provides the following packages:
 dotnet add package Notion.Net
 ```
 
-> Note: default Notion-Version used by NuGet package versions
-> | Package version | Notion-Version |
-> | --- | --- |
-> | 3.0.0+ | 2022-02-22 |
-> | 2.0.0+ | 2021-08-16 |
-> | 1.0.0+ | 2021-05-13 |
+**Note:** default Notion-Version used by NuGet package versions
+| Package version | Notion-Version |
+| --- | --- |
+| 3.0.0+ | 2022-02-22 |
+| 2.0.0+ | 2021-08-16 |
+| 1.0.0+ | 2021-05-13 |
 
 ## Usage
 
