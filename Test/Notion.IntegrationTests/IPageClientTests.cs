@@ -53,8 +53,15 @@ namespace Notion.IntegrationTests
                 .DatabaseId.Should().Be(_databaseId);
 
             page.Properties.Should().ContainKey("Name");
-            page.Properties["Name"].Should().BeOfType<TitlePropertyValue>().Which
-                .Title.First().PlainText.Should().Be("Test Page Title");
+            var pageProperty = page.Properties["Name"].Should().BeOfType<PagePropertyOnId>().Subject;
+
+            var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = pageProperty.Id
+            });
+
+            titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText.Should().Be("Test Page Title");
 
             await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
             {
@@ -98,8 +105,15 @@ namespace Notion.IntegrationTests
                 .DatabaseId.Should().Be(_databaseId);
 
             page.Properties.Should().ContainKey("Name");
-            page.Properties["Name"].Should().BeOfType<TitlePropertyValue>().Which
-                .Title.First().PlainText.Should().Be("Test Page Title");
+            var pageProperty = page.Properties["Name"].Should().BeOfType<PagePropertyOnId>().Subject;
+
+            var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = pageProperty.Id
+            });
+
+            titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText.Should().Be("Test Page Title");
 
             await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
             {
