@@ -47,6 +47,9 @@ namespace Notion.Client
 
         public PartialUser LastEditedBy { get; set; }
 
+        [JsonProperty("is_inline")]
+        public bool IsInline { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
     }

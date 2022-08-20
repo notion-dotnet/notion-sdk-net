@@ -20,6 +20,9 @@ namespace Notion.Client
         [JsonProperty("archived")]
         bool Archived { get; set; }
 
+        [JsonProperty("is_inline")]
+        bool? IsInline { get; set; }
+
         [JsonProperty("description")]
         string Description { get; set; }
     }
