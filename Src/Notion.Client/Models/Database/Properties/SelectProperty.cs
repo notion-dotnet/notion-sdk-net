@@ -35,7 +35,7 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("color")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public Color Color { get; set; }
+        public Color? Color { get; set; }
     }
 
     public class MultiSelectProperty : Property

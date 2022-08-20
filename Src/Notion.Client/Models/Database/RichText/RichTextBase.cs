@@ -43,6 +43,6 @@ namespace Notion.Client
 
         [JsonProperty("color")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public Color Color { get; set; }
+        public Color? Color { get; set; }
     }
 }
