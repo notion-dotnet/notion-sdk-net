@@ -19,5 +19,8 @@ namespace Notion.Client
 
         [JsonProperty("archived")]
         bool Archived { get; set; }
+
+        [JsonProperty("description")]
+        string Description { get; set; }
     }
 }
