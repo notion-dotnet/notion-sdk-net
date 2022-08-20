@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Database : IObject
+    public class Database : IObject, IObjectModificationData
     {
         public ObjectType Object => ObjectType.Database;
 
@@ -36,5 +36,9 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("url")]
         public string Url { get; set; }
+
+        public PartialUser CreatedBy { get; set; }
+
+        public PartialUser LastEditedBy { get; set; }
     }
 }
