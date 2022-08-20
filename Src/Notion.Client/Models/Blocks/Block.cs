@@ -15,5 +15,9 @@ namespace Notion.Client
         public DateTime LastEditedTime { get; set; }
 
         public virtual bool HasChildren { get; set; }
+
+        public PartialUser CreatedBy { get; set; }
+
+        public PartialUser LastEditedBy { get; set; }
     }
 }
