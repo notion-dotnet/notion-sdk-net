@@ -140,11 +140,14 @@ namespace Notion.UnitTests
                     {
                         Id = "zDGa",
                         Name = "Property",
-                        Relation = new Relation()
+                        Relation = new DualPropertyRelation()
                         {
                             DatabaseId = "f86f2262-0751-40f2-8f63-e3f7a3c39fcb",
-                            SyncedPropertyName = "Related to sample table (Property)",
-                            SyncedPropertyId = "VQ}{"
+                            DualProperty = new DualPropertyRelation.Data
+                            {
+                                SyncedPropertyName = "Related to sample table (Property)",
+                                SyncedPropertyId = "VQ}{"
+                            }
                         }
                     });
         }
