@@ -22,6 +22,6 @@ namespace Notion.Client
 
         public bool? IsInline { get; set; }
 
-        public string Description { get; set; }
+        public List<RichTextBaseInput> Description { get; set; }
     }
 }
