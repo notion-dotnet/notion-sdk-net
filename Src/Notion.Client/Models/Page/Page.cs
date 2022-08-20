@@ -44,7 +44,7 @@ namespace Notion.Client
         /// Property values of this page.
         /// </summary>
         [JsonProperty("properties")]
-        public IDictionary<string, PropertyValue> Properties { get; set; }
+        public IDictionary<string, PagePropertyOnId> Properties { get; set; }
 
         /// <summary>
         /// The URL of the Notion page.

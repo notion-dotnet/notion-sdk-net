@@ -109,7 +109,14 @@ namespace Notion.UnitTests
             page.Id.Should().Be(pageId);
             page.Properties.Should().HaveCount(2);
             var updatedProperty = page.Properties.First(x => x.Key == "In stock");
-            ((CheckboxPropertyValue)updatedProperty.Value).Checkbox.Should().BeTrue();
+
+            var checkboxPropertyValue = (CheckboxPropertyValue)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = updatedProperty.Value.Id
+            });
+
+            checkboxPropertyValue.Checkbox.Should().BeTrue();
         }
 
         [Fact]
@@ -160,7 +167,14 @@ namespace Notion.UnitTests
             page.IsArchived.Should().BeFalse();
             page.Properties.Should().HaveCount(2);
             var updatedProperty = page.Properties.First(x => x.Key == "In stock");
-            ((CheckboxPropertyValue)updatedProperty.Value).Checkbox.Should().BeTrue();
+
+            var checkboxPropertyValue = (CheckboxPropertyValue)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = updatedProperty.Value.Id
+            });
+
+            checkboxPropertyValue.Checkbox.Should().BeTrue();
         }
 
         [Fact]
@@ -193,7 +207,14 @@ namespace Notion.UnitTests
             page.IsArchived.Should().BeTrue();
             page.Properties.Should().HaveCount(2);
             var updatedProperty = page.Properties.First(x => x.Key == "In stock");
-            ((CheckboxPropertyValue)updatedProperty.Value).Checkbox.Should().BeTrue();
+
+            var checkboxPropertyValue = (CheckboxPropertyValue)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = updatedProperty.Value.Id
+            });
+
+            checkboxPropertyValue.Checkbox.Should().BeTrue();
         }
 
         [Fact]

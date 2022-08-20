@@ -12,10 +12,11 @@ namespace Notion.UnitTests
     public class DatabasesClientTests : ApiTestBase
     {
         private readonly IDatabasesClient _client;
-
+        private readonly IPagesClient _pagesClient;
         public DatabasesClientTests()
         {
             _client = new DatabasesClient(new RestClient(ClientOptions));
+            _pagesClient = new PagesClient(new RestClient(ClientOptions));
         }
 
         [Fact]
@@ -463,7 +464,13 @@ namespace Notion.UnitTests
                 page.Parent.Should().BeAssignableTo<IPageParent>();
                 page.Object.Should().Be(ObjectType.Page);
 
-                var formulaPropertyValue = (FormulaPropertyValue)page.Properties["FormulaProp"];
+                var formulaPropertyValue = (FormulaPropertyValue)await _pagesClient.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+                {
+                    PageId = page.Id,
+                    PropertyId = page.Properties["FormulaProp"].Id
+                });
+
+                //var formulaPropertyValue = (FormulaPropertyValue)page.Properties["FormulaProp"];
                 formulaPropertyValue.Formula.Date.Start.Should().Be(DateTime.Parse("2021-06-28"));
                 formulaPropertyValue.Formula.Date.End.Should().BeNull();
             }
