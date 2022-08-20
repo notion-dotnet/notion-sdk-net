@@ -37,8 +37,20 @@ namespace Notion.Client
         [JsonProperty("url")]
         public string Url { get; set; }
 
+        /// <summary>
+        /// The archived status of the database.
+        /// </summary>
+        [JsonProperty("archived")]
+        public bool Archived { get; set; }
+
         public PartialUser CreatedBy { get; set; }
 
         public PartialUser LastEditedBy { get; set; }
+
+        [JsonProperty("is_inline")]
+        public bool IsInline { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
     }
 }

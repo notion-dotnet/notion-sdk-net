@@ -3,16 +3,22 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public interface IDatabasesCreateBodyParameters
+    public interface IDatabasesUpdateBodyParameters
     {
-        [JsonProperty("parent")]
-        ParentPageInput Parent { get; set; }
-
         [JsonProperty("properties")]
-        Dictionary<string, IPropertySchema> Properties { get; set; }
+        Dictionary<string, IUpdatePropertySchema> Properties { get; set; }
 
         [JsonProperty("title")]
         List<RichTextBaseInput> Title { get; set; }
+
+        [JsonProperty("icon")]
+        IPageIcon Icon { get; set; }
+
+        [JsonProperty("cover")]
+        FileObject Cover { get; set; }
+
+        [JsonProperty("archived")]
+        bool Archived { get; set; }
 
         [JsonProperty("is_inline")]
         bool? IsInline { get; set; }
