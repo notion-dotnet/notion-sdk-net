@@ -88,6 +88,7 @@ namespace Notion.UnitTests
         public async Task UpdatePropertiesAsync()
         {
             var pageId = "251d2b5f-268c-4de2-afe9-c71ff92ca95c";
+            var propertyId = "{>U;";
             var path = ApiEndpoints.PagesApiUrls.UpdateProperties(pageId);
 
             var jsonData = await File.ReadAllTextAsync("data/pages/UpdatePagePropertiesResponse.json");
@@ -98,6 +99,10 @@ namespace Notion.UnitTests
                     .WithStatusCode(200)
                     .WithBody(jsonData)
             );
+
+            Server.Given(CreateGetRequestBuilder(ApiEndpoints.PagesApiUrls.RetrievePropertyItem(pageId, propertyId)))
+                .RespondWith(
+                Response.Create().WithStatusCode(200).WithBody("{\"object\":\"property_item\",\"id\":\"{>U;\",\"type\":\"checkbox\",\"checkbox\":true}"));
 
             var updatedProperties = new Dictionary<string, PropertyValue>()
             {
@@ -110,7 +115,7 @@ namespace Notion.UnitTests
             page.Properties.Should().HaveCount(2);
             var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
-            var checkboxPropertyValue = (CheckboxPropertyValue)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
                 PropertyId = updatedProperty.Value.Id
@@ -142,6 +147,7 @@ namespace Notion.UnitTests
         public async Task UpdatePageAsync()
         {
             var pageId = "251d2b5f-268c-4de2-afe9-c71ff92ca95c";
+            var propertyId = "{>U;";
             var path = ApiEndpoints.PagesApiUrls.UpdateProperties(pageId);
 
             var jsonData = await File.ReadAllTextAsync("data/pages/UpdatePagePropertiesResponse.json");
@@ -152,6 +158,10 @@ namespace Notion.UnitTests
                     .WithStatusCode(200)
                     .WithBody(jsonData)
             );
+
+            Server.Given(CreateGetRequestBuilder(ApiEndpoints.PagesApiUrls.RetrievePropertyItem(pageId, propertyId)))
+                .RespondWith(
+                Response.Create().WithStatusCode(200).WithBody("{\"object\":\"property_item\",\"id\":\"{>U;\",\"type\":\"checkbox\",\"checkbox\":true}"));
 
             var pagesUpdateParameters = new PagesUpdateParameters
             {
@@ -168,7 +178,7 @@ namespace Notion.UnitTests
             page.Properties.Should().HaveCount(2);
             var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
-            var checkboxPropertyValue = (CheckboxPropertyValue)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
                 PropertyId = updatedProperty.Value.Id
@@ -181,6 +191,8 @@ namespace Notion.UnitTests
         public async Task ArchivePageAsync()
         {
             var pageId = "251d2b5f-268c-4de2-afe9-c71ff92ca95c";
+            var propertyId = "{>U;";
+
             var path = ApiEndpoints.PagesApiUrls.UpdateProperties(pageId);
 
             var jsonData = await File.ReadAllTextAsync("data/pages/ArchivePageResponse.json");
@@ -191,6 +203,10 @@ namespace Notion.UnitTests
                     .WithStatusCode(200)
                     .WithBody(jsonData)
             );
+
+            Server.Given(CreateGetRequestBuilder(ApiEndpoints.PagesApiUrls.RetrievePropertyItem(pageId, propertyId)))
+                .RespondWith(
+                Response.Create().WithStatusCode(200).WithBody("{\"object\":\"property_item\",\"id\":\"{>U;\",\"type\":\"checkbox\",\"checkbox\":true}"));
 
             var pagesUpdateParameters = new PagesUpdateParameters
             {
@@ -208,7 +224,7 @@ namespace Notion.UnitTests
             page.Properties.Should().HaveCount(2);
             var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
-            var checkboxPropertyValue = (CheckboxPropertyValue)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
                 PropertyId = updatedProperty.Value.Id
