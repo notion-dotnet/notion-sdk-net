@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
@@ -13,5 +14,7 @@ namespace Notion.Client
         public FileObject Cover { get; set; }
 
         public bool Archived { get; set; }
+
+        public bool? IsInline { get; set; }
     }
 }
