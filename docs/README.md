@@ -10,13 +10,6 @@ A simple and easy to use client for the [Notion API](https://developers.notion.c
 dotnet add package Notion.Net
 ```
 
-**Note:** default Notion-Version used by NuGet package versions
-| Package version | Notion-Version |
-| --- | --- |
-| 3.0.0+ | 2022-02-22 |
-| 2.0.0+ | 2021-08-16 |
-| 1.0.0+ | 2021-05-13 |
-
 ## Usage
 
 > Before getting started, you need to [create an integration](https://www.notion.com/my-integrations) and find the token. You can learn more about authorization [here](https://developers.notion.com/docs/authorization).
