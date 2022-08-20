@@ -1,4 +1,6 @@
-﻿namespace Notion.Client
+﻿using System;
+
+namespace Notion.Client
 {
     public abstract class Block : IBlock
     {
@@ -8,9 +10,9 @@
 
         public virtual BlockType Type { get; set; }
 
-        public string CreatedTime { get; set; }
+        public DateTime CreatedTime { get; set; }
 
-        public string LastEditedTime { get; set; }
+        public DateTime LastEditedTime { get; set; }
 
         public virtual bool HasChildren { get; set; }
     }
