@@ -24,6 +24,6 @@ namespace Notion.Client
         bool? IsInline { get; set; }
 
         [JsonProperty("description")]
-        string Description { get; set; }
+        List<RichTextBaseInput> Description { get; set; }
     }
 }

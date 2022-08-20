@@ -51,6 +51,6 @@ namespace Notion.Client
         public bool IsInline { get; set; }
 
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public IEnumerable<RichTextBase> Description { get; set; }
     }
 }
