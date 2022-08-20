@@ -49,5 +49,8 @@ namespace Notion.Client
 
         [JsonProperty("is_inline")]
         public bool IsInline { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
     }
 }

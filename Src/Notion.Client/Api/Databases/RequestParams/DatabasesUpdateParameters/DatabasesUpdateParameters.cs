@@ -16,5 +16,7 @@ namespace Notion.Client
         public bool Archived { get; set; }
 
         public bool? IsInline { get; set; }
+
+        public string Description { get; set; }
     }
 }
