@@ -1,6 +1,7 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Notion.Client.Models.Blocks;
 
 namespace Notion.Client
 {
@@ -44,5 +45,8 @@ namespace Notion.Client
 
         [JsonProperty("has_children")]
         bool HasChildren { get; set; }
+
+        [JsonProperty("parent")]
+        IBlockParent Parent { get; set; }
     }
 }
