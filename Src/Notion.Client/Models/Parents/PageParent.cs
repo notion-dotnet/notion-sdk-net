@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class PageParent : IPageParent, IDatabaseParent
+    public class PageParent : IPageParent, IDatabaseParent, IBlockParent
     {
         /// <summary>
         /// Always "page_id".
