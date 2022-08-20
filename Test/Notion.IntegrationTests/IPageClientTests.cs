@@ -202,7 +202,12 @@ namespace Notion.IntegrationTests
 
             var page = await _client.Pages.CreateAsync(pagesCreateParameters);
 
-            var setDate = page.Properties[datePropertyName] as DatePropertyValue;
+
+            var setDate = (DatePropertyValue)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = page.Properties[datePropertyName].Id
+            });
 
             setDate?.Date?.Start.Should().Be(Convert.ToDateTime("2020-12-08T12:00:00Z"));
 
@@ -215,7 +220,12 @@ namespace Notion.IntegrationTests
                 Properties = testProps
             });
 
-            var verifyDate = updatedPage.Properties[datePropertyName] as DatePropertyValue;
+
+            var verifyDate = (DatePropertyValue)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = updatedPage.Properties[datePropertyName].Id
+            });
 
             verifyDate?.Date.Should().BeNull();
 
