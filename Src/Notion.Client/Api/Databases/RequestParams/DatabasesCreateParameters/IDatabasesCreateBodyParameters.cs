@@ -13,5 +13,8 @@ namespace Notion.Client
 
         [JsonProperty("title")]
         List<RichTextBaseInput> Title { get; set; }
+
+        [JsonProperty("description")]
+        string Description { get; set; }
     }
 }
