@@ -128,6 +128,9 @@ var complexFiler = new CompoundFilter(
   - [x] Retrieve block children
   - [x] Append block children
   - [x] Delete a block
+- [x] Comments
+  - [x] Retrieve comments
+  - [x] Create comment
 - [x] Users
   - [x] Retrieve a User
   - [x] List all users
