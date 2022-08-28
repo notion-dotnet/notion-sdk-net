@@ -7,6 +7,7 @@
         IPagesClient Pages { get; }
         ISearchClient Search { get; }
         IBlocksClient Blocks { get; }
+        ICommentsClient Comments { get; }
         IRestClient RestClient { get; }
     }
 
@@ -18,6 +19,7 @@
             DatabasesClient databases,
             PagesClient pages,
             SearchClient search,
+            CommentsClient comments,
             BlocksClient blocks)
         {
             RestClient = restClient;
@@ -25,6 +27,7 @@
             Databases = databases;
             Pages = pages;
             Search = search;
+            Comments = comments;
             Blocks = blocks;
         }
 
@@ -33,6 +36,7 @@
         public IPagesClient Pages { get; }
         public ISearchClient Search { get; }
         public IBlocksClient Blocks { get; }
+        public ICommentsClient Comments { get; }
         public IRestClient RestClient { get; }
     }
 }
