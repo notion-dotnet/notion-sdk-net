@@ -3,7 +3,7 @@
   <PropertyGroup>
     <VersionPrefix>4.0.0-preview</VersionPrefix>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9.0</LangVersion>
     
     <PackageId>Notion.Net</PackageId>
     <Authors>Vedant Koditkar</Authors>

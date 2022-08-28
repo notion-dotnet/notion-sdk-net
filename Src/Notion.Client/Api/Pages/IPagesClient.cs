@@ -13,11 +13,23 @@ namespace Notion.Client
         /// If the parent is a page, the only valid property is <strong>title</strong>.
         /// </summary>
         /// <param name="pagesCreateParameters">Create page parameters</param>
-        /// <returns>Created page.</returns>
+        /// <returns>Created <see cref="Page"/> object.</returns>
         Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters);
 
+        /// <summary>
+        /// Retrieves a Page object using the ID specified.
+        /// </summary>
+        /// <param name="pageId">Identifier for a Notion page</param>
+        /// <returns><see cref="Page"/></returns>
         Task<Page> RetrieveAsync(string pageId);
 
+        /// <summary>
+        /// Updates page property values for the specified page. 
+        /// Note: Properties that are not set via the properties parameter will remain unchanged.
+        /// </summary>
+        /// <param name="pageId">Identifier for a Notion page</param>
+        /// <param name="updatedProperties">Property values to update for this page. The keys are the names or IDs of the property and the values are property values.</param>
+        /// <returns>Updated <see cref="Page"/> object</returns>
         Task<Page> UpdatePropertiesAsync(
             string pageId,
             IDictionary<string, PropertyValue> updatedProperties
@@ -27,15 +39,15 @@ namespace Notion.Client
         /// Updates page property values for the specified page. 
         /// Properties that are not set via the properties parameter will remain unchanged.
         /// </summary>
-        /// <param name="pageId"></param>
-        /// <param name="pagesUpdateParameters"></param>
-        /// <returns>Updated page.</returns>
+        /// <param name="pageId">Identifier for a Notion page</param>
+        /// <param name="pagesUpdateParameters">Update property parameters</param>
+        /// <returns>Updated <see cref="Page"/> object</returns>
         Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters);
 
         /// <summary>
         /// Retrieves a property_item object for a given pageId and propertyId. Depending on the property type, the object returned will either be a value or a paginated list of property item values.
         /// </summary>
-        /// <param name="retrievePropertyItemParameters">sdf sd</param>
+        /// <param name="retrievePropertyItemParameters">Property body and query parameters</param>
         /// <returns><see cref="IPropertyItemObject"/></returns>
         Task<IPropertyItemObject> RetrievePagePropertyItem(RetrievePropertyItemParameters retrievePropertyItemParameters);
     }
