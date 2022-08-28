@@ -13,6 +13,7 @@
                 , pages: new PagesClient(restClient)
                 , search: new SearchClient(restClient)
                 , blocks: new BlocksClient(restClient)
+                , comments: new CommentsClient(restClient)
             );
         }
     }
