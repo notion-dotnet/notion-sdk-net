@@ -10,5 +10,7 @@ namespace Notion.Client
         /// <param name="retrieveCommentsParameters">Retrieve comments parameters</param>
         /// <returns><see cref="RetrieveCommentsResponse"/></returns>
         Task<RetrieveCommentsResponse> Retrieve(RetrieveCommentsParameters retrieveCommentsParameters);
+
+        Task<CreateCommentResponse> Create(CreateCommentParameters createCommentParameters);
     }
 }

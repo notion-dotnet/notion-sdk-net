@@ -65,6 +65,8 @@ namespace Notion.Client
         public static class CommentsApiUrls
         {
             public static string Retrieve() => "/v1/comments";
+
+            public static string Create() => "/v1/comments";
         }
     }
 }
