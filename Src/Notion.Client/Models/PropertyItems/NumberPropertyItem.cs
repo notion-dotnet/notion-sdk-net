@@ -7,6 +7,6 @@ namespace Notion.Client
         public override string Type => "number";
 
         [JsonProperty("number")]
-        public double Number { get; set; }
+        public double? Number { get; set; }
     }
 }
