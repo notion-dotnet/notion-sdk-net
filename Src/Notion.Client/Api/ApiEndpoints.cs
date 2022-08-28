@@ -61,5 +61,10 @@ namespace Notion.Client
         {
             public static string Search() => "/v1/search";
         }
+
+        public static class CommentsApiUrls
+        {
+            public static string Retrieve() => "/v1/comments";
+        }
     }
 }
