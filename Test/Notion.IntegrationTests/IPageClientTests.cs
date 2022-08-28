@@ -244,5 +244,59 @@ namespace Notion.IntegrationTests
             //cleanup
             await _client.Blocks.DeleteAsync(page.Id);
         }
+
+        [Fact]
+        public async Task Bug_Unable_To_Parse_NumberPropertyItem()
+        {
+            // Arrange
+            var pagesCreateParameters = PagesCreateParametersBuilder.Create(new DatabaseParentInput
+            {
+                DatabaseId = _databaseId
+            }).AddProperty("Name", new TitlePropertyValue
+            {
+                Title = new List<RichTextBase>
+                    {
+                         new RichTextText
+                         {
+                             Text = new Text
+                             {
+                                 Content = "Test Page Title"
+                             }
+                         }
+                    }
+            }).AddProperty("Number", new NumberPropertyValue
+            {
+                Number = 200.00
+            }).Build();
+
+            // Act
+            var page = await _client.Pages.CreateAsync(pagesCreateParameters);
+
+            // Assert
+            Assert.NotNull(page);
+            var pageParent = Assert.IsType<DatabaseParent>(page.Parent);
+            Assert.Equal(_databaseId, pageParent.DatabaseId);
+
+            var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = page.Properties["Name"].Id
+            });
+
+            Assert.Equal("Test Page Title", titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText);
+
+            var numberProperty = (NumberPropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = page.Properties["Number"].Id
+            });
+
+            Assert.Equal(200.00, numberProperty.Number);
+
+            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
+            {
+                Archived = true
+            });
+        }
     }
 }
