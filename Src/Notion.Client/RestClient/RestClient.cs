@@ -64,8 +64,9 @@ namespace Notion.Client
                 {
                     errorResponse = JsonConvert.DeserializeObject<NotionApiErrorResponse>(errorBody);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.Error(ex, "Error when parsing the notion api response.");
                 }
             }
 
@@ -84,7 +85,7 @@ namespace Notion.Client
 
             requestUri = AddQueryString(requestUri, queryParams);
 
-            HttpRequestMessage httpRequest = new HttpRequestMessage(httpMethod, requestUri);
+            using var httpRequest = new HttpRequestMessage(httpMethod, requestUri);
             httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _options.AuthToken);
             httpRequest.Headers.Add("Notion-Version", _options.NotionVersion);
 
