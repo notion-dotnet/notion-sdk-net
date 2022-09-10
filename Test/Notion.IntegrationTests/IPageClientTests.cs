@@ -53,7 +53,7 @@ namespace Notion.IntegrationTests
                 .DatabaseId.Should().Be(_databaseId);
 
             page.Properties.Should().ContainKey("Name");
-            var pageProperty = page.Properties["Name"].Should().BeOfType<PagePropertyOnId>().Subject;
+            var pageProperty = page.Properties["Name"].Should().BeOfType<PropertyValue>().Subject;
 
             var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
             {
@@ -105,7 +105,7 @@ namespace Notion.IntegrationTests
                 .DatabaseId.Should().Be(_databaseId);
 
             page.Properties.Should().ContainKey("Name");
-            var pageProperty = page.Properties["Name"].Should().BeOfType<PagePropertyOnId>().Subject;
+            var pageProperty = page.Properties["Name"].Should().BeOfType<PropertyValue>().Subject;
 
             var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
             {
