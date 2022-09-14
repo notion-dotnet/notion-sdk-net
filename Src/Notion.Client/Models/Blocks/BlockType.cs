@@ -97,6 +97,9 @@ namespace Notion.Client
         [EnumMember(Value = "table_row")]
         TableRow,
 
+        [EnumMember(Value = "link_preview")]
+        LinkPreview,
+
         [EnumMember(Value = "unsupported")]
         Unsupported
     }
