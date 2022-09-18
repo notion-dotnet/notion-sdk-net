@@ -1,4 +1,5 @@
-﻿using JsonSubTypes;
+﻿using System.Collections;
+using JsonSubTypes;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -8,6 +9,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(UrlPropertyItem), "url")]
     [JsonSubtypes.KnownSubType(typeof(SelectPropertyItem), "select")]
     [JsonSubtypes.KnownSubType(typeof(MultiSelectPropertyItem), "multi_select")]
+    [JsonSubtypes.KnownSubType(typeof(StatusPropertyItem), "status")]
     [JsonSubtypes.KnownSubType(typeof(DatePropertyItem), "date")]
     [JsonSubtypes.KnownSubType(typeof(EmailPropertyItem), "email")]
     [JsonSubtypes.KnownSubType(typeof(PhoneNumberPropertyItem), "phone_number")]
