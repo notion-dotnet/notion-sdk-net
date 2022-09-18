@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using JsonSubTypes;
+﻿using JsonSubTypes;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -24,6 +23,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(RichTextPropertyItem), "rich_text")]
     [JsonSubtypes.KnownSubType(typeof(PeoplePropertyItem), "people")]
     [JsonSubtypes.KnownSubType(typeof(RelationPropertyItem), "relation")]
+    [JsonSubtypes.KnownSubType(typeof(RollupPropertyItem), "rollup")]
     public abstract class SimplePropertyItem : IPropertyItemObject
     {
         public string Object => "property_item";
