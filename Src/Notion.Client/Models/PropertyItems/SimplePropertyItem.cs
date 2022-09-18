@@ -8,6 +8,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(UrlPropertyItem), "url")]
     [JsonSubtypes.KnownSubType(typeof(SelectPropertyItem), "select")]
     [JsonSubtypes.KnownSubType(typeof(MultiSelectPropertyItem), "multi_select")]
+    [JsonSubtypes.KnownSubType(typeof(StatusPropertyItem), "status")]
     [JsonSubtypes.KnownSubType(typeof(DatePropertyItem), "date")]
     [JsonSubtypes.KnownSubType(typeof(EmailPropertyItem), "email")]
     [JsonSubtypes.KnownSubType(typeof(PhoneNumberPropertyItem), "phone_number")]
@@ -22,6 +23,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(RichTextPropertyItem), "rich_text")]
     [JsonSubtypes.KnownSubType(typeof(PeoplePropertyItem), "people")]
     [JsonSubtypes.KnownSubType(typeof(RelationPropertyItem), "relation")]
+    [JsonSubtypes.KnownSubType(typeof(RollupPropertyItem), "rollup")]
     public abstract class SimplePropertyItem : IPropertyItemObject
     {
         public string Object => "property_item";
