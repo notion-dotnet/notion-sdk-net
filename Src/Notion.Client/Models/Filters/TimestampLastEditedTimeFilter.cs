@@ -7,7 +7,7 @@ namespace Notion.Client
     public class TimestampLastEditedTimeFilter : Filter
     {
         [JsonProperty("timestamp")]
-        public string Timestamp = "last_modified_time";
+        public string Timestamp = "last_edited_time";
 
         [JsonProperty("last_edited_time")]
         public DateFilter.Condition LastEditedTime { get; set; }
