@@ -4,10 +4,10 @@ namespace Notion.Client
 {
     public class BreadcrumbBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.Breadcrumb;
-
         [JsonProperty("breadcrumb")]
         public Data Breadcrumb { get; set; }
+
+        public override BlockType Type => BlockType.Breadcrumb;
 
         public class Data
         {

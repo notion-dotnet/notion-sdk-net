@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "type")]
-    [JsonSubtypes.KnownSubType(typeof(UserOwner), "user")]
-    [JsonSubtypes.KnownSubType(typeof(WorkspaceIntegrationOwner), "workspace")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(UserOwner), "user")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(WorkspaceIntegrationOwner), "workspace")]
     public interface IBotOwner
     {
         [JsonProperty("type")]

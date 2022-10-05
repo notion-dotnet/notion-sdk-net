@@ -9,11 +9,9 @@ namespace Notion.Client
         {
             var qp = (IRetrieveCommentsQueryParameters)parameters;
 
-            var queryParams = new Dictionary<string, string>()
+            var queryParams = new Dictionary<string, string>
             {
-                { "block_id", qp.BlockId },
-                { "start_cursor", qp.StartCursor },
-                { "page_size", qp.PageSize.ToString() },
+                {"block_id", qp.BlockId}, {"start_cursor", qp.StartCursor}, {"page_size", qp.PageSize.ToString()},
             };
 
             return await _client.GetAsync<RetrieveCommentsResponse>(

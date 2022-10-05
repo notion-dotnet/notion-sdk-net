@@ -3,7 +3,7 @@
 namespace Notion.Client
 {
     /// <summary>
-    /// Types of Property Value
+    ///     Types of Property Value
     /// </summary>
     public enum PropertyValueType
     {

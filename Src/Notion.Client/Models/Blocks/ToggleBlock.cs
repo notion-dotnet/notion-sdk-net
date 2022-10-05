@@ -6,10 +6,10 @@ namespace Notion.Client
 {
     public class ToggleBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.Toggle;
-
         [JsonProperty("toggle")]
         public Info Toggle { get; set; }
+
+        public override BlockType Type => BlockType.Toggle;
 
         public class Info
         {

@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "type")]
-    [JsonSubtypes.KnownSubType(typeof(UploadedFileWithName), "file")]
-    [JsonSubtypes.KnownSubType(typeof(ExternalFileWithName), "external")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(UploadedFileWithName), "file")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(ExternalFileWithName), "external")]
     public abstract class FileObjectWithName
     {
         [JsonProperty("type")]

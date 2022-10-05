@@ -7,11 +7,13 @@ namespace Notion.Client.Extensions
 {
     internal static class HttpResponseMessageExtensions
     {
-        internal static async Task<T> ParseStreamAsync<T>(this HttpResponseMessage response, JsonSerializerSettings serializerSettings = null)
+        internal static async Task<T> ParseStreamAsync<T>(
+            this HttpResponseMessage response,
+            JsonSerializerSettings serializerSettings = null)
         {
-            using (Stream stream = await response.Content.ReadAsStreamAsync())
+            using (var stream = await response.Content.ReadAsStreamAsync())
             {
-                using (StreamReader streamReader = new StreamReader(stream))
+                using (var streamReader = new StreamReader(stream))
                 {
                     using (JsonReader jsonReader = new JsonTextReader(streamReader))
                     {

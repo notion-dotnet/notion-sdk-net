@@ -1,72 +1,140 @@
-﻿using System;
-
-namespace Notion.Client
+﻿namespace Notion.Client
 {
     public static class ApiEndpoints
     {
         public static class DatabasesApiUrls
         {
-            public static string Retrieve(string databaseId) => $"/v1/databases/{databaseId}";
-            public static string List() => "/v1/databases";
-            public static string Query(string databaseId) => $"/v1/databases/{databaseId}/query";
             public static string Create => "/v1/databases";
-            public static string Update(string databaseId) => $"/v1/databases/{databaseId}";
+
+            public static string Retrieve(string databaseId)
+            {
+                return $"/v1/databases/{databaseId}";
+            }
+
+            public static string List()
+            {
+                return "/v1/databases";
+            }
+
+            public static string Query(string databaseId)
+            {
+                return $"/v1/databases/{databaseId}/query";
+            }
+
+            public static string Update(string databaseId)
+            {
+                return $"/v1/databases/{databaseId}";
+            }
         }
 
         public static class UsersApiUrls
         {
-            public static string Retrieve(string userId) => $"/v1/users/{userId}";
-            public static string List() => "/v1/users";
+            public static string Retrieve(string userId)
+            {
+                return $"/v1/users/{userId}";
+            }
+
+            public static string List()
+            {
+                return "/v1/users";
+            }
 
             /// <summary>
-            /// Get the <see cref="uri string"/> for retrieve your token's bot user.
+            ///     Get the <see cref="uri string" /> for retrieve your token's bot user.
             /// </summary>
-            /// <returns>Returns a <see cref="uri string"/> retrieve your token's bot user.</returns>
-            public static string Me() => "/v1/users/me";
+            /// <returns>Returns a <see cref="uri string" /> retrieve your token's bot user.</returns>
+            public static string Me()
+            {
+                return "/v1/users/me";
+            }
         }
 
         public static class BlocksApiUrls
         {
-            public static string Retrieve(string blockId) => $"/v1/blocks/{blockId}";
-            public static string Update(string blockId) => $"/v1/blocks/{blockId}";
+            public static string Retrieve(string blockId)
+            {
+                return $"/v1/blocks/{blockId}";
+            }
+
+            public static string Update(string blockId)
+            {
+                return $"/v1/blocks/{blockId}";
+            }
 
             /// <summary>
-            /// Get the <see cref="uri string"/> for deleting a block.
+            ///     Get the <see cref="uri string" /> for deleting a block.
             /// </summary>
             /// <param name="blockId">Identifier for a Notion block</param>
-            /// <returns>Returns a <see cref="uri string"/> for deleting a block.</returns>
-            public static string Delete(string blockId) => $"/v1/blocks/{blockId}";
+            /// <returns>Returns a <see cref="uri string" /> for deleting a block.</returns>
+            public static string Delete(string blockId)
+            {
+                return $"/v1/blocks/{blockId}";
+            }
 
-            public static string RetrieveChildren(string blockId) => $"/v1/blocks/{blockId}/children";
-            public static string AppendChildren(string blockId) => $"/v1/blocks/{blockId}/children";
+            public static string RetrieveChildren(string blockId)
+            {
+                return $"/v1/blocks/{blockId}/children";
+            }
+
+            public static string AppendChildren(string blockId)
+            {
+                return $"/v1/blocks/{blockId}/children";
+            }
         }
 
         public static class PagesApiUrls
         {
-            public static string Create() => $"/v1/pages";
-            public static string Retrieve(string pageId) => $"/v1/pages/{pageId}";
-            public static string Update(string pageId) => $"/v1/pages/{pageId}";
-            public static string UpdateProperties(string pageId) => $"/v1/pages/{pageId}";
+            public static string Create()
+            {
+                return "/v1/pages";
+            }
+
+            public static string Retrieve(string pageId)
+            {
+                return $"/v1/pages/{pageId}";
+            }
+
+            public static string Update(string pageId)
+            {
+                return $"/v1/pages/{pageId}";
+            }
+
+            public static string UpdateProperties(string pageId)
+            {
+                return $"/v1/pages/{pageId}";
+            }
 
             /// <summary>
-            /// Get the <see cref="uri string"/> for retrieve page property item
+            ///     Get the <see cref="uri string" /> for retrieve page property item
             /// </summary>
             /// <param name="pageId">Identifier for a Notion Page</param>
             /// <param name="propertyId">Identifier for a Notion Property</param>
             /// <returns></returns>
-            public static string RetrievePropertyItem(string pageId, string propertyId) => $"/v1/pages/{pageId}/properties/{propertyId}";
+            public static string RetrievePropertyItem(string pageId, string propertyId)
+            {
+                return $"/v1/pages/{pageId}/properties/{propertyId}";
+            }
         }
 
         public static class SearchApiUrls
         {
-            public static string Search() => "/v1/search";
+            public static string Search()
+            {
+                return "/v1/search";
+            }
         }
 
         public static class CommentsApiUrls
         {
-            public static string Retrieve() => "/v1/comments";
+            public static string Retrieve()
+            {
+                return "/v1/comments";
+            }
 
-            public static string Create() => "/v1/comments";
+            public static string Create()
+            {
+                return "/v1/comments";
+            }
         }
     }
 }

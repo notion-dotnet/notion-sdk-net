@@ -25,7 +25,7 @@ namespace Notion.Client.http
                 throw new ArgumentNullException(nameof(value));
             }
 
-            return AddQueryString(uri, new[] { new KeyValuePair<string, string>(name, value) });
+            return AddQueryString(uri, new[] {new KeyValuePair<string, string>(name, value)});
         }
 
         public static string AddQueryString(string uri, IDictionary<string, string> queryParams)
@@ -74,6 +74,7 @@ namespace Notion.Client.http
 
             var sb = new StringBuilder();
             sb.Append(uriToBeAppended);
+
             foreach (var parameter in queryParams)
             {
                 sb.Append(hasQuery ? '&' : '?');
@@ -84,13 +85,14 @@ namespace Notion.Client.http
             }
 
             sb.Append(anchorText);
+
             return sb.ToString();
         }
 
-        private static IEnumerable<KeyValuePair<string, string>> RemoveEmptyValueQueryParams(IEnumerable<KeyValuePair<string, string>> queryParams)
+        private static IEnumerable<KeyValuePair<string, string>> RemoveEmptyValueQueryParams(
+            IEnumerable<KeyValuePair<string, string>> queryParams)
         {
             return queryParams.Where(x => !string.IsNullOrWhiteSpace(x.Value));
         }
-
     }
 }

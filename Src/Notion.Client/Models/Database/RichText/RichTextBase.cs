@@ -5,9 +5,9 @@ using Newtonsoft.Json.Converters;
 namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "type")]
-    [JsonSubtypes.KnownSubType(typeof(RichTextText), RichTextType.Text)]
-    [JsonSubtypes.KnownSubType(typeof(RichTextEquation), RichTextType.Equation)]
-    [JsonSubtypes.KnownSubType(typeof(RichTextMention), RichTextType.Mention)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextText), RichTextType.Text)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextEquation), RichTextType.Equation)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextMention), RichTextType.Mention)]
     public class RichTextBase
     {
         [JsonProperty("plain_text")]

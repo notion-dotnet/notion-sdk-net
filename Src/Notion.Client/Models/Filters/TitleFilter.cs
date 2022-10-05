@@ -4,9 +4,6 @@ namespace Notion.Client
 {
     public class TitleFilter : SinglePropertyFilter
     {
-        [JsonProperty("title")]
-        public TextFilter.Condition Title { get; set; }
-
         public TitleFilter(
             string propertyName,
             string equal = null,
@@ -19,16 +16,20 @@ namespace Notion.Client
             bool? isNotEmpty = null)
         {
             Property = propertyName;
+
             Title = new TextFilter.Condition(
-                equal: equal,
-                doesNotEqual: doesNotEqual,
-                contains: contains,
-                doesNotContain: doesNotContain,
-                startsWith: startsWith,
-                endsWith: endsWith,
-                isEmpty: isEmpty,
-                isNotEmpty: isNotEmpty
+                equal,
+                doesNotEqual,
+                contains,
+                doesNotContain,
+                startsWith,
+                endsWith,
+                isEmpty,
+                isNotEmpty
             );
         }
+
+        [JsonProperty("title")]
+        public TextFilter.Condition Title { get; set; }
     }
 }

@@ -4,9 +4,6 @@ namespace Notion.Client
 {
     public class User : IObject
     {
-        public ObjectType Object => ObjectType.User;
-        public string Id { get; set; }
-
         [JsonProperty("type")]
         public string Type { get; set; }
 
@@ -21,5 +18,9 @@ namespace Notion.Client
 
         [JsonProperty("bot")]
         public Bot Bot { get; set; }
+
+        public ObjectType Object => ObjectType.User;
+
+        public string Id { get; set; }
     }
 }

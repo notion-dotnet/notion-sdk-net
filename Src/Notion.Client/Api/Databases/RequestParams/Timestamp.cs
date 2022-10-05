@@ -11,6 +11,6 @@ namespace Notion.Client
         CreatedTime,
 
         [EnumMember(Value = "last_edited_time")]
-        LastEditedTime
+        LastEditedTime,
     }
 }

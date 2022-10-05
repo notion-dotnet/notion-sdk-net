@@ -6,10 +6,10 @@ namespace Notion.Client
 {
     public class ParagraphBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.Paragraph;
-
         [JsonProperty("paragraph")]
         public Info Paragraph { get; set; }
+
+        public override BlockType Type => BlockType.Paragraph;
 
         public class Info
         {

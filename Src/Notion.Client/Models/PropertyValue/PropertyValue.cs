@@ -5,33 +5,33 @@ using Newtonsoft.Json.Converters;
 namespace Notion.Client
 {
     /// <summary>
-    /// An object describing the identifier, type, and value of a page property.
+    ///     An object describing the identifier, type, and value of a page property.
     /// </summary>
     [JsonConverter(typeof(JsonSubtypes), "type")]
-    [JsonSubtypes.KnownSubType(typeof(CheckboxPropertyValue), PropertyValueType.Checkbox)]
-    [JsonSubtypes.KnownSubType(typeof(CreatedByPropertyValue), PropertyValueType.CreatedBy)]
-    [JsonSubtypes.KnownSubType(typeof(CreatedTimePropertyValue), PropertyValueType.CreatedTime)]
-    [JsonSubtypes.KnownSubType(typeof(DatePropertyValue), PropertyValueType.Date)]
-    [JsonSubtypes.KnownSubType(typeof(EmailPropertyValue), PropertyValueType.Email)]
-    [JsonSubtypes.KnownSubType(typeof(FilesPropertyValue), PropertyValueType.Files)]
-    [JsonSubtypes.KnownSubType(typeof(FormulaPropertyValue), PropertyValueType.Formula)]
-    [JsonSubtypes.KnownSubType(typeof(LastEditedByPropertyValue), PropertyValueType.LastEditedBy)]
-    [JsonSubtypes.KnownSubType(typeof(LastEditedTimePropertyValue), PropertyValueType.LastEditedTime)]
-    [JsonSubtypes.KnownSubType(typeof(MultiSelectPropertyValue), PropertyValueType.MultiSelect)]
-    [JsonSubtypes.KnownSubType(typeof(NumberPropertyValue), PropertyValueType.Number)]
-    [JsonSubtypes.KnownSubType(typeof(PeoplePropertyValue), PropertyValueType.People)]
-    [JsonSubtypes.KnownSubType(typeof(PhoneNumberPropertyValue), PropertyValueType.PhoneNumber)]
-    [JsonSubtypes.KnownSubType(typeof(RelationPropertyValue), PropertyValueType.Relation)]
-    [JsonSubtypes.KnownSubType(typeof(RichTextPropertyValue), PropertyValueType.RichText)]
-    [JsonSubtypes.KnownSubType(typeof(RollupPropertyValue), PropertyValueType.Rollup)]
-    [JsonSubtypes.KnownSubType(typeof(SelectPropertyValue), PropertyValueType.Select)]
-    [JsonSubtypes.KnownSubType(typeof(StatusPropertyValue), PropertyValueType.Status)]
-    [JsonSubtypes.KnownSubType(typeof(TitlePropertyValue), PropertyValueType.Title)]
-    [JsonSubtypes.KnownSubType(typeof(UrlPropertyValue), PropertyValueType.Url)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(CheckboxPropertyValue), PropertyValueType.Checkbox)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(CreatedByPropertyValue), PropertyValueType.CreatedBy)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(CreatedTimePropertyValue), PropertyValueType.CreatedTime)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(DatePropertyValue), PropertyValueType.Date)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(EmailPropertyValue), PropertyValueType.Email)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(FilesPropertyValue), PropertyValueType.Files)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(FormulaPropertyValue), PropertyValueType.Formula)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(LastEditedByPropertyValue), PropertyValueType.LastEditedBy)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(LastEditedTimePropertyValue), PropertyValueType.LastEditedTime)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(MultiSelectPropertyValue), PropertyValueType.MultiSelect)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(NumberPropertyValue), PropertyValueType.Number)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(PeoplePropertyValue), PropertyValueType.People)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(PhoneNumberPropertyValue), PropertyValueType.PhoneNumber)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RelationPropertyValue), PropertyValueType.Relation)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextPropertyValue), PropertyValueType.RichText)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RollupPropertyValue), PropertyValueType.Rollup)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(SelectPropertyValue), PropertyValueType.Select)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(StatusPropertyValue), PropertyValueType.Status)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(TitlePropertyValue), PropertyValueType.Title)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(UrlPropertyValue), PropertyValueType.Url)]
     public class PropertyValue
     {
         /// <summary>
-        /// Underlying identifier of the property.
+        ///     Underlying identifier of the property.
         /// </summary>
         [JsonProperty("id")]
         public string Id { get; set; }

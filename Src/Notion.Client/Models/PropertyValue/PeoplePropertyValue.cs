@@ -4,14 +4,14 @@ using Newtonsoft.Json;
 namespace Notion.Client
 {
     /// <summary>
-    /// People property value object.
+    ///     People property value object.
     /// </summary>
     public class PeoplePropertyValue : PropertyValue
     {
         public override PropertyValueType Type => PropertyValueType.People;
 
         /// <summary>
-        /// List of users.
+        ///     List of users.
         /// </summary>
         [JsonProperty("people")]
         public List<User> People { get; set; }

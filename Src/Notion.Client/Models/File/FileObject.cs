@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "type")]
-    [JsonSubtypes.KnownSubType(typeof(UploadedFile), "file")]
-    [JsonSubtypes.KnownSubType(typeof(ExternalFile), "external")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(UploadedFile), "file")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(ExternalFile), "external")]
     public abstract class FileObject : IPageIcon
     {
-        [JsonProperty("type")]
-        public virtual string Type { get; set; }
-
         [JsonProperty("caption")]
         public IEnumerable<RichTextBase> Caption { get; set; }
+
+        [JsonProperty("type")]
+        public virtual string Type { get; set; }
     }
 }

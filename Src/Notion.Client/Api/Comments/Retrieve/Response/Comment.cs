@@ -6,10 +6,6 @@ namespace Notion.Client
 {
     public class Comment : IObject
     {
-        public string Id { get; set; }
-
-        public ObjectType Object => ObjectType.Comment;
-
         [JsonProperty("parent")]
         public ICommentParent Parent { get; set; }
 
@@ -27,5 +23,9 @@ namespace Notion.Client
 
         [JsonProperty("last_edited_time")]
         public DateTime LastEditedTime { get; set; }
+
+        public string Id { get; set; }
+
+        public ObjectType Object => ObjectType.Comment;
     }
 }

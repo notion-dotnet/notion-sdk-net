@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    class NotionApiErrorResponse
+    internal class NotionApiErrorResponse
     {
         [JsonProperty("code")]
         public NotionAPIErrorCode ErrorCode { get; set; }

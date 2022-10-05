@@ -14,7 +14,9 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<PaginatedList<IBlock>> RetrieveChildrenAsync(string blockId, BlocksRetrieveChildrenParameters parameters = null)
+        public async Task<PaginatedList<IBlock>> RetrieveChildrenAsync(
+            string blockId,
+            BlocksRetrieveChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -25,16 +27,18 @@ namespace Notion.Client
 
             var queryParameters = (IBlocksRetrieveChildrenQueryParameters)parameters;
 
-            var queryParams = new Dictionary<string, string>()
+            var queryParams = new Dictionary<string, string>
             {
-                { "start_cursor", queryParameters?.StartCursor?.ToString() },
-                { "page_size", queryParameters?.PageSize?.ToString() }
+                {"start_cursor", queryParameters?.StartCursor},
+                {"page_size", queryParameters?.PageSize?.ToString()},
             };
 
             return await _client.GetAsync<PaginatedList<IBlock>>(url, queryParams);
         }
 
-        public async Task<PaginatedList<IBlock>> AppendChildrenAsync(string blockId, BlocksAppendChildrenParameters parameters = null)
+        public async Task<PaginatedList<IBlock>> AppendChildrenAsync(
+            string blockId,
+            BlocksAppendChildrenParameters parameters = null)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {

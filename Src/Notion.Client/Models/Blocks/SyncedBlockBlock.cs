@@ -5,10 +5,10 @@ namespace Notion.Client
 {
     public class SyncedBlockBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.SyncedBlock;
-
         [JsonProperty("synced_block")]
         public Data SyncedBlock { get; set; }
+
+        public override BlockType Type => BlockType.SyncedBlock;
 
         public class Data
         {

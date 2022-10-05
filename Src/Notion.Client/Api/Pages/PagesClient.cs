@@ -15,11 +15,12 @@ namespace Notion.Client
         }
 
         /// <summary>
-        /// Creates a new page in the specified database or as a child of an existing page.
-        /// 
-        /// If the parent is a database, the <see href="https://developers.notion.com/reference-link/page#property-value-object">property values</see> of the new page in the properties parameter must conform to the parent <see href="https://developers.notion.com/reference-link/database">database</see>'s property schema.
-        /// 
-        /// If the parent is a page, the only valid property is <strong>title</strong>.
+        ///     Creates a new page in the specified database or as a child of an existing page.
+        ///     If the parent is a database, the
+        ///     <see href="https://developers.notion.com/reference-link/page#property-value-object">property values</see> of the
+        ///     new page in the properties parameter must conform to the parent
+        ///     <see href="https://developers.notion.com/reference-link/database">database</see>'s property schema.
+        ///     If the parent is a page, the only valid property is <strong>title</strong>.
         /// </summary>
         /// <param name="pagesCreateParameters">Create page parameters</param>
         /// <returns>Created page.</returns>
@@ -48,20 +49,22 @@ namespace Notion.Client
         public async Task<Page> RetrieveAsync(string pageId)
         {
             var url = PagesApiUrls.Retrieve(pageId);
+
             return await _client.GetAsync<Page>(url);
         }
 
-        public async Task<IPropertyItemObject> RetrievePagePropertyItem(RetrievePropertyItemParameters retrievePropertyItemParameters)
+        public async Task<IPropertyItemObject> RetrievePagePropertyItem(
+            RetrievePropertyItemParameters retrievePropertyItemParameters)
         {
             var pathParameters = (IRetrievePropertyItemPathParameters)retrievePropertyItemParameters;
             var queryParameters = (IRetrievePropertyQueryParameters)retrievePropertyItemParameters;
 
             var url = PagesApiUrls.RetrievePropertyItem(pathParameters.PageId, pathParameters.PropertyId);
 
-            var queryParams = new Dictionary<string, string>()
+            var queryParams = new Dictionary<string, string>
             {
-                { "start_cursor", queryParameters?.StartCursor },
-                { "page_size", queryParameters?.PageSize?.ToString() }
+                {"start_cursor", queryParameters?.StartCursor},
+                {"page_size", queryParameters?.PageSize?.ToString()},
             };
 
             return await _client.GetAsync<IPropertyItemObject>(url, queryParams);
@@ -81,7 +84,7 @@ namespace Notion.Client
             IDictionary<string, PropertyValue> updatedProperties)
         {
             var url = PagesApiUrls.UpdateProperties(pageId);
-            var body = new UpdatePropertiesParameters { Properties = updatedProperties };
+            var body = new UpdatePropertiesParameters {Properties = updatedProperties};
 
             return await _client.PatchAsync<Page>(url, body);
         }
