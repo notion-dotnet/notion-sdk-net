@@ -5,10 +5,10 @@ namespace Notion.Client
 {
     public class BookmarkBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.Bookmark;
-
         [JsonProperty("bookmark")]
         public Info Bookmark { get; set; }
+
+        public override BlockType Type => BlockType.Bookmark;
 
         public class Info
         {

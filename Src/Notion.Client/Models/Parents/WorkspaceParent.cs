@@ -3,7 +3,7 @@
     public class WorkspaceParent : IPageParent, IDatabaseParent, IBlockParent
     {
         /// <summary>
-        /// Always "workspace".
+        ///     Always "workspace".
         /// </summary>
         public ParentType Type { get; set; }
     }

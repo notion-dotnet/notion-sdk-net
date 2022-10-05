@@ -6,10 +6,10 @@ namespace Notion.Client
 {
     public class QuoteBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.Quote;
-
         [JsonProperty("quote")]
         public Info Quote { get; set; }
+
+        public override BlockType Type => BlockType.Quote;
 
         public class Info
         {

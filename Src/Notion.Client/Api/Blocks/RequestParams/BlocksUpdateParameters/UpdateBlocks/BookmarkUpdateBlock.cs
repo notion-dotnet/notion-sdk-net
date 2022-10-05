@@ -5,10 +5,10 @@ namespace Notion.Client
 {
     public class BookmarkUpdateBlock : IUpdateBlock
     {
-        public bool Archived { get; set; }
-
         [JsonProperty("bookmark")]
         public Info Bookmark { get; set; }
+
+        public bool Archived { get; set; }
 
         public class Info
         {

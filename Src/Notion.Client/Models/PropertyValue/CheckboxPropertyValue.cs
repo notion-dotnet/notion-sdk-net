@@ -3,7 +3,7 @@
 namespace Notion.Client
 {
     /// <summary>
-    /// Checkbox property value objects contain a boolean within the checkbox property.
+    ///     Checkbox property value objects contain a boolean within the checkbox property.
     /// </summary>
     public class CheckboxPropertyValue : PropertyValue
     {

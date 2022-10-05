@@ -4,9 +4,6 @@ namespace Notion.Client
 {
     public class EmailFilter : SinglePropertyFilter
     {
-        [JsonProperty("email")]
-        public TextFilter.Condition Email { get; set; }
-
         public EmailFilter(
             string propertyName,
             string equal = null,
@@ -19,16 +16,20 @@ namespace Notion.Client
             bool? isNotEmpty = null)
         {
             Property = propertyName;
+
             Email = new TextFilter.Condition(
-                equal: equal,
-                doesNotEqual: doesNotEqual,
-                contains: contains,
-                doesNotContain: doesNotContain,
-                startsWith: startsWith,
-                endsWith: endsWith,
-                isEmpty: isEmpty,
-                isNotEmpty: isNotEmpty
+                equal,
+                doesNotEqual,
+                contains,
+                doesNotContain,
+                startsWith,
+                endsWith,
+                isEmpty,
+                isNotEmpty
             );
         }
+
+        [JsonProperty("email")]
+        public TextFilter.Condition Email { get; set; }
     }
 }

@@ -24,25 +24,23 @@ namespace Notion.Client
     public class CreateCommentParameters : ICreateDiscussionCommentBodyParameters, ICreatePageCommentBodyParameters
     {
         public string DiscussionId { get; set; }
+
         public IEnumerable<RichTextBaseInput> RichText { get; set; }
+
         public ParentPageInput Parent { get; set; }
 
-        public static CreateCommentParameters CreatePageComment(ParentPageInput parent, IEnumerable<RichTextBaseInput> richText)
+        public static CreateCommentParameters CreatePageComment(
+            ParentPageInput parent,
+            IEnumerable<RichTextBaseInput> richText)
         {
-            return new CreateCommentParameters
-            {
-                Parent = parent,
-                RichText = richText
-            };
+            return new CreateCommentParameters {Parent = parent, RichText = richText};
         }
 
-        public static CreateCommentParameters CreateDiscussionComment(string discussionId, IEnumerable<RichTextBaseInput> richText)
+        public static CreateCommentParameters CreateDiscussionComment(
+            string discussionId,
+            IEnumerable<RichTextBaseInput> richText)
         {
-            return new CreateCommentParameters
-            {
-                DiscussionId = discussionId,
-                RichText = richText
-            };
+            return new CreateCommentParameters {DiscussionId = discussionId, RichText = richText};
         }
     }
 }

@@ -4,10 +4,10 @@ namespace Notion.Client
 {
     public class ChildDatabaseBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.ChildDatabase;
-
         [JsonProperty("child_database")]
         public Info ChildDatabase { get; set; }
+
+        public override BlockType Type => BlockType.ChildDatabase;
 
         public class Info
         {

@@ -3,11 +3,17 @@
     public interface INotionClient
     {
         IUsersClient Users { get; }
+
         IDatabasesClient Databases { get; }
+
         IPagesClient Pages { get; }
+
         ISearchClient Search { get; }
+
         IBlocksClient Blocks { get; }
+
         ICommentsClient Comments { get; }
+
         IRestClient RestClient { get; }
     }
 
@@ -32,11 +38,17 @@
         }
 
         public IUsersClient Users { get; }
+
         public IDatabasesClient Databases { get; }
+
         public IPagesClient Pages { get; }
+
         public ISearchClient Search { get; }
+
         public IBlocksClient Blocks { get; }
+
         public ICommentsClient Comments { get; }
+
         public IRestClient RestClient { get; }
     }
 }

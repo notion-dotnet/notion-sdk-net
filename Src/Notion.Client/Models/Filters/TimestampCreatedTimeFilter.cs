@@ -9,9 +9,6 @@ namespace Notion.Client
         [JsonProperty("timestamp")]
         public string Timestamp = "created_time";
 
-        [JsonProperty("created_time")]
-        public DateFilter.Condition CreatedTime { get; set; }
-
         public TimestampCreatedTimeFilter(
             DateTime? equal = null,
             DateTime? before = null,
@@ -28,20 +25,23 @@ namespace Notion.Client
             bool? isNotEmpty = null)
         {
             CreatedTime = new DateFilter.Condition(
-                equal: equal,
-                before: before,
-                after: after,
-                onOrBefore: onOrBefore,
-                onOrAfter: onOrAfter,
-                pastWeek: pastWeek,
-                pastMonth: pastMonth,
-                pastYear: pastYear,
-                nextWeek: nextWeek,
-                nextMonth: nextMonth,
-                nextYear: nextYear,
-                isEmpty: isEmpty,
-                isNotEmpty: isNotEmpty
+                equal,
+                before,
+                after,
+                onOrBefore,
+                onOrAfter,
+                pastWeek,
+                pastMonth,
+                pastYear,
+                nextWeek,
+                nextMonth,
+                nextYear,
+                isEmpty,
+                isNotEmpty
             );
         }
+
+        [JsonProperty("created_time")]
+        public DateFilter.Condition CreatedTime { get; set; }
     }
 }

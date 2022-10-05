@@ -4,9 +4,6 @@ namespace Notion.Client
 {
     public class PeopleFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
-        [JsonProperty("people")]
-        public Condition People { get; set; }
-
         public PeopleFilter(
             string propertyName,
             string contains = null,
@@ -15,28 +12,20 @@ namespace Notion.Client
             bool? isNotEmpty = null)
         {
             Property = propertyName;
+
             People = new Condition(
-                contains: contains,
-                doesNotContain: doesNotContain,
-                isEmpty: isEmpty,
-                isNotEmpty: isNotEmpty
+                contains,
+                doesNotContain,
+                isEmpty,
+                isNotEmpty
             );
         }
 
+        [JsonProperty("people")]
+        public Condition People { get; set; }
+
         public class Condition
         {
-            [JsonProperty("contains")]
-            public string Contains { get; set; }
-
-            [JsonProperty("does_not_contain")]
-            public string DoesNotContain { get; set; }
-
-            [JsonProperty("is_empty")]
-            public bool? IsEmpty { get; set; }
-
-            [JsonProperty("is_not_empty")]
-            public bool? IsNotEmpty { get; set; }
-
             public Condition(
                 string contains = null,
                 string doesNotContain = null,
@@ -48,6 +37,18 @@ namespace Notion.Client
                 IsEmpty = isEmpty;
                 IsNotEmpty = isNotEmpty;
             }
+
+            [JsonProperty("contains")]
+            public string Contains { get; set; }
+
+            [JsonProperty("does_not_contain")]
+            public string DoesNotContain { get; set; }
+
+            [JsonProperty("is_empty")]
+            public bool? IsEmpty { get; set; }
+
+            [JsonProperty("is_not_empty")]
+            public bool? IsNotEmpty { get; set; }
         }
     }
 }

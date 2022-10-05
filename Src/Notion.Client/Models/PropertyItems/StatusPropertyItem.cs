@@ -6,6 +6,7 @@ namespace Notion.Client
     {
         public override string Type => "status";
 
-        [JsonProperty("status")] public SelectOption Status { get; set; }
+        [JsonProperty("status")]
+        public SelectOption Status { get; set; }
     }
 }
