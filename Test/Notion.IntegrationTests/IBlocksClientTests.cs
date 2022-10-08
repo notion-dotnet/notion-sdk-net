@@ -14,7 +14,7 @@ public class IBlocksClientTests
 
     public IBlocksClientTests()
     {
-        var options = new ClientOptions {AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")};
+        var options = new ClientOptions { AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN") };
 
         _client = NotionClientFactory.Create(options);
     }
@@ -26,7 +26,7 @@ public class IBlocksClientTests
 
         var page = await _client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput {PageId = pageParentId}
+                new ParentPageInput { PageId = pageParentId }
             ).Build()
         );
 
@@ -36,27 +36,27 @@ public class IBlocksClientTests
             {
                 Children = new List<IBlock>
                 {
-                    new BreadcrumbBlock {Breadcrumb = new BreadcrumbBlock.Data()},
-                    new DividerBlock {Divider = new DividerBlock.Data()},
-                    new TableOfContentsBlock {TableOfContents = new TableOfContentsBlock.Data()},
+                    new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() },
+                    new DividerBlock { Divider = new DividerBlock.Data() },
+                    new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() },
                     new CalloutBlock
                     {
                         Callout = new CalloutBlock.Info
                         {
                             RichText = new List<RichTextBaseInput>
                             {
-                                new RichTextTextInput {Text = new Text {Content = "Test"}},
-                            },
-                        },
-                    },
-                },
+                                new RichTextTextInput { Text = new Text { Content = "Test" } }
+                            }
+                        }
+                    }
+                }
             }
         );
 
         blocks.Results.Should().HaveCount(4);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class IBlocksClientTests
 
         var page = await _client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput {PageId = pageParentId}
+                new ParentPageInput { PageId = pageParentId }
             ).Build()
         );
 
@@ -74,7 +74,7 @@ public class IBlocksClientTests
             page.Id,
             new BlocksAppendChildrenParameters
             {
-                Children = new List<IBlock> {new BreadcrumbBlock {Breadcrumb = new BreadcrumbBlock.Data()}},
+                Children = new List<IBlock> { new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() } }
             }
         );
 
@@ -85,7 +85,7 @@ public class IBlocksClientTests
         blocks.Results.Should().HaveCount(1);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class IBlocksClientTests
 
         var page = await _client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput {PageId = pageParentId}
+                new ParentPageInput { PageId = pageParentId }
             ).Build()
         );
 
@@ -105,16 +105,16 @@ public class IBlocksClientTests
             {
                 Children = new List<IBlock>
                 {
-                    new DividerBlock {Divider = new DividerBlock.Data()},
-                    new TableOfContentsBlock {TableOfContents = new TableOfContentsBlock.Data()},
-                },
+                    new DividerBlock { Divider = new DividerBlock.Data() },
+                    new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() }
+                }
             }
         );
 
         blocks.Results.Should().HaveCount(2);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Theory]
@@ -125,13 +125,13 @@ public class IBlocksClientTests
 
         var page = await _client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput {PageId = pageParentId}
+                new ParentPageInput { PageId = pageParentId }
             ).Build()
         );
 
         var blocks = await _client.Blocks.AppendChildrenAsync(
             page.Id,
-            new BlocksAppendChildrenParameters {Children = new List<IBlock> {block}}
+            new BlocksAppendChildrenParameters { Children = new List<IBlock> { block } }
         );
 
         var blockId = blocks.Results.First().Id;
@@ -145,7 +145,7 @@ public class IBlocksClientTests
         assert.Invoke(updatedBlock);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     private static IEnumerable<object[]> BlockData()
@@ -161,9 +161,9 @@ public class IBlocksClientTests
                         Url = "https://developers.notion.com/reference/rich-text",
                         Caption = new List<RichTextBase>
                         {
-                            new RichTextTextInput {Text = new Text {Content = "Notion API"}},
-                        },
-                    },
+                            new RichTextTextInput { Text = new Text { Content = "Notion API" } }
+                        }
+                    }
                 },
                 new BookmarkUpdateBlock
                 {
@@ -172,35 +172,35 @@ public class IBlocksClientTests
                         Url = "https://github.com/notion-dotnet/notion-sdk-net",
                         Caption = new List<RichTextBaseInput>
                         {
-                            new RichTextTextInput {Text = new Text {Content = "Github"}},
-                        },
-                    },
+                            new RichTextTextInput { Text = new Text { Content = "Github" } }
+                        }
+                    }
                 },
                 new Action<IBlock>(block =>
                 {
                     var updatedBlock = (BookmarkBlock)block;
                     Assert.Equal("https://github.com/notion-dotnet/notion-sdk-net", updatedBlock.Bookmark.Url);
                     Assert.Equal("Github", updatedBlock.Bookmark.Caption.OfType<RichTextText>().First().Text.Content);
-                }),
+                })
             },
             new object[]
             {
-                new EquationBlock {Equation = new EquationBlock.Info {Expression = "e=mc^3"}},
-                new EquationUpdateBlock {Equation = new EquationUpdateBlock.Info {Expression = "e=mc^2"}},
+                new EquationBlock { Equation = new EquationBlock.Info { Expression = "e=mc^3" } },
+                new EquationUpdateBlock { Equation = new EquationUpdateBlock.Info { Expression = "e=mc^2" } },
                 new Action<IBlock>(block =>
                 {
                     var updatedBlock = (EquationBlock)block;
                     Assert.Equal("e=mc^2", updatedBlock.Equation.Expression);
-                }),
+                })
             },
             new object[]
             {
-                new DividerBlock {Divider = new DividerBlock.Data()}, new DividerUpdateBlock(), new Action<IBlock>(
+                new DividerBlock { Divider = new DividerBlock.Data() }, new DividerUpdateBlock(), new Action<IBlock>(
                     block =>
                     {
                         Assert.NotNull(block);
                         Assert.IsType<DividerBlock>(block);
-                    }),
+                    })
             },
             new object[]
             {
@@ -210,9 +210,9 @@ public class IBlocksClientTests
                     {
                         External = new ExternalFile.Info
                         {
-                            Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                        },
-                    },
+                            Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                        }
+                    }
                 },
                 new AudioUpdateBlock
                 {
@@ -220,9 +220,9 @@ public class IBlocksClientTests
                     {
                         External = new ExternalFileInput.Data
                         {
-                            Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-                        },
-                    },
+                            Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+                        }
+                    }
                 },
                 new Action<IBlock>(block =>
                 {
@@ -231,16 +231,16 @@ public class IBlocksClientTests
                     block.Should().BeOfType<AudioBlock>().Subject
                         .Audio.Should().BeOfType<ExternalFile>().Subject
                         .External.Url.Should().Be("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
-                }),
+                })
             },
             new object[]
             {
-                new TableOfContentsBlock {TableOfContents = new TableOfContentsBlock.Data()},
+                new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() },
                 new TableOfContentsUpdateBlock(), new Action<IBlock>(block =>
                 {
                     Assert.NotNull(block);
                     Assert.IsType<TableOfContentsBlock>(block);
-                }),
+                })
             },
             new object[]
             {
@@ -250,9 +250,9 @@ public class IBlocksClientTests
                     {
                         RichText = new List<RichTextBaseInput>
                         {
-                            new RichTextTextInput {Text = new Text {Content = "Test"}},
-                        },
-                    },
+                            new RichTextTextInput { Text = new Text { Content = "Test" } }
+                        }
+                    }
                 },
                 new CalloutUpdateBlock
                 {
@@ -260,9 +260,9 @@ public class IBlocksClientTests
                     {
                         RichText = new List<RichTextBaseInput>
                         {
-                            new RichTextTextInput {Text = new Text {Content = "Test 2"}},
-                        },
-                    },
+                            new RichTextTextInput { Text = new Text { Content = "Test 2" } }
+                        }
+                    }
                 },
                 new Action<IBlock>(block =>
                 {
@@ -270,7 +270,7 @@ public class IBlocksClientTests
                     var calloutBlock = Assert.IsType<CalloutBlock>(block);
 
                     Assert.Equal("Test 2", calloutBlock.Callout.RichText.OfType<RichTextText>().First().Text.Content);
-                }),
+                })
             },
             new object[]
             {
@@ -280,9 +280,9 @@ public class IBlocksClientTests
                     {
                         RichText = new List<RichTextBaseInput>
                         {
-                            new RichTextTextInput {Text = new Text {Content = "Test"}},
-                        },
-                    },
+                            new RichTextTextInput { Text = new Text { Content = "Test" } }
+                        }
+                    }
                 },
                 new QuoteUpdateBlock
                 {
@@ -290,9 +290,9 @@ public class IBlocksClientTests
                     {
                         RichText = new List<RichTextBaseInput>
                         {
-                            new RichTextTextInput {Text = new Text {Content = "Test 2"}},
-                        },
-                    },
+                            new RichTextTextInput { Text = new Text { Content = "Test 2" } }
+                        }
+                    }
                 },
                 new Action<IBlock>(block =>
                 {
@@ -300,7 +300,7 @@ public class IBlocksClientTests
                     var quoteBlock = Assert.IsType<QuoteBlock>(block);
 
                     Assert.Equal("Test 2", quoteBlock.Quote.RichText.OfType<RichTextText>().First().Text.Content);
-                }),
+                })
             },
             new object[]
             {
@@ -310,9 +310,9 @@ public class IBlocksClientTests
                     {
                         External = new ExternalFile.Info
                         {
-                            Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg",
-                        },
-                    },
+                            Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
+                        }
+                    }
                 },
                 new ImageUpdateBlock
                 {
@@ -321,9 +321,9 @@ public class IBlocksClientTests
                         External = new ExternalFileInput.Data
                         {
                             Url
-                                = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
-                        },
-                    },
+                                = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                        }
+                    }
                 },
                 new Action<IBlock>(block =>
                 {
@@ -333,7 +333,7 @@ public class IBlocksClientTests
 
                     Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
                         imageFile.External.Url);
-                }),
+                })
             },
             new object[]
             {
@@ -341,15 +341,15 @@ public class IBlocksClientTests
                 {
                     Embed = new EmbedBlock.Info
                     {
-                        Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg",
-                    },
+                        Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
+                    }
                 },
                 new EmbedUpdateBlock
                 {
                     Embed = new EmbedUpdateBlock.Info
                     {
-                        Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
-                    },
+                        Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                    }
                 },
                 new Action<IBlock>(block =>
                 {
@@ -358,7 +358,7 @@ public class IBlocksClientTests
 
                     Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
                         embedBlock.Embed.Url);
-                }),
+                })
             },
             new object[]
             {
@@ -368,7 +368,7 @@ public class IBlocksClientTests
                     {
                         RichText = new List<RichTextBase>
                         {
-                            new RichTextText {Text = new Text {Content = "Test Template"}},
+                            new RichTextText { Text = new Text { Content = "Test Template" } }
                         },
                         Children = new List<ITemplateChildrendBlock>
                         {
@@ -377,11 +377,11 @@ public class IBlocksClientTests
                                 Embed = new EmbedBlock.Info
                                 {
                                     Url
-                                        = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg",
-                                },
-                            },
-                        },
-                    },
+                                        = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
+                                }
+                            }
+                        }
+                    }
                 },
                 new TemplateUpdateBlock
                 {
@@ -389,9 +389,9 @@ public class IBlocksClientTests
                     {
                         RichText = new List<RichTextBaseInput>
                         {
-                            new RichTextTextInput {Text = new Text {Content = "Test Template 2"}},
-                        },
-                    },
+                            new RichTextTextInput { Text = new Text { Content = "Test Template 2" } }
+                        }
+                    }
                 },
                 new Action<IBlock>(block =>
                 {
@@ -403,7 +403,7 @@ public class IBlocksClientTests
 
                     Assert.Equal("Test Template 2",
                         templateBlock.Template.RichText.OfType<RichTextText>().First().Text.Content);
-                }),
+                })
             },
             new object[]
             {
@@ -411,12 +411,13 @@ public class IBlocksClientTests
                 {
                     LinkToPage = new PageParent
                     {
-                        Type = ParentType.PageId, PageId = "533578e3edf14c0a91a9da6b09bac3ee",
-                    },
+                        Type = ParentType.PageId,
+                        PageId = "533578e3edf14c0a91a9da6b09bac3ee"
+                    }
                 },
                 new LinkToPageUpdateBlock
                 {
-                    LinkToPage = new ParentPageInput {PageId = "3c357473a28149a488c010d2b245a589"},
+                    LinkToPage = new ParentPageInput { PageId = "3c357473a28149a488c010d2b245a589" }
                 },
                 new Action<IBlock>(block =>
                 {
@@ -428,8 +429,8 @@ public class IBlocksClientTests
                     // TODO: Currently the api doesn't allow to update the link_to_page block type
                     // This will change to updated ID once api start to support
                     Assert.Equal(Guid.Parse("533578e3edf14c0a91a9da6b09bac3ee"), Guid.Parse(pageParent.PageId));
-                }),
-            },
+                })
+            }
         };
     }
 }

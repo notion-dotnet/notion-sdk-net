@@ -15,7 +15,7 @@ public class IPageClientTests
 
     public IPageClientTests()
     {
-        var options = new ClientOptions {AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")};
+        var options = new ClientOptions { AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN") };
 
         _client = NotionClientFactory.Create(options);
         _databaseId = Environment.GetEnvironmentVariable("DATABASE_ID") ?? "f86f2262-0751-40f2-8f63-e3f7a3c39fcb";
@@ -25,14 +25,14 @@ public class IPageClientTests
     public async Task CreateAsync_CreatesANewPage()
     {
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput {DatabaseId = _databaseId})
+            .Create(new DatabaseParentInput { DatabaseId = _databaseId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
                     Title = new List<RichTextBase>
                     {
-                        new RichTextText {Text = new Text {Content = "Test Page Title"}},
-                    },
+                        new RichTextText { Text = new Text { Content = "Test Page Title" } }
+                    }
                 })
             .Build();
 
@@ -48,28 +48,32 @@ public class IPageClientTests
 
         var titleProperty
             = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(
-                new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = pageProperty.Id});
+                new RetrievePropertyItemParameters
+                {
+                    PageId = page.Id,
+                    PropertyId = pageProperty.Id
+                });
 
         titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText.Should().Be("Test Page Title");
 
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
     public async Task Bug_unable_to_create_page_with_select_property()
     {
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput {DatabaseId = _databaseId})
+            .Create(new DatabaseParentInput { DatabaseId = _databaseId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
                     Title = new List<RichTextBase>
                     {
-                        new RichTextText {Text = new Text {Content = "Test Page Title"}},
-                    },
+                        new RichTextText { Text = new Text { Content = "Test Page Title" } }
+                    }
                 })
             .AddProperty("TestSelect",
-                new SelectPropertyValue {Select = new SelectOption {Id = "dfbfbe65-6f67-4876-9f75-699124334d06"}})
+                new SelectPropertyValue { Select = new SelectOption { Id = "dfbfbe65-6f67-4876-9f75-699124334d06" } })
             .Build();
 
         var page = await _client.Pages.CreateAsync(pagesCreateParameters);
@@ -84,25 +88,29 @@ public class IPageClientTests
 
         var titleProperty
             = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(
-                new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = pageProperty.Id});
+                new RetrievePropertyItemParameters
+                {
+                    PageId = page.Id,
+                    PropertyId = pageProperty.Id
+                });
 
         titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText.Should().Be("Test Page Title");
 
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
     public async Task Test_RetrievePagePropertyItemAsync()
     {
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput {DatabaseId = _databaseId})
+            .Create(new DatabaseParentInput { DatabaseId = _databaseId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
                     Title = new List<RichTextBase>
                     {
-                        new RichTextText {Text = new Text {Content = "Test Page Title"}},
-                    },
+                        new RichTextText { Text = new Text { Content = "Test Page Title" } }
+                    }
                 })
             .Build();
 
@@ -110,7 +118,8 @@ public class IPageClientTests
 
         var property = await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
         {
-            PageId = page.Id, PropertyId = "title",
+            PageId = page.Id,
+            PropertyId = "title"
         });
 
         property.Should().NotBeNull();
@@ -129,7 +138,7 @@ public class IPageClientTests
         });
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
@@ -142,19 +151,19 @@ public class IPageClientTests
 
         updateDatabaseParameters.Properties = new Dictionary<string, IUpdatePropertySchema>
         {
-            {"Name", new TitleUpdatePropertySchema {Title = new Dictionary<string, object>()}},
-            {"Test Date Property", new DateUpdatePropertySchema {Date = new Dictionary<string, object>()}},
+            { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
+            { "Test Date Property", new DateUpdatePropertySchema { Date = new Dictionary<string, object>() } }
         };
 
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput {DatabaseId = _databaseId})
+            .Create(new DatabaseParentInput { DatabaseId = _databaseId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
                     Title = new List<RichTextBase>
                     {
-                        new RichTextText {Text = new Text {Content = "Test Page Title"}},
-                    },
+                        new RichTextText { Text = new Text { Content = "Test Page Title" } }
+                    }
                 })
             .AddProperty(datePropertyName,
                 new DatePropertyValue
@@ -162,8 +171,8 @@ public class IPageClientTests
                     Date = new Date
                     {
                         Start = Convert.ToDateTime("2020-12-08T12:00:00Z"),
-                        End = Convert.ToDateTime("2025-12-08T12:00:00Z"),
-                    },
+                        End = Convert.ToDateTime("2025-12-08T12:00:00Z")
+                    }
                 })
             .Build();
 
@@ -173,21 +182,25 @@ public class IPageClientTests
 
         var setDate = (DatePropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
         {
-            PageId = page.Id, PropertyId = page.Properties[datePropertyName].Id,
+            PageId = page.Id,
+            PropertyId = page.Properties[datePropertyName].Id
         });
 
         setDate?.Date?.Start.Should().Be(Convert.ToDateTime("2020-12-08T12:00:00Z"));
 
         // verify
         IDictionary<string, PropertyValue> testProps = new Dictionary<string, PropertyValue>();
-        testProps.Add(datePropertyName, new DatePropertyValue {Date = null});
 
-        var updatedPage = await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Properties = testProps});
+        testProps.Add(datePropertyName, new DatePropertyValue { Date = null });
+
+        var updatedPage =
+            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Properties = testProps });
 
         var verifyDate = (DatePropertyItem)await _client.Pages.RetrievePagePropertyItem(
             new RetrievePropertyItemParameters
             {
-                PageId = page.Id, PropertyId = updatedPage.Properties[datePropertyName].Id,
+                PageId = page.Id,
+                PropertyId = updatedPage.Properties[datePropertyName].Id
             });
 
         verifyDate?.Date.Should().BeNull();
@@ -201,14 +214,14 @@ public class IPageClientTests
     {
         // Arrange
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput {DatabaseId = _databaseId}).AddProperty("Name",
+            .Create(new DatabaseParentInput { DatabaseId = _databaseId }).AddProperty("Name",
                 new TitlePropertyValue
                 {
                     Title = new List<RichTextBase>
                     {
-                        new RichTextText {Text = new Text {Content = "Test Page Title"}},
-                    },
-                }).AddProperty("Number", new NumberPropertyValue {Number = 200.00}).Build();
+                        new RichTextText { Text = new Text { Content = "Test Page Title" } }
+                    }
+                }).AddProperty("Number", new NumberPropertyValue { Number = 200.00 }).Build();
 
         // Act
         var page = await _client.Pages.CreateAsync(pagesCreateParameters);
@@ -219,15 +232,23 @@ public class IPageClientTests
         Assert.Equal(_databaseId, pageParent.DatabaseId);
 
         var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(
-            new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = page.Properties["Name"].Id});
+            new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = page.Properties["Name"].Id
+            });
 
         Assert.Equal("Test Page Title", titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText);
 
         var numberProperty = (NumberPropertyItem)await _client.Pages.RetrievePagePropertyItem(
-            new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = page.Properties["Number"].Id});
+            new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = page.Properties["Number"].Id
+            });
 
         Assert.Equal(200.00, numberProperty.Number);
 
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters {Archived = true});
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 }

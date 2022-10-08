@@ -67,9 +67,9 @@ public class BlocksClientTests : ApiTestBase
                     {
                         RichText = new List<RichTextBase>
                         {
-                            new RichTextText {Text = new Text {Content = "Lacinato kale"}},
-                        },
-                    },
+                            new RichTextText { Text = new Text { Content = "Lacinato kale" } }
+                        }
+                    }
                 },
                 new ParagraphBlock
                 {
@@ -86,14 +86,14 @@ public class BlocksClientTests : ApiTestBase
                                     Link = new Link
                                     {
                                         Url
-                                            = "https://en.wikipedia.org/wiki/Lacinato_kale",
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
+                                            = "https://en.wikipedia.org/wiki/Lacinato_kale"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         };
 
         // Act
@@ -170,10 +170,10 @@ public class BlocksClientTests : ApiTestBase
             {
                 RichText = new List<RichTextBaseInput>
                 {
-                    new RichTextTextInput {Text = new Text {Content = "Lacinato kale"}},
+                    new RichTextTextInput { Text = new Text { Content = "Lacinato kale" } }
                 },
-                IsChecked = true,
-            },
+                IsChecked = true
+            }
         };
 
         var block = await _client.UpdateAsync(blockId, updateBlock);

@@ -8,6 +8,6 @@ namespace Notion.Client
         Page,
 
         [EnumMember(Value = "database")]
-        Database,
+        Database
     }
 }

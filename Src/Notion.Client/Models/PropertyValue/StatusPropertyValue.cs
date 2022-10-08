@@ -39,7 +39,7 @@ namespace Notion.Client
             Pink,
 
             [EnumMember(Value = "red")]
-            Red,
+            Red
         }
 
         public override PropertyValueType Type => PropertyValueType.Status;

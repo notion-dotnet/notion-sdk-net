@@ -15,7 +15,7 @@ public class CommentsClientTests : IDisposable
 
     public CommentsClientTests()
     {
-        var options = new ClientOptions {AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")};
+        var options = new ClientOptions { AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN") };
 
         _client = NotionClientFactory.Create(options);
 
@@ -24,14 +24,14 @@ public class CommentsClientTests : IDisposable
 
         _page = _client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput {PageId = _pageParentId}
+                new ParentPageInput { PageId = _pageParentId }
             ).Build()
         ).Result;
     }
 
     public void Dispose()
     {
-        _client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters {Archived = true}).Wait();
+        _client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true }).Wait();
     }
 
     [Fact]
@@ -39,8 +39,8 @@ public class CommentsClientTests : IDisposable
     {
         // Arrange
         var parameters = CreateCommentParameters.CreatePageComment(
-            new ParentPageInput {PageId = _page.Id},
-            new List<RichTextBaseInput> {new RichTextTextInput {Text = new Text {Content = "This is a comment"}}}
+            new ParentPageInput { PageId = _page.Id },
+            new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "This is a comment" } } }
         );
 
         // Act
@@ -67,8 +67,11 @@ public class CommentsClientTests : IDisposable
         // Arrange
         var comment = await _client.Comments.Create(
             CreateCommentParameters.CreatePageComment(
-                new ParentPageInput {PageId = _page.Id},
-                new List<RichTextBaseInput> {new RichTextTextInput {Text = new Text {Content = "This is a comment"}}}
+                new ParentPageInput { PageId = _page.Id },
+                new List<RichTextBaseInput>
+                {
+                    new RichTextTextInput { Text = new Text { Content = "This is a comment" } }
+                }
             )
         );
 
@@ -78,7 +81,7 @@ public class CommentsClientTests : IDisposable
                 comment.DiscussionId,
                 new List<RichTextBaseInput>
                 {
-                    new RichTextTextInput {Text = new Text {Content = "This is a sub comment"}},
+                    new RichTextTextInput { Text = new Text { Content = "This is a sub comment" } }
                 }
             )
         );

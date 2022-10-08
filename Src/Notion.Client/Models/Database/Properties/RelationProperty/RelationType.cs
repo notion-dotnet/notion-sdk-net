@@ -8,6 +8,6 @@ namespace Notion.Client
         Single,
 
         [EnumMember(Value = "dual_property")]
-        Dual,
+        Dual
     }
 }

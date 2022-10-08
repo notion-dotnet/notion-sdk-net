@@ -29,8 +29,8 @@ namespace Notion.Client
 
             var queryParams = new Dictionary<string, string>
             {
-                {"start_cursor", queryParameters?.StartCursor},
-                {"page_size", queryParameters?.PageSize?.ToString()},
+                { "start_cursor", queryParameters?.StartCursor },
+                { "page_size", queryParameters?.PageSize?.ToString() }
             };
 
             return await _client.GetAsync<PaginatedList<IBlock>>(url, queryParams);

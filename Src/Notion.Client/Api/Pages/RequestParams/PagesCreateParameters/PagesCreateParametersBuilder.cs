@@ -16,7 +16,7 @@ namespace Notion.Client
 
         public static PagesCreateParametersBuilder Create(IPageParentInput parent)
         {
-            return new PagesCreateParametersBuilder {parent = parent};
+            return new PagesCreateParametersBuilder { parent = parent };
         }
 
         public PagesCreateParametersBuilder AddProperty(string nameOrId, PropertyValue value)
@@ -55,7 +55,7 @@ namespace Notion.Client
                 Properties = properties,
                 Children = children,
                 Icon = icon,
-                Cover = cover,
+                Cover = cover
             };
         }
     }

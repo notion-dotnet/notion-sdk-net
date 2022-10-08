@@ -33,14 +33,22 @@ namespace Notion.Client
             ParentPageInput parent,
             IEnumerable<RichTextBaseInput> richText)
         {
-            return new CreateCommentParameters {Parent = parent, RichText = richText};
+            return new CreateCommentParameters
+            {
+                Parent = parent,
+                RichText = richText
+            };
         }
 
         public static CreateCommentParameters CreateDiscussionComment(
             string discussionId,
             IEnumerable<RichTextBaseInput> richText)
         {
-            return new CreateCommentParameters {DiscussionId = discussionId, RichText = richText};
+            return new CreateCommentParameters
+            {
+                DiscussionId = discussionId,
+                RichText = richText
+            };
         }
     }
 }

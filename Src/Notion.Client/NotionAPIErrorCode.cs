@@ -38,6 +38,6 @@ namespace Notion.Client
         InternalServerError,
 
         [EnumMember(Value = "service_unavailable")]
-        ServiceUnavailable,
+        ServiceUnavailable
     }
 }

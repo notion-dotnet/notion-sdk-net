@@ -14,7 +14,7 @@ public class ApiTestBase : IDisposable
     protected static readonly JsonSerializerSettings JsonSerializerSettings = new()
     {
         Formatting = Formatting.Indented,
-        ContractResolver = new DefaultContractResolver {NamingStrategy = new CamelCaseNamingStrategy()},
+        ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
     };
 
     protected readonly ClientOptions ClientOptions;
@@ -23,7 +23,12 @@ public class ApiTestBase : IDisposable
     protected ApiTestBase()
     {
         Server = WireMockServer.Start();
-        ClientOptions = new ClientOptions {BaseUrl = Server.Urls.First(), AuthToken = "<Token>"};
+
+        ClientOptions = new ClientOptions
+        {
+            BaseUrl = Server.Urls.First(),
+            AuthToken = "<Token>"
+        };
     }
 
     public void Dispose()

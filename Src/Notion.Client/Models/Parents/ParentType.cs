@@ -17,6 +17,6 @@ namespace Notion.Client
         Workspace,
 
         [EnumMember(Value = "block_id")]
-        BlockId,
+        BlockId
     }
 }

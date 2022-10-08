@@ -57,11 +57,14 @@ public class PagesClientTests : ApiTestBase
             );
 
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput {DatabaseId = "3c357473-a281-49a4-88c0-10d2b245a589"}).AddProperty("Name",
+            .Create(new DatabaseParentInput { DatabaseId = "3c357473-a281-49a4-88c0-10d2b245a589" })
+            .AddProperty(
+                "Name",
                 new TitlePropertyValue
                 {
-                    Title = new List<RichTextBase> {new RichTextText {Text = new Text {Content = "Test"}}},
-                }).Build();
+                    Title = new List<RichTextBase> { new RichTextText { Text = new Text { Content = "Test" } } }
+                }
+            ).Build();
 
         var page = await _client.CreateAsync(pagesCreateParameters);
 
@@ -98,7 +101,7 @@ public class PagesClientTests : ApiTestBase
 
         var updatedProperties = new Dictionary<string, PropertyValue>
         {
-            {"In stock", new CheckboxPropertyValue {Checkbox = true}},
+            { "In stock", new CheckboxPropertyValue { Checkbox = true } }
         };
 
         var page = await _client.UpdatePropertiesAsync(pageId, updatedProperties);
@@ -108,7 +111,11 @@ public class PagesClientTests : ApiTestBase
         var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
         var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(
-            new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = updatedProperty.Value.Id});
+            new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = updatedProperty.Value.Id
+            });
 
         checkboxPropertyValue.Checkbox.Should().BeTrue();
     }
@@ -158,8 +165,8 @@ public class PagesClientTests : ApiTestBase
         {
             Properties = new Dictionary<string, PropertyValue>
             {
-                {"In stock", new CheckboxPropertyValue {Checkbox = true}},
-            },
+                { "In stock", new CheckboxPropertyValue { Checkbox = true } }
+            }
         };
 
         var page = await _client.UpdateAsync(pageId, pagesUpdateParameters);
@@ -170,7 +177,11 @@ public class PagesClientTests : ApiTestBase
         var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
         var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(
-            new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = updatedProperty.Value.Id});
+            new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = updatedProperty.Value.Id
+            });
 
         checkboxPropertyValue.Checkbox.Should().BeTrue();
     }
@@ -203,8 +214,8 @@ public class PagesClientTests : ApiTestBase
             Archived = true,
             Properties = new Dictionary<string, PropertyValue>
             {
-                {"In stock", new CheckboxPropertyValue {Checkbox = true}},
-            },
+                { "In stock", new CheckboxPropertyValue { Checkbox = true } }
+            }
         };
 
         var page = await _client.UpdateAsync(pageId, pagesUpdateParameters);
@@ -215,7 +226,11 @@ public class PagesClientTests : ApiTestBase
         var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
         var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(
-            new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = updatedProperty.Value.Id});
+            new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = updatedProperty.Value.Id
+            });
 
         checkboxPropertyValue.Checkbox.Should().BeTrue();
     }
@@ -243,7 +258,8 @@ public class PagesClientTests : ApiTestBase
     {
         var pagesCreateParameters = new PagesCreateParameters
         {
-            Parent = new ParentPageInput {PageId = "3c357473-a281-49a4-88c0-10d2b245a589"}, Properties = null,
+            Parent = new ParentPageInput { PageId = "3c357473-a281-49a4-88c0-10d2b245a589" },
+            Properties = null
         };
 
         Func<Task> act = async () => await _client.CreateAsync(pagesCreateParameters);

@@ -14,6 +14,6 @@ namespace Notion.Client
         Mention,
 
         [EnumMember(Value = "equation")]
-        Equation,
+        Equation
     }
 }

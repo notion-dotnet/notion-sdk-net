@@ -33,7 +33,11 @@ public class SearchClientTest : ApiTestBase
         var searchParameters = new SearchParameters
         {
             Query = "External tasks",
-            Sort = new SearchSort {Direction = SearchDirection.Ascending, Timestamp = "last_edited_time"},
+            Sort = new SearchSort
+            {
+                Direction = SearchDirection.Ascending,
+                Timestamp = "last_edited_time"
+            }
         };
 
         // Act

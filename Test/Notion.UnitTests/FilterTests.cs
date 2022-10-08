@@ -34,10 +34,18 @@ public class FilterTests
         var relationFilter = new RelationFilter("Link", "subtask#1");
         var dateFilter = new DateFilter("Due", pastMonth: new Dictionary<string, object>());
 
-        var filterGroup = new List<Filter> {relationFilter, selectFilter};
+        var filterGroup = new List<Filter>
+        {
+            relationFilter,
+            selectFilter
+        };
 
         var complexFiler = new CompoundFilter(
-            and: new List<Filter> {dateFilter, new CompoundFilter(filterGroup)}
+            and: new List<Filter>
+            {
+                dateFilter,
+                new CompoundFilter(filterGroup)
+            }
         );
 
         Assert.Equal(

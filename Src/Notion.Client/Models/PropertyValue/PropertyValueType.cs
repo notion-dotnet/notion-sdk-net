@@ -68,6 +68,6 @@ namespace Notion.Client
         LastEditedBy,
 
         [EnumMember(Value = "status")]
-        Status,
+        Status
     }
 }

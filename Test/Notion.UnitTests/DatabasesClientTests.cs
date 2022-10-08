@@ -47,10 +47,17 @@ public class DatabasesClientTests : ApiTestBase
                     new NumberFilter(
                         "Cost of next trip",
                         greaterThanOrEqualTo: 2
-                    ),
-                },
+                    )
+                }
             },
-            Sorts = new List<Sort> {new() {Property = "Last ordered", Direction = Direction.Ascending}},
+            Sorts = new List<Sort>
+            {
+                new()
+                {
+                    Property = "Last ordered",
+                    Direction = Direction.Ascending
+                }
+            }
         };
 
         var pagesPaginatedList = await _client.QueryAsync(databaseId, databasesQueryParams);
@@ -142,9 +149,9 @@ public class DatabasesClientTests : ApiTestBase
                     DualProperty = new DualPropertyRelation.Data
                     {
                         SyncedPropertyName = "Related to sample table (Property)",
-                        SyncedPropertyId = "VQ}{",
-                    },
-                },
+                        SyncedPropertyId = "VQ}{"
+                    }
+                }
             });
     }
 
@@ -185,17 +192,24 @@ public class DatabasesClientTests : ApiTestBase
 
         var createDatabaseParameters = new DatabasesCreateParameters();
 
-        createDatabaseParameters.Parent = new ParentPageInput {PageId = pageId};
+        createDatabaseParameters.Parent = new ParentPageInput { PageId = pageId };
 
         createDatabaseParameters.Title = new List<RichTextBaseInput>
         {
-            new RichTextTextInput {Text = new Text {Content = "Grocery List", Link = null}},
+            new RichTextTextInput
+            {
+                Text = new Text
+                {
+                    Content = "Grocery List",
+                    Link = null
+                }
+            }
         };
 
         createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
         {
-            {"Name", new TitlePropertySchema {Title = new Dictionary<string, object>()}},
-            {"Price", new NumberPropertySchema {Number = new Number {Format = "dollar"}}},
+            { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+            { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } },
             {
                 "Food group",
                 new SelectPropertySchema
@@ -204,14 +218,26 @@ public class DatabasesClientTests : ApiTestBase
                     {
                         Options = new List<SelectOptionSchema>
                         {
-                            new() {Color = Color.Green, Name = "🥦Vegetable"},
-                            new() {Color = Color.Red, Name = "🍎Fruit"},
-                            new() {Color = Color.Yellow, Name = "💪Protein"},
-                        },
-                    },
+                            new()
+                            {
+                                Color = Color.Green,
+                                Name = "🥦Vegetable"
+                            },
+                            new()
+                            {
+                                Color = Color.Red,
+                                Name = "🍎Fruit"
+                            },
+                            new()
+                            {
+                                Color = Color.Yellow,
+                                Name = "💪Protein"
+                            }
+                        }
+                    }
                 }
             },
-            {"Last ordered", new DatePropertySchema {Date = new Dictionary<string, object>()}},
+            { "Last ordered", new DatePropertySchema { Date = new Dictionary<string, object>() } }
         };
 
         var database = await _client.CreateAsync(createDatabaseParameters);
@@ -262,13 +288,20 @@ public class DatabasesClientTests : ApiTestBase
 
         updateDatabaseParameters.Title = new List<RichTextBaseInput>
         {
-            new RichTextTextInput {Text = new Text {Content = "Grocery List New", Link = null}},
+            new RichTextTextInput
+            {
+                Text = new Text
+                {
+                    Content = "Grocery List New",
+                    Link = null
+                }
+            }
         };
 
         updateDatabaseParameters.Properties = new Dictionary<string, IUpdatePropertySchema>
         {
-            {"Name", new TitleUpdatePropertySchema {Title = new Dictionary<string, object>()}},
-            {"Price", new NumberUpdatePropertySchema {Number = new Number {Format = "yen"}}},
+            { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
+            { "Price", new NumberUpdatePropertySchema { Number = new Number { Format = "yen" } } },
             {
                 "Food group",
                 new SelectUpdatePropertySchema
@@ -277,14 +310,26 @@ public class DatabasesClientTests : ApiTestBase
                     {
                         Options = new List<SelectOption>
                         {
-                            new() {Color = Color.Green, Name = "🥦Vegetables"},
-                            new() {Color = Color.Red, Name = "🍎Fruit"},
-                            new() {Color = Color.Yellow, Name = "💪Protein"},
-                        },
-                    },
+                            new()
+                            {
+                                Color = Color.Green,
+                                Name = "🥦Vegetables"
+                            },
+                            new()
+                            {
+                                Color = Color.Red,
+                                Name = "🍎Fruit"
+                            },
+                            new()
+                            {
+                                Color = Color.Yellow,
+                                Name = "💪Protein"
+                            }
+                        }
+                    }
                 }
             },
-            {"Last ordered", new DateUpdatePropertySchema {Date = new Dictionary<string, object>()}},
+            { "Last ordered", new DateUpdatePropertySchema { Date = new Dictionary<string, object>() } }
         };
 
         var database = await _client.UpdateAsync(databaseId, updateDatabaseParameters);
@@ -348,11 +393,18 @@ public class DatabasesClientTests : ApiTestBase
 
         var createDatabaseParameters = new DatabasesCreateParameters();
 
-        createDatabaseParameters.Parent = new ParentPageInput {PageId = pageId};
+        createDatabaseParameters.Parent = new ParentPageInput { PageId = pageId };
 
         createDatabaseParameters.Title = new List<RichTextBaseInput>
         {
-            new RichTextTextInput {Text = new Text {Content = "Grocery List", Link = null}},
+            new RichTextTextInput
+            {
+                Text = new Text
+                {
+                    Content = "Grocery List",
+                    Link = null
+                }
+            }
         };
 
         createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
@@ -361,10 +413,10 @@ public class DatabasesClientTests : ApiTestBase
                 "Cost of next trip",
                 new FormulaPropertySchema
                 {
-                    Formula = new Formula {Expression = "if(prop(\"In stock\"), 0, prop(\"Price\"))"},
+                    Formula = new Formula { Expression = "if(prop(\"In stock\"), 0, prop(\"Price\"))" }
                 }
             },
-            {"Price", new NumberPropertySchema {Number = new Number {Format = "dollar"}}},
+            { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } }
         };
 
         var database = await _client.CreateAsync(createDatabaseParameters);
@@ -408,10 +460,17 @@ public class DatabasesClientTests : ApiTestBase
                     new NumberFilter(
                         "Cost of next trip",
                         greaterThanOrEqualTo: 2
-                    ),
-                },
+                    )
+                }
             },
-            Sorts = new List<Sort> {new() {Property = "Last ordered", Direction = Direction.Ascending}},
+            Sorts = new List<Sort>
+            {
+                new()
+                {
+                    Property = "Last ordered",
+                    Direction = Direction.Ascending
+                }
+            }
         };
 
         var pagesPaginatedList = await _client.QueryAsync(databaseId, databasesQueryParams);
@@ -433,7 +492,11 @@ public class DatabasesClientTests : ApiTestBase
                 );
 
             var formulaPropertyValue = (FormulaPropertyItem)await _pagesClient.RetrievePagePropertyItem(
-                new RetrievePropertyItemParameters {PageId = page.Id, PropertyId = page.Properties["FormulaProp"].Id});
+                new RetrievePropertyItemParameters
+                {
+                    PageId = page.Id,
+                    PropertyId = page.Properties["FormulaProp"].Id
+                });
 
             //var formulaPropertyValue = (FormulaPropertyValue)page.Properties["FormulaProp"];
             formulaPropertyValue.Formula.Date.Start.Should().Be(DateTime.Parse("2021-06-28"));

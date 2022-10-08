@@ -25,7 +25,7 @@ namespace Notion.Client.http
                 throw new ArgumentNullException(nameof(value));
             }
 
-            return AddQueryString(uri, new[] {new KeyValuePair<string, string>(name, value)});
+            return AddQueryString(uri, new[] { new KeyValuePair<string, string>(name, value) });
         }
 
         public static string AddQueryString(string uri, IDictionary<string, string> queryParams)

@@ -63,8 +63,8 @@ namespace Notion.Client
 
             var queryParams = new Dictionary<string, string>
             {
-                {"start_cursor", queryParameters?.StartCursor},
-                {"page_size", queryParameters?.PageSize?.ToString()},
+                { "start_cursor", queryParameters?.StartCursor },
+                { "page_size", queryParameters?.PageSize?.ToString() }
             };
 
             return await _client.GetAsync<IPropertyItemObject>(url, queryParams);
@@ -84,7 +84,8 @@ namespace Notion.Client
             IDictionary<string, PropertyValue> updatedProperties)
         {
             var url = PagesApiUrls.UpdateProperties(pageId);
-            var body = new UpdatePropertiesParameters {Properties = updatedProperties};
+
+            var body = new UpdatePropertiesParameters { Properties = updatedProperties };
 
             return await _client.PatchAsync<Page>(url, body);
         }

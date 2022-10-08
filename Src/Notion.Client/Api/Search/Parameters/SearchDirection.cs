@@ -8,6 +8,6 @@ namespace Notion.Client
         Ascending,
 
         [EnumMember(Value = "descending")]
-        Descending,
+        Descending
     }
 }

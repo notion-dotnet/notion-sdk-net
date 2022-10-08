@@ -17,6 +17,6 @@ namespace Notion.Client
         User,
 
         [EnumMember(Value = "comment")]
-        Comment,
+        Comment
     }
 }
