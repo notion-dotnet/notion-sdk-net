@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Notion.Client;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
@@ -11,12 +9,6 @@ namespace Notion.UnitTests;
 
 public class ApiTestBase : IDisposable
 {
-    protected static readonly JsonSerializerSettings JsonSerializerSettings = new()
-    {
-        Formatting = Formatting.Indented,
-        ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
-    };
-
     protected readonly ClientOptions ClientOptions;
     protected readonly WireMockServer Server;
 
@@ -43,7 +35,7 @@ public class ApiTestBase : IDisposable
             .WithPath(path)
             .UsingGet()
             .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
-            .WithHeader("Notion-Version", Constants.DEFAULT_NOTION_VERSION, MatchBehaviour.AcceptOnMatch);
+            .WithHeader("Notion-Version", Constants.DefaultNotionVersion, MatchBehaviour.AcceptOnMatch);
     }
 
     protected IRequestBuilder CreatePostRequestBuilder(string path)
@@ -52,7 +44,7 @@ public class ApiTestBase : IDisposable
             .WithPath(path)
             .UsingPost()
             .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
-            .WithHeader("Notion-Version", Constants.DEFAULT_NOTION_VERSION, MatchBehaviour.AcceptOnMatch);
+            .WithHeader("Notion-Version", Constants.DefaultNotionVersion, MatchBehaviour.AcceptOnMatch);
     }
 
     protected IRequestBuilder CreatePatchRequestBuilder(string path)
@@ -61,6 +53,6 @@ public class ApiTestBase : IDisposable
             .WithPath(path)
             .UsingPatch()
             .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
-            .WithHeader("Notion-Version", Constants.DEFAULT_NOTION_VERSION, MatchBehaviour.AcceptOnMatch);
+            .WithHeader("Notion-Version", Constants.DefaultNotionVersion, MatchBehaviour.AcceptOnMatch);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -7,6 +8,7 @@ namespace Notion.Client
     public class HeadingThreeeBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         [JsonProperty("heading_3")]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         public Info Heading_3 { get; set; }
 
         public override BlockType Type => BlockType.Heading_3;

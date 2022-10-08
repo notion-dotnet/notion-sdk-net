@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PDFBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         [JsonProperty("pdf")]

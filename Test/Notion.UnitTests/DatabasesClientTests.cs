@@ -190,54 +190,53 @@ public class DatabasesClientTests : ApiTestBase
                     .WithBody(jsonData)
             );
 
-        var createDatabaseParameters = new DatabasesCreateParameters();
-
-        createDatabaseParameters.Parent = new ParentPageInput { PageId = pageId };
-
-        createDatabaseParameters.Title = new List<RichTextBaseInput>
+        var createDatabaseParameters = new DatabasesCreateParameters
         {
-            new RichTextTextInput
+            Parent = new ParentPageInput { PageId = pageId },
+            Title = new List<RichTextBaseInput>
             {
-                Text = new Text
+                new RichTextTextInput
                 {
-                    Content = "Grocery List",
-                    Link = null
-                }
-            }
-        };
-
-        createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
-        {
-            { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
-            { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } },
-            {
-                "Food group",
-                new SelectPropertySchema
-                {
-                    Select = new OptionWrapper<SelectOptionSchema>
+                    Text = new Text
                     {
-                        Options = new List<SelectOptionSchema>
-                        {
-                            new()
-                            {
-                                Color = Color.Green,
-                                Name = "🥦Vegetable"
-                            },
-                            new()
-                            {
-                                Color = Color.Red,
-                                Name = "🍎Fruit"
-                            },
-                            new()
-                            {
-                                Color = Color.Yellow,
-                                Name = "💪Protein"
-                            }
-                        }
+                        Content = "Grocery List",
+                        Link = null
                     }
                 }
             },
-            { "Last ordered", new DatePropertySchema { Date = new Dictionary<string, object>() } }
+            Properties = new Dictionary<string, IPropertySchema>
+            {
+                { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+                { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } },
+                {
+                    "Food group",
+                    new SelectPropertySchema
+                    {
+                        Select = new OptionWrapper<SelectOptionSchema>
+                        {
+                            Options = new List<SelectOptionSchema>
+                            {
+                                new()
+                                {
+                                    Color = Color.Green,
+                                    Name = "🥦Vegetable"
+                                },
+                                new()
+                                {
+                                    Color = Color.Red,
+                                    Name = "🍎Fruit"
+                                },
+                                new()
+                                {
+                                    Color = Color.Yellow,
+                                    Name = "💪Protein"
+                                }
+                            }
+                        }
+                    }
+                },
+                { "Last ordered", new DatePropertySchema { Date = new Dictionary<string, object>() } }
+            }
         };
 
         var database = await _client.CreateAsync(createDatabaseParameters);
@@ -284,52 +283,53 @@ public class DatabasesClientTests : ApiTestBase
                     .WithBody(jsonData)
             );
 
-        var updateDatabaseParameters = new DatabasesUpdateParameters();
-
-        updateDatabaseParameters.Title = new List<RichTextBaseInput>
+        var updateDatabaseParameters = new DatabasesUpdateParameters
         {
-            new RichTextTextInput
-            {
-                Text = new Text
+            Title =
+                new List<RichTextBaseInput>
                 {
-                    Content = "Grocery List New",
-                    Link = null
-                }
-            }
-        };
-
-        updateDatabaseParameters.Properties = new Dictionary<string, IUpdatePropertySchema>
-        {
-            { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
-            { "Price", new NumberUpdatePropertySchema { Number = new Number { Format = "yen" } } },
-            {
-                "Food group",
-                new SelectUpdatePropertySchema
-                {
-                    Select = new OptionWrapper<SelectOption>
+                    new RichTextTextInput
                     {
-                        Options = new List<SelectOption>
+                        Text = new Text
                         {
-                            new()
+                            Content = "Grocery List New",
+                            Link = null
+                        }
+                    }
+                },
+            Properties = new Dictionary<string, IUpdatePropertySchema>
+            {
+                { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
+                { "Price", new NumberUpdatePropertySchema { Number = new Number { Format = "yen" } } },
+                {
+                    "Food group",
+                    new SelectUpdatePropertySchema
+                    {
+                        Select = new OptionWrapper<SelectOption>
+                        {
+                            Options = new List<SelectOption>
                             {
-                                Color = Color.Green,
-                                Name = "🥦Vegetables"
-                            },
-                            new()
-                            {
-                                Color = Color.Red,
-                                Name = "🍎Fruit"
-                            },
-                            new()
-                            {
-                                Color = Color.Yellow,
-                                Name = "💪Protein"
+                                new()
+                                {
+                                    Color = Color.Green,
+                                    Name = "🥦Vegetables"
+                                },
+                                new()
+                                {
+                                    Color = Color.Red,
+                                    Name = "🍎Fruit"
+                                },
+                                new()
+                                {
+                                    Color = Color.Yellow,
+                                    Name = "💪Protein"
+                                }
                             }
                         }
                     }
-                }
-            },
-            { "Last ordered", new DateUpdatePropertySchema { Date = new Dictionary<string, object>() } }
+                },
+                { "Last ordered", new DateUpdatePropertySchema { Date = new Dictionary<string, object>() } }
+            }
         };
 
         var database = await _client.UpdateAsync(databaseId, updateDatabaseParameters);
@@ -391,32 +391,31 @@ public class DatabasesClientTests : ApiTestBase
                     .WithBody(jsonData)
             );
 
-        var createDatabaseParameters = new DatabasesCreateParameters();
-
-        createDatabaseParameters.Parent = new ParentPageInput { PageId = pageId };
-
-        createDatabaseParameters.Title = new List<RichTextBaseInput>
+        var createDatabaseParameters = new DatabasesCreateParameters
         {
-            new RichTextTextInput
+            Parent = new ParentPageInput { PageId = pageId },
+            Title = new List<RichTextBaseInput>
             {
-                Text = new Text
+                new RichTextTextInput
                 {
-                    Content = "Grocery List",
-                    Link = null
-                }
-            }
-        };
-
-        createDatabaseParameters.Properties = new Dictionary<string, IPropertySchema>
-        {
-            {
-                "Cost of next trip",
-                new FormulaPropertySchema
-                {
-                    Formula = new Formula { Expression = "if(prop(\"In stock\"), 0, prop(\"Price\"))" }
+                    Text = new Text
+                    {
+                        Content = "Grocery List",
+                        Link = null
+                    }
                 }
             },
-            { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } }
+            Properties = new Dictionary<string, IPropertySchema>
+            {
+                {
+                    "Cost of next trip",
+                    new FormulaPropertySchema
+                    {
+                        Formula = new Formula { Expression = "if(prop(\"In stock\"), 0, prop(\"Price\"))" }
+                    }
+                },
+                { "Price", new NumberPropertySchema { Number = new Number { Format = "dollar" } } }
+            }
         };
 
         var database = await _client.CreateAsync(createDatabaseParameters);

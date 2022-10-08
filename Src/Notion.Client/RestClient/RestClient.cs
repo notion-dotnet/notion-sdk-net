@@ -16,7 +16,7 @@ namespace Notion.Client
     {
         private readonly ClientOptions _options;
 
-        protected readonly JsonSerializerSettings defaultSerializerSettings = new()
+        protected readonly JsonSerializerSettings DefaultSerializerSettings = new()
         {
             NullValueHandling = NullValueHandling.Ignore,
             ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
@@ -52,7 +52,7 @@ namespace Notion.Client
         {
             void AttachContent(HttpRequestMessage httpRequest)
             {
-                httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body, defaultSerializerSettings),
+                httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body, DefaultSerializerSettings),
                     Encoding.UTF8, "application/json");
             }
 
@@ -72,7 +72,7 @@ namespace Notion.Client
         {
             void AttachContent(HttpRequestMessage httpRequest)
             {
-                var serializedBody = JsonConvert.SerializeObject(body, defaultSerializerSettings);
+                var serializedBody = JsonConvert.SerializeObject(body, DefaultSerializerSettings);
                 httpRequest.Content = new StringContent(serializedBody, Encoding.UTF8, "application/json");
             }
 
@@ -86,7 +86,6 @@ namespace Notion.Client
             string uri,
             IDictionary<string, string> queryParams = null,
             IDictionary<string, string> headers = null,
-            JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default)
         {
             await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null, cancellationToken);
@@ -97,8 +96,8 @@ namespace Notion.Client
             return new ClientOptions
             {
                 AuthToken = options.AuthToken,
-                BaseUrl = options.BaseUrl ?? Constants.BASE_URL,
-                NotionVersion = options.NotionVersion ?? Constants.DEFAULT_NOTION_VERSION
+                BaseUrl = options.BaseUrl ?? Constants.BaseUrl,
+                NotionVersion = options.NotionVersion ?? Constants.DefaultNotionVersion
             };
         }
 
@@ -123,7 +122,7 @@ namespace Notion.Client
             return new NotionApiException(response.StatusCode, errorResponse?.ErrorCode, errorResponse?.Message);
         }
 
-        public async Task<HttpResponseMessage> SendAsync(
+        private async Task<HttpResponseMessage> SendAsync(
             string requestUri,
             HttpMethod httpMethod,
             IDictionary<string, string> queryParams = null,
@@ -164,17 +163,17 @@ namespace Notion.Client
             }
         }
 
-        private HttpClient EnsureHttpClient()
+        private void EnsureHttpClient()
         {
-            if (_httpClient == null)
+            if (_httpClient != null)
             {
-                var pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
-
-                _httpClient = new HttpClient(pipeline);
-                _httpClient.BaseAddress = new Uri(_options.BaseUrl);
+                return;
             }
 
-            return _httpClient;
+            var pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
+
+            _httpClient = new HttpClient(pipeline);
+            _httpClient.BaseAddress = new Uri(_options.BaseUrl);
         }
 
         private static string AddQueryString(string uri, IDictionary<string, string> queryParams)

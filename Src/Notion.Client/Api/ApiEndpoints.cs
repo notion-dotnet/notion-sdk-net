@@ -11,11 +11,6 @@
                 return $"/v1/databases/{databaseId}";
             }
 
-            public static string List()
-            {
-                return "/v1/databases";
-            }
-
             public static string Query(string databaseId)
             {
                 return $"/v1/databases/{databaseId}/query";
@@ -40,9 +35,9 @@
             }
 
             /// <summary>
-            ///     Get the <see cref="uri string" /> for retrieve your token's bot user.
+            ///     Get the Uri <see cref="string" /> for retrieve your token's bot user.
             /// </summary>
-            /// <returns>Returns a <see cref="uri string" /> retrieve your token's bot user.</returns>
+            /// <returns>Returns a Uri <see cref="string" /> retrieve your token's bot user.</returns>
             public static string Me()
             {
                 return "/v1/users/me";
@@ -62,10 +57,10 @@
             }
 
             /// <summary>
-            ///     Get the <see cref="uri string" /> for deleting a block.
+            ///     Get the Uri <see cref="string" /> for deleting a block.
             /// </summary>
             /// <param name="blockId">Identifier for a Notion block</param>
-            /// <returns>Returns a <see cref="uri string" /> for deleting a block.</returns>
+            /// <returns>Returns a Uri <see cref="string" /> for deleting a block.</returns>
             public static string Delete(string blockId)
             {
                 return $"/v1/blocks/{blockId}";
@@ -105,11 +100,11 @@
             }
 
             /// <summary>
-            ///     Get the <see cref="uri string" /> for retrieve page property item
+            ///     Get the Uri <see cref="string" /> for retrieve page property item
             /// </summary>
             /// <param name="pageId">Identifier for a Notion Page</param>
             /// <param name="propertyId">Identifier for a Notion Property</param>
-            /// <returns></returns>
+            /// <returns>Returns a Uri <see cref="string" /> for Retrieve page property item</returns>
             public static string RetrievePropertyItem(string pageId, string propertyId)
             {
                 return $"/v1/pages/{pageId}/properties/{propertyId}";

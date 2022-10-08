@@ -8,7 +8,7 @@
     {
     }
 
-    public interface IColumnChildrenBlock : IBlock, ITemplateChildrendBlock, ISyncedBlockChildren
+    public interface IColumnChildrenBlock : ITemplateChildrendBlock, ISyncedBlockChildren
     {
     }
 

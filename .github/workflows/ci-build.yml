@@ -21,15 +21,15 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      # Format the output of dotnet format
-      - name: Add dotnet-format problem matcher
-        uses: xt0rted/dotnet-format-problem-matcher@v1
-
       # Install dotnet format as a global tool
-      - name: Install dotnet format
+      - name: Install dotnet tools
+        run: dotnet tool restore
+
+      - name: Run Linter
         run: |
-          dotnet tool install --global dotnet-format
-          dotnet format --verify-no-changes --verbosity diagnostic
+          sudo chmod +x ./.github/scripts/check.sh
+          ./.github/scripts/check.sh
+        shell: bash
 
       - name: Build
         run: dotnet build --no-restore

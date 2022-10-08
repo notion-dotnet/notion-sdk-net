@@ -30,7 +30,7 @@ public class PropertyTests
     {
         var typeInstance = (Property)Activator.CreateInstance(type);
 
-        var actualPropertyType = typeInstance.Type;
+        var actualPropertyType = typeInstance!.Type;
 
         Assert.Equal(expectedPropertyType, actualPropertyType);
     }
@@ -58,7 +58,7 @@ public class PropertyTests
     {
         var typeInstance = (Property)Activator.CreateInstance(type);
 
-        var actualPropertyType = typeInstance.Type.GetEnumMemberValue();
+        var actualPropertyType = typeInstance!.Type.GetEnumMemberValue();
 
         Assert.Equal(expectedPropertyType, actualPropertyType);
     }

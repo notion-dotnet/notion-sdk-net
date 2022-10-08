@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Notion.Client
 {
+    [SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
     public interface ISearchClient
     {
         /// <summary>

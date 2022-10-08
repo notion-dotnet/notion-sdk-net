@@ -1,0 +1,11 @@
+{
+  "name": "notion-sdk-net",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:notion-dotnet/notion-sdk-net.git",
+  "author": "Vedant Koditkar",
+  "license": "MIT",
+  "scripts": {
+    "lint": "dotnet jb cleanupcode --include=\"**/**.cs\" .\\Notion.sln"
+  }
+}

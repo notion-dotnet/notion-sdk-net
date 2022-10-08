@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class LastEditedTimeUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
+    public class LastEditedTimeUpdatePropertySchema : UpdatePropertySchema
     {
         [JsonProperty("last_edited_time")]
         public Dictionary<string, object> LastEditedTime { get; set; }

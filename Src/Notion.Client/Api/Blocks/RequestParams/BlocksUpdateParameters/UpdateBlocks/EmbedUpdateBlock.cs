@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class EmbedUpdateBlock : UpdateBlock, IUpdateBlock
+    public class EmbedUpdateBlock : UpdateBlock
     {
         [JsonProperty("embed")]
         public Info Embed { get; set; }

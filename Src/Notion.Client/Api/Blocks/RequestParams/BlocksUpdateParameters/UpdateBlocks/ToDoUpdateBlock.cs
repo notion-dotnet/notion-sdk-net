@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class ToDoUpdateBlock : UpdateBlock, IUpdateBlock
+    public class ToDoUpdateBlock : UpdateBlock
     {
         [JsonProperty("to_do")]
         public Info ToDo { get; set; }

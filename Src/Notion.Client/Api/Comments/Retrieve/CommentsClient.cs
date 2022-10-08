@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Notion.Client
 {
     public partial class CommentsClient
     {
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public async Task<RetrieveCommentsResponse> Retrieve(RetrieveCommentsParameters parameters)
         {
             var qp = (IRetrieveCommentsQueryParameters)parameters;

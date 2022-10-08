@@ -4,9 +4,9 @@
 
 namespace Notion.Client
 {
-    internal class Constants
+    internal static class Constants
     {
-        internal static string BASE_URL = "https://api.notion.com/";
-        internal static string DEFAULT_NOTION_VERSION = "2022-06-28";
+        internal const string BaseUrl = "https://api.notion.com/";
+        internal const string DefaultNotionVersion = "2022-06-28";
     }
 }

@@ -11,7 +11,6 @@ public class CommentsClientTests : IDisposable
 {
     private readonly INotionClient _client;
     private readonly Page _page;
-    private readonly string _pageParentId;
 
     public CommentsClientTests()
     {
@@ -19,12 +18,12 @@ public class CommentsClientTests : IDisposable
 
         _client = NotionClientFactory.Create(options);
 
-        _pageParentId = Environment.GetEnvironmentVariable("NOTION_PAGE_PARENT_ID") ??
-                        throw new ArgumentNullException("Page parent id is required.");
+        var pageParentId = Environment.GetEnvironmentVariable("NOTION_PAGE_PARENT_ID") ??
+                           throw new InvalidOperationException("Page parent id is required.");
 
         _page = _client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = _pageParentId }
+                new ParentPageInput { PageId = pageParentId }
             ).Build()
         ).Result;
     }

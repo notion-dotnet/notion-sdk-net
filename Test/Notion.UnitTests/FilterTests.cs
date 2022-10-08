@@ -6,18 +6,6 @@ using Xunit;
 
 namespace Notion.UnitTests;
 
-public class SerializerSettingsSource : RestClient
-{
-    public SerializerSettingsSource(ClientOptions options) : base(options)
-    {
-    }
-
-    public JsonSerializerSettings GetSerializerSettings()
-    {
-        return defaultSerializerSettings;
-    }
-}
-
 public class FilterTests
 {
     private readonly SerializerSettingsSource _settingsSource = new(new ClientOptions());
@@ -145,5 +133,17 @@ public class FilterTests
             "{\"rich_text\":{\"does_not_equal\":\"Example text\"},\"property\":\"Some property\"}",
             SerializeFilter(filter)
         );
+    }
+
+    private class SerializerSettingsSource : RestClient
+    {
+        public SerializerSettingsSource(ClientOptions options) : base(options)
+        {
+        }
+
+        public JsonSerializerSettings GetSerializerSettings()
+        {
+            return DefaultSerializerSettings;
+        }
     }
 }

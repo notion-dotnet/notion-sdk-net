@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class HeadingThreeeUpdateBlock : UpdateBlock, IUpdateBlock
+    public class HeadingThreeeUpdateBlock : UpdateBlock
     {
         [JsonProperty("heading_3")]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         public Info Heading_3 { get; set; }
 
         public class Info

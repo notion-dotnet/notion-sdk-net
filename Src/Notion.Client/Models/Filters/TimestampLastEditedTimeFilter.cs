@@ -6,9 +6,6 @@ namespace Notion.Client
 {
     public class TimestampLastEditedTimeFilter : Filter
     {
-        [JsonProperty("timestamp")]
-        public string Timestamp = "last_modified_time";
-
         public TimestampLastEditedTimeFilter(
             DateTime? equal = null,
             DateTime? before = null,
@@ -40,6 +37,9 @@ namespace Notion.Client
                 isNotEmpty
             );
         }
+
+        [JsonProperty("timestamp")]
+        public string Timestamp => "last_modified_time";
 
         [JsonProperty("last_edited_time")]
         public DateFilter.Condition LastEditedTime { get; set; }

@@ -107,14 +107,14 @@ public class BlocksClientTests : ApiTestBase
             {
                 block.Type.Should().Be(BlockType.Heading_2);
                 var headingBlock = (HeadingTwoBlock)block;
-                var text = headingBlock.Heading_2.RichText.OfType<RichTextText>().FirstOrDefault();
+                var text = headingBlock.Heading_2.RichText.OfType<RichTextText>().First();
                 text.Text.Content.Should().Be("Lacinato kale");
             },
             block =>
             {
                 block.Type.Should().Be(BlockType.Paragraph);
                 var paragraphBlock = (ParagraphBlock)block;
-                var text = paragraphBlock.Paragraph.RichText.OfType<RichTextText>().LastOrDefault();
+                var text = paragraphBlock.Paragraph.RichText.OfType<RichTextText>().Last();
 
                 text.Text.Content.Should().Be(
                     "Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.");
