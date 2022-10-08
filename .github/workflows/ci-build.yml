@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Linter
         run: |
-          sudo chmod 600 ./check.sh
+          sudo chmod +x ./check.sh
           ./check.sh
         shell: bash
 
