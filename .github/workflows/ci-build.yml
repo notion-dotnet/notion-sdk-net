@@ -26,7 +26,8 @@ jobs:
         run: dotnet tool restore
 
       - name: Run Linter
-        run: check.sh
+        run: ./check.sh
+        shell: bash
 
       - name: Build
         run: dotnet build --no-restore
