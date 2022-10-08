@@ -4,26 +4,20 @@ namespace Notion.Client
 {
     public class FilesFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
-        [JsonProperty("files")]
-        public Condition Files { get; set; }
-
         public FilesFilter(
             string propertyName,
             bool? isEmpty = null,
             bool? isNotEmpty = null)
         {
             Property = propertyName;
-            Files = new Condition(isEmpty: isEmpty, isNotEmpty: isNotEmpty);
+            Files = new Condition(isEmpty, isNotEmpty);
         }
+
+        [JsonProperty("files")]
+        public Condition Files { get; set; }
 
         public class Condition
         {
-            [JsonProperty("is_empty")]
-            public bool? IsEmpty { get; set; }
-
-            [JsonProperty("is_not_empty")]
-            public bool? IsNotEmpty { get; set; }
-
             public Condition(
                 bool? isEmpty = null,
                 bool? isNotEmpty = null)
@@ -31,6 +25,12 @@ namespace Notion.Client
                 IsEmpty = isEmpty;
                 IsNotEmpty = isNotEmpty;
             }
+
+            [JsonProperty("is_empty")]
+            public bool? IsEmpty { get; set; }
+
+            [JsonProperty("is_not_empty")]
+            public bool? IsNotEmpty { get; set; }
         }
     }
 }

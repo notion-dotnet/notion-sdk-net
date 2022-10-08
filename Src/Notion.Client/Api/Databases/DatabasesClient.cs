@@ -17,7 +17,9 @@ namespace Notion.Client
             return await _client.GetAsync<Database>(DatabasesApiUrls.Retrieve(databaseId));
         }
 
-        public async Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters)
+        public async Task<PaginatedList<Page>> QueryAsync(
+            string databaseId,
+            DatabasesQueryParameters databasesQueryParameters)
         {
             var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
 

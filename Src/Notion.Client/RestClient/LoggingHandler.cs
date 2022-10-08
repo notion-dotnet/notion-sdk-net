@@ -7,7 +7,9 @@ namespace Notion.Client
 {
     public class LoggingHandler : DelegatingHandler
     {
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
         {
             Log.Trace("Request: {request}", request);
 
@@ -22,6 +24,7 @@ namespace Notion.Client
             catch (Exception ex)
             {
                 Log.Error(ex, "Failed to get response: {exception}", ex);
+
                 throw;
             }
         }

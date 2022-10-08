@@ -21,7 +21,7 @@ namespace Notion.Client
         public PartialUser LastEditedBy { get; set; }
 
         /// <summary>
-        /// Information about the block's parent.
+        ///     Information about the block's parent.
         /// </summary>
         public IBlockParent Parent { get; set; }
     }

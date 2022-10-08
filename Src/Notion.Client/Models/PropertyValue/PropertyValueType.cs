@@ -3,7 +3,7 @@
 namespace Notion.Client
 {
     /// <summary>
-    /// Types of Property Value
+    ///     Types of Property Value
     /// </summary>
     public enum PropertyValueType
     {
@@ -68,6 +68,6 @@ namespace Notion.Client
         LastEditedBy,
 
         [EnumMember(Value = "status")]
-        Status,
+        Status
     }
 }

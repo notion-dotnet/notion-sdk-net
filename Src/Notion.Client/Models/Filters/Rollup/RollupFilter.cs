@@ -4,18 +4,16 @@ namespace Notion.Client
 {
     public class RollupFilter : SinglePropertyFilter
     {
-        [JsonProperty("rollup")]
-        public Condition Rollup { get; set; }
-
         public RollupFilter(
-            string propertyName
-            , IRollupSubPropertyFilter any = null
-            , IRollupSubPropertyFilter none = null
-            , IRollupSubPropertyFilter every = null
-            , DateFilter.Condition date = null
-            , NumberFilter.Condition number = null)
+            string propertyName,
+            IRollupSubPropertyFilter any = null,
+            IRollupSubPropertyFilter none = null,
+            IRollupSubPropertyFilter every = null,
+            DateFilter.Condition date = null,
+            NumberFilter.Condition number = null)
         {
             Property = propertyName;
+
             Rollup = new Condition(
                 any,
                 none,
@@ -25,14 +23,17 @@ namespace Notion.Client
             );
         }
 
+        [JsonProperty("rollup")]
+        public Condition Rollup { get; set; }
+
         public class Condition
         {
             public Condition(
-                IRollupSubPropertyFilter any = null
-                , IRollupSubPropertyFilter none = null
-                , IRollupSubPropertyFilter every = null
-                , DateFilter.Condition date = null
-                , NumberFilter.Condition number = null)
+                IRollupSubPropertyFilter any = null,
+                IRollupSubPropertyFilter none = null,
+                IRollupSubPropertyFilter every = null,
+                DateFilter.Condition date = null,
+                NumberFilter.Condition number = null)
             {
                 Any = any;
                 None = none;

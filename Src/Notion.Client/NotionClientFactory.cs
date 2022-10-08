@@ -7,11 +7,11 @@
             var restClient = new RestClient(options);
 
             return new NotionClient(
-                restClient: restClient
-                , users: new UsersClient(restClient)
-                , databases: new DatabasesClient(restClient)
-                , pages: new PagesClient(restClient)
-                , search: new SearchClient(restClient)
+                restClient
+                , new UsersClient(restClient)
+                , new DatabasesClient(restClient)
+                , new PagesClient(restClient)
+                , new SearchClient(restClient)
                 , blocks: new BlocksClient(restClient)
                 , comments: new CommentsClient(restClient)
             );

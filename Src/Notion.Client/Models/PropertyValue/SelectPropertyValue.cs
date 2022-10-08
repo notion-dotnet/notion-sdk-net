@@ -3,7 +3,7 @@
 namespace Notion.Client
 {
     /// <summary>
-    /// Select property value object.
+    ///     Select property value object.
     /// </summary>
     public class SelectPropertyValue : PropertyValue
     {

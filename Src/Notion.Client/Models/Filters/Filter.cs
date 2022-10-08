@@ -5,7 +5,6 @@ namespace Notion.Client
 {
     public class Filter
     {
-
     }
 
     public class SinglePropertyFilter : Filter
@@ -16,16 +15,16 @@ namespace Notion.Client
 
     public class CompoundFilter : Filter
     {
-        [JsonProperty("or")]
-        public List<Filter> Or { get; set; }
-
-        [JsonProperty("and")]
-        public List<Filter> And { get; set; }
-
         public CompoundFilter(List<Filter> or = null, List<Filter> and = null)
         {
             Or = or;
             And = and;
         }
+
+        [JsonProperty("or")]
+        public List<Filter> Or { get; set; }
+
+        [JsonProperty("and")]
+        public List<Filter> And { get; set; }
     }
 }

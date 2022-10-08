@@ -4,18 +4,18 @@ namespace Notion.Client
 {
     public class DividerUpdateBlock : IUpdateBlock
     {
-        public bool Archived { get; set; }
+        public DividerUpdateBlock()
+        {
+            Divider = new Info();
+        }
 
         [JsonProperty("divider")]
         public Info Divider { get; set; }
 
+        public bool Archived { get; set; }
+
         public class Info
         {
-        }
-
-        public DividerUpdateBlock()
-        {
-            Divider = new Info();
         }
     }
 }

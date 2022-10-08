@@ -6,10 +6,10 @@ namespace Notion.Client
 {
     public class HeadingTwoBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.Heading_2;
-
         [JsonProperty("heading_2")]
         public Info Heading_2 { get; set; }
+
+        public override BlockType Type => BlockType.Heading_2;
 
         public override bool HasChildren => false;
 

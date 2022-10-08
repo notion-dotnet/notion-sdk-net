@@ -7,6 +7,7 @@ namespace Notion.Client
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public SearchObjectType Value { get; set; }
+
         public string Property => "object";
     }
 }

@@ -7,9 +7,6 @@ namespace Notion.Client
 {
     public class DateFilter : SinglePropertyFilter, IRollupSubPropertyFilter
     {
-        [JsonProperty("date")]
-        public Condition Date { get; set; }
-
         public DateFilter(
             string propertyName,
             DateTime? equal = null,
@@ -27,25 +24,59 @@ namespace Notion.Client
             bool? isNotEmpty = null)
         {
             Property = propertyName;
+
             Date = new Condition(
-                equal: equal,
-                before: before,
-                after: after,
-                onOrBefore: onOrBefore,
-                onOrAfter: onOrAfter,
-                pastWeek: pastWeek,
-                pastMonth: pastMonth,
-                pastYear: pastYear,
-                nextWeek: nextWeek,
-                nextMonth: nextMonth,
-                nextYear: nextYear,
-                isEmpty: isEmpty,
-                isNotEmpty: isNotEmpty
+                equal,
+                before,
+                after,
+                onOrBefore,
+                onOrAfter,
+                pastWeek,
+                pastMonth,
+                pastYear,
+                nextWeek,
+                nextMonth,
+                nextYear,
+                isEmpty,
+                isNotEmpty
             );
         }
 
+        [JsonProperty("date")]
+        public Condition Date { get; set; }
+
         public class Condition
         {
+            public Condition(
+                DateTime? equal = null,
+                DateTime? before = null,
+                DateTime? after = null,
+                DateTime? onOrBefore = null,
+                DateTime? onOrAfter = null,
+                Dictionary<string, object> pastWeek = null,
+                Dictionary<string, object> pastMonth = null,
+                Dictionary<string, object> pastYear = null,
+                Dictionary<string, object> nextWeek = null,
+                Dictionary<string, object> nextMonth = null,
+                Dictionary<string, object> nextYear = null,
+                bool? isEmpty = null,
+                bool? isNotEmpty = null)
+            {
+                Equal = equal;
+                Before = before;
+                After = after;
+                OnOrBefore = onOrBefore;
+                OnOrAfter = onOrAfter;
+                PastWeek = pastWeek;
+                PastMonth = pastMonth;
+                PastYear = pastYear;
+                NextWeek = nextWeek;
+                NextMonth = nextMonth;
+                NextYear = nextYear;
+                IsEmpty = isEmpty;
+                IsNotEmpty = isNotEmpty;
+            }
+
             [JsonProperty("equals")]
             [JsonConverter(typeof(IsoDateTimeConverter))]
             public DateTime? Equal { get; set; }
@@ -89,36 +120,6 @@ namespace Notion.Client
 
             [JsonProperty("is_not_empty")]
             public bool? IsNotEmpty { get; set; }
-
-            public Condition(
-                DateTime? equal = null,
-                DateTime? before = null,
-                DateTime? after = null,
-                DateTime? onOrBefore = null,
-                DateTime? onOrAfter = null,
-                Dictionary<string, object> pastWeek = null,
-                Dictionary<string, object> pastMonth = null,
-                Dictionary<string, object> pastYear = null,
-                Dictionary<string, object> nextWeek = null,
-                Dictionary<string, object> nextMonth = null,
-                Dictionary<string, object> nextYear = null,
-                bool? isEmpty = null,
-                bool? isNotEmpty = null)
-            {
-                Equal = equal;
-                Before = before;
-                After = after;
-                OnOrBefore = onOrBefore;
-                OnOrAfter = onOrAfter;
-                PastWeek = pastWeek;
-                PastMonth = pastMonth;
-                PastYear = pastYear;
-                NextWeek = nextWeek;
-                NextMonth = nextMonth;
-                NextYear = nextYear;
-                IsEmpty = isEmpty;
-                IsNotEmpty = isNotEmpty;
-            }
         }
     }
 }

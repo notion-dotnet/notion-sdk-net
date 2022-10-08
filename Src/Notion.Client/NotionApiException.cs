@@ -29,6 +29,7 @@ namespace Notion.Client
         }
 
         public NotionAPIErrorCode? NotionAPIErrorCode { get; }
+
         public HttpStatusCode StatusCode { get; }
     }
 }

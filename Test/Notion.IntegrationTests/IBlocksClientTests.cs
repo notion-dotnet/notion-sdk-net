@@ -6,537 +6,431 @@ using FluentAssertions;
 using Notion.Client;
 using Xunit;
 
-namespace Notion.IntegrationTests
+namespace Notion.IntegrationTests;
+
+public class IBlocksClientTests
 {
-    public class IBlocksClientTests
+    private readonly INotionClient _client;
+
+    public IBlocksClientTests()
     {
-        private readonly INotionClient _client;
+        var options = new ClientOptions { AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN") };
 
-        public IBlocksClientTests()
-        {
-            var options = new ClientOptions
+        _client = NotionClientFactory.Create(options);
+    }
+
+    [Fact]
+    public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
+    {
+        var pageParentId = "3c357473a28149a488c010d2b245a589";
+
+        var page = await _client.Pages.CreateAsync(
+            PagesCreateParametersBuilder.Create(
+                new ParentPageInput { PageId = pageParentId }
+            ).Build()
+        );
+
+        var blocks = await _client.Blocks.AppendChildrenAsync(
+            page.Id,
+            new BlocksAppendChildrenParameters
             {
-                AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN")
-            };
-
-            _client = NotionClientFactory.Create(options);
-        }
-
-        [Fact]
-        public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
-        {
-            var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-            var page = await _client.Pages.CreateAsync(
-                PagesCreateParametersBuilder.Create(
-                    new ParentPageInput()
-                    {
-                        PageId = pageParentId
-                    }
-                ).Build()
-            );
-
-            var blocks = await _client.Blocks.AppendChildrenAsync(
-                page.Id,
-                new BlocksAppendChildrenParameters
+                Children = new List<IBlock>
                 {
-                    Children = new List<IBlock>()
-                    {
-                        new BreadcrumbBlock
-                        {
-                            Breadcrumb = new BreadcrumbBlock.Data()
-                        },
-                        new DividerBlock
-                        {
-                            Divider = new DividerBlock.Data()
-                        },
-                        new TableOfContentsBlock
-                        {
-                            TableOfContents = new TableOfContentsBlock.Data()
-                        },
-                        new CalloutBlock
-                        {
-                            Callout = new CalloutBlock.Info
-                            {
-                                RichText = new List<RichTextBaseInput> {
-                                    new RichTextTextInput
-                                    {
-                                        Text = new Text
-                                        {
-                                            Content = "Test"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            );
-
-            blocks.Results.Should().HaveCount(4);
-
-            // cleanup
-            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
-            {
-                Archived = true
-            });
-        }
-
-        [Fact]
-        public async Task UpdateBlockAsync_UpdatesGivenBlock()
-        {
-            var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-            var page = await _client.Pages.CreateAsync(
-                            PagesCreateParametersBuilder.Create(
-                                new ParentPageInput()
-                                {
-                                    PageId = pageParentId
-                                }
-                            ).Build()
-                        );
-
-            var blocks = await _client.Blocks.AppendChildrenAsync(
-                page.Id,
-                new BlocksAppendChildrenParameters
-                {
-                    Children = new List<IBlock>()
-                    {
-                        new BreadcrumbBlock
-                        {
-                            Breadcrumb = new BreadcrumbBlock.Data()
-                        }
-                    }
-                }
-            );
-
-            var blockId = blocks.Results.First().Id;
-            await _client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
-
-            blocks = await _client.Blocks.RetrieveChildrenAsync(page.Id);
-            blocks.Results.Should().HaveCount(1);
-
-            // cleanup
-            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
-            {
-                Archived = true
-            });
-        }
-
-        [Fact]
-        public async Task DeleteAsync_DeleteBlockWithGivenId()
-        {
-            var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-            var page = await _client.Pages.CreateAsync(
-                PagesCreateParametersBuilder.Create(
-                    new ParentPageInput()
-                    {
-                        PageId = pageParentId
-                    }
-                ).Build()
-            );
-
-            var blocks = await _client.Blocks.AppendChildrenAsync(
-                page.Id,
-                new BlocksAppendChildrenParameters
-                {
-                    Children = new List<IBlock>()
-                    {
-                        new DividerBlock
-                        {
-                            Divider = new DividerBlock.Data()
-                        },
-                        new TableOfContentsBlock
-                        {
-                            TableOfContents = new TableOfContentsBlock.Data()
-                        },
-                    }
-                }
-            );
-
-            blocks.Results.Should().HaveCount(2);
-
-            // cleanup
-            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
-            {
-                Archived = true
-            });
-        }
-
-        [Theory]
-        [MemberData(nameof(BlockData))]
-        public async Task UpdateAsync_UpdatesGivenBlock(IBlock block, IUpdateBlock updateBlock, Action<IBlock> assert)
-        {
-            var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-            var page = await _client.Pages.CreateAsync(
-                PagesCreateParametersBuilder.Create(
-                    new ParentPageInput
-                    {
-                        PageId = pageParentId
-                    }
-                ).Build()
-            );
-
-            var blocks = await _client.Blocks.AppendChildrenAsync(
-                page.Id,
-                new BlocksAppendChildrenParameters
-                {
-                    Children = new List<IBlock>()
-                    {
-                        block
-                    }
-                }
-            );
-
-            var blockId = blocks.Results.First().Id;
-            await _client.Blocks.UpdateAsync(blockId, updateBlock);
-
-            blocks = await _client.Blocks.RetrieveChildrenAsync(page.Id);
-            blocks.Results.Should().HaveCount(1);
-
-            var updatedBlock = blocks.Results.First();
-
-            assert.Invoke(updatedBlock);
-
-            // cleanup
-            await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters
-            {
-                Archived = true
-            });
-        }
-
-        private static IEnumerable<object[]> BlockData()
-        {
-            return new List<object[]>
-            {
-                new object[] {
-                    new BookmarkBlock
-                    {
-                        Bookmark = new BookmarkBlock.Info
-                        {
-                            Url = "https://developers.notion.com/reference/rich-text",
-                            Caption = new List<RichTextBase>
-                            {
-                                new RichTextTextInput
-                                {
-                                    Text = new Text
-                                    {
-                                        Content = "Notion API"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    new BookmarkUpdateBlock {
-                        Bookmark = new BookmarkUpdateBlock.Info
-                        {
-                            Url = "https://github.com/notion-dotnet/notion-sdk-net",
-                            Caption = new List<RichTextBaseInput>
-                            {
-                                new RichTextTextInput
-                                {
-                                    Text = new Text
-                                    {
-                                        Content = "Github"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    new Action<IBlock>((block) => {
-                        var updatedBlock = (BookmarkBlock)block;
-                        Assert.Equal("https://github.com/notion-dotnet/notion-sdk-net", updatedBlock.Bookmark.Url);
-                        Assert.Equal("Github", updatedBlock.Bookmark.Caption.OfType<RichTextText>().First().Text.Content);
-                    })
-                },
-                new object[] {
-                    new EquationBlock
-                    {
-                        Equation = new EquationBlock.Info
-                        {
-                            Expression = "e=mc^3"
-                        }
-                    },
-                    new EquationUpdateBlock {
-                        Equation = new EquationUpdateBlock.Info
-                        {
-                            Expression = "e=mc^2"
-                        }
-                    },
-                    new Action<IBlock>((block) => {
-                        var updatedBlock = (EquationBlock)block;
-                        Assert.Equal("e=mc^2", updatedBlock.Equation.Expression);
-                    })
-                },
-                new object[] {
-                    new DividerBlock {
-                        Divider = new DividerBlock.Data()
-                    },
-                    new DividerUpdateBlock(),
-                    new Action<IBlock>((block) => {
-                        Assert.NotNull(block);
-                        Assert.IsType<DividerBlock>(block);
-                    })
-                },
-                new object[] {
-                    new AudioBlock {
-                        Audio = new ExternalFile {
-                            External = new ExternalFile.Info {
-                                Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-                            }
-                        }
-                    },
-                    new AudioUpdateBlock {
-                        Audio = new ExternalFileInput {
-                            External = new ExternalFileInput.Data {
-                                Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-                            }
-                        }
-                    },
-                    new Action<IBlock>((block) => {
-                        block.Should().NotBeNull();
-
-                        block.Should().BeOfType<AudioBlock>().Subject
-                            .Audio.Should().BeOfType<ExternalFile>().Subject
-                            .External.Url.Should().Be("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
-                    })
-                },
-                new object[]
-                {
-                    new TableOfContentsBlock {
-                        TableOfContents = new TableOfContentsBlock.Data()
-                    },
-                    new TableOfContentsUpdateBlock(),
-                    new Action<IBlock>((block) =>
-                    {
-                        Assert.NotNull(block);
-                        Assert.IsType<TableOfContentsBlock>(block);
-                    })
-                },
-                new object[]
-                {
+                    new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() },
+                    new DividerBlock { Divider = new DividerBlock.Data() },
+                    new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() },
                     new CalloutBlock
                     {
                         Callout = new CalloutBlock.Info
                         {
                             RichText = new List<RichTextBaseInput>
                             {
-                                new RichTextTextInput
-                                {
-                                    Text = new Text
-                                    {
-                                        Content = "Test"
-                                    }
-                                }
+                                new RichTextTextInput { Text = new Text { Content = "Test" } }
                             }
                         }
-                    },
-                    new CalloutUpdateBlock()
+                    }
+                }
+            }
+        );
+
+        blocks.Results.Should().HaveCount(4);
+
+        // cleanup
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+    }
+
+    [Fact]
+    public async Task UpdateBlockAsync_UpdatesGivenBlock()
+    {
+        var pageParentId = "3c357473a28149a488c010d2b245a589";
+
+        var page = await _client.Pages.CreateAsync(
+            PagesCreateParametersBuilder.Create(
+                new ParentPageInput { PageId = pageParentId }
+            ).Build()
+        );
+
+        var blocks = await _client.Blocks.AppendChildrenAsync(
+            page.Id,
+            new BlocksAppendChildrenParameters
+            {
+                Children = new List<IBlock> { new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() } }
+            }
+        );
+
+        var blockId = blocks.Results.First().Id;
+        await _client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
+
+        blocks = await _client.Blocks.RetrieveChildrenAsync(page.Id);
+        blocks.Results.Should().HaveCount(1);
+
+        // cleanup
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+    }
+
+    [Fact]
+    public async Task DeleteAsync_DeleteBlockWithGivenId()
+    {
+        var pageParentId = "3c357473a28149a488c010d2b245a589";
+
+        var page = await _client.Pages.CreateAsync(
+            PagesCreateParametersBuilder.Create(
+                new ParentPageInput { PageId = pageParentId }
+            ).Build()
+        );
+
+        var blocks = await _client.Blocks.AppendChildrenAsync(
+            page.Id,
+            new BlocksAppendChildrenParameters
+            {
+                Children = new List<IBlock>
+                {
+                    new DividerBlock { Divider = new DividerBlock.Data() },
+                    new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() }
+                }
+            }
+        );
+
+        blocks.Results.Should().HaveCount(2);
+
+        // cleanup
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+    }
+
+    [Theory]
+    [MemberData(nameof(BlockData))]
+    public async Task UpdateAsync_UpdatesGivenBlock(IBlock block, IUpdateBlock updateBlock, Action<IBlock> assert)
+    {
+        var pageParentId = "3c357473a28149a488c010d2b245a589";
+
+        var page = await _client.Pages.CreateAsync(
+            PagesCreateParametersBuilder.Create(
+                new ParentPageInput { PageId = pageParentId }
+            ).Build()
+        );
+
+        var blocks = await _client.Blocks.AppendChildrenAsync(
+            page.Id,
+            new BlocksAppendChildrenParameters { Children = new List<IBlock> { block } }
+        );
+
+        var blockId = blocks.Results.First().Id;
+        await _client.Blocks.UpdateAsync(blockId, updateBlock);
+
+        blocks = await _client.Blocks.RetrieveChildrenAsync(page.Id);
+        blocks.Results.Should().HaveCount(1);
+
+        var updatedBlock = blocks.Results.First();
+
+        assert.Invoke(updatedBlock);
+
+        // cleanup
+        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+    }
+
+    private static IEnumerable<object[]> BlockData()
+    {
+        return new List<object[]>
+        {
+            new object[]
+            {
+                new BookmarkBlock
+                {
+                    Bookmark = new BookmarkBlock.Info
                     {
-                        Callout = new CalloutUpdateBlock.Info
+                        Url = "https://developers.notion.com/reference/rich-text",
+                        Caption = new List<RichTextBase>
                         {
-                            RichText = new List<RichTextBaseInput>
-                            {
-                                new RichTextTextInput
-                                {
-                                    Text = new Text
-                                    {
-                                        Content = "Test 2"
-                                    }
-                                }
-                            }
+                            new RichTextTextInput { Text = new Text { Content = "Notion API" } }
                         }
-                    },
-                    new Action<IBlock>((block) =>
+                    }
+                },
+                new BookmarkUpdateBlock
+                {
+                    Bookmark = new BookmarkUpdateBlock.Info
+                    {
+                        Url = "https://github.com/notion-dotnet/notion-sdk-net",
+                        Caption = new List<RichTextBaseInput>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Github" } }
+                        }
+                    }
+                },
+                new Action<IBlock>(block =>
+                {
+                    var updatedBlock = (BookmarkBlock)block;
+                    Assert.Equal("https://github.com/notion-dotnet/notion-sdk-net", updatedBlock.Bookmark.Url);
+                    Assert.Equal("Github", updatedBlock.Bookmark.Caption.OfType<RichTextText>().First().Text.Content);
+                })
+            },
+            new object[]
+            {
+                new EquationBlock { Equation = new EquationBlock.Info { Expression = "e=mc^3" } },
+                new EquationUpdateBlock { Equation = new EquationUpdateBlock.Info { Expression = "e=mc^2" } },
+                new Action<IBlock>(block =>
+                {
+                    var updatedBlock = (EquationBlock)block;
+                    Assert.Equal("e=mc^2", updatedBlock.Equation.Expression);
+                })
+            },
+            new object[]
+            {
+                new DividerBlock { Divider = new DividerBlock.Data() }, new DividerUpdateBlock(), new Action<IBlock>(
+                    block =>
                     {
                         Assert.NotNull(block);
-                        var calloutBlock = Assert.IsType<CalloutBlock>(block);
-
-                        Assert.Equal("Test 2", calloutBlock.Callout.RichText.OfType<RichTextText>().First().Text.Content);
+                        Assert.IsType<DividerBlock>(block);
                     })
-                },
-                new object[]
+            },
+            new object[]
+            {
+                new AudioBlock
                 {
-                    new QuoteBlock
+                    Audio = new ExternalFile
                     {
-                        Quote = new QuoteBlock.Info
+                        External = new ExternalFile.Info
                         {
-                            RichText = new List<RichTextBaseInput>
-                            {
-                                new RichTextTextInput
-                                {
-                                    Text = new Text
-                                    {
-                                        Content = "Test"
-                                    }
-                                }
-                            }
+                            Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
                         }
-                    },
-                    new QuoteUpdateBlock()
+                    }
+                },
+                new AudioUpdateBlock
+                {
+                    Audio = new ExternalFileInput
                     {
-                        Quote = new QuoteUpdateBlock.Info
+                        External = new ExternalFileInput.Data
                         {
-                            RichText = new List<RichTextBaseInput>
-                            {
-                                new RichTextTextInput
-                                {
-                                    Text = new Text
-                                    {
-                                        Content = "Test 2"
-                                    }
-                                }
-                            }
+                            Url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
                         }
-                    },
-                    new Action<IBlock>((block) =>
-                    {
-                        Assert.NotNull(block);
-                        var quoteBlock = Assert.IsType<QuoteBlock>(block);
+                    }
+                },
+                new Action<IBlock>(block =>
+                {
+                    block.Should().NotBeNull();
 
-                        Assert.Equal("Test 2", quoteBlock.Quote.RichText.OfType<RichTextText>().First().Text.Content);
-                    })
-                },
-                new object[]
+                    block.Should().BeOfType<AudioBlock>().Subject
+                        .Audio.Should().BeOfType<ExternalFile>().Subject
+                        .External.Url.Should().Be("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
+                })
+            },
+            new object[]
+            {
+                new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() },
+                new TableOfContentsUpdateBlock(), new Action<IBlock>(block =>
                 {
-                    new ImageBlock() {
-                        Image = new ExternalFile
-                        {
-                            External = new ExternalFile.Info
-                            {
-                                Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
-                            }
-                        }
-                    },
-                    new ImageUpdateBlock()
+                    Assert.NotNull(block);
+                    Assert.IsType<TableOfContentsBlock>(block);
+                })
+            },
+            new object[]
+            {
+                new CalloutBlock
+                {
+                    Callout = new CalloutBlock.Info
                     {
-                        Image = new ExternalFileInput
+                        RichText = new List<RichTextBaseInput>
                         {
-                            External = new ExternalFileInput.Data
-                            {
-                                Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
-                            }
+                            new RichTextTextInput { Text = new Text { Content = "Test" } }
                         }
-                    },
-                    new Action<IBlock> (block =>
+                    }
+                },
+                new CalloutUpdateBlock
+                {
+                    Callout = new CalloutUpdateBlock.Info
                     {
-                        Assert.NotNull(block);
-                        var imageBlock = Assert.IsType<ImageBlock>(block);
-                        var imageFile = Assert.IsType<ExternalFile>(imageBlock.Image);
+                        RichText = new List<RichTextBaseInput>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Test 2" } }
+                        }
+                    }
+                },
+                new Action<IBlock>(block =>
+                {
+                    Assert.NotNull(block);
+                    var calloutBlock = Assert.IsType<CalloutBlock>(block);
 
-                        Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg", imageFile.External.Url);
-                    })
-                },
-                new object[]
+                    Assert.Equal("Test 2", calloutBlock.Callout.RichText.OfType<RichTextText>().First().Text.Content);
+                })
+            },
+            new object[]
+            {
+                new QuoteBlock
                 {
-                    new EmbedBlock()
+                    Quote = new QuoteBlock.Info
                     {
-                        Embed = new EmbedBlock.Info
+                        RichText = new List<RichTextBaseInput>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Test" } }
+                        }
+                    }
+                },
+                new QuoteUpdateBlock
+                {
+                    Quote = new QuoteUpdateBlock.Info
+                    {
+                        RichText = new List<RichTextBaseInput>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Test 2" } }
+                        }
+                    }
+                },
+                new Action<IBlock>(block =>
+                {
+                    Assert.NotNull(block);
+                    var quoteBlock = Assert.IsType<QuoteBlock>(block);
+
+                    Assert.Equal("Test 2", quoteBlock.Quote.RichText.OfType<RichTextText>().First().Text.Content);
+                })
+            },
+            new object[]
+            {
+                new ImageBlock
+                {
+                    Image = new ExternalFile
+                    {
+                        External = new ExternalFile.Info
                         {
                             Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
                         }
-                    },
-                    new EmbedUpdateBlock()
-                    {
-                        Embed = new EmbedUpdateBlock.Info
-                        {
-                            Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
-                        }
-                    },
-                    new Action<IBlock> (block =>
-                    {
-                        Assert.NotNull(block);
-                        var embedBlock = Assert.IsType<EmbedBlock>(block);
-
-                        Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg", embedBlock.Embed.Url);
-                    })
+                    }
                 },
-                new object[]
+                new ImageUpdateBlock
                 {
-                    new TemplateBlock()
+                    Image = new ExternalFileInput
                     {
-                        Template = new TemplateBlock.Data
+                        External = new ExternalFileInput.Data
                         {
-                            RichText = new List<RichTextBase>
+                            Url
+                                = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                        }
+                    }
+                },
+                new Action<IBlock>(block =>
+                {
+                    Assert.NotNull(block);
+                    var imageBlock = Assert.IsType<ImageBlock>(block);
+                    var imageFile = Assert.IsType<ExternalFile>(imageBlock.Image);
+
+                    Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
+                        imageFile.External.Url);
+                })
+            },
+            new object[]
+            {
+                new EmbedBlock
+                {
+                    Embed = new EmbedBlock.Info
+                    {
+                        Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
+                    }
+                },
+                new EmbedUpdateBlock
+                {
+                    Embed = new EmbedUpdateBlock.Info
+                    {
+                        Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                    }
+                },
+                new Action<IBlock>(block =>
+                {
+                    Assert.NotNull(block);
+                    var embedBlock = Assert.IsType<EmbedBlock>(block);
+
+                    Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
+                        embedBlock.Embed.Url);
+                })
+            },
+            new object[]
+            {
+                new TemplateBlock
+                {
+                    Template = new TemplateBlock.Data
+                    {
+                        RichText = new List<RichTextBase>
+                        {
+                            new RichTextText { Text = new Text { Content = "Test Template" } }
+                        },
+                        Children = new List<ITemplateChildrendBlock>
+                        {
+                            new EmbedBlock
                             {
-                                new RichTextText
+                                Embed = new EmbedBlock.Info
                                 {
-                                    Text = new Text
-                                    {
-                                        Content = "Test Template"
-                                    }
-                                }
-                            },
-                            Children = new List<ITemplateChildrendBlock>
-                            {
-                                new EmbedBlock()
-                                {
-                                    Embed = new EmbedBlock.Info
-                                    {
-                                        Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
-                                    }
+                                    Url
+                                        = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
                                 }
                             }
                         }
-                    },
-                    new TemplateUpdateBlock()
-                    {
-                        Template = new TemplateUpdateBlock.Info
-                        {
-                            RichText = new List<RichTextBaseInput>
-                            {
-                                new RichTextTextInput
-                                {
-                                    Text = new Text
-                                    {
-                                        Content = "Test Template 2"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    new Action<IBlock> (block =>
-                    {
-                        Assert.NotNull(block);
-                        var templateBlock = Assert.IsType<TemplateBlock>(block);
-
-                        Assert.Single(templateBlock.Template.RichText);
-                        Assert.Null(templateBlock.Template.Children);
-                        Assert.Equal("Test Template 2", templateBlock.Template.RichText.OfType<RichTextText>().First().Text.Content);
-                    })
+                    }
                 },
-                new object[]
+                new TemplateUpdateBlock
                 {
-                    new LinkToPageBlock()
+                    Template = new TemplateUpdateBlock.Info
                     {
-                        LinkToPage = new PageParent
+                        RichText = new List<RichTextBaseInput>
                         {
-                            Type =  ParentType.PageId,
-                            PageId = "533578e3edf14c0a91a9da6b09bac3ee"
+                            new RichTextTextInput { Text = new Text { Content = "Test Template 2" } }
                         }
-                    },
-                    new LinkToPageUpdateBlock()
-                    {
-                        LinkToPage = new ParentPageInput
-                        {
-                            PageId = "3c357473a28149a488c010d2b245a589"
-                        }
-                    },
-                    new Action<IBlock>(block =>
-                    {
-                        Assert.NotNull(block);
-                        var linkToPageBlock = Assert.IsType<LinkToPageBlock>(block);
+                    }
+                },
+                new Action<IBlock>(block =>
+                {
+                    Assert.NotNull(block);
+                    var templateBlock = Assert.IsType<TemplateBlock>(block);
 
-                        var pageParent = Assert.IsType<PageParent>(linkToPageBlock.LinkToPage);
+                    Assert.Single(templateBlock.Template.RichText);
+                    Assert.Null(templateBlock.Template.Children);
 
-                        // TODO: Currently the api doesn't allow to update the link_to_page block type
-                        // This will change to updated ID once api start to support
-                        Assert.Equal(Guid.Parse("533578e3edf14c0a91a9da6b09bac3ee"), Guid.Parse(pageParent.PageId));
-                    })
-                }
-            };
-        }
+                    Assert.Equal("Test Template 2",
+                        templateBlock.Template.RichText.OfType<RichTextText>().First().Text.Content);
+                })
+            },
+            new object[]
+            {
+                new LinkToPageBlock
+                {
+                    LinkToPage = new PageParent
+                    {
+                        Type = ParentType.PageId,
+                        PageId = "533578e3edf14c0a91a9da6b09bac3ee"
+                    }
+                },
+                new LinkToPageUpdateBlock
+                {
+                    LinkToPage = new ParentPageInput { PageId = "3c357473a28149a488c010d2b245a589" }
+                },
+                new Action<IBlock>(block =>
+                {
+                    Assert.NotNull(block);
+                    var linkToPageBlock = Assert.IsType<LinkToPageBlock>(block);
+
+                    var pageParent = Assert.IsType<PageParent>(linkToPageBlock.LinkToPage);
+
+                    // TODO: Currently the api doesn't allow to update the link_to_page block type
+                    // This will change to updated ID once api start to support
+                    Assert.Equal(Guid.Parse("533578e3edf14c0a91a9da6b09bac3ee"), Guid.Parse(pageParent.PageId));
+                })
+            }
+        };
     }
 }

@@ -6,16 +6,6 @@ namespace Notion.Client
 {
     public class Database : IObject, IObjectModificationData
     {
-        public ObjectType Object => ObjectType.Database;
-
-        public string Id { get; set; }
-
-        [JsonProperty("created_time")]
-        public DateTime CreatedTime { get; set; }
-
-        [JsonProperty("last_edited_time")]
-        public DateTime LastEditedTime { get; set; }
-
         [JsonProperty("title")]
         public List<RichTextBase> Title { get; set; }
 
@@ -32,25 +22,35 @@ namespace Notion.Client
         public FileObject Cover { get; set; }
 
         /// <summary>
-        /// The URL of the Notion database.
+        ///     The URL of the Notion database.
         /// </summary>
         [JsonProperty("url")]
         public string Url { get; set; }
 
         /// <summary>
-        /// The archived status of the database.
+        ///     The archived status of the database.
         /// </summary>
         [JsonProperty("archived")]
         public bool Archived { get; set; }
-
-        public PartialUser CreatedBy { get; set; }
-
-        public PartialUser LastEditedBy { get; set; }
 
         [JsonProperty("is_inline")]
         public bool IsInline { get; set; }
 
         [JsonProperty("description")]
         public IEnumerable<RichTextBase> Description { get; set; }
+
+        public ObjectType Object => ObjectType.Database;
+
+        public string Id { get; set; }
+
+        [JsonProperty("created_time")]
+        public DateTime CreatedTime { get; set; }
+
+        [JsonProperty("last_edited_time")]
+        public DateTime LastEditedTime { get; set; }
+
+        public PartialUser CreatedBy { get; set; }
+
+        public PartialUser LastEditedBy { get; set; }
     }
 }

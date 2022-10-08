@@ -59,6 +59,6 @@ namespace Notion.Client
         PinkBackground,
 
         [EnumMember(Value = "red_background")]
-        RedBackground,
+        RedBackground
     }
 }

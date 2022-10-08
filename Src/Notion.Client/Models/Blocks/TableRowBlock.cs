@@ -5,10 +5,10 @@ namespace Notion.Client
 {
     public class TableRowBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.TableRow;
-
         [JsonProperty("table_row")]
         public Info TableRow { get; set; }
+
+        public override BlockType Type => BlockType.TableRow;
 
         public class Info
         {

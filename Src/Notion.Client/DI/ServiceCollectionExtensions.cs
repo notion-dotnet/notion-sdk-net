@@ -5,7 +5,9 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddNotionClient(this IServiceCollection services, Action<ClientOptions> options)
+        public static IServiceCollection AddNotionClient(
+            this IServiceCollection services,
+            Action<ClientOptions> options)
         {
             services.AddSingleton<INotionClient, NotionClient>(sp =>
             {

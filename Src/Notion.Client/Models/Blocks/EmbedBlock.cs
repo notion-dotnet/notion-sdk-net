@@ -5,10 +5,10 @@ namespace Notion.Client
 {
     public class EmbedBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
-        public override BlockType Type => BlockType.Embed;
-
         [JsonProperty("embed")]
         public Info Embed { get; set; }
+
+        public override BlockType Type => BlockType.Embed;
 
         public class Info
         {
@@ -17,7 +17,6 @@ namespace Notion.Client
 
             [JsonProperty("caption")]
             public IEnumerable<RichTextBase> Caption { get; set; }
-
         }
     }
 }

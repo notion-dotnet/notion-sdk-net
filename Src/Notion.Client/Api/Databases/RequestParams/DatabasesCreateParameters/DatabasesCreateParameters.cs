@@ -5,6 +5,12 @@ namespace Notion.Client
 {
     public class DatabasesCreateParameters : IDatabasesCreateBodyParameters, IDatabasesCreateQueryParameters
     {
+        [JsonProperty("icon")]
+        public IPageIcon Icon { get; set; }
+
+        [JsonProperty("cover")]
+        public FileObject Cover { get; set; }
+
         [JsonProperty("parent")]
         public ParentPageInput Parent { get; set; }
 
@@ -13,12 +19,6 @@ namespace Notion.Client
 
         [JsonProperty("title")]
         public List<RichTextBaseInput> Title { get; set; }
-
-        [JsonProperty("icon")]
-        public IPageIcon Icon { get; set; }
-
-        [JsonProperty("cover")]
-        public FileObject Cover { get; set; }
 
         public bool? IsInline { get; set; }
 
