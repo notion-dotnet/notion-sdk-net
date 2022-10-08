@@ -1,6 +1,6 @@
 ﻿namespace Notion.Client
 {
-    public interface ITemplateChildrendBlock : IBlock
+    public interface ITemplateChildrenBlock : IBlock
     {
     }
 
@@ -8,7 +8,7 @@
     {
     }
 
-    public interface IColumnChildrenBlock : ITemplateChildrendBlock, ISyncedBlockChildren
+    public interface IColumnChildrenBlock : ITemplateChildrenBlock, ISyncedBlockChildren
     {
     }
 

@@ -14,10 +14,10 @@ namespace Notion.Client
             public Guid DatabaseId { get; set; }
 
             [JsonProperty("synced_property_id")]
-            public string SynchedPropertyId { get; set; }
+            public string SyncedPropertyId { get; set; }
 
             [JsonProperty("synced_property_name")]
-            public string SynchedPropertyName { get; set; }
+            public string SyncedPropertyName { get; set; }
         }
     }
 }

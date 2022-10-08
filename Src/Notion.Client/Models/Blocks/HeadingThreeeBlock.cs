@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
-    public class HeadingThreeeBlock : Block, IColumnChildrenBlock, INonColumnBlock
+    public class HeadingThreeBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         [JsonProperty("heading_3")]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
