@@ -26,7 +26,9 @@ jobs:
         run: dotnet tool restore
 
       - name: Run Linter
-        run: ./check.sh
+        run: |
+          sudo chmod 600 ./check.sh
+          ./check.sh
         shell: bash
 
       - name: Build
