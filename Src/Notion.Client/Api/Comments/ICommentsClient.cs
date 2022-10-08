@@ -4,6 +4,8 @@ namespace Notion.Client
 {
     public interface ICommentsClient
     {
-        Task<CreateCommentResponse> Create(CreateCommentParameters createCommentParameters);
+        Task<CreateCommentResponse> CreateAsync(CreateCommentParameters createCommentParameters);
+
+        Task<RetrieveCommentsResponse> RetrieveAsync(RetrieveCommentsParameters parameters);
     }
 }

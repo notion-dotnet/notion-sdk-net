@@ -54,7 +54,7 @@ namespace Notion.Client
             return await _client.GetAsync<Page>(url);
         }
 
-        public async Task<IPropertyItemObject> RetrievePagePropertyItem(
+        public async Task<IPropertyItemObject> RetrievePagePropertyItemAsync(
             RetrievePropertyItemParameters retrievePropertyItemParameters)
         {
             var pathParameters = (IRetrievePropertyItemPathParameters)retrievePropertyItemParameters;

@@ -110,7 +110,7 @@ public class PagesClientTests : ApiTestBase
         page.Properties.Should().HaveCount(2);
         var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
-        var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(
+        var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItemAsync(
             new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
@@ -176,7 +176,7 @@ public class PagesClientTests : ApiTestBase
         page.Properties.Should().HaveCount(2);
         var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
-        var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(
+        var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItemAsync(
             new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
@@ -225,7 +225,7 @@ public class PagesClientTests : ApiTestBase
         page.Properties.Should().HaveCount(2);
         var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
-        var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItem(
+        var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItemAsync(
             new RetrievePropertyItemParameters
             {
                 PageId = page.Id,

@@ -57,7 +57,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="IPropertyItemObject" />
         /// </returns>
-        Task<IPropertyItemObject> RetrievePagePropertyItem(
+        Task<IPropertyItemObject> RetrievePagePropertyItemAsync(
             RetrievePropertyItemParameters retrievePropertyItemParameters);
     }
 }
