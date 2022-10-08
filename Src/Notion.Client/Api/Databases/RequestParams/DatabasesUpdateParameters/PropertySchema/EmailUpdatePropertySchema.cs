@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class EmailUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
+    public class EmailUpdatePropertySchema : UpdatePropertySchema
     {
         [JsonProperty("email")]
         public Dictionary<string, object> Email { get; set; }

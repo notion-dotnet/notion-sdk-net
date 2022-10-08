@@ -11,27 +11,15 @@ namespace Notion.Client.Extensions
             this HttpResponseMessage response,
             JsonSerializerSettings serializerSettings = null)
         {
-            using (var stream = await response.Content.ReadAsStreamAsync())
-            {
-                using (var streamReader = new StreamReader(stream))
-                {
-                    using (JsonReader jsonReader = new JsonTextReader(streamReader))
-                    {
-                        JsonSerializer serializer = null;
+            using var stream = await response.Content.ReadAsStreamAsync();
+            using var streamReader = new StreamReader(stream);
+            using JsonReader jsonReader = new JsonTextReader(streamReader);
 
-                        if (serializerSettings == null)
-                        {
-                            serializer = JsonSerializer.CreateDefault();
-                        }
-                        else
-                        {
-                            serializer = JsonSerializer.Create(serializerSettings);
-                        }
+            var serializer = serializerSettings == null
+                ? JsonSerializer.CreateDefault()
+                : JsonSerializer.Create(serializerSettings);
 
-                        return serializer.Deserialize<T>(jsonReader);
-                    }
-                }
-            }
+            return serializer.Deserialize<T>(jsonReader);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class VideoUpdateBlock : UpdateBlock, IUpdateBlock
+    public class VideoUpdateBlock : UpdateBlock
     {
         [JsonProperty("video")]
         public IFileObjectInput Video { get; set; }

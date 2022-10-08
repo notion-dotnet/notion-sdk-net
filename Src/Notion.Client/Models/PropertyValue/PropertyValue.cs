@@ -1,4 +1,5 @@
-﻿using JsonSubTypes;
+﻿using System.Diagnostics.CodeAnalysis;
+using JsonSubTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -28,6 +29,8 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(StatusPropertyValue), PropertyValueType.Status)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(TitlePropertyValue), PropertyValueType.Title)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UrlPropertyValue), PropertyValueType.Url)]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty")]
     public class PropertyValue
     {
         /// <summary>

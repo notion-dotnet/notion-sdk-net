@@ -1,10 +1,12 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace Notion.Client
 {
     /// <summary>
     ///     Types of Property Value
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum PropertyValueType
     {
         [EnumMember(Value = null)]

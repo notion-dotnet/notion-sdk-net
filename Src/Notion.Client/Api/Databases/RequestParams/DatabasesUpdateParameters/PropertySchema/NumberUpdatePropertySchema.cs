@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class NumberUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
+    public class NumberUpdatePropertySchema : UpdatePropertySchema
     {
         [JsonProperty("number")]
         public Number Number { get; set; }

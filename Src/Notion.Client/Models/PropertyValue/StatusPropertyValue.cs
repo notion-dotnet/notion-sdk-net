@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -9,7 +10,9 @@ namespace Notion.Client
     /// </summary>
     public class StatusPropertyValue : PropertyValue
     {
-        public enum Color
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        public enum StatusColor
         {
             [EnumMember(Value = "default")]
             Default,
@@ -66,7 +69,7 @@ namespace Notion.Client
             /// </summary>
             [JsonProperty("color")]
             [JsonConverter(typeof(StringEnumConverter))]
-            public Color? Color { get; set; }
+            public StatusColor? Color { get; set; }
         }
     }
 }

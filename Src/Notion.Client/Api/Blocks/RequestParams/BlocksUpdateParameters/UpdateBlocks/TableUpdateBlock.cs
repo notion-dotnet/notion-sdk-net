@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class TableUpdateBlock : UpdateBlock, IUpdateBlock
+    public class TableUpdateBlock : UpdateBlock
     {
         [JsonProperty("table")]
         public Info Table { get; set; }

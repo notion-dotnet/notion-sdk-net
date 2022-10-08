@@ -1,25 +1,27 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
 namespace Notion.Client
 {
     internal static class Log
     {
-        internal static ILogger logger;
+        internal static ILogger Logger;
 
         internal static void Trace(string message, params object[] args)
         {
-            logger?.LogTrace(message, args);
+            Logger?.LogTrace(message, args);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal static void Information(string message, params object[] args)
         {
-            logger?.LogInformation(message, args);
+            Logger?.LogInformation(message, args);
         }
 
         internal static void Error(Exception ex, string message, params object[] args)
         {
-            logger?.LogError(ex, message, args);
+            Logger?.LogError(ex, message, args);
         }
     }
 }

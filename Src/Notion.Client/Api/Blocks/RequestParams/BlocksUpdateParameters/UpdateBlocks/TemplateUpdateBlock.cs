@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class TemplateUpdateBlock : UpdateBlock, IUpdateBlock
+    public class TemplateUpdateBlock : UpdateBlock
     {
         [JsonProperty("template")]
         public Info Template { get; set; }

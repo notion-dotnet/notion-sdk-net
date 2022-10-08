@@ -199,7 +199,7 @@ public class IBlocksClientTests
                     block =>
                     {
                         Assert.NotNull(block);
-                        Assert.IsType<DividerBlock>(block);
+                        _ = Assert.IsType<DividerBlock>(block);
                     })
             },
             new object[]
@@ -239,7 +239,7 @@ public class IBlocksClientTests
                 new TableOfContentsUpdateBlock(), new Action<IBlock>(block =>
                 {
                     Assert.NotNull(block);
-                    Assert.IsType<TableOfContentsBlock>(block);
+                    _ = Assert.IsType<TableOfContentsBlock>(block);
                 })
             },
             new object[]

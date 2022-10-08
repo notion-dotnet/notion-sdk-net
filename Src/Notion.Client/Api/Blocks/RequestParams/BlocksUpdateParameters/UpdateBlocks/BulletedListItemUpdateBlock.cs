@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class BulletedListItemUpdateBlock : UpdateBlock, IUpdateBlock
+    public class BulletedListItemUpdateBlock : UpdateBlock
     {
         [JsonProperty("bulleted_list_item")]
         public Info BulletedListItem { get; set; }

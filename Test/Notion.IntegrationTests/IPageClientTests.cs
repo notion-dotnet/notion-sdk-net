@@ -146,13 +146,18 @@ public class IPageClientTests
     {
         // setup - add property to db and create a page with the property having a date
 
-        var datePropertyName = "Test Date Property";
-        var updateDatabaseParameters = new DatabasesUpdateParameters();
+        const string DatePropertyName = "Test Date Property";
 
-        updateDatabaseParameters.Properties = new Dictionary<string, IUpdatePropertySchema>
+        var updateDatabaseParameters = new DatabasesUpdateParameters
         {
-            { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
-            { "Test Date Property", new DateUpdatePropertySchema { Date = new Dictionary<string, object>() } }
+            Properties = new Dictionary<string, IUpdatePropertySchema>
+            {
+                { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
+                {
+                    "Test Date Property",
+                    new DateUpdatePropertySchema { Date = new Dictionary<string, object>() }
+                }
+            }
         };
 
         var pagesCreateParameters = PagesCreateParametersBuilder
@@ -165,7 +170,7 @@ public class IPageClientTests
                         new RichTextText { Text = new Text { Content = "Test Page Title" } }
                     }
                 })
-            .AddProperty(datePropertyName,
+            .AddProperty(DatePropertyName,
                 new DatePropertyValue
                 {
                     Date = new Date
@@ -176,14 +181,14 @@ public class IPageClientTests
                 })
             .Build();
 
-        var updatedDb = await _client.Databases.UpdateAsync(_databaseId, updateDatabaseParameters);
+        await _client.Databases.UpdateAsync(_databaseId, updateDatabaseParameters);
 
         var page = await _client.Pages.CreateAsync(pagesCreateParameters);
 
         var setDate = (DatePropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
         {
             PageId = page.Id,
-            PropertyId = page.Properties[datePropertyName].Id
+            PropertyId = page.Properties[DatePropertyName].Id
         });
 
         setDate?.Date?.Start.Should().Be(Convert.ToDateTime("2020-12-08T12:00:00Z"));
@@ -191,7 +196,7 @@ public class IPageClientTests
         // verify
         IDictionary<string, PropertyValue> testProps = new Dictionary<string, PropertyValue>();
 
-        testProps.Add(datePropertyName, new DatePropertyValue { Date = null });
+        testProps.Add(DatePropertyName, new DatePropertyValue { Date = null });
 
         var updatedPage =
             await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Properties = testProps });
@@ -200,7 +205,7 @@ public class IPageClientTests
             new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
-                PropertyId = updatedPage.Properties[datePropertyName].Id
+                PropertyId = updatedPage.Properties[DatePropertyName].Id
             });
 
         verifyDate?.Date.Should().BeNull();

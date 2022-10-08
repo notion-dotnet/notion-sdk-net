@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class AudioUpdateBlock : UpdateBlock, IUpdateBlock
+    public class AudioUpdateBlock : UpdateBlock
     {
         [JsonProperty("audio")]
         public IFileObjectInput Audio { get; set; }

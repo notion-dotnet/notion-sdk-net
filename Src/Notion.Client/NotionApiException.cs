@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 namespace Notion.Client
 {
-    public class NotionApiException : Exception
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    public sealed class NotionApiException : Exception
     {
         public NotionApiException(HttpStatusCode statusCode, NotionAPIErrorCode? notionAPIErrorCode, string message)
             : this(statusCode, notionAPIErrorCode, message, null)
         {
         }
 
-        public NotionApiException(HttpStatusCode statusCode, string message)
-            : this(statusCode, null, message, null)
-        {
-        }
-
-        public NotionApiException(
+        private NotionApiException(
             HttpStatusCode statusCode,
             NotionAPIErrorCode? notionAPIErrorCode,
             string message,
@@ -24,7 +21,7 @@ namespace Notion.Client
             NotionAPIErrorCode = notionAPIErrorCode;
             StatusCode = statusCode;
 
-            Data.Add("StatusCode", statusCode);
+            Data.Add("StatusCode", StatusCode);
             Data.Add("NotionApiErrorCode", NotionAPIErrorCode);
         }
 

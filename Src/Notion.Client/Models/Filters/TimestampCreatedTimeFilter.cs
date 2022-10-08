@@ -6,9 +6,6 @@ namespace Notion.Client
 {
     public class TimestampCreatedTimeFilter : Filter
     {
-        [JsonProperty("timestamp")]
-        public string Timestamp = "created_time";
-
         public TimestampCreatedTimeFilter(
             DateTime? equal = null,
             DateTime? before = null,
@@ -40,6 +37,9 @@ namespace Notion.Client
                 isNotEmpty
             );
         }
+
+        [JsonProperty("timestamp")]
+        public string Timestamp => "created_time";
 
         [JsonProperty("created_time")]
         public DateFilter.Condition CreatedTime { get; set; }

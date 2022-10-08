@@ -1,4 +1,5 @@
-﻿using JsonSubTypes;
+﻿using System.Diagnostics.CodeAnalysis;
+using JsonSubTypes;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -24,6 +25,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(PeoplePropertyItem), "people")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(RelationPropertyItem), "relation")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(RollupPropertyItem), "rollup")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public abstract class SimplePropertyItem : IPropertyItemObject
     {
         public string Object => "property_item";

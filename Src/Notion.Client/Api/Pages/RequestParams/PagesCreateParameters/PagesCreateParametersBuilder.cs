@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Notion.Client
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class PagesCreateParametersBuilder
     {
-        private readonly IList<IBlock> children = new List<IBlock>();
-        private readonly Dictionary<string, PropertyValue> properties = new();
-        private FileObject cover;
-        private IPageIcon icon;
-        private IPageParentInput parent;
+        private readonly IList<IBlock> _children = new List<IBlock>();
+        private readonly Dictionary<string, PropertyValue> _properties = new();
+        private FileObject _cover;
+        private IPageIcon _icon;
+        private IPageParentInput _parent;
 
         private PagesCreateParametersBuilder()
         {
@@ -16,33 +18,33 @@ namespace Notion.Client
 
         public static PagesCreateParametersBuilder Create(IPageParentInput parent)
         {
-            return new PagesCreateParametersBuilder { parent = parent };
+            return new PagesCreateParametersBuilder { _parent = parent };
         }
 
         public PagesCreateParametersBuilder AddProperty(string nameOrId, PropertyValue value)
         {
-            properties[nameOrId] = value;
+            _properties[nameOrId] = value;
 
             return this;
         }
 
         public PagesCreateParametersBuilder AddPageContent(IBlock block)
         {
-            children.Add(block);
+            _children.Add(block);
 
             return this;
         }
 
         public PagesCreateParametersBuilder SetIcon(IPageIcon pageIcon)
         {
-            icon = pageIcon;
+            _icon = pageIcon;
 
             return this;
         }
 
         public PagesCreateParametersBuilder SetCover(FileObject pageCover)
         {
-            cover = pageCover;
+            _cover = pageCover;
 
             return this;
         }
@@ -51,11 +53,11 @@ namespace Notion.Client
         {
             return new PagesCreateParameters
             {
-                Parent = parent,
-                Properties = properties,
-                Children = children,
-                Icon = icon,
-                Cover = cover
+                Parent = _parent,
+                Properties = _properties,
+                Children = _children,
+                Icon = _icon,
+                Cover = _cover
             };
         }
     }

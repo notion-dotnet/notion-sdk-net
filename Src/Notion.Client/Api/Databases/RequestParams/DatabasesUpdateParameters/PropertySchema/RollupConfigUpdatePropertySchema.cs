@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class RollupConfigUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
+    public class RollupConfigUpdatePropertySchema : UpdatePropertySchema
     {
         [JsonProperty("relation_property_name")]
         public string RelationPropertyName { get; set; }

@@ -1,5 +1,8 @@
-﻿namespace Notion.Client
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Notion.Client
 {
+    [SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
     public interface INotionClient
     {
         IUsersClient Users { get; }
@@ -20,13 +23,13 @@
     public class NotionClient : INotionClient
     {
         public NotionClient(
-            RestClient restClient,
-            UsersClient users,
-            DatabasesClient databases,
-            PagesClient pages,
-            SearchClient search,
-            CommentsClient comments,
-            BlocksClient blocks)
+            IRestClient restClient,
+            IUsersClient users,
+            IDatabasesClient databases,
+            IPagesClient pages,
+            ISearchClient search,
+            ICommentsClient comments,
+            IBlocksClient blocks)
         {
             RestClient = restClient;
             Users = users;

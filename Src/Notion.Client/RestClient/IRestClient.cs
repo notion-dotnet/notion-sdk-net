@@ -34,7 +34,6 @@ namespace Notion.Client
             string uri,
             IDictionary<string, string> queryParams = null,
             IDictionary<string, string> headers = null,
-            JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default);
     }
 }

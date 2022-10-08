@@ -5,11 +5,11 @@ namespace Notion.Client
 {
     public class SearchClient : ISearchClient
     {
-        private readonly IRestClient client;
+        private readonly IRestClient _client;
 
         public SearchClient(IRestClient client)
         {
-            this.client = client;
+            _client = client;
         }
 
         public async Task<PaginatedList<IObject>> SearchAsync(SearchParameters parameters)
@@ -18,7 +18,7 @@ namespace Notion.Client
 
             var body = (ISearchBodyParameters)parameters;
 
-            return await client.PostAsync<PaginatedList<IObject>>(url, body);
+            return await _client.PostAsync<PaginatedList<IObject>>(url, body);
         }
     }
 }

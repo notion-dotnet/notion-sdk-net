@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class RelationUpdatePropertySchema : UpdatePropertySchema, IUpdatePropertySchema
+    public class RelationUpdatePropertySchema : UpdatePropertySchema
     {
         [JsonProperty("relation")]
         public RelationInfo Relation { get; set; }

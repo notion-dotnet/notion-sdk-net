@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace Notion.Client
 {
@@ -8,12 +9,15 @@ namespace Notion.Client
         Paragraph,
 
         [EnumMember(Value = "heading_1")]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         Heading_1,
 
         [EnumMember(Value = "heading_2")]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         Heading_2,
 
         [EnumMember(Value = "heading_3")]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         Heading_3,
 
         [EnumMember(Value = "bulleted_list_item")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
@@ -78,7 +79,7 @@ namespace Notion.Client
             return await _client.PatchAsync<Page>(url, body);
         }
 
-        [Obsolete("This method is obsolute. Use UpdateAsync instead. This API will be removed in future release")]
+        [Obsolete("This method is obsolete. Use UpdateAsync instead. This API will be removed in future release")]
         public async Task<Page> UpdatePropertiesAsync(
             string pageId,
             IDictionary<string, PropertyValue> updatedProperties)
@@ -90,6 +91,7 @@ namespace Notion.Client
             return await _client.PatchAsync<Page>(url, body);
         }
 
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
         private class UpdatePropertiesParameters
         {
             public IDictionary<string, PropertyValue> Properties { get; set; }
