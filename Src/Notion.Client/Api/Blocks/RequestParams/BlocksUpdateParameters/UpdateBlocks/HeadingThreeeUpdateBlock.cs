@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class HeadingThreeeUpdateBlock : UpdateBlock
+    public class HeadingThreeUpdateBlock : UpdateBlock
     {
         [JsonProperty("heading_3")]
         [SuppressMessage("ReSharper", "InconsistentNaming")]

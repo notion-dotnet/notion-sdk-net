@@ -370,7 +370,7 @@ public class IBlocksClientTests
                         {
                             new RichTextText { Text = new Text { Content = "Test Template" } }
                         },
-                        Children = new List<ITemplateChildrendBlock>
+                        Children = new List<ITemplateChildrenBlock>
                         {
                             new EmbedBlock
                             {

@@ -16,7 +16,7 @@ namespace Notion.Client
             public IEnumerable<RichTextBase> RichText { get; set; }
 
             [JsonProperty("children")]
-            public IEnumerable<ITemplateChildrendBlock> Children { get; set; }
+            public IEnumerable<ITemplateChildrenBlock> Children { get; set; }
         }
     }
 }

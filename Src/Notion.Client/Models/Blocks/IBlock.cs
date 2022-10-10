@@ -21,7 +21,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(FileBlock), BlockType.File)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(HeadingOneBlock), BlockType.Heading_1)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(HeadingTwoBlock), BlockType.Heading_2)]
-    [JsonSubtypes.KnownSubTypeAttribute(typeof(HeadingThreeeBlock), BlockType.Heading_3)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(HeadingThreeBlock), BlockType.Heading_3)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ImageBlock), BlockType.Image)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(LinkPreviewBlock), BlockType.LinkPreview)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(LinkToPageBlock), BlockType.LinkToPage)]
