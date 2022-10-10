@@ -7,7 +7,7 @@ namespace Notion.Client
     public partial class CommentsClient
     {
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public async Task<RetrieveCommentsResponse> Retrieve(RetrieveCommentsParameters parameters)
+        public async Task<RetrieveCommentsResponse> RetrieveAsync(RetrieveCommentsParameters parameters)
         {
             var qp = (IRetrieveCommentsQueryParameters)parameters;
 

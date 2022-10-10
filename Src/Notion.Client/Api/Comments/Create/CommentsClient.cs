@@ -4,7 +4,7 @@ namespace Notion.Client
 {
     public partial class CommentsClient
     {
-        public async Task<CreateCommentResponse> Create(CreateCommentParameters parameters)
+        public async Task<CreateCommentResponse> CreateAsync(CreateCommentParameters parameters)
         {
             var body = (ICreateCommentsBodyParameters)parameters;
 

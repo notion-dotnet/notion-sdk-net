@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Notion.Client
 {
     public interface ICommentsClient
     {
-        Task<CreateCommentResponse> Create(CreateCommentParameters createCommentParameters);
+        Task<CreateCommentResponse> CreateAsync(CreateCommentParameters createCommentParameters);
 
-        Task<RetrieveCommentsResponse> Retrieve(RetrieveCommentsParameters parameters);
+        Task<RetrieveCommentsResponse> RetrieveAsync(RetrieveCommentsParameters parameters);
     }
 }

@@ -43,7 +43,7 @@ public class CommentsClientTests : IDisposable
         );
 
         // Act
-        var response = await _client.Comments.Create(parameters);
+        var response = await _client.Comments.CreateAsync(parameters);
 
         // Arrange
 
@@ -64,7 +64,7 @@ public class CommentsClientTests : IDisposable
     public async Task ShouldCreateADiscussionComment()
     {
         // Arrange
-        var comment = await _client.Comments.Create(
+        var comment = await _client.Comments.CreateAsync(
             CreateCommentParameters.CreatePageComment(
                 new ParentPageInput { PageId = _page.Id },
                 new List<RichTextBaseInput>
@@ -75,7 +75,7 @@ public class CommentsClientTests : IDisposable
         );
 
         // Act
-        var response = await _client.Comments.Create(
+        var response = await _client.Comments.CreateAsync(
             CreateCommentParameters.CreateDiscussionComment(
                 comment.DiscussionId,
                 new List<RichTextBaseInput>

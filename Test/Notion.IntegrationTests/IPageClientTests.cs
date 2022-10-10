@@ -47,7 +47,7 @@ public class IPageClientTests
         var pageProperty = page.Properties["Name"].Should().BeOfType<PropertyValue>().Subject;
 
         var titleProperty
-            = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(
+            = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItemAsync(
                 new RetrievePropertyItemParameters
                 {
                     PageId = page.Id,
@@ -87,7 +87,7 @@ public class IPageClientTests
         var pageProperty = page.Properties["Name"].Should().BeOfType<PropertyValue>().Subject;
 
         var titleProperty
-            = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(
+            = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItemAsync(
                 new RetrievePropertyItemParameters
                 {
                     PageId = page.Id,
@@ -116,7 +116,7 @@ public class IPageClientTests
 
         var page = await _client.Pages.CreateAsync(pagesCreateParameters);
 
-        var property = await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
+        var property = await _client.Pages.RetrievePagePropertyItemAsync(new RetrievePropertyItemParameters
         {
             PageId = page.Id,
             PropertyId = "title"
@@ -185,11 +185,13 @@ public class IPageClientTests
 
         var page = await _client.Pages.CreateAsync(pagesCreateParameters);
 
-        var setDate = (DatePropertyItem)await _client.Pages.RetrievePagePropertyItem(new RetrievePropertyItemParameters
-        {
-            PageId = page.Id,
-            PropertyId = page.Properties[DatePropertyName].Id
-        });
+        var setDate = (DatePropertyItem)await _client.Pages.RetrievePagePropertyItemAsync(
+            new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = page.Properties[DatePropertyName].Id
+            }
+        );
 
         setDate?.Date?.Start.Should().Be(Convert.ToDateTime("2020-12-08T12:00:00Z"));
 
@@ -201,7 +203,7 @@ public class IPageClientTests
         var updatedPage =
             await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Properties = testProps });
 
-        var verifyDate = (DatePropertyItem)await _client.Pages.RetrievePagePropertyItem(
+        var verifyDate = (DatePropertyItem)await _client.Pages.RetrievePagePropertyItemAsync(
             new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
@@ -236,7 +238,7 @@ public class IPageClientTests
         var pageParent = Assert.IsType<DatabaseParent>(page.Parent);
         Assert.Equal(_databaseId, pageParent.DatabaseId);
 
-        var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItem(
+        var titleProperty = (ListPropertyItem)await _client.Pages.RetrievePagePropertyItemAsync(
             new RetrievePropertyItemParameters
             {
                 PageId = page.Id,
@@ -245,7 +247,7 @@ public class IPageClientTests
 
         Assert.Equal("Test Page Title", titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText);
 
-        var numberProperty = (NumberPropertyItem)await _client.Pages.RetrievePagePropertyItem(
+        var numberProperty = (NumberPropertyItem)await _client.Pages.RetrievePagePropertyItemAsync(
             new RetrievePropertyItemParameters
             {
                 PageId = page.Id,

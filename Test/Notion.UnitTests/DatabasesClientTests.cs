@@ -490,7 +490,7 @@ public class DatabasesClientTests : ApiTestBase
                             "{\"object\":\"property_item\",\"id\":\"JwY^\",\"type\":\"formula\",\"formula\":{\"type\":\"date\",\"date\":{\"start\":\"2021-06-28\",\"end\":null}}}")
                 );
 
-            var formulaPropertyValue = (FormulaPropertyItem)await _pagesClient.RetrievePagePropertyItem(
+            var formulaPropertyValue = (FormulaPropertyItem)await _pagesClient.RetrievePagePropertyItemAsync(
                 new RetrievePropertyItemParameters
                 {
                     PageId = page.Id,
