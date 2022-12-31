@@ -7,30 +7,22 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class CommentsClientTests : IDisposable
+public class CommentsClientTests : IntegrationTestBase, IDisposable
 {
-    private readonly INotionClient _client;
     private readonly Page _page;
 
     public CommentsClientTests()
     {
-        var options = new ClientOptions { AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN") };
-
-        _client = NotionClientFactory.Create(options);
-
-        var pageParentId = Environment.GetEnvironmentVariable("NOTION_PAGE_PARENT_ID") ??
-                           throw new InvalidOperationException("Page parent id is required.");
-
-        _page = _client.Pages.CreateAsync(
+        _page = Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = pageParentId }
+                new ParentPageInput { PageId = ParentPageId }
             ).Build()
         ).Result;
     }
 
     public void Dispose()
     {
-        _client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true }).Wait();
+        Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true }).Wait();
     }
 
     [Fact]
@@ -43,7 +35,7 @@ public class CommentsClientTests : IDisposable
         );
 
         // Act
-        var response = await _client.Comments.CreateAsync(parameters);
+        var response = await Client.Comments.CreateAsync(parameters);
 
         // Arrange
 
@@ -64,7 +56,7 @@ public class CommentsClientTests : IDisposable
     public async Task ShouldCreateADiscussionComment()
     {
         // Arrange
-        var comment = await _client.Comments.CreateAsync(
+        var comment = await Client.Comments.CreateAsync(
             CreateCommentParameters.CreatePageComment(
                 new ParentPageInput { PageId = _page.Id },
                 new List<RichTextBaseInput>
@@ -75,7 +67,7 @@ public class CommentsClientTests : IDisposable
         );
 
         // Act
-        var response = await _client.Comments.CreateAsync(
+        var response = await Client.Comments.CreateAsync(
             CreateCommentParameters.CreateDiscussionComment(
                 comment.DiscussionId,
                 new List<RichTextBaseInput>

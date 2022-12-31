@@ -8,29 +8,18 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class IBlocksClientTests
+public class IBlocksClientTests : IntegrationTestBase
 {
-    private readonly INotionClient _client;
-
-    public IBlocksClientTests()
-    {
-        var options = new ClientOptions { AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN") };
-
-        _client = NotionClientFactory.Create(options);
-    }
-
     [Fact]
     public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
     {
-        var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-        var page = await _client.Pages.CreateAsync(
+        var page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = pageParentId }
+                new ParentPageInput { PageId = ParentPageId }
             ).Build()
         );
 
-        var blocks = await _client.Blocks.AppendChildrenAsync(
+        var blocks = await Client.Blocks.AppendChildrenAsync(
             page.Id,
             new BlocksAppendChildrenParameters
             {
@@ -56,21 +45,19 @@ public class IBlocksClientTests
         blocks.Results.Should().HaveCount(4);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
     public async Task UpdateBlockAsync_UpdatesGivenBlock()
     {
-        var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-        var page = await _client.Pages.CreateAsync(
+        var page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = pageParentId }
+                new ParentPageInput { PageId = ParentPageId }
             ).Build()
         );
 
-        var blocks = await _client.Blocks.AppendChildrenAsync(
+        var blocks = await Client.Blocks.AppendChildrenAsync(
             page.Id,
             new BlocksAppendChildrenParameters
             {
@@ -79,27 +66,25 @@ public class IBlocksClientTests
         );
 
         var blockId = blocks.Results.First().Id;
-        await _client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
+        await Client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
 
-        blocks = await _client.Blocks.RetrieveChildrenAsync(page.Id);
+        blocks = await Client.Blocks.RetrieveChildrenAsync(page.Id);
         blocks.Results.Should().HaveCount(1);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
     public async Task DeleteAsync_DeleteBlockWithGivenId()
     {
-        var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-        var page = await _client.Pages.CreateAsync(
+        var page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = pageParentId }
+                new ParentPageInput { PageId = ParentPageId }
             ).Build()
         );
 
-        var blocks = await _client.Blocks.AppendChildrenAsync(
+        var blocks = await Client.Blocks.AppendChildrenAsync(
             page.Id,
             new BlocksAppendChildrenParameters
             {
@@ -114,30 +99,28 @@ public class IBlocksClientTests
         blocks.Results.Should().HaveCount(2);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(IBlock block, IUpdateBlock updateBlock, Action<IBlock> assert)
     {
-        var pageParentId = "3c357473a28149a488c010d2b245a589";
-
-        var page = await _client.Pages.CreateAsync(
+        var page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = pageParentId }
+                new ParentPageInput { PageId = ParentPageId }
             ).Build()
         );
 
-        var blocks = await _client.Blocks.AppendChildrenAsync(
+        var blocks = await Client.Blocks.AppendChildrenAsync(
             page.Id,
             new BlocksAppendChildrenParameters { Children = new List<IBlock> { block } }
         );
 
         var blockId = blocks.Results.First().Id;
-        await _client.Blocks.UpdateAsync(blockId, updateBlock);
+        await Client.Blocks.UpdateAsync(blockId, updateBlock);
 
-        blocks = await _client.Blocks.RetrieveChildrenAsync(page.Id);
+        blocks = await Client.Blocks.RetrieveChildrenAsync(page.Id);
         blocks.Results.Should().HaveCount(1);
 
         var updatedBlock = blocks.Results.First();
@@ -145,7 +128,7 @@ public class IBlocksClientTests
         assert.Invoke(updatedBlock);
 
         // cleanup
-        await _client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     private static IEnumerable<object[]> BlockData()
