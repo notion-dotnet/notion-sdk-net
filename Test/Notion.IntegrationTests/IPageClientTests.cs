@@ -247,4 +247,98 @@ public class IPageClientTests : IntegrationTestBase
 
         await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
+
+    [Fact]
+    public async Task Bug_exception_when_attempting_to_set_select_property_to_nothing()
+    {
+        // Arrange
+        var databaseCreateRequest = new DatabasesCreateParameters
+        {
+            Title =
+                new List<RichTextBaseInput>
+                {
+                    new RichTextTextInput() { Text = new Text { Content = "Test Database" } }
+                },
+            Parent = new ParentPageInput() { PageId = ParentPageId },
+            Properties = new Dictionary<string, IPropertySchema>
+            {
+                {
+                    "title", new TitlePropertySchema
+                    {
+                        Title = new Dictionary<string, object>()
+                    }
+                },
+                {
+                    "Colors1",
+                    new SelectPropertySchema
+                    {
+                        Select = new OptionWrapper<SelectOptionSchema>
+                        {
+                            Options = new List<SelectOptionSchema>
+                            {
+                                new() { Name = "Red" },
+                                new() { Name = "Green" },
+                                new() { Name = "Blue" }
+                            }
+                        }
+                    }
+                },
+                {
+                    "Colors2",
+                    new SelectPropertySchema
+                    {
+                        Select = new OptionWrapper<SelectOptionSchema>
+                        {
+                            Options = new List<SelectOptionSchema>
+                            {
+                                new() { Name = "Red" },
+                                new() { Name = "Green" },
+                                new() { Name = "Blue" }
+                            }
+                        }
+                    }
+                },
+            }
+        };
+
+        var database = await Client.Databases.CreateAsync(databaseCreateRequest);
+
+        var pagesCreateParameters = PagesCreateParametersBuilder
+            .Create(new DatabaseParentInput { DatabaseId = database.Id })
+            .AddProperty("title",
+                new TitlePropertyValue
+                {
+                    Title = new List<RichTextBase>
+                    {
+                        new RichTextTextInput { Text = new Text { Content = "Test" } }
+                    }
+                })
+            .AddProperty("Colors1", new SelectPropertyValue { Select = new SelectOption { Name = "Red" } })
+            .AddProperty("Colors2", new SelectPropertyValue { Select = new SelectOption { Name = "Green" } })
+            .Build();
+
+        // Act
+        var page = await Client.Pages.CreateAsync(pagesCreateParameters);
+
+        var updatePageRequest = new PagesUpdateParameters
+        {
+            Properties = new Dictionary<string, PropertyValue>
+            {
+                { "Colors1", new SelectPropertyValue { Select = new SelectOption { Name = "Blue" } } },
+                { "Colors2", new SelectPropertyValue { Select = null } }
+            }
+        };
+
+        var updatedPage = await Client.Pages.UpdateAsync(page.Id, updatePageRequest);
+        
+        // Assert
+        page.Properties["Colors1"].As<SelectPropertyValue>().Select.Name.Should().Be("Red");
+        page.Properties["Colors2"].As<SelectPropertyValue>().Select.Name.Should().Be("Green");
+        
+        updatedPage.Properties["Colors1"].As<SelectPropertyValue>().Select.Name.Should().Be("Blue");
+        updatedPage.Properties["Colors2"].As<SelectPropertyValue>().Select.Should().BeNull();
+
+        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+        await Client.Databases.UpdateAsync(database.Id, new DatabasesUpdateParameters { Archived = true });
+    }
 }
