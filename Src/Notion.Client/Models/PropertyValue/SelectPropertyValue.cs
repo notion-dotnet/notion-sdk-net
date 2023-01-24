@@ -9,7 +9,7 @@ namespace Notion.Client
     {
         public override PropertyValueType Type => PropertyValueType.Select;
 
-        [JsonProperty("select")]
+        [JsonProperty("select", NullValueHandling = NullValueHandling.Include)]
         public SelectOption Select { get; set; }
     }
 }
