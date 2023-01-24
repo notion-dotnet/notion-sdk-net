@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public class TableBlock : Block, IColumnChildrenBlock, INonColumnBlock
     {
         [JsonProperty("table")]
-        public TableInfo Table { get; set; }
+        public Info Table { get; set; }
 
         public override BlockType Type => BlockType.Table;
 
-        public class TableInfo
+        public class Info
         {
             [JsonProperty("table_width")]
             public int TableWidth { get; set; }
@@ -21,7 +22,7 @@ namespace Notion.Client
             public bool HasRowHeader { get; set; }
 
             [JsonProperty("children")]
-            public TableRowBlock Children { get; set; }
+            public IEnumerable<TableRowBlock> Children { get; set; }
         }
     }
 }
