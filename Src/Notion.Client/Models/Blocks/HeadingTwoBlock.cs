@@ -13,8 +13,6 @@ namespace Notion.Client
 
         public override BlockType Type => BlockType.Heading_2;
 
-        public override bool HasChildren => false;
-
         public class Info
         {
             [JsonProperty("rich_text")]
@@ -23,6 +21,9 @@ namespace Notion.Client
             [JsonProperty("color")]
             [JsonConverter(typeof(StringEnumConverter))]
             public Color? Color { get; set; }
+
+            [JsonProperty("is_toggleable")]
+            public bool IsToggleable { get; set; }
         }
     }
 }
