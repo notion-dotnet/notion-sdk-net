@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Notion.Client
@@ -15,7 +16,7 @@ namespace Notion.Client
         /// </summary>
         /// <param name="pagesCreateParameters">Create page parameters</param>
         /// <returns>Created <see cref="Page" /> object.</returns>
-        Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters);
+        Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Retrieves a Page object using the ID specified.
@@ -24,7 +25,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="Page" />
         /// </returns>
-        Task<Page> RetrieveAsync(string pageId);
+        Task<Page> RetrieveAsync(string pageId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates page property values for the specified page.
@@ -38,7 +39,7 @@ namespace Notion.Client
         /// <returns>Updated <see cref="Page" /> object</returns>
         Task<Page> UpdatePropertiesAsync(
             string pageId,
-            IDictionary<string, PropertyValue> updatedProperties);
+            IDictionary<string, PropertyValue> updatedProperties, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates page property values for the specified page.
@@ -47,7 +48,7 @@ namespace Notion.Client
         /// <param name="pageId">Identifier for a Notion page</param>
         /// <param name="pagesUpdateParameters">Update property parameters</param>
         /// <returns>Updated <see cref="Page" /> object</returns>
-        Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters);
+        Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Retrieves a property_item object for a given pageId and propertyId. Depending on the property type, the object
@@ -58,6 +59,6 @@ namespace Notion.Client
         ///     <see cref="IPropertyItemObject" />
         /// </returns>
         Task<IPropertyItemObject> RetrievePagePropertyItemAsync(
-            RetrievePropertyItemParameters retrievePropertyItemParameters);
+            RetrievePropertyItemParameters retrievePropertyItemParameters, CancellationToken cancellationToken = default);
     }
 }

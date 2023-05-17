@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Notion.Client
@@ -14,6 +15,6 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="PaginatedList{IObject}" />
         /// </returns>
-        Task<PaginatedList<IObject>> SearchAsync(SearchParameters parameters);
+        Task<PaginatedList<IObject>> SearchAsync(SearchParameters parameters, CancellationToken cancellationToken = default);
     }
 }

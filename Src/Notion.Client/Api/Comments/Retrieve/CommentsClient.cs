@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Notion.Client
@@ -7,7 +8,7 @@ namespace Notion.Client
     public partial class CommentsClient
     {
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public async Task<RetrieveCommentsResponse> RetrieveAsync(RetrieveCommentsParameters parameters)
+        public async Task<RetrieveCommentsResponse> RetrieveAsync(RetrieveCommentsParameters parameters, CancellationToken cancellationToken = default)
         {
             var qp = (IRetrieveCommentsQueryParameters)parameters;
 
@@ -20,7 +21,8 @@ namespace Notion.Client
 
             return await _client.GetAsync<RetrieveCommentsResponse>(
                 ApiEndpoints.CommentsApiUrls.Retrieve(),
-                queryParams
+                queryParams,
+                cancellationToken: cancellationToken
             );
         }
     }

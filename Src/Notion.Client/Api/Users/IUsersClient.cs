@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Notion.Client
 {
@@ -11,7 +12,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="User" />
         /// </returns>
-        Task<User> RetrieveAsync(string userId);
+        Task<User> RetrieveAsync(string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Returns a paginated list of Users for the workspace.
@@ -20,7 +21,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="PaginatedList{User}" />
         /// </returns>
-        Task<PaginatedList<User>> ListAsync();
+        Task<PaginatedList<User>> ListAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Retrieves the bot User associated with the API token provided in the authorization header.
@@ -29,6 +30,6 @@ namespace Notion.Client
         ///     <see cref="User" /> object of type bot having an owner field with information about the person who authorized
         ///     the integration.
         /// </returns>
-        Task<User> MeAsync();
+        Task<User> MeAsync(CancellationToken cancellationToken = default);
     }
 }
