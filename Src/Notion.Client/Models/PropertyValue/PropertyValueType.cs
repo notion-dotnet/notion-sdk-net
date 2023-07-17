@@ -70,6 +70,9 @@ namespace Notion.Client
         LastEditedBy,
 
         [EnumMember(Value = "status")]
-        Status
+        Status,
+
+        [EnumMember(Value = "unique_id")]
+        UniqueId,
     }
 }
