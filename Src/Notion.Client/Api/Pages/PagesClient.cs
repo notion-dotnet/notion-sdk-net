@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
@@ -25,7 +26,7 @@ namespace Notion.Client
         /// </summary>
         /// <param name="pagesCreateParameters">Create page parameters</param>
         /// <returns>Created page.</returns>
-        public async Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters)
+        public async Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters, CancellationToken cancellationToken = default)
         {
             if (pagesCreateParameters is null)
             {
@@ -44,18 +45,18 @@ namespace Notion.Client
                 throw new ArgumentNullException(nameof(bodyParameters.Properties), "Properties are required!");
             }
 
-            return await _client.PostAsync<Page>(PagesApiUrls.Create(), bodyParameters);
+            return await _client.PostAsync<Page>(PagesApiUrls.Create(), bodyParameters, cancellationToken: cancellationToken);
         }
 
-        public async Task<Page> RetrieveAsync(string pageId)
+        public async Task<Page> RetrieveAsync(string pageId, CancellationToken cancellationToken = default)
         {
             var url = PagesApiUrls.Retrieve(pageId);
 
-            return await _client.GetAsync<Page>(url);
+            return await _client.GetAsync<Page>(url, cancellationToken: cancellationToken);
         }
 
         public async Task<IPropertyItemObject> RetrievePagePropertyItemAsync(
-            RetrievePropertyItemParameters retrievePropertyItemParameters)
+            RetrievePropertyItemParameters retrievePropertyItemParameters, CancellationToken cancellationToken = default)
         {
             var pathParameters = (IRetrievePropertyItemPathParameters)retrievePropertyItemParameters;
             var queryParameters = (IRetrievePropertyQueryParameters)retrievePropertyItemParameters;
@@ -68,27 +69,27 @@ namespace Notion.Client
                 { "page_size", queryParameters?.PageSize?.ToString() }
             };
 
-            return await _client.GetAsync<IPropertyItemObject>(url, queryParams);
+            return await _client.GetAsync<IPropertyItemObject>(url, queryParams, cancellationToken: cancellationToken);
         }
 
-        public async Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters)
+        public async Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters, CancellationToken cancellationToken = default)
         {
             var url = PagesApiUrls.Update(pageId);
             var body = (IPagesUpdateBodyParameters)pagesUpdateParameters;
 
-            return await _client.PatchAsync<Page>(url, body);
+            return await _client.PatchAsync<Page>(url, body, cancellationToken: cancellationToken);
         }
 
         [Obsolete("This method is obsolete. Use UpdateAsync instead. This API will be removed in future release")]
         public async Task<Page> UpdatePropertiesAsync(
             string pageId,
-            IDictionary<string, PropertyValue> updatedProperties)
+            IDictionary<string, PropertyValue> updatedProperties, CancellationToken cancellationToken = default)
         {
             var url = PagesApiUrls.UpdateProperties(pageId);
 
             var body = new UpdatePropertiesParameters { Properties = updatedProperties };
 
-            return await _client.PatchAsync<Page>(url, body);
+            return await _client.PatchAsync<Page>(url, body, cancellationToken: cancellationToken);
         }
 
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
