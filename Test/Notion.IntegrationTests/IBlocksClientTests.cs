@@ -211,7 +211,7 @@ public class IBlocksClientTests : IntegrationTestBase
                 new Action<IBlock, INotionClient>((block, client) =>
                 {
                     block.Should().NotBeNull();
-            
+
                     block.Should().BeOfType<AudioBlock>().Subject
                         .Audio.Should().BeOfType<ExternalFile>().Subject
                         .External.Url.Should().Be("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
@@ -252,7 +252,7 @@ public class IBlocksClientTests : IntegrationTestBase
                 {
                     Assert.NotNull(block);
                     var calloutBlock = Assert.IsType<CalloutBlock>(block);
-            
+
                     Assert.Equal("Test 2", calloutBlock.Callout.RichText.OfType<RichTextText>().First().Text.Content);
                 })
             },
@@ -282,7 +282,7 @@ public class IBlocksClientTests : IntegrationTestBase
                 {
                     Assert.NotNull(block);
                     var quoteBlock = Assert.IsType<QuoteBlock>(block);
-            
+
                     Assert.Equal("Test 2", quoteBlock.Quote.RichText.OfType<RichTextText>().First().Text.Content);
                 })
             },
@@ -314,7 +314,7 @@ public class IBlocksClientTests : IntegrationTestBase
                     Assert.NotNull(block);
                     var imageBlock = Assert.IsType<ImageBlock>(block);
                     var imageFile = Assert.IsType<ExternalFile>(imageBlock.Image);
-            
+
                     Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
                         imageFile.External.Url);
                 })
@@ -339,7 +339,7 @@ public class IBlocksClientTests : IntegrationTestBase
                 {
                     Assert.NotNull(block);
                     var embedBlock = Assert.IsType<EmbedBlock>(block);
-            
+
                     Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
                         embedBlock.Embed.Url);
                 })
@@ -381,10 +381,10 @@ public class IBlocksClientTests : IntegrationTestBase
                 {
                     Assert.NotNull(block);
                     var templateBlock = Assert.IsType<TemplateBlock>(block);
-            
+
                     Assert.Single(templateBlock.Template.RichText);
                     Assert.Null(templateBlock.Template.Children);
-            
+
                     Assert.Equal("Test Template 2",
                         templateBlock.Template.RichText.OfType<RichTextText>().First().Text.Content);
                 })
@@ -407,7 +407,7 @@ public class IBlocksClientTests : IntegrationTestBase
                 {
                     Assert.NotNull(block);
                     var linkToPageBlock = Assert.IsType<LinkToPageBlock>(block);
-            
+
                     var pageParent = Assert.IsType<PageParent>(linkToPageBlock.LinkToPage);
             
                     // TODO: Currently the api doesn't allow to update the link_to_page block type

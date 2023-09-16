@@ -70,6 +70,6 @@ namespace Notion.Client
         Status,
 
         [EnumMember(Value = "unique_id")]
-        UniqueId,        
+        UniqueId,
     }
 }
