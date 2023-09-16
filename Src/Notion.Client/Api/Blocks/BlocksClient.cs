@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
@@ -16,7 +17,7 @@ namespace Notion.Client
 
         public async Task<PaginatedList<IBlock>> RetrieveChildrenAsync(
             string blockId,
-            BlocksRetrieveChildrenParameters parameters = null)
+            BlocksRetrieveChildrenParameters parameters = null, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -33,12 +34,12 @@ namespace Notion.Client
                 { "page_size", queryParameters?.PageSize?.ToString() }
             };
 
-            return await _client.GetAsync<PaginatedList<IBlock>>(url, queryParams);
+            return await _client.GetAsync<PaginatedList<IBlock>>(url, queryParams, cancellationToken: cancellationToken);
         }
 
         public async Task<PaginatedList<IBlock>> AppendChildrenAsync(
             string blockId,
-            BlocksAppendChildrenParameters parameters = null)
+            BlocksAppendChildrenParameters parameters = null, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -49,10 +50,10 @@ namespace Notion.Client
 
             var body = (IBlocksAppendChildrenBodyParameters)parameters;
 
-            return await _client.PatchAsync<PaginatedList<IBlock>>(url, body);
+            return await _client.PatchAsync<PaginatedList<IBlock>>(url, body, cancellationToken: cancellationToken);
         }
 
-        public async Task<IBlock> RetrieveAsync(string blockId)
+        public async Task<IBlock> RetrieveAsync(string blockId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -61,10 +62,10 @@ namespace Notion.Client
 
             var url = BlocksApiUrls.Retrieve(blockId);
 
-            return await _client.GetAsync<IBlock>(url);
+            return await _client.GetAsync<IBlock>(url, cancellationToken: cancellationToken);
         }
 
-        public async Task<IBlock> UpdateAsync(string blockId, IUpdateBlock updateBlock)
+        public async Task<IBlock> UpdateAsync(string blockId, IUpdateBlock updateBlock, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -73,10 +74,10 @@ namespace Notion.Client
 
             var url = BlocksApiUrls.Update(blockId);
 
-            return await _client.PatchAsync<IBlock>(url, updateBlock);
+            return await _client.PatchAsync<IBlock>(url, updateBlock, cancellationToken: cancellationToken);
         }
 
-        public async Task DeleteAsync(string blockId)
+        public async Task DeleteAsync(string blockId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(blockId))
             {
@@ -85,7 +86,7 @@ namespace Notion.Client
 
             var url = BlocksApiUrls.Delete(blockId);
 
-            await _client.DeleteAsync(url);
+            await _client.DeleteAsync(url, cancellationToken: cancellationToken);
         }
     }
 }

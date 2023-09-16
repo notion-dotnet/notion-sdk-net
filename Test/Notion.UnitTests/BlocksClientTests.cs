@@ -38,7 +38,7 @@ public class BlocksClientTests : ApiTestBase
 
         // Assert
         var children = childrenResult.Results;
-        children.Should().HaveCount(8);
+        children.Should().HaveCount(9);
     }
 
     [Fact]

@@ -29,6 +29,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(StatusPropertyValue), PropertyValueType.Status)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(TitlePropertyValue), PropertyValueType.Title)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UrlPropertyValue), PropertyValueType.Url)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(UniqueIdPropertyValue), PropertyValueType.UniqueId)]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty")]
     public class PropertyValue
