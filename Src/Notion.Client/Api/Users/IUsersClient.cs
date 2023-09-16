@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Notion.Client.List.Request;
 
 namespace Notion.Client
 {
@@ -22,6 +23,11 @@ namespace Notion.Client
         ///     <see cref="PaginatedList{User}" />
         /// </returns>
         Task<PaginatedList<User>> ListAsync(CancellationToken cancellationToken = default);
+
+        Task<PaginatedList<User>> ListAsync(
+            ListUsersParameters listUsersParameters,
+            CancellationToken cancellationToken = default
+        );
 
         /// <summary>
         ///     Retrieves the bot User associated with the API token provided in the authorization header.

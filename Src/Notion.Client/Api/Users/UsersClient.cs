@@ -4,7 +4,7 @@ using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public class UsersClient : IUsersClient
+    public partial class UsersClient : IUsersClient
     {
         private readonly IRestClient _client;
 
