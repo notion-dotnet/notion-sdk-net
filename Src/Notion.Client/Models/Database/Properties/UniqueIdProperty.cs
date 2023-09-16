@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Notion.Client
-{   
+{
     public class UniqueIdProperty : Property
     {
         public override PropertyType Type => PropertyType.UniqueId;
