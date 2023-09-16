@@ -112,6 +112,17 @@ namespace Notion.Client
                 try
                 {
                     errorResponse = JsonConvert.DeserializeObject<NotionApiErrorResponse>(errorBody);
+
+                    if (errorResponse.ErrorCode == NotionAPIErrorCode.RateLimited)
+                    {
+                        var retryAfter = response.Headers.RetryAfter.Delta;
+                        return new NotionApiRateLimitException(
+                            response.StatusCode,
+                            errorResponse.ErrorCode,
+                            errorResponse.Message,
+                            retryAfter
+                        );
+                    }
                 }
                 catch (Exception ex)
                 {

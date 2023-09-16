@@ -5,7 +5,7 @@ using System.Net;
 namespace Notion.Client
 {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public sealed class NotionApiException : Exception
+    public class NotionApiException : Exception
     {
         public NotionApiException(HttpStatusCode statusCode, NotionAPIErrorCode? notionAPIErrorCode, string message)
             : this(statusCode, notionAPIErrorCode, message, null)
@@ -21,6 +21,11 @@ namespace Notion.Client
             NotionAPIErrorCode = notionAPIErrorCode;
             StatusCode = statusCode;
 
+            InitializeData();
+        }
+
+        private void InitializeData()
+        {
             Data.Add("StatusCode", StatusCode);
             Data.Add("NotionApiErrorCode", NotionAPIErrorCode);
         }
