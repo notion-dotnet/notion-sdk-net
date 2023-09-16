@@ -74,5 +74,8 @@ namespace Notion.Client
 
         [EnumMember(Value = "unique_id")]
         UniqueId,
+
+        [EnumMember(Value = "verification")]
+        Verification,
     }
 }
