@@ -52,5 +52,11 @@ namespace Notion.Client
         public PartialUser CreatedBy { get; set; }
 
         public PartialUser LastEditedBy { get; set; }
+
+        /// <summary>
+        ///     The public page URL if the page has been published to the web. Otherwise, null.
+        /// </summary>
+        [JsonProperty("public_url")]
+        public string PublicUrl { get; set; }
     }
 }
