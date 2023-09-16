@@ -5,5 +5,7 @@ namespace Notion.Client
     public class BlocksAppendChildrenParameters : IBlocksAppendChildrenBodyParameters
     {
         public IEnumerable<IBlock> Children { get; set; }
+
+        public string After { get; set; }
     }
 }
