@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
@@ -12,13 +13,13 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<PaginatedList<IObject>> SearchAsync(SearchParameters parameters)
+        public async Task<PaginatedList<IObject>> SearchAsync(SearchParameters parameters, CancellationToken cancellationToken = default)
         {
             var url = SearchApiUrls.Search();
 
             var body = (ISearchBodyParameters)parameters;
 
-            return await _client.PostAsync<PaginatedList<IObject>>(url, body);
+            return await _client.PostAsync<PaginatedList<IObject>>(url, body, cancellationToken: cancellationToken);
         }
     }
 }

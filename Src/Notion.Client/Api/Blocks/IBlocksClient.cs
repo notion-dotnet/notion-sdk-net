@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Notion.Client
 {
@@ -9,7 +10,7 @@ namespace Notion.Client
         /// </summary>
         /// <param name="blockId"></param>
         /// <returns>Block</returns>
-        Task<IBlock> RetrieveAsync(string blockId);
+        Task<IBlock> RetrieveAsync(string blockId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates the content for the specified block_id based on the block type.
@@ -17,11 +18,11 @@ namespace Notion.Client
         /// <param name="blockId"></param>
         /// <param name="updateBlock"></param>
         /// <returns>Block</returns>
-        Task<IBlock> UpdateAsync(string blockId, IUpdateBlock updateBlock);
+        Task<IBlock> UpdateAsync(string blockId, IUpdateBlock updateBlock, CancellationToken cancellationToken = default);
 
         Task<PaginatedList<IBlock>> RetrieveChildrenAsync(
             string blockId,
-            BlocksRetrieveChildrenParameters parameters = null);
+            BlocksRetrieveChildrenParameters parameters = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Creates and appends new children blocks to the parent block_id specified.
@@ -31,12 +32,12 @@ namespace Notion.Client
         /// <returns>A paginated list of newly created first level children block objects.</returns>
         Task<PaginatedList<IBlock>> AppendChildrenAsync(
             string blockId,
-            BlocksAppendChildrenParameters parameters = null);
+            BlocksAppendChildrenParameters parameters = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Sets a Block object, including page blocks, to archived: true using the ID specified.
         /// </summary>
         /// <param name="blockId">Identifier for a Notion block</param>
-        Task DeleteAsync(string blockId);
+        Task DeleteAsync(string blockId, CancellationToken cancellationToken = default);
     }
 }
