@@ -29,6 +29,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ParagraphBlock), BlockType.Paragraph)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(PDFBlock), BlockType.PDF)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(QuoteBlock), BlockType.Quote)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(SyncedBlockBlock), BlockType.SyncedBlock)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(TableBlock), BlockType.Table)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(TableRowBlock), BlockType.TableRow)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(TableOfContentsBlock), BlockType.TableOfContents)]
