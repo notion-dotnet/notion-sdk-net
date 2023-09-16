@@ -45,7 +45,7 @@ namespace Notion.Client.http
             return AddQueryString(uri, (IEnumerable<KeyValuePair<string, string>>)queryParams);
         }
 
-        private static string AddQueryString(
+        public static string AddQueryString(
             string uri,
             IEnumerable<KeyValuePair<string, string>> queryParams)
         {

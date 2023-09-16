@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
@@ -23,8 +25,17 @@ namespace Notion.Client
             DatabasesQueryParameters databasesQueryParameters, CancellationToken cancellationToken = default)
         {
             var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
+            var queryParameters = (IDatabaseQueryQueryParameters)databasesQueryParameters;
 
-            return await _client.PostAsync<PaginatedList<Page>>(DatabasesApiUrls.Query(databaseId), body, cancellationToken: cancellationToken);
+            var queryParams = queryParameters.FilterProperties?
+                .Select(x => new KeyValuePair<string, string>("filter_properties", x));
+
+            return await _client.PostAsync<PaginatedList<Page>>(
+                DatabasesApiUrls.Query(databaseId),
+                body,
+                queryParams,
+                cancellationToken: cancellationToken
+            );
         }
 
         public async Task<Database> CreateAsync(DatabasesCreateParameters databasesCreateParameters, CancellationToken cancellationToken = default)
