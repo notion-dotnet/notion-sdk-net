@@ -21,6 +21,11 @@ namespace Notion.Client
             NotionAPIErrorCode = notionAPIErrorCode;
             StatusCode = statusCode;
 
+            InitializeData();
+        }
+
+        private void InitializeData()
+        {
             Data.Add("StatusCode", StatusCode);
             Data.Add("NotionApiErrorCode", NotionAPIErrorCode);
         }
@@ -28,20 +33,5 @@ namespace Notion.Client
         public NotionAPIErrorCode? NotionAPIErrorCode { get; }
 
         public HttpStatusCode StatusCode { get; }
-    }
-
-    public sealed class NotionApiRateLimitException : NotionApiException
-    {
-        public TimeSpan? RetryAfter { get; }
-
-        public NotionApiRateLimitException(
-            HttpStatusCode statusCode,
-            NotionAPIErrorCode? notionAPIErrorCode,
-            string message,
-            TimeSpan? retryAfter)
-            : base(statusCode, notionAPIErrorCode, message)
-        {
-            RetryAfter = retryAfter;
-        }
     }
 }
