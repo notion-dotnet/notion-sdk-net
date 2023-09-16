@@ -5,7 +5,7 @@ using System.Net;
 namespace Notion.Client
 {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public sealed class NotionApiException : Exception
+    public class NotionApiException : Exception
     {
         public NotionApiException(HttpStatusCode statusCode, NotionAPIErrorCode? notionAPIErrorCode, string message)
             : this(statusCode, notionAPIErrorCode, message, null)
@@ -28,5 +28,20 @@ namespace Notion.Client
         public NotionAPIErrorCode? NotionAPIErrorCode { get; }
 
         public HttpStatusCode StatusCode { get; }
+    }
+
+    public sealed class NotionApiRateLimitException : NotionApiException
+    {
+        public TimeSpan? RetryAfter { get; }
+
+        public NotionApiRateLimitException(
+            HttpStatusCode statusCode,
+            NotionAPIErrorCode? notionAPIErrorCode,
+            string message,
+            TimeSpan? retryAfter)
+            : base(statusCode, notionAPIErrorCode, message)
+        {
+            RetryAfter = retryAfter;
+        }
     }
 }
