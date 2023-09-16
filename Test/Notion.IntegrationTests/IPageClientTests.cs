@@ -330,11 +330,11 @@ public class IPageClientTests : IntegrationTestBase
         };
 
         var updatedPage = await Client.Pages.UpdateAsync(page.Id, updatePageRequest);
-        
+
         // Assert
         page.Properties["Colors1"].As<SelectPropertyValue>().Select.Name.Should().Be("Red");
         page.Properties["Colors2"].As<SelectPropertyValue>().Select.Name.Should().Be("Green");
-        
+
         updatedPage.Properties["Colors1"].As<SelectPropertyValue>().Select.Name.Should().Be("Blue");
         updatedPage.Properties["Colors2"].As<SelectPropertyValue>().Select.Should().BeNull();
 
