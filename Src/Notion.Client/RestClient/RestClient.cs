@@ -45,7 +45,7 @@ namespace Notion.Client
         public async Task<T> PostAsync<T>(
             string uri,
             object body,
-            IDictionary<string, string> queryParams = null,
+            IEnumerable<KeyValuePair<string, string>> queryParams = null,
             IDictionary<string, string> headers = null,
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default)
@@ -125,7 +125,7 @@ namespace Notion.Client
         private async Task<HttpResponseMessage> SendAsync(
             string requestUri,
             HttpMethod httpMethod,
-            IDictionary<string, string> queryParams = null,
+            IEnumerable<KeyValuePair<string, string>> queryParams = null,
             IDictionary<string, string> headers = null,
             Action<HttpRequestMessage> attachContent = null,
             CancellationToken cancellationToken = default)
@@ -176,7 +176,7 @@ namespace Notion.Client
             _httpClient.BaseAddress = new Uri(_options.BaseUrl);
         }
 
-        private static string AddQueryString(string uri, IDictionary<string, string> queryParams)
+        private static string AddQueryString(string uri, IEnumerable<KeyValuePair<string, string>> queryParams)
         {
             return queryParams == null ? uri : QueryHelpers.AddQueryString(uri, queryParams);
         }
