@@ -8,6 +8,5 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(Database), ObjectType.Database)]
     public interface IWikiDatabase : IObject
     {
-
     }
 }

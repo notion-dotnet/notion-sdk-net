@@ -31,7 +31,6 @@ public class DatabasesClientTests : IntegrationTestBase, IDisposable
         // Arrange
         var createdDatabase = await CreateDatabaseWithAPageAsync();
 
-
         // Act
         var response = await Client.Databases.QueryAsync(createdDatabase.Id, new DatabasesQueryParameters());
 
