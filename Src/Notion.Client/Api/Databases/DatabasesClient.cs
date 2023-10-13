@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public class DatabasesClient : IDatabasesClient
+    public sealed partial class DatabasesClient : IDatabasesClient
     {
         private readonly IRestClient _client;
 
@@ -18,24 +16,6 @@ namespace Notion.Client
         public async Task<Database> RetrieveAsync(string databaseId, CancellationToken cancellationToken = default)
         {
             return await _client.GetAsync<Database>(DatabasesApiUrls.Retrieve(databaseId), cancellationToken: cancellationToken);
-        }
-
-        public async Task<PaginatedList<Page>> QueryAsync(
-            string databaseId,
-            DatabasesQueryParameters databasesQueryParameters, CancellationToken cancellationToken = default)
-        {
-            var body = (IDatabaseQueryBodyParameters)databasesQueryParameters;
-            var queryParameters = (IDatabaseQueryQueryParameters)databasesQueryParameters;
-
-            var queryParams = queryParameters.FilterProperties?
-                .Select(x => new KeyValuePair<string, string>("filter_properties", x));
-
-            return await _client.PostAsync<PaginatedList<Page>>(
-                DatabasesApiUrls.Query(databaseId),
-                body,
-                queryParams,
-                cancellationToken: cancellationToken
-            );
         }
 
         public async Task<Database> CreateAsync(DatabasesCreateParameters databasesCreateParameters, CancellationToken cancellationToken = default)
