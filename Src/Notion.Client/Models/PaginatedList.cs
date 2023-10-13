@@ -25,5 +25,8 @@ namespace Notion.Client
 
         [JsonProperty("next_cursor")]
         public string NextCursor { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
     }
 }
