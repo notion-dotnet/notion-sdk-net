@@ -131,5 +131,10 @@
                 return "/v1/comments";
             }
         }
+
+        public static class AuthenticationUrls
+        {
+            public static string CreateToken() => "/v1/oauth/token";
+        }
     }
 }
