@@ -24,7 +24,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="PaginatedList{T}" />
         /// </returns>
-        Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters, CancellationToken cancellationToken = default);
+        Task<DatabaseQueryResponse> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Creates a database as a subpage in the specified parent page, with the specified properties schema.
