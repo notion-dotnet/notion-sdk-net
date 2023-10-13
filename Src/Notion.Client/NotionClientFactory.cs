@@ -12,8 +12,9 @@
                 , new DatabasesClient(restClient)
                 , new PagesClient(restClient)
                 , new SearchClient(restClient)
-                , blocks: new BlocksClient(restClient)
-                , comments: new CommentsClient(restClient)
+                , new CommentsClient(restClient)
+                , new BlocksClient(restClient)
+                , new AuthenticationClient(restClient)
             );
         }
     }
