@@ -68,7 +68,10 @@ public class IBlocksClientTests : IntegrationTestBase
         var blockId = blocks.Results.First().Id;
         await Client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
 
-        blocks = await Client.Blocks.RetrieveChildrenAsync(page.Id);
+        blocks = await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
+        {
+            BlockId = page.Id
+        });
         blocks.Results.Should().HaveCount(1);
 
         // cleanup
@@ -121,7 +124,10 @@ public class IBlocksClientTests : IntegrationTestBase
         var blockId = blocks.Results.First().Id;
         await Client.Blocks.UpdateAsync(blockId, updateBlock);
 
-        blocks = await Client.Blocks.RetrieveChildrenAsync(page.Id);
+        blocks = await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
+        {
+            BlockId = page.Id
+        });
         blocks.Results.Should().HaveCount(1);
 
         var updatedBlock = blocks.Results.First();
@@ -443,7 +449,9 @@ public class IBlocksClientTests : IntegrationTestBase
                     var tableBlock = block.Should().NotBeNull().And.BeOfType<TableBlock>().Subject;
                     tableBlock.HasChildren.Should().BeTrue();
 
-                    var children = client.Blocks.RetrieveChildrenAsync(tableBlock.Id).GetAwaiter().GetResult();
+                    var children = client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest{
+                        BlockId = tableBlock.Id
+                    }).GetAwaiter().GetResult();
 
                     children.Results.Should().ContainSingle()
                         .Subject.Should().BeOfType<TableRowBlock>()

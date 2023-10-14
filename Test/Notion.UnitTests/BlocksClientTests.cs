@@ -34,7 +34,10 @@ public class BlocksClientTests : ApiTestBase
             );
 
         // Act
-        var childrenResult = await _client.RetrieveChildrenAsync(blockId, new BlocksRetrieveChildrenParameters());
+        var childrenResult = await _client.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
+        {
+            BlockId = blockId
+        });
 
         // Assert
         var children = childrenResult.Results;
