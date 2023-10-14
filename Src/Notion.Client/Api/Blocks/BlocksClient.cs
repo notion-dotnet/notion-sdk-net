@@ -15,22 +15,6 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<PaginatedList<IBlock>> AppendChildrenAsync(
-            string blockId,
-            BlocksAppendChildrenParameters parameters = null, CancellationToken cancellationToken = default)
-        {
-            if (string.IsNullOrWhiteSpace(blockId))
-            {
-                throw new ArgumentNullException(nameof(blockId));
-            }
-
-            var url = BlocksApiUrls.AppendChildren(blockId);
-
-            var body = (IBlocksAppendChildrenBodyParameters)parameters;
-
-            return await _client.PatchAsync<PaginatedList<IBlock>>(url, body, cancellationToken: cancellationToken);
-        }
-
         public async Task<IBlock> RetrieveAsync(string blockId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(blockId))

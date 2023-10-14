@@ -38,12 +38,13 @@ namespace Notion.Client
         /// <summary>
         ///     Creates and appends new children blocks to the parent block_id specified.
         /// </summary>
-        /// <param name="blockId">Identifier for a block</param>
-        /// <param name="parameters"></param>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns>A paginated list of newly created first level children block objects.</returns>
-        Task<PaginatedList<IBlock>> AppendChildrenAsync(
-            string blockId,
-            BlocksAppendChildrenParameters parameters = null, CancellationToken cancellationToken = default);
+        Task<AppendChildrenResponse> AppendChildrenAsync(
+            BlockAppendChildrenRequest request,
+            CancellationToken cancellationToken = default
+        );
 
         /// <summary>
         ///     Sets a Block object, including page blocks, to archived: true using the ID specified.
