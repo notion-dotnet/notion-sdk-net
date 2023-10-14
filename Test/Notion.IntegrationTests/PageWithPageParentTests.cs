@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -8,11 +7,11 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class PageWithPageParentTests : IntegrationTestBase, IAsyncDisposable
+public class PageWithPageParentTests : IntegrationTestBase, IAsyncLifetime
 {
-    private readonly Page _page;
+    private Page _page = null!;
 
-    public PageWithPageParentTests()
+    public async Task InitializeAsync()
     {
         var pagesCreateParameters = PagesCreateParametersBuilder
             .Create(new ParentPageInput() { PageId = ParentPageId })
@@ -25,7 +24,12 @@ public class PageWithPageParentTests : IntegrationTestBase, IAsyncDisposable
                     }
                 }).Build();
 
-        _page = Client.Pages.CreateAsync(pagesCreateParameters).GetAwaiter().GetResult();
+        _page = await Client.Pages.CreateAsync(pagesCreateParameters);
+    }
+
+    public async Task DisposeAsync()
+    {
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
@@ -62,10 +66,5 @@ public class PageWithPageParentTests : IntegrationTestBase, IAsyncDisposable
         );
 
         titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText.Should().Be("Page Title Updated");
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
     }
 }
