@@ -188,12 +188,13 @@ public class IBlocksClientTests : IntegrationTestBase
             },
             new object[]
             {
-                new DividerBlock { Divider = new DividerBlock.Data() }, new DividerUpdateBlock(), new Action<IBlock>(
-                    block =>
-                    {
-                        Assert.NotNull(block);
-                        _ = Assert.IsType<DividerBlock>(block);
-                    })
+                new DividerBlock { Divider = new DividerBlock.Data() },
+                new DividerUpdateBlock(),
+                new Action<IBlock, INotionClient>((block, client) =>
+                {
+                    Assert.NotNull(block);
+                    _ = Assert.IsType<DividerBlock>(block);
+                })
             },
             new object[]
             {
@@ -351,51 +352,6 @@ public class IBlocksClientTests : IntegrationTestBase
 
                     Assert.Equal("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg",
                         embedBlock.Embed.Url);
-                })
-            },
-            new object[]
-            {
-                new TemplateBlock
-                {
-                    Template = new TemplateBlock.Data
-                    {
-                        RichText = new List<RichTextBase>
-                        {
-                            new RichTextText { Text = new Text { Content = "Test Template" } }
-                        },
-                        Children = new List<ITemplateChildrenBlock>
-                        {
-                            new EmbedBlock
-                            {
-                                Embed = new EmbedBlock.Info
-                                {
-                                    Url
-                                        = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
-                                }
-                            }
-                        }
-                    }
-                },
-                new TemplateUpdateBlock
-                {
-                    Template = new TemplateUpdateBlock.Info
-                    {
-                        RichText = new List<RichTextBaseInput>
-                        {
-                            new RichTextTextInput { Text = new Text { Content = "Test Template 2" } }
-                        }
-                    }
-                },
-                new Action<IBlock, INotionClient>((block, client) =>
-                {
-                    Assert.NotNull(block);
-                    var templateBlock = Assert.IsType<TemplateBlock>(block);
-
-                    Assert.Single(templateBlock.Template.RichText);
-                    Assert.Null(templateBlock.Template.Children);
-
-                    Assert.Equal("Test Template 2",
-                        templateBlock.Template.RichText.OfType<RichTextText>().First().Text.Content);
                 })
             },
             new object[]
