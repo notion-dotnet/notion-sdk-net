@@ -34,7 +34,10 @@ public class BlocksClientTests : ApiTestBase
             );
 
         // Act
-        var childrenResult = await _client.RetrieveChildrenAsync(blockId, new BlocksRetrieveChildrenParameters());
+        var childrenResult = await _client.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
+        {
+            BlockId = blockId
+        });
 
         // Assert
         var children = childrenResult.Results;
@@ -57,8 +60,9 @@ public class BlocksClientTests : ApiTestBase
                     .WithBody(jsonData)
             );
 
-        var parameters = new BlocksAppendChildrenParameters
+        var request = new BlockAppendChildrenRequest
         {
+            BlockId = blockId,
             Children = new List<IBlock>
             {
                 new HeadingTwoBlock
@@ -97,7 +101,7 @@ public class BlocksClientTests : ApiTestBase
         };
 
         // Act
-        var blocksResult = await _client.AppendChildrenAsync(blockId, parameters);
+        var blocksResult = await _client.AppendChildrenAsync(request);
 
         // Assert
         var blocks = blocksResult.Results;

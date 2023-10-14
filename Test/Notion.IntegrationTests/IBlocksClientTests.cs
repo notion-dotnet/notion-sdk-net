@@ -20,9 +20,9 @@ public class IBlocksClientTests : IntegrationTestBase
         );
 
         var blocks = await Client.Blocks.AppendChildrenAsync(
-            page.Id,
-            new BlocksAppendChildrenParameters
+            new BlockAppendChildrenRequest
             {
+                BlockId = page.Id,
                 Children = new List<IBlock>
                 {
                     new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() },
@@ -58,9 +58,9 @@ public class IBlocksClientTests : IntegrationTestBase
         );
 
         var blocks = await Client.Blocks.AppendChildrenAsync(
-            page.Id,
-            new BlocksAppendChildrenParameters
+            new BlockAppendChildrenRequest
             {
+                BlockId = page.Id,
                 Children = new List<IBlock> { new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() } }
             }
         );
@@ -68,8 +68,11 @@ public class IBlocksClientTests : IntegrationTestBase
         var blockId = blocks.Results.First().Id;
         await Client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
 
-        blocks = await Client.Blocks.RetrieveChildrenAsync(page.Id);
-        blocks.Results.Should().HaveCount(1);
+        var updatedBlocks = await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
+        {
+            BlockId = page.Id
+        });
+        updatedBlocks.Results.Should().HaveCount(1);
 
         // cleanup
         await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
@@ -85,9 +88,9 @@ public class IBlocksClientTests : IntegrationTestBase
         );
 
         var blocks = await Client.Blocks.AppendChildrenAsync(
-            page.Id,
-            new BlocksAppendChildrenParameters
+            new BlockAppendChildrenRequest
             {
+                BlockId = page.Id,
                 Children = new List<IBlock>
                 {
                     new DividerBlock { Divider = new DividerBlock.Data() },
@@ -114,17 +117,23 @@ public class IBlocksClientTests : IntegrationTestBase
         );
 
         var blocks = await Client.Blocks.AppendChildrenAsync(
-            page.Id,
-            new BlocksAppendChildrenParameters { Children = new List<IBlock> { block } }
+            new BlockAppendChildrenRequest
+            {
+                BlockId = page.Id,
+                Children = new List<IBlock> { block }
+            }
         );
 
         var blockId = blocks.Results.First().Id;
         await Client.Blocks.UpdateAsync(blockId, updateBlock);
 
-        blocks = await Client.Blocks.RetrieveChildrenAsync(page.Id);
-        blocks.Results.Should().HaveCount(1);
+        var updatedBlocks = await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
+        {
+            BlockId = page.Id
+        });
+        updatedBlocks.Results.Should().HaveCount(1);
 
-        var updatedBlock = blocks.Results.First();
+        var updatedBlock = updatedBlocks.Results.First();
 
         assert.Invoke(updatedBlock, Client);
 
@@ -443,7 +452,9 @@ public class IBlocksClientTests : IntegrationTestBase
                     var tableBlock = block.Should().NotBeNull().And.BeOfType<TableBlock>().Subject;
                     tableBlock.HasChildren.Should().BeTrue();
 
-                    var children = client.Blocks.RetrieveChildrenAsync(tableBlock.Id).GetAwaiter().GetResult();
+                    var children = client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest{
+                        BlockId = tableBlock.Id
+                    }).GetAwaiter().GetResult();
 
                     children.Results.Should().ContainSingle()
                         .Subject.Should().BeOfType<TableRowBlock>()
