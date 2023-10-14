@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class PageClientTests : IntegrationTestBase, IDisposable
+public class PageClientTests : IntegrationTestBase, IAsyncDisposable
 {
     private readonly Page _page;
     private readonly Database _database;
@@ -20,7 +20,7 @@ public class PageClientTests : IntegrationTestBase, IDisposable
             PagesCreateParametersBuilder.Create(
                 new ParentPageInput { PageId = ParentPageId }
             ).Build()
-        ).Result;
+        ).GetAwaiter().GetResult();
 
         // Create a database
         var createDbRequest = new DatabasesCreateParameters
@@ -61,9 +61,9 @@ public class PageClientTests : IntegrationTestBase, IDisposable
         _database = Client.Databases.CreateAsync(createDbRequest).GetAwaiter().GetResult();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true }).GetAwaiter().GetResult();
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
