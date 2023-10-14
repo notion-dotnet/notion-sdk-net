@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Notion.Client;
 using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class DatabasesClientTests : IntegrationTestBase, IDisposable
+public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
 {
-    private readonly Page _page;
+    private Page _page = null!;
 
-    public DatabasesClientTests()
+    public async Task InitializeAsync()
     {
-        _page = Client.Pages.CreateAsync(
+        _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
                 new ParentPageInput { PageId = ParentPageId }
             ).Build()
-        ).Result;
+        );
     }
 
-    public void Dispose()
+    public async Task DisposeAsync()
     {
-        Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true }).Wait();
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
@@ -35,11 +35,12 @@ public class DatabasesClientTests : IntegrationTestBase, IDisposable
         var response = await Client.Databases.QueryAsync(createdDatabase.Id, new DatabasesQueryParameters());
 
         // Assert
-        Assert.NotNull(response.Results);
-        Assert.Single(response.Results);
-        var page = response.Results.Cast<Page>().First();
-        var title = page.Properties["Name"] as TitlePropertyValue;
-        Assert.Equal("Test Title", (title!.Title.Cast<RichTextText>().First()).Text.Content);
+        response.Results.Should().NotBeNull();
+        var page = response.Results.Should().ContainSingle().Subject.As<Page>();
+
+        page.Properties["Name"].As<TitlePropertyValue>()
+            .Title.Cast<RichTextText>().First()
+            .Text.Content.Should().Be("Test Title");
     }
 
     private async Task<Database> CreateDatabaseWithAPageAsync()
