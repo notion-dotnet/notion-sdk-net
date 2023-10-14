@@ -147,7 +147,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         }
                     }
                 },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     var updatedBlock = (BookmarkBlock)block;
                     Assert.Equal("https://github.com/notion-dotnet/notion-sdk-net", updatedBlock.Bookmark.Url);
@@ -158,7 +158,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             {
                 new EquationBlock { Equation = new EquationBlock.Info { Expression = "e=mc^3" } },
                 new EquationUpdateBlock { Equation = new EquationUpdateBlock.Info { Expression = "e=mc^2" } },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     var updatedBlock = (EquationBlock)block;
                     Assert.Equal("e=mc^2", updatedBlock.Equation.Expression);
@@ -195,7 +195,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         }
                     }
                 },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     block.Should().NotBeNull();
 
@@ -235,7 +235,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         }
                     }
                 },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     Assert.NotNull(block);
                     var calloutBlock = Assert.IsType<CalloutBlock>(block);
@@ -265,7 +265,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         }
                     }
                 },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     Assert.NotNull(block);
                     var quoteBlock = Assert.IsType<QuoteBlock>(block);
@@ -296,7 +296,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         }
                     }
                 },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     Assert.NotNull(block);
                     var imageBlock = Assert.IsType<ImageBlock>(block);
@@ -322,7 +322,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
                     }
                 },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     Assert.NotNull(block);
                     var embedBlock = Assert.IsType<EmbedBlock>(block);
@@ -345,7 +345,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                 {
                     LinkToPage = new ParentPageInput { PageId = "3c357473a28149a488c010d2b245a589" }
                 },
-                new Action<IBlock, INotionClient>((block, client) =>
+                new Action<IBlock, INotionClient>((block, _) =>
                 {
                     Assert.NotNull(block);
                     var linkToPageBlock = Assert.IsType<LinkToPageBlock>(block);
