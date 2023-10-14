@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -8,20 +7,20 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class DatabasesClientTests : IntegrationTestBase, IAsyncDisposable
+public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
 {
-    private readonly Page _page;
+    private Page _page = null!;
 
-    public DatabasesClientTests()
+    public async Task InitializeAsync()
     {
-        _page = Client.Pages.CreateAsync(
+        _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
                 new ParentPageInput { PageId = ParentPageId }
             ).Build()
-        ).GetAwaiter().GetResult();
+        );
     }
 
-    public async ValueTask DisposeAsync()
+    public async Task DisposeAsync()
     {
         await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
     }
