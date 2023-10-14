@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -7,12 +8,12 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class PageWithPageParentTests : IntegrationTestBase
+public class PageWithPageParentTests : IntegrationTestBase, IAsyncDisposable
 {
-    [Fact]
-    public async Task Update_Title_Of_Page()
+    private readonly Page _page;
+
+    public PageWithPageParentTests()
     {
-        // Arrange
         var pagesCreateParameters = PagesCreateParametersBuilder
             .Create(new ParentPageInput() { PageId = ParentPageId })
             .AddProperty("title",
@@ -24,8 +25,13 @@ public class PageWithPageParentTests : IntegrationTestBase
                     }
                 }).Build();
 
-        var page = await Client.Pages.CreateAsync(pagesCreateParameters);
+        _page = Client.Pages.CreateAsync(pagesCreateParameters).GetAwaiter().GetResult();
+    }
 
+    [Fact]
+    public async Task Update_Title_Of_Page()
+    {
+        // Arrange
         var updatePage = new PagesUpdateParameters()
         {
             Properties = new Dictionary<string, PropertyValue>
@@ -44,7 +50,7 @@ public class PageWithPageParentTests : IntegrationTestBase
         };
 
         // Act
-        var updatedPage = await Client.Pages.UpdateAsync(page.Id, updatePage);
+        var updatedPage = await Client.Pages.UpdateAsync(_page.Id, updatePage);
 
         // Assert
         var titleProperty = (ListPropertyItem)await Client.Pages.RetrievePagePropertyItemAsync(
@@ -55,9 +61,11 @@ public class PageWithPageParentTests : IntegrationTestBase
             }
         );
 
-        Assert.Equal("Page Title Updated", titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText);
+        titleProperty.Results.First().As<TitlePropertyItem>().Title.PlainText.Should().Be("Page Title Updated");
+    }
 
-        // Clean Up
-        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+    public async ValueTask DisposeAsync()
+    {
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
     }
 }
