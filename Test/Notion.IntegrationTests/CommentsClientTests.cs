@@ -78,7 +78,7 @@ public class CommentsClientTests : IntegrationTestBase, IDisposable
         );
 
         // Arrange
-        Assert.Null(response.Parent);
+        Assert.NotNull(response.Parent);
         Assert.NotNull(response.Id);
         Assert.Equal(comment.DiscussionId, response.DiscussionId);
 
