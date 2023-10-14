@@ -17,7 +17,7 @@ namespace Notion.Client
 
             var url = ApiEndpoints.BlocksApiUrls.AppendChildren(request.BlockId);
 
-            var body = (IBlockAppendChildrenBodyParameters)request;
+            var body = new BlockAppendChildrenBodyParameters(request);
 
             return await _client.PatchAsync<AppendChildrenResponse>(url, body, cancellationToken: cancellationToken);
         }

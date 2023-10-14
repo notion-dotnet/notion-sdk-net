@@ -15,4 +15,17 @@ namespace Notion.Client
         [JsonProperty("after")]
         public string After { get; set; }
     }
+
+    internal class BlockAppendChildrenBodyParameters : IBlockAppendChildrenBodyParameters
+    {
+        public IEnumerable<IBlock> Children { get; set; }
+
+        public string After { get; set; }
+
+        public BlockAppendChildrenBodyParameters(BlockAppendChildrenRequest request)
+        {
+            Children = request.Children;
+            After = request.After;
+        }
+    }
 }
