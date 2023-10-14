@@ -18,11 +18,6 @@ namespace Notion.Client
             return await _client.GetAsync<User>(UsersApiUrls.Retrieve(userId), cancellationToken: cancellationToken);
         }
 
-        public async Task<PaginatedList<User>> ListAsync(CancellationToken cancellationToken = default)
-        {
-            return await _client.GetAsync<PaginatedList<User>>(UsersApiUrls.List(), cancellationToken: cancellationToken);
-        }
-
         /// <summary>
         ///     Retrieves the bot User associated with the API token provided in the authorization header.
         /// </summary>

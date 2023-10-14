@@ -19,13 +19,23 @@ namespace Notion.Client
         ///     Returns a paginated list of Users for the workspace.
         ///     The response may contain fewer than page_size of results.
         /// </summary>
+        /// <param name="cancellationToken"></param>
         /// <returns>
-        ///     <see cref="PaginatedList{User}" />
+        ///     <see cref="ListUsersResponse" />
         /// </returns>
-        Task<PaginatedList<User>> ListAsync(CancellationToken cancellationToken = default);
+        Task<ListUsersResponse> ListAsync(CancellationToken cancellationToken = default);
 
-        Task<PaginatedList<User>> ListAsync(
-            ListUsersParameters listUsersParameters,
+        /// <summary>
+        ///     Returns a paginated list of Users for the workspace.
+        ///     The response may contain fewer than page_size of results.
+        /// </summary>
+        /// <param name="listUsersRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>
+        ///      <see cref="ListUsersResponse" />
+        /// </returns>
+        Task<ListUsersResponse> ListAsync(
+            ListUsersRequest listUsersRequest,
             CancellationToken cancellationToken = default
         );
 
