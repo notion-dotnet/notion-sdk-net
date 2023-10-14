@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class CommentsClientTests : IntegrationTestBase, IDisposable
+public class CommentsClientTests : IntegrationTestBase, IAsyncDisposable
 {
     private readonly Page _page;
 
@@ -17,12 +17,12 @@ public class CommentsClientTests : IntegrationTestBase, IDisposable
             PagesCreateParametersBuilder.Create(
                 new ParentPageInput { PageId = ParentPageId }
             ).Build()
-        ).Result;
+        ).GetAwaiter().GetResult();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true }).Wait();
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
