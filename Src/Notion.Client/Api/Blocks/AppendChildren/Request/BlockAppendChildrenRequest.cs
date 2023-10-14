@@ -4,7 +4,7 @@ namespace Notion.Client
 {
     public class BlockAppendChildrenRequest : IBlockAppendChildrenBodyParameters, IBlockAppendChildrenPathParameters
     {
-        public IEnumerable<IBlock> Children { get; set; }
+        public IEnumerable<IBlockObjectRequest> Children { get; set; }
 
         public string After { get; set; }
 

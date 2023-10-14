@@ -63,11 +63,11 @@ public class BlocksClientTests : ApiTestBase
         var request = new BlockAppendChildrenRequest
         {
             BlockId = blockId,
-            Children = new List<IBlock>
+            Children = new List<IBlockObjectRequest>
             {
-                new HeadingTwoBlock
+                new HeadingTwoBlockRequest
                 {
-                    Heading_2 = new HeadingTwoBlock.Info
+                    Heading_2 = new HeadingTwoBlockRequest.Info
                     {
                         RichText = new List<RichTextBase>
                         {
@@ -75,9 +75,9 @@ public class BlocksClientTests : ApiTestBase
                         }
                     }
                 },
-                new ParagraphBlock
+                new ParagraphBlockRequest
                 {
-                    Paragraph = new ParagraphBlock.Info
+                    Paragraph = new ParagraphBlockRequest.Info
                     {
                         RichText = new List<RichTextBase>
                         {
