@@ -8,21 +8,31 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class IBlocksClientTests : IntegrationTestBase
+public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
 {
-    [Fact]
-    public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
+    private Page _page = null!;
+
+    public async Task InitializeAsync()
     {
-        var page = await Client.Pages.CreateAsync(
+        _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
                 new ParentPageInput { PageId = ParentPageId }
             ).Build()
         );
+    }
 
+    public async Task DisposeAsync()
+    {
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
+    }
+
+    [Fact]
+    public async Task AppendChildrenAsync_AppendsBlocksGivenBlocks()
+    {
         var blocks = await Client.Blocks.AppendChildrenAsync(
             new BlockAppendChildrenRequest
             {
-                BlockId = page.Id,
+                BlockId = _page.Id,
                 Children = new List<IBlock>
                 {
                     new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() },
@@ -43,24 +53,15 @@ public class IBlocksClientTests : IntegrationTestBase
         );
 
         blocks.Results.Should().HaveCount(4);
-
-        // cleanup
-        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Fact]
     public async Task UpdateBlockAsync_UpdatesGivenBlock()
     {
-        var page = await Client.Pages.CreateAsync(
-            PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = ParentPageId }
-            ).Build()
-        );
-
         var blocks = await Client.Blocks.AppendChildrenAsync(
             new BlockAppendChildrenRequest
             {
-                BlockId = page.Id,
+                BlockId = _page.Id,
                 Children = new List<IBlock> { new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() } }
             }
         );
@@ -68,29 +69,19 @@ public class IBlocksClientTests : IntegrationTestBase
         var blockId = blocks.Results.First().Id;
         await Client.Blocks.UpdateAsync(blockId, new BreadcrumbUpdateBlock());
 
-        var updatedBlocks = await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
-        {
-            BlockId = page.Id
-        });
-        updatedBlocks.Results.Should().HaveCount(1);
+        var updatedBlocks =
+            await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest { BlockId = _page.Id });
 
-        // cleanup
-        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+        updatedBlocks.Results.Should().HaveCount(1);
     }
 
     [Fact]
     public async Task DeleteAsync_DeleteBlockWithGivenId()
     {
-        var page = await Client.Pages.CreateAsync(
-            PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = ParentPageId }
-            ).Build()
-        );
-
         var blocks = await Client.Blocks.AppendChildrenAsync(
             new BlockAppendChildrenRequest
             {
-                BlockId = page.Id,
+                BlockId = _page.Id,
                 Children = new List<IBlock>
                 {
                     new DividerBlock { Divider = new DividerBlock.Data() },
@@ -100,9 +91,6 @@ public class IBlocksClientTests : IntegrationTestBase
         );
 
         blocks.Results.Should().HaveCount(2);
-
-        // cleanup
-        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     [Theory]
@@ -110,16 +98,10 @@ public class IBlocksClientTests : IntegrationTestBase
     public async Task UpdateAsync_UpdatesGivenBlock(
         IBlock block, IUpdateBlock updateBlock, Action<IBlock, INotionClient> assert)
     {
-        var page = await Client.Pages.CreateAsync(
-            PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = ParentPageId }
-            ).Build()
-        );
-
         var blocks = await Client.Blocks.AppendChildrenAsync(
             new BlockAppendChildrenRequest
             {
-                BlockId = page.Id,
+                BlockId = _page.Id,
                 Children = new List<IBlock> { block }
             }
         );
@@ -127,18 +109,14 @@ public class IBlocksClientTests : IntegrationTestBase
         var blockId = blocks.Results.First().Id;
         await Client.Blocks.UpdateAsync(blockId, updateBlock);
 
-        var updatedBlocks = await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
-        {
-            BlockId = page.Id
-        });
+        var updatedBlocks =
+            await Client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest { BlockId = _page.Id });
+
         updatedBlocks.Results.Should().HaveCount(1);
 
         var updatedBlock = updatedBlocks.Results.First();
 
         assert.Invoke(updatedBlock, Client);
-
-        // cleanup
-        await Client.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
     }
 
     private static IEnumerable<object[]> BlockData()
@@ -188,8 +166,7 @@ public class IBlocksClientTests : IntegrationTestBase
             },
             new object[]
             {
-                new DividerBlock { Divider = new DividerBlock.Data() },
-                new DividerUpdateBlock(),
+                new DividerBlock { Divider = new DividerBlock.Data() }, new DividerUpdateBlock(),
                 new Action<IBlock, INotionClient>((block, client) =>
                 {
                     Assert.NotNull(block);
@@ -374,7 +351,7 @@ public class IBlocksClientTests : IntegrationTestBase
                     var linkToPageBlock = Assert.IsType<LinkToPageBlock>(block);
 
                     var pageParent = Assert.IsType<PageParent>(linkToPageBlock.LinkToPage);
-            
+
                     // TODO: Currently the api doesn't allow to update the link_to_page block type
                     // This will change to updated ID once api start to support
                     Assert.Equal(Guid.Parse("533578e3edf14c0a91a9da6b09bac3ee"), Guid.Parse(pageParent.PageId));
@@ -408,9 +385,9 @@ public class IBlocksClientTests : IntegrationTestBase
                     var tableBlock = block.Should().NotBeNull().And.BeOfType<TableBlock>().Subject;
                     tableBlock.HasChildren.Should().BeTrue();
 
-                    var children = client.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest{
-                        BlockId = tableBlock.Id
-                    }).GetAwaiter().GetResult();
+                    var children = client.Blocks
+                        .RetrieveChildrenAsync(new BlockRetrieveChildrenRequest { BlockId = tableBlock.Id })
+                        .GetAwaiter().GetResult();
 
                     children.Results.Should().ContainSingle()
                         .Subject.Should().BeOfType<TableRowBlock>()
