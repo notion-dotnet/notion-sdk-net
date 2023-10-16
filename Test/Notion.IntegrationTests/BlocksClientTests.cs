@@ -33,14 +33,14 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             new BlockAppendChildrenRequest
             {
                 BlockId = _page.Id,
-                Children = new List<IBlock>
+                Children = new List<IBlockObjectRequest>
                 {
-                    new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() },
-                    new DividerBlock { Divider = new DividerBlock.Data() },
-                    new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() },
-                    new CalloutBlock
+                    new BreadcrumbBlockRequest { Breadcrumb = new BreadcrumbBlockRequest.Data() },
+                    new DividerBlockRequest { Divider = new DividerBlockRequest.Data() },
+                    new TableOfContentsBlockRequest { TableOfContents = new TableOfContentsBlockRequest.Data() },
+                    new CalloutBlockRequest
                     {
-                        Callout = new CalloutBlock.Info
+                        Callout = new CalloutBlockRequest.Info
                         {
                             RichText = new List<RichTextBaseInput>
                             {
@@ -62,7 +62,10 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             new BlockAppendChildrenRequest
             {
                 BlockId = _page.Id,
-                Children = new List<IBlock> { new BreadcrumbBlock { Breadcrumb = new BreadcrumbBlock.Data() } }
+                Children = new List<IBlockObjectRequest>
+                {
+                    new BreadcrumbBlockRequest { Breadcrumb = new BreadcrumbBlockRequest.Data() }
+                }
             }
         );
 
@@ -82,10 +85,10 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             new BlockAppendChildrenRequest
             {
                 BlockId = _page.Id,
-                Children = new List<IBlock>
+                Children = new List<IBlockObjectRequest>
                 {
-                    new DividerBlock { Divider = new DividerBlock.Data() },
-                    new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() }
+                    new DividerBlockRequest { Divider = new DividerBlockRequest.Data() },
+                    new TableOfContentsBlockRequest { TableOfContents = new TableOfContentsBlockRequest.Data() }
                 }
             }
         );
@@ -96,13 +99,13 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(
-        IBlock block, IUpdateBlock updateBlock, Action<IBlock, INotionClient> assert)
+        IBlockObjectRequest block, IUpdateBlock updateBlock, Action<IBlock, INotionClient> assert)
     {
         var blocks = await Client.Blocks.AppendChildrenAsync(
             new BlockAppendChildrenRequest
             {
                 BlockId = _page.Id,
-                Children = new List<IBlock> { block }
+                Children = new List<IBlockObjectRequest> { block }
             }
         );
 
@@ -125,9 +128,9 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         {
             new object[]
             {
-                new BookmarkBlock
+                new BookmarkBlockRequest
                 {
-                    Bookmark = new BookmarkBlock.Info
+                    Bookmark = new BookmarkBlockRequest.Info
                     {
                         Url = "https://developers.notion.com/reference/rich-text",
                         Caption = new List<RichTextBase>
@@ -156,7 +159,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new EquationBlock { Equation = new EquationBlock.Info { Expression = "e=mc^3" } },
+                new EquationBlockRequest { Equation = new EquationBlockRequest.Info { Expression = "e=mc^3" } },
                 new EquationUpdateBlock { Equation = new EquationUpdateBlock.Info { Expression = "e=mc^2" } },
                 new Action<IBlock, INotionClient>((block, _) =>
                 {
@@ -166,7 +169,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new DividerBlock { Divider = new DividerBlock.Data() }, new DividerUpdateBlock(),
+                new DividerBlockRequest { Divider = new DividerBlockRequest.Data() }, new DividerUpdateBlock(),
                 new Action<IBlock, INotionClient>((block, client) =>
                 {
                     Assert.NotNull(block);
@@ -175,7 +178,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new AudioBlock
+                new AudioBlockRequest
                 {
                     Audio = new ExternalFile
                     {
@@ -206,7 +209,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new TableOfContentsBlock { TableOfContents = new TableOfContentsBlock.Data() },
+                new TableOfContentsBlockRequest { TableOfContents = new TableOfContentsBlockRequest.Data() },
                 new TableOfContentsUpdateBlock(), new Action<IBlock, INotionClient>((block, client) =>
                 {
                     Assert.NotNull(block);
@@ -215,9 +218,9 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new CalloutBlock
+                new CalloutBlockRequest
                 {
-                    Callout = new CalloutBlock.Info
+                    Callout = new CalloutBlockRequest.Info
                     {
                         RichText = new List<RichTextBaseInput>
                         {
@@ -245,9 +248,9 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new QuoteBlock
+                new QuoteBlockRequest
                 {
-                    Quote = new QuoteBlock.Info
+                    Quote = new QuoteBlockRequest.Info
                     {
                         RichText = new List<RichTextBaseInput>
                         {
@@ -275,7 +278,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new ImageBlock
+                new ImageBlockRequest
                 {
                     Image = new ExternalFile
                     {
@@ -308,9 +311,9 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new EmbedBlock
+                new EmbedBlockRequest
                 {
-                    Embed = new EmbedBlock.Info
+                    Embed = new EmbedBlockRequest.Info
                     {
                         Url = "https://zephoria.com/wp-content/uploads/2014/08/online-community.jpg"
                     }
@@ -333,7 +336,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new LinkToPageBlock
+                new LinkToPageBlockRequest
                 {
                     LinkToPage = new PageParent
                     {
@@ -359,16 +362,16 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             },
             new object[]
             {
-                new TableBlock
+                new TableBlockRequest
                 {
-                    Table = new TableBlock.Info
+                    Table = new TableBlockRequest.Info
                     {
                         TableWidth = 1,
                         Children = new[]
                         {
-                            new TableRowBlock
+                            new TableRowBlockRequest
                             {
-                                TableRow = new TableRowBlock.Info
+                                TableRow = new TableRowBlockRequest.Info
                                 {
                                     Cells = new[]
                                     {

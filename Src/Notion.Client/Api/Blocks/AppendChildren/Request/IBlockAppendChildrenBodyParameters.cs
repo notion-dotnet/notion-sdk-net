@@ -3,11 +3,10 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    // TODO: need an input version of Block
     public interface IBlockAppendChildrenBodyParameters
     {
         [JsonProperty("children")]
-        IEnumerable<IBlock> Children { get; set; }
+        IEnumerable<IBlockObjectRequest> Children { get; set; }
 
         /// <summary>
         ///     The ID of the existing block that the new block should be appended after.
@@ -18,7 +17,7 @@ namespace Notion.Client
 
     internal class BlockAppendChildrenBodyParameters : IBlockAppendChildrenBodyParameters
     {
-        public IEnumerable<IBlock> Children { get; set; }
+        public IEnumerable<IBlockObjectRequest> Children { get; set; }
 
         public string After { get; set; }
 
