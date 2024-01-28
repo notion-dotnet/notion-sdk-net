@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.6.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{4A92506A-3CF1-4E86-B9FD-D5F109655D87}"
+	ProjectSection(SolutionItems) = preProject
+		Src\package.json = Src\package.json
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notion.Client", "Src\Notion.Client\Notion.Client.csproj", "{BF5F85F3-901C-40B0-8357-A1919F89AE2E}"
 EndProject
