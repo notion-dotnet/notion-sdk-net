@@ -11,7 +11,7 @@ namespace Notion.Client
     {
         [JsonProperty("caption")]
         public IEnumerable<RichTextBase> Caption { get; set; }
-        
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
