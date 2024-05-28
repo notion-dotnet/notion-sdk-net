@@ -155,6 +155,33 @@
           "expiry_time": "2022-05-11T17:55:32.613Z"
         }
       }
+    },
+    {
+        "object": "block",
+        "id": "570d1df0-56c9-42f7-b8b8-5315323f82de",
+        "parent": {
+            "type": "page_id",
+            "page_id": "9b02f058-bd87-46c2-95d2-7496fb9075bb"
+        },
+        "created_time": "2023-02-03T13:59:00.000Z",
+        "last_edited_time": "2023-02-03T13:59:00.000Z",
+        "created_by": {
+            "object": "user",
+            "id": "92e803ec-193c-4bcd-b28e-88365858d562"
+        },
+        "last_edited_by": {
+            "object": "user",
+            "id": "92e803ec-193c-4bcd-b28e-88365858d562"
+        },
+        "has_children": true,
+        "archived": false,
+        "type": "synced_block",
+        "synced_block": {
+            "synced_from": {
+                "type": "block_id",
+                "block_id": "d2f7e3f3-c553-410d-a5f9-dfc0c335b169"
+            }
+        }
     }
   ],
   "next_cursor": null,

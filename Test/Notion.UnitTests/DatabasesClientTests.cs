@@ -64,8 +64,9 @@ public class DatabasesClientTests : ApiTestBase
 
         pagesPaginatedList.Results.Should().ContainSingle();
 
-        foreach (var page in pagesPaginatedList.Results)
+        foreach (var iWikiDatabase in pagesPaginatedList.Results)
         {
+            var page = (Page)iWikiDatabase;
             page.Parent.Should().BeAssignableTo<IPageParent>();
             page.Object.Should().Be(ObjectType.Page);
         }
@@ -476,8 +477,9 @@ public class DatabasesClientTests : ApiTestBase
 
         pagesPaginatedList.Results.Should().ContainSingle();
 
-        foreach (var page in pagesPaginatedList.Results)
+        foreach (var iWikiDatabase in pagesPaginatedList.Results)
         {
+            var page = (Page)iWikiDatabase;
             page.Parent.Should().BeAssignableTo<IPageParent>();
             page.Object.Should().Be(ObjectType.Page);
 

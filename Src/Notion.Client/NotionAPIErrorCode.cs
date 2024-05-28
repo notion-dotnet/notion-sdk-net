@@ -15,6 +15,9 @@ namespace Notion.Client
         [EnumMember(Value = "invalid_request")]
         InvalidRequest,
 
+        [EnumMember(Value = "invalid_grant")]
+        InvalidGrant,
+
         [EnumMember(Value = "validation_error")]
         ValidationError,
 
@@ -40,6 +43,12 @@ namespace Notion.Client
         InternalServerError,
 
         [EnumMember(Value = "service_unavailable")]
-        ServiceUnavailable
+        ServiceUnavailable,
+
+        [EnumMember(Value = "database_connection_unavailable")]
+        DatabaseConnectionUnavailable,
+
+        [EnumMember(Value = "gateway_timeout")]
+        GetewayTimeout
     }
 }

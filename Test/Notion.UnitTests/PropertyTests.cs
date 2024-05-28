@@ -26,6 +26,7 @@ public class PropertyTests
     [InlineData(typeof(SelectProperty), PropertyType.Select)]
     [InlineData(typeof(TitleProperty), PropertyType.Title)]
     [InlineData(typeof(UrlProperty), PropertyType.Url)]
+    [InlineData(typeof(UniqueIdProperty), PropertyType.UniqueId)]
     public void TestPropertyType(Type type, PropertyType expectedPropertyType)
     {
         var typeInstance = (Property)Activator.CreateInstance(type);
@@ -54,6 +55,7 @@ public class PropertyTests
     [InlineData(typeof(SelectProperty), "select")]
     [InlineData(typeof(TitleProperty), "title")]
     [InlineData(typeof(UrlProperty), "url")]
+    [InlineData(typeof(UniqueIdProperty), "unique_id")]
     public void TestPropertyTypeText(Type type, string expectedPropertyType)
     {
         var typeInstance = (Property)Activator.CreateInstance(type);

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Page : IObject, IObjectModificationData
+    public class Page : IObject, IObjectModificationData, IWikiDatabase
     {
         /// <summary>
         ///     The parent of this page. Can be a database, page, or workspace.
@@ -67,5 +67,11 @@ namespace Notion.Client
         public PartialUser CreatedBy { get; set; }
 
         public PartialUser LastEditedBy { get; set; }
+
+        /// <summary>
+        ///     The public page URL if the page has been published to the web. Otherwise, null.
+        /// </summary>
+        [JsonProperty("public_url")]
+        public string PublicUrl { get; set; }
     }
 }

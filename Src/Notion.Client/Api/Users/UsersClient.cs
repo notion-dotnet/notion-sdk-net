@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public class UsersClient : IUsersClient
+    public partial class UsersClient : IUsersClient
     {
         private readonly IRestClient _client;
 
@@ -12,14 +13,9 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<User> RetrieveAsync(string userId)
+        public async Task<User> RetrieveAsync(string userId, CancellationToken cancellationToken = default)
         {
-            return await _client.GetAsync<User>(UsersApiUrls.Retrieve(userId));
-        }
-
-        public async Task<PaginatedList<User>> ListAsync()
-        {
-            return await _client.GetAsync<PaginatedList<User>>(UsersApiUrls.List());
+            return await _client.GetAsync<User>(UsersApiUrls.Retrieve(userId), cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -29,9 +25,9 @@ namespace Notion.Client
         ///     User object of type bot having an owner field with information about the person who authorized the
         ///     integration.
         /// </returns>
-        public async Task<User> MeAsync()
+        public async Task<User> MeAsync(CancellationToken cancellationToken = default)
         {
-            return await _client.GetAsync<User>(UsersApiUrls.Me());
+            return await _client.GetAsync<User>(UsersApiUrls.Me(), cancellationToken: cancellationToken);
         }
     }
 }

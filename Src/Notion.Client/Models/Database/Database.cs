@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Database : IObject, IObjectModificationData
+    public class Database : IObject, IObjectModificationData, IWikiDatabase
     {
         [JsonProperty("title")]
         public List<RichTextBase> Title { get; set; }
@@ -52,5 +52,11 @@ namespace Notion.Client
         public PartialUser CreatedBy { get; set; }
 
         public PartialUser LastEditedBy { get; set; }
+
+        /// <summary>
+        ///     The public page URL if the page has been published to the web. Otherwise, null.
+        /// </summary>
+        [JsonProperty("public_url")]
+        public string PublicUrl { get; set; }
     }
 }

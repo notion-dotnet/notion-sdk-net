@@ -17,7 +17,7 @@ namespace Notion.Client
         Task<T> PostAsync<T>(
             string uri,
             object body,
-            IDictionary<string, string> queryParams = null,
+            IEnumerable<KeyValuePair<string, string>> queryParams = null,
             IDictionary<string, string> headers = null,
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default);

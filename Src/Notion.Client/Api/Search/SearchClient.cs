@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public class SearchClient : ISearchClient
+    public sealed class SearchClient : ISearchClient
     {
         private readonly IRestClient _client;
 
@@ -12,13 +13,15 @@ namespace Notion.Client
             _client = client;
         }
 
-        public async Task<PaginatedList<IObject>> SearchAsync(SearchParameters parameters)
+        public async Task<SearchResponse> SearchAsync(
+            SearchRequest request,
+            CancellationToken cancellationToken = default)
         {
             var url = SearchApiUrls.Search();
 
-            var body = (ISearchBodyParameters)parameters;
+            var body = (ISearchBodyParameters)request;
 
-            return await _client.PostAsync<PaginatedList<IObject>>(url, body);
+            return await _client.PostAsync<SearchResponse>(url, body, cancellationToken: cancellationToken);
         }
     }
 }

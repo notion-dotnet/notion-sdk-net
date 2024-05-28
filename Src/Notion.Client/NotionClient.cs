@@ -5,6 +5,8 @@ namespace Notion.Client
     [SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
     public interface INotionClient
     {
+        IAuthenticationClient AuthenticationClient { get; }
+
         IUsersClient Users { get; }
 
         IDatabasesClient Databases { get; }
@@ -29,7 +31,8 @@ namespace Notion.Client
             IPagesClient pages,
             ISearchClient search,
             ICommentsClient comments,
-            IBlocksClient blocks)
+            IBlocksClient blocks,
+            IAuthenticationClient authenticationClient)
         {
             RestClient = restClient;
             Users = users;
@@ -38,7 +41,10 @@ namespace Notion.Client
             Search = search;
             Comments = comments;
             Blocks = blocks;
+            AuthenticationClient = authenticationClient;
         }
+
+        public IAuthenticationClient AuthenticationClient { get; }
 
         public IUsersClient Users { get; }
 

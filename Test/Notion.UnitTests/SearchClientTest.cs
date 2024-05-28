@@ -30,7 +30,7 @@ public class SearchClientTest : ApiTestBase
                     .WithBody(jsonData)
             );
 
-        var searchParameters = new SearchParameters
+        var searchParameters = new SearchRequest
         {
             Query = "External tasks",
             Sort = new SearchSort

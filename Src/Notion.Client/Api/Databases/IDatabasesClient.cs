@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Notion.Client
 {
@@ -11,7 +12,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="Database" />
         /// </returns>
-        Task<Database> RetrieveAsync(string databaseId);
+        Task<Database> RetrieveAsync(string databaseId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Gets a list of Pages contained in the database, filtered and ordered according to the
@@ -23,7 +24,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="PaginatedList{T}" />
         /// </returns>
-        Task<PaginatedList<Page>> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters);
+        Task<DatabaseQueryResponse> QueryAsync(string databaseId, DatabasesQueryParameters databasesQueryParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Creates a database as a subpage in the specified parent page, with the specified properties schema.
@@ -32,7 +33,7 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="Database" />
         /// </returns>
-        Task<Database> CreateAsync(DatabasesCreateParameters databasesCreateParameters);
+        Task<Database> CreateAsync(DatabasesCreateParameters databasesCreateParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates an existing database as specified by the parameters.
@@ -42,6 +43,6 @@ namespace Notion.Client
         /// <returns>
         ///     <see cref="Database" />
         /// </returns>
-        Task<Database> UpdateAsync(string databaseId, DatabasesUpdateParameters databasesUpdateParameters);
+        Task<Database> UpdateAsync(string databaseId, DatabasesUpdateParameters databasesUpdateParameters, CancellationToken cancellationToken = default);
     }
 }
