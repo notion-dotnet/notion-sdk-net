@@ -23,7 +23,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true });
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { InTrash = true });
     }
 
     [Fact]

@@ -47,7 +47,7 @@ namespace Notion.Client
         );
 
         /// <summary>
-        ///     Sets a Block object, including page blocks, to archived: true using the ID specified.
+        ///     Moves a Block object, including page blocks, to the trash: true using the ID specified.
         /// </summary>
         /// <param name="blockId">Identifier for a Notion block</param>
         Task DeleteAsync(string blockId, CancellationToken cancellationToken = default);
