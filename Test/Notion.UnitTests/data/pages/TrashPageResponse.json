@@ -11,6 +11,11 @@
       "type": "checkbox",
       "checkbox": true
     },
+    "Add Page Button": {
+        "id":"_ri%7C",
+        "type":"button",
+        "button": {}
+    },
     "Name": {
       "id": "title",
       "type": "title",
