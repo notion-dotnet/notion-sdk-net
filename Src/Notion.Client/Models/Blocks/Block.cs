@@ -16,6 +16,8 @@ namespace Notion.Client
 
         public virtual bool HasChildren { get; set; }
 
+        public bool InTrash { get; set; }
+
         public PartialUser CreatedBy { get; set; }
 
         public PartialUser LastEditedBy { get; set; }
