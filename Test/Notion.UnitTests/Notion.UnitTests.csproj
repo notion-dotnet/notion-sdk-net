@@ -51,7 +51,7 @@
     <None Update="data\databases\UpdateDatabaseResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="data\pages\ArchivePageResponse.json">
+    <None Update="data\pages\TrashPageResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="data\pages\CreatePageResponse.json">

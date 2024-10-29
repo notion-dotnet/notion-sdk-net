@@ -52,6 +52,6 @@ namespace Notion.Client
         DatabaseConnectionUnavailable,
 
         [EnumMember(Value = "gateway_timeout")]
-        GetewayTimeout
+        GatewayTimeout
     }
 }

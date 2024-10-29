@@ -11,8 +11,8 @@ namespace Notion.Client
         [JsonProperty("cover")]
         public FileObject Cover { get; set; }
 
-        [JsonProperty("archived")]
-        public bool Archived { get; set; }
+        [JsonProperty("in_trash")]
+        public bool InTrash { get; set; }
 
         [JsonProperty("properties")]
         public IDictionary<string, PropertyValue> Properties { get; set; }

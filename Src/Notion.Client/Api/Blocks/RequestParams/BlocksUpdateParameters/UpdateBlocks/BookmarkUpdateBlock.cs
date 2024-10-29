@@ -8,7 +8,7 @@ namespace Notion.Client
         [JsonProperty("bookmark")]
         public Info Bookmark { get; set; }
 
-        public bool Archived { get; set; }
+        public bool InTrash { get; set; }
 
         public class Info
         {
