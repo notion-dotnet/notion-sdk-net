@@ -45,6 +45,11 @@
           "id": "{>U;",
           "type": "checkbox",
           "checkbox": false
+        },
+        "Add Page Button": {
+          "id":"_ri%7C",
+          "type":"button",
+          "button": {}
         }
       }
     }

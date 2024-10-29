@@ -222,7 +222,7 @@ public class PagesClientTests : ApiTestBase
 
         page.Id.Should().Be(pageId);
         page.InTrash.Should().BeTrue();
-        page.Properties.Should().HaveCount(2);
+        page.Properties.Should().HaveCount(3);
         var updatedProperty = page.Properties.First(x => x.Key == "In stock");
 
         var checkboxPropertyValue = (CheckboxPropertyItem)await _client.RetrievePagePropertyItemAsync(
