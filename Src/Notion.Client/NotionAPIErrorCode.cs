@@ -42,6 +42,9 @@ namespace Notion.Client
         [EnumMember(Value = "internal_server_error")]
         InternalServerError,
 
+        [EnumMember(Value = "bad_gateway")]
+        BadGateway,
+
         [EnumMember(Value = "service_unavailable")]
         ServiceUnavailable,
 
