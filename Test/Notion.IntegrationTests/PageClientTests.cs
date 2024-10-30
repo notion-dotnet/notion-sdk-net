@@ -216,8 +216,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                 {
                     Date = new Date
                     {
-                        Start = Convert.ToDateTime("2020-12-08T12:00:00Z"),
-                        End = Convert.ToDateTime("2025-12-08T12:00:00Z")
+                        Start = DateTimeOffset.Parse("2024-06-26T00:00:00.000+01:00"),
+                        End = DateTimeOffset.Parse("2025-12-08").Date
                     }
                 })
             .Build();
@@ -236,7 +236,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         );
 
         // Assert
-        setDate?.Date?.Start.Should().Be(Convert.ToDateTime("2020-12-08T12:00:00Z"));
+        setDate?.Date?.Start.Should().Be(DateTimeOffset.Parse("2024-06-26T00:00:00.000+01:00"));
+        setDate?.Date?.End.Should().Be(DateTimeOffset.Parse("2025-12-08T00:00:00.000+01:00"));
 
         var pageUpdateParameters = new PagesUpdateParameters
         {
@@ -383,5 +384,59 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
 
         updatedPage.Properties["Colors1"].As<SelectPropertyValue>().Select.Name.Should().Be("Blue");
         updatedPage.Properties["Colors2"].As<SelectPropertyValue>().Select.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task Verify_date_property_is_parsed_correctly_in_mention_object()
+    {
+        var pageRequest = PagesCreateParametersBuilder
+            .Create(new DatabaseParentInput { DatabaseId = _database.Id })
+            .AddProperty("Name",
+                new TitlePropertyValue
+                {
+                    Title = new List<RichTextBase>
+                    {
+                        new RichTextMention()
+                        {
+                            Mention = new Mention()
+                            {
+                                Page = new ObjectId()
+                                {
+                                    Id = _page.Id,
+                                },
+                                Date = new DatePropertyValue()
+                                {
+                                    Date = new Date()
+                                    {
+                                        Start = DateTime.UtcNow
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            .Build();
+        
+        var page = await Client.Pages.CreateAsync(pageRequest);
+
+        page.Should().NotBeNull();
+
+        page.Parent.Should().BeOfType<DatabaseParent>().Which
+            .DatabaseId.Should().Be(_database.Id);
+
+        page.Properties.Should().ContainKey("Name");
+        var pageProperty = page.Properties["Name"].Should().BeOfType<TitlePropertyValue>().Subject;
+
+        var titleProperty = (ListPropertyItem)await Client.Pages.RetrievePagePropertyItemAsync(
+            new RetrievePropertyItemParameters
+            {
+                PageId = page.Id,
+                PropertyId = pageProperty.Id
+            });
+
+        titleProperty.Results.First()
+            .As<TitlePropertyItem>()
+            .Title.As<RichTextMention>()
+            .Mention.Date.Date.Should().NotBeNull();
     }
 }
