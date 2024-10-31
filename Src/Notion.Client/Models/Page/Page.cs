@@ -13,10 +13,10 @@ namespace Notion.Client
         public IPageParent Parent { get; set; }
 
         /// <summary>
-        ///     The archived status of the page.
+        ///     Indicates whether the page is currently in the trash.
         /// </summary>
-        [JsonProperty("archived")]
-        public bool IsArchived { get; set; }
+        [JsonProperty("in_trash")]
+        public bool InTrash { get; set; }
 
         /// <summary>
         ///     Property values of this page.

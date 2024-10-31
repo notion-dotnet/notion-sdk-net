@@ -4,7 +4,7 @@ namespace Notion.Client
 {
     public interface IUpdateBlock
     {
-        [JsonProperty("archived")]
-        bool Archived { get; set; }
+        [JsonProperty("in_trash")]
+        bool InTrash { get; set; }
     }
 }

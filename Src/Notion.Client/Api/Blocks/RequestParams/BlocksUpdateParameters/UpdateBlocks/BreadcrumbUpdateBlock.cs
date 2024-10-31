@@ -12,7 +12,7 @@ namespace Notion.Client
         [JsonProperty("breadcrumb")]
         public Info Breadcrumb { get; set; }
 
-        public bool Archived { get; set; }
+        public bool InTrash { get; set; }
 
         public class Info
         {
