@@ -22,8 +22,6 @@ namespace Notion.Client
             ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
         };
 
-        private HttpClient _httpClient;
-
         public RestClient(ClientOptions options)
         {
             _options = MergeOptions(options);
@@ -36,7 +34,7 @@ namespace Notion.Client
             JsonSerializerSettings serializerSettings = null,
             CancellationToken cancellationToken = default)
         {
-            var response = await SendAsync(uri, HttpMethod.Get, queryParams, headers,
+            using var response = await SendAsync(uri, HttpMethod.Get, queryParams, headers,
                 cancellationToken: cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
@@ -56,7 +54,7 @@ namespace Notion.Client
                     Encoding.UTF8, "application/json");
             }
 
-            var response = await SendAsync(uri, HttpMethod.Post, queryParams, headers, AttachContent,
+            using var response = await SendAsync(uri, HttpMethod.Post, queryParams, headers, AttachContent,
                 cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
@@ -76,7 +74,7 @@ namespace Notion.Client
                 httpRequest.Content = new StringContent(serializedBody, Encoding.UTF8, "application/json");
             }
 
-            var response = await SendAsync(uri, new HttpMethod("PATCH"), queryParams, headers, AttachContent,
+            using var response = await SendAsync(uri, new HttpMethod("PATCH"), queryParams, headers, AttachContent,
                 cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
@@ -88,7 +86,7 @@ namespace Notion.Client
             IDictionary<string, string> headers = null,
             CancellationToken cancellationToken = default)
         {
-            await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null, cancellationToken);
+            using var _ = await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null, cancellationToken);
         }
 
         private static ClientOptions MergeOptions(ClientOptions options)
@@ -141,7 +139,7 @@ namespace Notion.Client
             Action<HttpRequestMessage> attachContent = null,
             CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
+            using var client = GetHttpClient();
 
             requestUri = AddQueryString(requestUri, queryParams);
 
@@ -156,7 +154,7 @@ namespace Notion.Client
 
             attachContent?.Invoke(httpRequest);
 
-            var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
+            var response = await client.SendAsync(httpRequest, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -174,17 +172,13 @@ namespace Notion.Client
             }
         }
 
-        private void EnsureHttpClient()
+        private HttpClient GetHttpClient()
         {
-            if (_httpClient != null)
-            {
-                return;
-            }
-
             var pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
 
-            _httpClient = new HttpClient(pipeline);
-            _httpClient.BaseAddress = new Uri(_options.BaseUrl);
+            var httpClient = new HttpClient(pipeline);
+            httpClient.BaseAddress = new Uri(_options.BaseUrl);
+            return httpClient;
         }
 
         private static string AddQueryString(string uri, IEnumerable<KeyValuePair<string, string>> queryParams)
