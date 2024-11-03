@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -26,13 +27,15 @@ namespace Notion.Client
         ///     Start date with optional time.
         /// </summary>
         [JsonProperty("start")]
-        public DateTime? Start { get; set; }
+        [JsonConverter(typeof(IsoDateTimeConverter))]
+        public DateTimeOffset? Start { get; set; }
 
         /// <summary>
         ///     End date with optional time.
         /// </summary>
         [JsonProperty("end")]
-        public DateTime? End { get; set; }
+        [JsonConverter(typeof(IsoDateTimeConverter))]
+        public DateTimeOffset? End { get; set; }
 
         /// <summary>
         ///     Optional time zone information for start and end. Possible values are extracted from the IANA database and they are
