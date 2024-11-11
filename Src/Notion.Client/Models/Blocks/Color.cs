@@ -39,6 +39,9 @@ namespace Notion.Client
         [EnumMember(Value = "gray_background")]
         GrayBackground,
 
+        [EnumMember(Value = "default_background")]
+        DefaultBackground,
+
         [EnumMember(Value = "brown_background")]
         BrownBackground,
 
