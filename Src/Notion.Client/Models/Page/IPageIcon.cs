@@ -7,6 +7,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(EmojiObject), "emoji")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(FileObject), "file")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(FileObject), "external")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(CustomEmojiObject), "custom_emoji")]    
     public interface IPageIcon
     {
         [JsonProperty("type")]
