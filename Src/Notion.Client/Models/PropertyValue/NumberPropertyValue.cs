@@ -12,7 +12,7 @@ namespace Notion.Client
         /// <summary>
         ///     Value of number
         /// </summary>
-        [JsonProperty("number")]
+        [JsonProperty("number", NullValueHandling = NullValueHandling.Include)]
         public double? Number { get; set; }
     }
 }

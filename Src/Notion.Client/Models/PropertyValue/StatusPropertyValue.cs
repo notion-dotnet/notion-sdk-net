@@ -47,7 +47,7 @@ namespace Notion.Client
 
         public override PropertyValueType Type => PropertyValueType.Status;
 
-        [JsonProperty("status")]
+        [JsonProperty("status", NullValueHandling = NullValueHandling.Include)]
         public Data Status { get; set; }
 
         public class Data
