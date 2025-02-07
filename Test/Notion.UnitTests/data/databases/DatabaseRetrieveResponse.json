@@ -33,6 +33,7 @@
     }
   },
   "url": "https://www.notion.so/668d797c76fa49349b05ad288df2d136",
+  "in_trash" : false,
   "properties": {
     "Tags": {
       "id": "YG~h",
@@ -88,6 +89,12 @@
           "synced_property_id": "VQ}{"
         }
       }
+    },
+    "SimpleButton": {
+      "id":"_ri%7C",
+      "name":"SimpleButton",
+      "type":"button",
+      "button": {}
     },
     "Name": {
       "id": "title",

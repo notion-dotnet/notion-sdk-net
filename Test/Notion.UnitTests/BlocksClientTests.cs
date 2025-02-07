@@ -34,7 +34,10 @@ public class BlocksClientTests : ApiTestBase
             );
 
         // Act
-        var childrenResult = await _client.RetrieveChildrenAsync(blockId, new BlocksRetrieveChildrenParameters());
+        var childrenResult = await _client.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest
+        {
+            BlockId = blockId
+        });
 
         // Assert
         var children = childrenResult.Results;
@@ -57,13 +60,14 @@ public class BlocksClientTests : ApiTestBase
                     .WithBody(jsonData)
             );
 
-        var parameters = new BlocksAppendChildrenParameters
+        var request = new BlockAppendChildrenRequest
         {
-            Children = new List<IBlock>
+            BlockId = blockId,
+            Children = new List<IBlockObjectRequest>
             {
-                new HeadingTwoBlock
+                new HeadingTwoBlockRequest
                 {
-                    Heading_2 = new HeadingTwoBlock.Info
+                    Heading_2 = new HeadingTwoBlockRequest.Info
                     {
                         RichText = new List<RichTextBase>
                         {
@@ -71,9 +75,9 @@ public class BlocksClientTests : ApiTestBase
                         }
                     }
                 },
-                new ParagraphBlock
+                new ParagraphBlockRequest
                 {
-                    Paragraph = new ParagraphBlock.Info
+                    Paragraph = new ParagraphBlockRequest.Info
                     {
                         RichText = new List<RichTextBase>
                         {
@@ -97,7 +101,7 @@ public class BlocksClientTests : ApiTestBase
         };
 
         // Act
-        var blocksResult = await _client.AppendChildrenAsync(blockId, parameters);
+        var blocksResult = await _client.AppendChildrenAsync(request);
 
         // Assert
         var blocks = blocksResult.Results;
@@ -180,6 +184,7 @@ public class BlocksClientTests : ApiTestBase
 
         block.Id.Should().Be(blockId);
         block.HasChildren.Should().BeFalse();
+        block.InTrash.Should().BeFalse();
         block.Type.Should().Be(BlockType.ToDo);
 
         var todoBlock = (ToDoBlock)block;

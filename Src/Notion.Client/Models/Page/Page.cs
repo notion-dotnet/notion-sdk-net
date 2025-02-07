@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Page : IObject, IObjectModificationData
+    public class Page : IObject, IObjectModificationData, IWikiDatabase
     {
         /// <summary>
         ///     The parent of this page. Can be a database, page, or workspace.
@@ -13,10 +13,10 @@ namespace Notion.Client
         public IPageParent Parent { get; set; }
 
         /// <summary>
-        ///     The archived status of the page.
+        ///     Indicates whether the page is currently in the trash.
         /// </summary>
-        [JsonProperty("archived")]
-        public bool IsArchived { get; set; }
+        [JsonProperty("in_trash")]
+        public bool InTrash { get; set; }
 
         /// <summary>
         ///     Property values of this page.

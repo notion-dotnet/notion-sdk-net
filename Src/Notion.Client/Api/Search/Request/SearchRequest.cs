@@ -1,6 +1,6 @@
 ﻿namespace Notion.Client
 {
-    public class SearchParameters : ISearchBodyParameters
+    public class SearchRequest : ISearchBodyParameters
     {
         public string Query { get; set; }
 

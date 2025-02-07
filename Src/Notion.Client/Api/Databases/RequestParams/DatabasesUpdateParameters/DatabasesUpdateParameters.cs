@@ -12,7 +12,7 @@ namespace Notion.Client
 
         public FileObject Cover { get; set; }
 
-        public bool Archived { get; set; }
+        public bool InTrash { get; set; }
 
         public bool? IsInline { get; set; }
 

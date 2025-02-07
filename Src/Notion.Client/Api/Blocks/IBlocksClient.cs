@@ -18,24 +18,36 @@ namespace Notion.Client
         /// <param name="blockId"></param>
         /// <param name="updateBlock"></param>
         /// <returns>Block</returns>
-        Task<IBlock> UpdateAsync(string blockId, IUpdateBlock updateBlock, CancellationToken cancellationToken = default);
+        Task<IBlock> UpdateAsync(string blockId, IUpdateBlock updateBlock,
+            CancellationToken cancellationToken = default);
 
-        Task<PaginatedList<IBlock>> RetrieveChildrenAsync(
-            string blockId,
-            BlocksRetrieveChildrenParameters parameters = null, CancellationToken cancellationToken = default);
+        /// <summary>
+        ///     Returns a paginated array of child block objects contained in the block using the ID specified.
+        ///     <br/>
+        ///     In order to receive a complete representation of a block, you may need to recursively retrieve the
+        ///     block children of child blocks.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<RetrieveChildrenResponse> RetrieveChildrenAsync(
+            BlockRetrieveChildrenRequest request,
+            CancellationToken cancellationToken = default
+        );
 
         /// <summary>
         ///     Creates and appends new children blocks to the parent block_id specified.
         /// </summary>
-        /// <param name="blockId">Identifier for a block</param>
-        /// <param name="parameters"></param>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns>A paginated list of newly created first level children block objects.</returns>
-        Task<PaginatedList<IBlock>> AppendChildrenAsync(
-            string blockId,
-            BlocksAppendChildrenParameters parameters = null, CancellationToken cancellationToken = default);
+        Task<AppendChildrenResponse> AppendChildrenAsync(
+            BlockAppendChildrenRequest request,
+            CancellationToken cancellationToken = default
+        );
 
         /// <summary>
-        ///     Sets a Block object, including page blocks, to archived: true using the ID specified.
+        ///     Moves a Block object, including page blocks, to the trash: true using the ID specified.
         /// </summary>
         /// <param name="blockId">Identifier for a Notion block</param>
         Task DeleteAsync(string blockId, CancellationToken cancellationToken = default);

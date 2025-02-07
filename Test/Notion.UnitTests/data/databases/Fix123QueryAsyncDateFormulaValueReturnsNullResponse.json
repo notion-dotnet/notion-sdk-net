@@ -12,7 +12,7 @@
         "type": "database_id",
         "database_id": "f86f2262-0751-40f2-8f63-e3f7a3c39fcb"
       },
-      "archived": false,
+      "in_trash": false,
       "properties": {
         "Column": {
           "id": "B[\\E",

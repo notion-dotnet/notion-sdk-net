@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Notion.Client;
@@ -7,22 +6,22 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class CommentsClientTests : IntegrationTestBase, IDisposable
+public class CommentsClientTests : IntegrationTestBase, IAsyncLifetime
 {
-    private readonly Page _page;
+    private Page _page = null!;
 
-    public CommentsClientTests()
+    public async Task InitializeAsync()
     {
-        _page = Client.Pages.CreateAsync(
+        _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
                 new ParentPageInput { PageId = ParentPageId }
             ).Build()
-        ).Result;
+        );
     }
 
-    public void Dispose()
+    public async Task DisposeAsync()
     {
-        Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { Archived = true }).Wait();
+        await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { InTrash = true });
     }
 
     [Fact]
@@ -78,7 +77,7 @@ public class CommentsClientTests : IntegrationTestBase, IDisposable
         );
 
         // Arrange
-        Assert.Null(response.Parent);
+        Assert.NotNull(response.Parent);
         Assert.NotNull(response.Id);
         Assert.Equal(comment.DiscussionId, response.DiscussionId);
 

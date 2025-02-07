@@ -12,7 +12,7 @@ namespace Notion.Client
         [JsonProperty("divider")]
         public Info Divider { get; set; }
 
-        public bool Archived { get; set; }
+        public bool InTrash { get; set; }
 
         public class Info
         {

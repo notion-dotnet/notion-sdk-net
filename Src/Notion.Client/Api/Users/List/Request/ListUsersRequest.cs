@@ -4,7 +4,7 @@
     {
     }
 
-    public class ListUsersParameters : IListUsersQueryParameters
+    public class ListUsersRequest : IListUsersQueryParameters
     {
         public string StartCursor { get; set; }
 
