@@ -59,7 +59,7 @@ public class SearchClientTest : ApiTestBase
                 obj.Object.Should().Be(ObjectType.Page);
 
                 var page = (Page)obj;
-                page.IsArchived.Should().BeFalse();
+                page.InTrash.Should().BeFalse();
                 page.Properties.Should().HaveCount(1);
                 page.Parent.Should().BeAssignableTo<DatabaseParent>();
                 ((DatabaseParent)page.Parent).DatabaseId.Should().Be("e6c6f8ff-c70e-4970-91ba-98f03e0d7fc6");

@@ -2,6 +2,6 @@
 {
     public abstract class UpdateBlock : IUpdateBlock
     {
-        public bool Archived { get; set; }
+        public bool InTrash { get; set; }
     }
 }

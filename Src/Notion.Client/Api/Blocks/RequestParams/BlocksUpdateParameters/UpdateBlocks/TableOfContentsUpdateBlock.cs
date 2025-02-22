@@ -12,7 +12,7 @@ namespace Notion.Client
         [JsonProperty("table_of_contents")]
         public Info TableOfContents { get; set; }
 
-        public bool Archived { get; set; }
+        public bool InTrash { get; set; }
 
         public class Info
         {

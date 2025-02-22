@@ -184,6 +184,7 @@ public class BlocksClientTests : ApiTestBase
 
         block.Id.Should().Be(blockId);
         block.HasChildren.Should().BeFalse();
+        block.InTrash.Should().BeFalse();
         block.Type.Should().Be(BlockType.ToDo);
 
         var todoBlock = (ToDoBlock)block;

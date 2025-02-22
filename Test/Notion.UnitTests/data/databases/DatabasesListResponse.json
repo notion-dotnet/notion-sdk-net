@@ -81,6 +81,12 @@
             }
           }
         },
+        "SimpleButton": {
+          "id":"_ri%7C",
+          "name":"SimpleButton",
+          "type":"button",
+          "button": {}
+        },
         "Name": {
           "id": "title",
           "name": "Name",

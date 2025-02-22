@@ -10,7 +10,7 @@
         "type": "database_id",
         "database_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af"
       },
-      "archived": false,
+      "in_trash": false,
       "url": "https://www.notion.so/2e01e904febd43a0ad028eedb903a82c",
       "properties": {
         "Recipes": {
@@ -45,6 +45,11 @@
           "id": "{>U;",
           "type": "checkbox",
           "checkbox": false
+        },
+        "Add Page Button": {
+          "id":"_ri%7C",
+          "type":"button",
+          "button": {}
         }
       }
     }

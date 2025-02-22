@@ -47,6 +47,9 @@ namespace Notion.Client
         [JsonProperty("has_children")]
         bool HasChildren { get; set; }
 
+        [JsonProperty("in_trash")]
+        bool InTrash { get; set; }
+
         [JsonProperty("parent")]
         IBlockParent Parent { get; set; }
     }
