@@ -12,7 +12,7 @@ namespace Notion.Client
         /// <summary>
         ///     Phone number value
         /// </summary>
-        [JsonProperty("phone_number")]
+        [JsonProperty("phone_number", NullValueHandling = NullValueHandling.Include)]
         public string PhoneNumber { get; set; }
     }
 }

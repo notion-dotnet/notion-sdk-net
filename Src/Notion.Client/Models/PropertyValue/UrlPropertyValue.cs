@@ -12,7 +12,7 @@ namespace Notion.Client
         /// <summary>
         ///     Describes a web address
         /// </summary>
-        [JsonProperty("url")]
+        [JsonProperty("url", NullValueHandling = NullValueHandling.Include)]
         public string Url { get; set; }
     }
 }
