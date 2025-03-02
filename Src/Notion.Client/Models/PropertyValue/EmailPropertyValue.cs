@@ -12,7 +12,7 @@ namespace Notion.Client
         /// <summary>
         ///     Describes an email address.
         /// </summary>
-        [JsonProperty("email")]
+        [JsonProperty("email", NullValueHandling = NullValueHandling.Include)]
         public string Email { get; set; }
     }
 }
