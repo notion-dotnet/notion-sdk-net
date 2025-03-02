@@ -29,7 +29,7 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
     public async Task QueryDatabase()
     {
         // Arrange
-        var createdDatabase = await CreateDatabaseWithAPageAsync();
+        var createdDatabase = await CreateDatabaseWithAPageAsync("Test List");
 
         // Act
         var response = await Client.Databases.QueryAsync(createdDatabase.Id, new DatabasesQueryParameters());
@@ -43,7 +43,64 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
             .Text.Content.Should().Be("Test Title");
     }
 
-    private async Task<Database> CreateDatabaseWithAPageAsync()
+    [Fact]
+    public async Task UpdateDatabaseRelationProperties()
+    {
+        // Arrange
+        var createdSourceDatabase = await CreateDatabaseWithAPageAsync("Test Relation Source");
+        var createdDestinationDatabase = await CreateDatabaseWithAPageAsync("Test Relation Destination");
+
+        // Act
+        var response = await Client.Databases.UpdateAsync(createdDestinationDatabase.Id,
+            new DatabasesUpdateParameters
+            {
+                Properties = new Dictionary<string, IUpdatePropertySchema>
+                {
+                    {
+                        "Single Relation",
+                        new RelationUpdatePropertySchema
+                        {
+                            Relation = new SinglePropertyRelation
+                            {
+                                DatabaseId = createdSourceDatabase.Id,
+                                SingleProperty = new Dictionary<string, object>()
+                            }
+                        }
+                    },
+                    {
+                        "Dual Relation",
+                        new RelationUpdatePropertySchema
+                        {
+                            Relation = new DualPropertyRelation
+                            {
+                                DatabaseId = createdSourceDatabase.Id,
+                                DualProperty = new DualPropertyRelation.Data()
+                            }
+                        }
+                    }
+                }
+            });
+
+        // Assert
+        response.Properties.Should().NotBeNull();
+
+        response.Properties.Should().ContainKey("Single Relation");
+        var singleRelation = response.Properties["Single Relation"].As<RelationProperty>().Relation;
+        singleRelation.Should().BeEquivalentTo(
+            new SinglePropertyRelation
+            {
+                DatabaseId = createdSourceDatabase.Id,
+                SingleProperty = new Dictionary<string, object>()
+            });
+
+        response.Properties.Should().ContainKey("Dual Relation");
+        var dualRelation = response.Properties["Dual Relation"].As<RelationProperty>().Relation;
+        dualRelation.DatabaseId.Should().Be(createdSourceDatabase.Id);
+        dualRelation.Type.Should().Be(RelationType.Dual);
+        dualRelation.Should().BeOfType<DualPropertyRelation>();
+    }
+
+    private async Task<Database> CreateDatabaseWithAPageAsync(string databaseName)
     {
         var createDbRequest = new DatabasesCreateParameters
         {
@@ -53,7 +110,7 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
                 {
                     Text = new Text
                     {
-                        Content = "Test List",
+                        Content = databaseName,
                         Link = null
                     }
                 }
