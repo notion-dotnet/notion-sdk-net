@@ -500,7 +500,7 @@ public class DatabasesClientTests : ApiTestBase
                 });
 
             //var formulaPropertyValue = (FormulaPropertyValue)page.Properties["FormulaProp"];
-            formulaPropertyValue.Formula.Date.Start.Should().Be(DateTime.Parse("2021-06-28"));
+            formulaPropertyValue.Formula.Date.Start.Should().Be(DateTimeOffset.Parse("2021-06-28", null, System.Globalization.DateTimeStyles.AssumeUniversal).UtcDateTime);
             formulaPropertyValue.Formula.Date.End.Should().BeNull();
         }
     }
