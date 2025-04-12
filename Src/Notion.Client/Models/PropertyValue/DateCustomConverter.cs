@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -44,14 +45,14 @@ namespace Notion.Client
             {
                 string startFormat = value.IncludeTime ? DateTimeFormat : DateFormat;
                 writer.WritePropertyName("start");
-                writer.WriteValue(value.Start.Value.ToString(startFormat));
+                writer.WriteValue(value.Start.Value.ToString(startFormat, CultureInfo.InvariantCulture));
             }
 
             if (value.End.HasValue)
             {
                 string endFormat = value.IncludeTime ? DateTimeFormat : DateFormat;
                 writer.WritePropertyName("end");
-                writer.WriteValue(value.End.Value.ToString(endFormat));
+                writer.WriteValue(value.End.Value.ToString(endFormat, CultureInfo.InvariantCulture));
             }
 
             if (!string.IsNullOrEmpty(value.TimeZone))
@@ -74,7 +75,7 @@ namespace Notion.Client
 
             includeTime = dateTimeString.Contains("T") || dateTimeString.Contains(" ");
 
-            return DateTimeOffset.Parse(dateTimeString, null, System.Globalization.DateTimeStyles.AssumeUniversal).UtcDateTime;
+            return DateTimeOffset.Parse(dateTimeString, null, DateTimeStyles.AssumeUniversal).UtcDateTime;
         }
     }
 }
