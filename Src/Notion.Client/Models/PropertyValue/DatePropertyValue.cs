@@ -21,6 +21,7 @@ namespace Notion.Client
     /// <summary>
     ///     Date value object.
     /// </summary>
+    [JsonConverter(typeof(DateCustomConverter))]
     public class Date
     {
         /// <summary>
@@ -43,5 +44,10 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("time_zone")]
         public string TimeZone { get; set; }
+
+        /// <summary>
+        ///     Whether to include time
+        /// </summary>
+        public bool IncludeTime { get; set; } = true;
     }
 }

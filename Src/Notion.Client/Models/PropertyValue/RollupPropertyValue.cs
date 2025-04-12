@@ -35,7 +35,7 @@ namespace Notion.Client
         ///     Date rollup property values contain a date property value.
         /// </summary>
         [JsonProperty("date")]
-        public DatePropertyValue Date { get; set; }
+        public Date Date { get; set; }
 
         /// <summary>
         ///     Array rollup property values contain an array of element objects.
