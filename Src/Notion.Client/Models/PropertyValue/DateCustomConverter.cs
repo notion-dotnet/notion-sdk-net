@@ -75,7 +75,7 @@ namespace Notion.Client
 
             includeTime = dateTimeString.Contains("T") || dateTimeString.Contains(" ");
 
-            return DateTimeOffset.Parse(dateTimeString, null, DateTimeStyles.AssumeUniversal).UtcDateTime;
+            return DateTimeOffset.Parse(dateTimeString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).UtcDateTime;
         }
     }
 }
