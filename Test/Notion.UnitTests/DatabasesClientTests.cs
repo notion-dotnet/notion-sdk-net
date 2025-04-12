@@ -504,4 +504,18 @@ public class DatabasesClientTests : ApiTestBase
             formulaPropertyValue.Formula.Date.End.Should().BeNull();
         }
     }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("        ")]
+    public async Task RetrieveAsync_throws_argument_null_exception_if_database_id_is_null_or_empty(string databaseId)
+    {
+        // Arrange && Act
+        async Task<Database> Act() => await _client.RetrieveAsync(databaseId);
+
+        // Assert
+        var exception = await Assert.ThrowsAsync<ArgumentNullException>(Act);
+        Assert.Equal("databaseId", exception.ParamName);
+    }
 }
