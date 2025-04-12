@@ -25,7 +25,7 @@ namespace Notion.Client
         public ObjectId Database { get; set; }
 
         [JsonProperty("date")]
-        public DatePropertyValue Date { get; set; }
+        public Date Date { get; set; }
     }
 
     public class ObjectId

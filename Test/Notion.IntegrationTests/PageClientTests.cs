@@ -400,23 +400,16 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                         {
                             Mention = new Mention()
                             {
-                                Page = new ObjectId()
+                                Date = new Date()
                                 {
-                                    Id = _page.Id,
-                                },
-                                Date = new DatePropertyValue()
-                                {
-                                    Date = new Date()
-                                    {
-                                        Start = DateTime.UtcNow
-                                    }
+                                    Start = DateTime.UtcNow
                                 }
                             }
                         }
                     }
                 })
             .Build();
-        
+
         var page = await Client.Pages.CreateAsync(pageRequest);
 
         page.Should().NotBeNull();
@@ -434,9 +427,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                 PropertyId = pageProperty.Id
             });
 
-        titleProperty.Results.First()
-            .As<TitlePropertyItem>()
-            .Title.As<RichTextMention>()
-            .Mention.Date.Date.Should().NotBeNull();
+        var mention = titleProperty.Results.First().As<TitlePropertyItem>().Title.As<RichTextMention>().Mention;
+        mention.Date.Start.Should().NotBeNull();
+        mention.Date.End.Should().BeNull();
     }
 }
