@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -139,5 +140,49 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
         await Client.Pages.CreateAsync(pagesCreateParameters);
 
         return createdDatabase;
+    }
+
+    [Fact]
+    public async Task Verify_mention_date_property_parsed_properly()
+    {
+        // Arrange
+        var createDbRequest = new DatabasesCreateParameters
+        {
+            Title = new List<RichTextBaseInput>
+            {
+                new RichTextTextInput
+                {
+                    Text = new Text
+                    {
+                        Content = "Test DB",
+                        Link = null
+                    }
+                },
+                new RichTextMentionInput
+                {
+                    Mention = new MentionInput
+                    {
+                        Date = new Date
+                        {
+                            Start = DateTime.UtcNow,
+                            End = DateTime.UtcNow.AddDays(1)
+                        }
+                    }
+                }
+            },
+            Properties = new Dictionary<string, IPropertySchema>
+            {
+                { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+            },
+            Parent = new ParentPageInput { PageId = _page.Id }
+        };
+
+        // Act
+        var createdDatabase = await Client.Databases.CreateAsync(createDbRequest);
+
+        // Assert
+        var mention = createdDatabase.Title.OfType<RichTextMention>().First().Mention;
+        mention.Date.Start.Should().NotBeNull();
+        mention.Date.End.Should().NotBeNull();
     }
 }
