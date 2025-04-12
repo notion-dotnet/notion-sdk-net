@@ -1,10 +1,14 @@
 using System;
+using System.Globalization;
 using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public class DateCustomConverter : JsonConverter<Date>
     {
+        private const string DateFormat = "yyyy-MM-dd";
+        private const string DateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
+
         public override Date ReadJson(JsonReader reader, Type objectType, Date existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
@@ -39,16 +43,16 @@ namespace Notion.Client
 
             if (value.Start.HasValue)
             {
-                string startFormat = value.IncludeTime ? "yyyy-MM-ddTHH:mm:ss" : "yyyy-MM-dd";
+                string startFormat = value.IncludeTime ? DateTimeFormat : DateFormat;
                 writer.WritePropertyName("start");
-                writer.WriteValue(value.Start.Value.ToString(startFormat));
+                writer.WriteValue(value.Start.Value.ToString(startFormat, CultureInfo.InvariantCulture));
             }
 
             if (value.End.HasValue)
             {
-                string endFormat = value.IncludeTime ? "yyyy-MM-ddTHH:mm:ss" : "yyyy-MM-dd";
+                string endFormat = value.IncludeTime ? DateTimeFormat : DateFormat;
                 writer.WritePropertyName("end");
-                writer.WriteValue(value.End.Value.ToString(endFormat));
+                writer.WriteValue(value.End.Value.ToString(endFormat, CultureInfo.InvariantCulture));
             }
 
             if (!string.IsNullOrEmpty(value.TimeZone))
@@ -71,7 +75,7 @@ namespace Notion.Client
 
             includeTime = dateTimeString.Contains("T") || dateTimeString.Contains(" ");
 
-            return DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+            return DateTimeOffset.Parse(dateTimeString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).UtcDateTime;
         }
     }
 }

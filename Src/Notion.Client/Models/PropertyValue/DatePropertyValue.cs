@@ -48,6 +48,7 @@ namespace Notion.Client
         /// <summary>
         ///     Whether to include time
         /// </summary>
+        [JsonIgnore]
         public bool IncludeTime { get; set; } = true;
     }
 }
