@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
@@ -6,6 +7,10 @@ namespace Notion.Client
     {
         [JsonProperty("external")]
         public Data External { get; set; }
+
+        public string Name { get; set; }
+
+        public IEnumerable<RichTextBaseInput> Caption { get; set; }
 
         public class Data
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -7,6 +8,10 @@ namespace Notion.Client
     {
         [JsonProperty("file")]
         public Data File { get; set; }
+
+        public string Name { get; set; }
+
+        public IEnumerable<RichTextBaseInput> Caption { get; set; }
 
         public class Data
         {
