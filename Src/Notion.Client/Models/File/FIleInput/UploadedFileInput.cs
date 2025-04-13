@@ -9,6 +9,7 @@ namespace Notion.Client
         [JsonProperty("file")]
         public Data File { get; set; }
 
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         public IEnumerable<RichTextBaseInput> Caption { get; set; }
