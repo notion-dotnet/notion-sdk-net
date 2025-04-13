@@ -399,6 +399,54 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         .Subject.Should().BeOfType<RichTextText>()
                         .Subject.Text.Content.Should().Be("Data");
                 })
+            },
+            new object[]
+            {
+                new FileBlockRequest {
+                    File = new ExternalFile
+                    {
+                        Name = "Test file",
+                        External = new ExternalFile.Info
+                        {
+                            Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                        },
+                        Caption = new List<RichTextBase>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Test file" } }
+                        }
+                    }
+                },
+                new FileUpdateBlock
+                {
+                    File = new ExternalFileInput
+                    {
+                        Name = "Test file name",
+                        External = new ExternalFileInput.Data
+                        {
+                            Url = "https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg"
+                        },
+                        Caption = new List<RichTextBaseInput>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Test file caption" } }
+                        }
+                    }
+                },
+                new Action<IBlock, INotionClient>((block, client) =>
+                {
+                    var fileBlock = block.Should().NotBeNull().And.BeOfType<FileBlock>().Subject;
+                    fileBlock.HasChildren.Should().BeFalse();
+
+                    var file = fileBlock.File.Should().NotBeNull().And.BeOfType<ExternalFile>().Subject;
+
+                    // NOTE: The name of the file block, as shown in the Notion UI. Note that the UI may auto-append .pdf or other extensions.
+                    file.Name.Should().Be("Test file name.jpg");
+
+                    file.External.Should().NotBeNull();
+                    file.External.Url.Should().Be("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg");
+                    file.Caption.Should().NotBeNull().And.ContainSingle()
+                        .Subject.Should().BeOfType<RichTextText>().Subject
+                        .Text.Content.Should().Be("Test file caption");
+                })
             }
         };
     }

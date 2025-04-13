@@ -12,6 +12,9 @@ namespace Notion.Client
         [JsonProperty("caption")]
         public IEnumerable<RichTextBase> Caption { get; set; }
 
+        /// <summary>
+        /// The name of the file block, as shown in the Notion UI. Note that the UI may auto-append .pdf or other extensions.
+        /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
 
