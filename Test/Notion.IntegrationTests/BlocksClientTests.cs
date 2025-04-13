@@ -437,7 +437,10 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                     fileBlock.HasChildren.Should().BeFalse();
 
                     var file = fileBlock.File.Should().NotBeNull().And.BeOfType<ExternalFile>().Subject;
+
+                    // NOTE: The name of the file block, as shown in the Notion UI. Note that the UI may auto-append .pdf or other extensions.
                     file.Name.Should().Be("Test file name.jpg");
+
                     file.External.Should().NotBeNull();
                     file.External.Url.Should().Be("https://www.iaspaper.net/wp-content/uploads/2017/09/TNEA-Online-Application.jpg");
                     file.Caption.Should().NotBeNull().And.ContainSingle()
