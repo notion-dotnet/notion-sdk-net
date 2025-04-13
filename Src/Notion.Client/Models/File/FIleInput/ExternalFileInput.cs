@@ -8,6 +8,7 @@ namespace Notion.Client
         [JsonProperty("external")]
         public Data External { get; set; }
 
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         public IEnumerable<RichTextBaseInput> Caption { get; set; }
