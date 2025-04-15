@@ -18,5 +18,16 @@ namespace Notion.Client
             CreateTokenRequest createTokenRequest,
             CancellationToken cancellationToken = default
         );
+        
+        /// <summary>
+        /// Revokes an access token.
+        /// </summary>
+        /// <param name="revokeTokenRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<CreateTokenResponse> RevokeTokenAsync(
+            RevokeTokenRequest revokeTokenRequest,
+            CancellationToken cancellationToken = default
+        );
     }
 }
