@@ -12,19 +12,11 @@ namespace Notion.Client
         {
             var body = (IRevokeTokenBodyParameters)revokeTokenRequest;
 
-            var response = await _client.PostAsync<HttpResponseMessage>(
+            await _client.PostAsync<HttpResponseMessage>(
                 ApiEndpoints.AuthenticationUrls.RevokeToken(),
                 body,
                 cancellationToken: cancellationToken
             );
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new NotionApiException(response.StatusCode,
-                    null,
-                    "None success status code returned from revoke endpoint"
-                );
-            }
         }
     }
 }
