@@ -1,4 +1,3 @@
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,9 +17,5 @@ namespace Notion.Client
                 cancellationToken: cancellationToken
             );
         }
-    }
-
-    internal class RevokeTokenResponse
-    {
     }
 }
