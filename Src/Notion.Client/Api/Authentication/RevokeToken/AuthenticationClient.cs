@@ -12,11 +12,15 @@ namespace Notion.Client
         {
             var body = (IRevokeTokenBodyParameters)revokeTokenRequest;
 
-            await _client.PostAsync<HttpResponseMessage>(
+            await _client.PostAsync<RevokeTokenResponse>(
                 ApiEndpoints.AuthenticationUrls.RevokeToken(),
                 body,
                 cancellationToken: cancellationToken
             );
         }
+    }
+
+    internal class RevokeTokenResponse
+    {
     }
 }
