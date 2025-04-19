@@ -14,9 +14,6 @@
 [![Publish Code](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/publish-code.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/publish-code.yml)
 [![CodeQL](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/notion-dotnet/notion-sdk-net/actions/workflows/codeql-analysis.yml)
 
-[![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/notion-dotnet/notion-sdk-net)](https://lgtm.com/projects/g/notion-dotnet/notion-sdk-net/alerts/?mode=list)
-[![LGTM Grade](https://img.shields.io/lgtm/grade/csharp/github/notion-dotnet/notion-sdk-net)](https://lgtm.com/projects/g/notion-dotnet/notion-sdk-net/alerts/?mode=list)
-
 [![GitHub last commit](https://img.shields.io/github/last-commit/notion-dotnet/notion-sdk-net)]()
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/notion-dotnet/notion-sdk-net)]()
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/notion-dotnet/notion-sdk-net)]()

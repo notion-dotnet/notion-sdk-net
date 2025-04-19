@@ -1,6 +1,0 @@
-extraction:
-  csharp:
-    index:
-      all_solutions: true
-      dotnet:
-        version: 6.0.400
