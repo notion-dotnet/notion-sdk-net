@@ -106,12 +106,29 @@ namespace Notion.Client
             using (var formData = new MultipartFormDataContent())
             {
                 var fileContent = new StreamContent(stream);
+
+                var mimeMapping = new Dictionary<string, string>
+                {
+                    {".jpg", "image/jpeg"},
+                    {".jpeg", "image/jpeg"},
+                    {".png", "image/png"},
+                    {".tif", "image/tiff"},
+                    {".tiff", "image/tiff"},
+                    {".gif", "image/gif"},
+                    {".svg", "image/svg+xml"}
+                };
+                
+                if (mimeMapping.TryGetValue(Path.GetExtension(filename).ToLower(), out var mapping))
+                {
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mapping);
+                }
                 formData.Add(fileContent, "file", filename);
 
-                var uploadResponse = await this.SendAsync(response.UploadUrl, HttpMethod.Post, attachContent: message =>
-                {
-                    message.Content = formData;
-                });
+                var uploadResponse = await this.SendAsync(response.UploadUrl, HttpMethod.Post,
+                    attachContent: message =>
+                    {
+                        message.Content = formData;
+                    });
                 return await uploadResponse.ParseStreamAsync<UploadResponse>(serializerSettings);
             }
         }

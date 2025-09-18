@@ -198,7 +198,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                         new RichTextText {Text = new Text {Content = "Test Page Title"}}
                     }
                 })
-            .AddProperty("Number", new NumberPropertyValue() {Number = 123})
+            .AddProperty("Number", new NumberPropertyValue {Number = 123})
             .AddProperty("Profile picture",
                 new FilesPropertyValue
                 {
@@ -208,6 +208,10 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                     }
                 }
             )
+            .AddPageContent(new ImageBlock
+            {
+                Image = new UploadingFile {FileUpload = new UploadingFile.Info {Id = upload.Id}}
+            })
             .Build();
 
         var page = await Client.Pages.CreateAsync(pagesCreateParameters);
