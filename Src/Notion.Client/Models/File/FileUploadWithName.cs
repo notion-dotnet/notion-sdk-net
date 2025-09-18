@@ -15,6 +15,5 @@ namespace Notion.Client
             [JsonProperty("id")]
             public Guid Id { get; set; }
         }
-        
     }
 }
