@@ -94,14 +94,19 @@ namespace Notion.Client
 
         public async Task<UploadResponse> Upload(string filePath, JsonSerializerSettings serializerSettings = null)
         {
+            var fileStream = File.OpenRead(filePath);
+            return await Upload(fileStream, Path.GetFileName(filePath), serializerSettings);
+        }
+        
+        public async Task<UploadResponse> Upload(Stream stream, string filename, JsonSerializerSettings serializerSettings = null)
+        {
             var response = await this.PostAsync<UploadResponse>("https://api.notion.com/v1/file_uploads",
                 new UploadRequest {Mode = "single_part"});
 
             using (var formData = new MultipartFormDataContent())
             {
-                var fileStream = File.OpenRead(filePath);
-                var fileContent = new StreamContent(fileStream);
-                formData.Add(fileContent, "file", Path.GetFileName(filePath));
+                var fileContent = new StreamContent(stream);
+                formData.Add(fileContent, "file", filename);
 
                 var uploadResponse = await this.SendAsync(response.UploadUrl, HttpMethod.Post, attachContent: message =>
                 {
