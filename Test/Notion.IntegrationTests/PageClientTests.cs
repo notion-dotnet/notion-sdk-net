@@ -53,7 +53,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                         }
                     }
                 },
-                { "Number", new NumberPropertySchema { Number = new Number { Format = "number" } } }
+                { "Number", new NumberPropertySchema { Number = new Number { Format = "number" } } },
                 {"Profile picture", new FilePropertySchema() { Files = new Dictionary<string, object>()}}
             },
             Parent = new ParentPageInput { PageId = _page.Id }
