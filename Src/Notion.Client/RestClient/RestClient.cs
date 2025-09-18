@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -90,6 +91,52 @@ namespace Notion.Client
         {
             await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null, cancellationToken);
         }
+
+        public async Task<UploadResponse> Upload(string filePath, JsonSerializerSettings serializerSettings = null)
+        {
+            var response = await this.PostAsync<UploadResponse>("https://api.notion.com/v1/file_uploads",
+                new UploadRequest {Mode = "single_part"});
+
+            using (var formData = new MultipartFormDataContent())
+            {
+                var fileStream = File.OpenRead(filePath);
+                var fileContent = new StreamContent(fileStream);
+                formData.Add(fileContent, "file", Path.GetFileName(filePath));
+
+                var uploadResponse = await this.SendAsync(response.UploadUrl, HttpMethod.Post, attachContent: message =>
+                {
+                    message.Content = formData;
+                });
+                return await uploadResponse.ParseStreamAsync<UploadResponse>(serializerSettings);
+            }
+        }
+        
+        public class UploadRequest
+        {
+            public string Mode { get; set; }
+        }
+
+        public class UploadResponse
+        {
+            public Guid Id { get; set; }
+            public string Object { get; set; }
+            [JsonProperty("created_time")]
+            public DateTime CreatedTime { get; set; }
+            [JsonProperty("last_edited_time")]
+            public DateTime LastEditedTime { get; set; }
+            [JsonProperty("expiry_time")]
+            public DateTime ExpiryTime { get; set; }
+            [JsonProperty("upload_url")]
+            public string UploadUrl { get; set; }
+            public bool Archived { get; set; }
+            public string Status { get; set; }
+            public string Filename { get; set; }
+            [JsonProperty("content_type")]
+            public string ContentType { get; set; }
+            [JsonProperty("request_id")]
+            public Guid RequestId { get; set; }
+        }
+
 
         private static ClientOptions MergeOptions(ClientOptions options)
         {

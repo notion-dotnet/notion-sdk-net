@@ -35,5 +35,7 @@ namespace Notion.Client
             IDictionary<string, string> queryParams = null,
             IDictionary<string, string> headers = null,
             CancellationToken cancellationToken = default);
+
+        Task<RestClient.UploadResponse> Upload(string filePath, JsonSerializerSettings serializerSettings = null);
     }
 }
