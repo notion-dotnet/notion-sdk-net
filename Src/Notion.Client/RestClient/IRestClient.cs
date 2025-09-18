@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -35,5 +36,8 @@ namespace Notion.Client
             IDictionary<string, string> queryParams = null,
             IDictionary<string, string> headers = null,
             CancellationToken cancellationToken = default);
+
+        Task<RestClient.UploadResponse> Upload(string filePath, JsonSerializerSettings serializerSettings = null);
+        Task<RestClient.UploadResponse> Upload(Stream stream, string filename, JsonSerializerSettings serializerSettings = null);
     }
 }
