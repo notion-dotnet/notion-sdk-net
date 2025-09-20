@@ -20,6 +20,7 @@ namespace Notion.Client
             IEnumerable<KeyValuePair<string, string>> queryParams = null,
             IDictionary<string, string> headers = null,
             JsonSerializerSettings serializerSettings = null,
+            IBasicAuthenticationParameters basicAuthenticationParameters = null,
             CancellationToken cancellationToken = default);
 
         Task<T> PatchAsync<T>(

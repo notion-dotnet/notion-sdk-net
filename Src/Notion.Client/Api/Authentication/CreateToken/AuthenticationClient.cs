@@ -9,11 +9,13 @@ namespace Notion.Client
             CreateTokenRequest createTokenRequest,
             CancellationToken cancellationToken = default)
         {
-            var body = (ICreateTokenBodyParameters)createTokenRequest;
+            ICreateTokenBodyParameters body = createTokenRequest;
+            IBasicAuthenticationParameters basicAuth = createTokenRequest;
 
             return await _client.PostAsync<CreateTokenResponse>(
                 ApiEndpoints.AuthenticationUrls.CreateToken(),
                 body,
+                basicAuthenticationParameters: basicAuth,
                 cancellationToken: cancellationToken
             );
         }
