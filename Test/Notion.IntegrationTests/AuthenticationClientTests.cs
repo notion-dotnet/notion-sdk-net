@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Notion.IntegrationTests;
 
-public class AuthenticationTests : IntegrationTestBase
+public class AuthenticationClientTests : IntegrationTestBase
 {
     private readonly string _clientId = GetEnvironmentVariableRequired("NOTION_CLIENT_ID");
     private readonly string _clientSecret = GetEnvironmentVariableRequired("NOTION_CLIENT_SECRET");
