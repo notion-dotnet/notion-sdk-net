@@ -10,6 +10,7 @@
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="17.11.35325.10" />
+    <PackageReference Include="Moq.AutoMock" Version="3.5.0" />
     <PackageReference Include="WireMock.Net" Version="1.4.19" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">

@@ -29,5 +29,16 @@ namespace Notion.Client
             RevokeTokenRequest revokeTokenRequest,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// Get a token's active status, scope, and issued time.
+        /// </summary>
+        /// <param name="introspectTokenRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IntrospectTokenResponse> IntrospectTokenAsync(
+            IntrospectTokenRequest introspectTokenRequest,
+            CancellationToken cancellationToken = default
+        );
     }
 }

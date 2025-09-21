@@ -27,7 +27,46 @@ public class AuthenticationClientTests : IntegrationTestBase
         // Assert
         Assert.NotNull(response);
         Assert.NotNull(response.AccessToken);
-        
+
+        // revoke token
+        await Client.AuthenticationClient.RevokeTokenAsync(new RevokeTokenRequest
+        {
+            Token = response.AccessToken,
+            ClientId = _clientId,
+            ClientSecret = _clientSecret
+        });
+    }
+
+    [Fact]
+    public async Task Introspect_token()
+    {
+        // Arrange
+        var createRequest = new CreateTokenRequest
+        {
+            Code = "036822b2-62c1-42f4-95ea-0153e69cc20e",
+            ClientId = _clientId,
+            ClientSecret = _clientSecret,
+            RedirectUri = "https://localhost:5001",
+        };
+
+        // Act
+        var response = await Client.AuthenticationClient.CreateTokenAsync(createRequest);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotNull(response.AccessToken);
+
+        // introspect token
+        var introspectResponse = await Client.AuthenticationClient.IntrospectTokenAsync(new IntrospectTokenRequest
+        {
+            Token = response.AccessToken,
+            ClientId = _clientId,
+            ClientSecret = _clientSecret
+        });
+
+        Assert.NotNull(introspectResponse);
+        Assert.True(introspectResponse.IsActive);
+
         // revoke token
         await Client.AuthenticationClient.RevokeTokenAsync(new RevokeTokenRequest
         {
