@@ -40,7 +40,7 @@ public class AuthenticationClientTests
         // Arrange
         var request = new IntrospectTokenRequest
         {
-            Token = null,
+            Token = token,
             ClientId = "validClientId",
             ClientSecret = "validClientSecret"
         };
