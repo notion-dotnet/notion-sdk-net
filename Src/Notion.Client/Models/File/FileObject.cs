@@ -6,6 +6,7 @@ namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "type")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UploadedFile), "file")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(UploadingFile), "file_upload")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ExternalFile), "external")]
     public abstract class FileObject : IPageIcon
     {
