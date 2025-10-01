@@ -10,5 +10,4 @@ namespace Notion.Client
 
         public string ClientSecret { get; set; }
     }
-
 }

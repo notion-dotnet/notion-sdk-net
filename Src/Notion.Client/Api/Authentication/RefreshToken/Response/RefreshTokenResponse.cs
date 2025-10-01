@@ -51,6 +51,5 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("workspace_id")]
         public string WorkspaceId { get; set; }
-
     }
 }

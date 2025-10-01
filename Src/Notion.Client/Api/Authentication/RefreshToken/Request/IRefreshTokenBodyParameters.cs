@@ -16,5 +16,4 @@ namespace Notion.Client
         [JsonProperty("refresh_token")]
         string RefreshToken { get; set; }
     }
-
 }

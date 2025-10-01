@@ -36,5 +36,4 @@ namespace Notion.Client
             return response;
         }
     }
-
 }
