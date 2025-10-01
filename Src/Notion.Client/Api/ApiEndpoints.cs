@@ -137,6 +137,7 @@
             public static string CreateToken() => "/v1/oauth/token";
             public static string RevokeToken() => "/v1/oauth/revoke";
             public static string IntrospectToken() => "/v1/oauth/introspect";
+            public static string RefreshToken() => "/v1/oauth/token";
         }
     }
 }
