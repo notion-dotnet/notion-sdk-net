@@ -40,5 +40,16 @@ namespace Notion.Client
             IntrospectTokenRequest introspectTokenRequest,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// Refreshes an access token, generating a new access token and new refresh token.
+        /// </summary>
+        /// <param name="refreshTokenRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<RefreshTokenResponse> RefreshTokenAsync(
+            RefreshTokenRequest refreshTokenRequest,
+            CancellationToken cancellationToken = default
+        );
     }
 }
