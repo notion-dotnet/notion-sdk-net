@@ -53,7 +53,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                         }
                     }
                 },
-                { "Number", new NumberPropertySchema { Number = new Number { Format = "number" } } }
+                { "Number", new NumberPropertySchema { Number = new Number { Format = "number" } } },
+                {"Profile picture", new FilePropertySchema() { Files = new Dictionary<string, object>()}}
             },
             Parent = new ParentPageInput { PageId = _page.Id }
         };
@@ -177,6 +178,64 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
             var titleProperty = (TitlePropertyItem)p;
 
             titleProperty.Title.PlainText.Should().Be("Test Page Title");
+        });
+    }
+    
+    [Fact]
+    public async Task Test_CanUploadAndSetProfilePicture()
+    {
+        // Arrange
+        var upload = await Client.RestClient.Upload("/Users/kkuepper/Pictures/Scan.jpeg");
+
+        // Act
+        var pagesCreateParameters = PagesCreateParametersBuilder
+            .Create(new DatabaseParentInput {DatabaseId = _database.Id})
+            .AddProperty("Name",
+                new TitlePropertyValue
+                {
+                    Title = new List<RichTextBase>
+                    {
+                        new RichTextText {Text = new Text {Content = "Test Page Title"}}
+                    }
+                })
+            .AddProperty("Number", new NumberPropertyValue {Number = 123})
+            .AddProperty("Profile picture",
+                new FilesPropertyValue
+                {
+                    Files = new List<FileObjectWithName>
+                    {
+                        new FileUploadWithName {FileUpload = new FileUploadWithName.Info {Id = upload.Id}}
+                    }
+                }
+            )
+            .AddPageContent(new ImageBlock
+            {
+                Image = new UploadingFile {FileUpload = new UploadingFile.Info {Id = upload.Id}}
+            })
+            .Build();
+
+        var page = await Client.Pages.CreateAsync(pagesCreateParameters);
+        
+        var property = await Client.Pages.RetrievePagePropertyItemAsync(new RetrievePropertyItemParameters
+        {
+            PageId = page.Id,
+            PropertyId = "Profile picture"
+        });
+
+        // Assert
+        property.Should().NotBeNull();
+        property.Should().BeOfType<FilesPropertyItem>();
+
+        var listProperty = (FilesPropertyItem)property;
+
+        listProperty.Type.Should().NotBeNull();
+
+        listProperty.Files.Should().SatisfyRespectively(p =>
+        {
+            p.Should().BeOfType<UploadedFileWithName>();
+            var fileWithName = (UploadedFileWithName)p;
+
+            fileWithName.Name.Should().Be("Scan.jpeg");
         });
     }
 
