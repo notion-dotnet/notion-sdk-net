@@ -453,4 +453,31 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         mention.Date.Start.Should().NotBeNull();
         mention.Date.End.Should().BeNull();
     }
+    
+    [Fact]
+    public async Task Verify_CanCreateAndLoadPageWithCover()
+    {
+        // Arrange
+        var externalImageUrl = "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800";
+
+        var updatedPage = await Client.Pages.UpdateAsync(_page.Id,
+            new PagesUpdateParameters
+            {
+                Cover = new ExternalPageCoverRequest
+                {
+                    External = new ExternalPageCoverRequest.Info {Url = externalImageUrl}
+                }
+            });
+
+        // Act
+        var page = await Client.Pages.RetrieveAsync(updatedPage.Id);
+
+        // Assert
+        Assert.NotNull(page);
+        Assert.NotNull(page.Cover);
+        Assert.Equal("external", page.Cover.Type);
+        var externalCover = Assert.IsType<ExternalPageCover>(page.Cover);
+        Assert.NotNull(externalCover.External);
+        Assert.NotNull(externalCover.External.Url);
+    }
 }
