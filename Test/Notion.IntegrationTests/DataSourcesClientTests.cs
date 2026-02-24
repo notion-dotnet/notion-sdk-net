@@ -215,17 +215,136 @@ namespace Notion.IntegrationTests
             Assert.True(updateResponse.Properties.ContainsKey("Item Status"));
             Assert.True(updateResponse.Properties.ContainsKey("Name"));
         }
+        
+        // add tests for update
+        [Fact]
+        public async Task UpdateDataSource_CanAddProperty()
+        {
+            // Arrange
+            var propertyName = "Test Property";
+            var desiredId = "asdf";
+            var database = await CreateDatabaseWithAPageAsync("Test Data Source DB to add property");
+
+            var createRequest = new CreateDataSourceRequest
+            {
+                Parent = new DatabaseParentRequest {DatabaseId = database.Id},
+                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
+                {
+                    {
+                        "Name",
+                        new TitleDataSourcePropertyConfigRequest
+                        {
+                            Description = "The name of the data source",
+                            Title = new Dictionary<string, object>()
+                        }
+                    }
+                },
+                Title = new List<RichTextBaseInput>
+                {
+                    new RichTextTextInput {Text = new Text {Content = "Initial Data Source"}}
+                }
+            };
+
+            var createResponse = await Client.DataSources.CreateAsync(createRequest);
+
+            var updateRequest = new UpdateDataSourceRequest
+            {
+                DataSourceId = createResponse.Id,
+                Title = new List<RichTextBaseInput>
+                {
+                    new RichTextTextInput { Text = new Text { Content = "Updated Data Source" } }
+                },
+                Properties = new Dictionary<string, IUpdatePropertyConfigurationRequest>
+                {
+                    {
+                        propertyName,
+                        new UpdatePropertyConfigurationRequest<RichTextDataSourcePropertyConfigRequest>
+                        {
+                            Name = propertyName,
+                            PropertyRequest = new RichTextDataSourcePropertyConfigRequest
+                            {
+                                Description = "added rich text",
+                                RichText = new Dictionary<string, object>()
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Act
+            var updateResponse = await Client.DataSources.UpdateAsync(updateRequest);
+
+            // Assert
+            Assert.NotNull(updateResponse);
+            Assert.Equal("Updated Data Source", updateResponse.Title.OfType<RichTextText>().First().Text.Content);
+            Assert.Equal(2, updateResponse.Properties.Count);
+            Assert.True(updateResponse.Properties.ContainsKey("Name"));
+            Assert.True(updateResponse.Properties.ContainsKey(propertyName));
+            var property = updateResponse.Properties[propertyName];
+        }
 
         // write test for query
         [Fact]
         public async Task QueryDataSourceAsync_ShouldReturnResults()
         {
             // Arrange
-            var databaseId = "29ee2842ccb5802397b8fdf6fed5ac93"; // TODO: Create a test database and set its ID here
+            var databaseId = "2557ae0e115480e19a21f56ef36ad6a1";
             var dataSourceId = await CreateAndGetDatasourceIdAsync(databaseId);
             var queryRequest = new QueryDataSourceRequest
             {
                 DataSourceId = dataSourceId,
+            };
+
+            // Act
+            var queryResponse = await Client.DataSources.QueryAsync(queryRequest);
+
+            // Assert
+            Assert.NotNull(queryResponse);
+            Assert.NotNull(queryResponse.Results);
+        }
+        
+        [Fact]
+        public async Task QueryDataSourceAsync_ForNewPage()
+        {
+            // Arrange
+            var databaseId = "2557ae0e115480e19a21f56ef36ad6a1";
+            var dataSourceId = await CreateAndGetDatasourceIdAsync(databaseId);
+            var queryRequest = new QueryDataSourceRequest
+            {
+                DataSourceId = dataSourceId,
+            };
+
+            var page = await Client.Pages.CreateAsync(new PagesCreateParameters
+            {
+                Parent = new DataSourceParentRequest {DataSourceId = dataSourceId},
+                Icon = new EmojiPageIconRequest{Emoji = "🏗️"},
+                Properties = new Dictionary<string, PropertyValue>
+                {
+                    {
+                        "Name",
+                        new TitlePropertyValue {Title = [new RichTextText {Text = new Text {Content = "hello"}}]}
+                    }
+                }
+            });
+            
+            // Act
+            var queryResponse = await Client.DataSources.QueryAsync(queryRequest);
+
+            // Assert
+            Assert.NotNull(queryResponse);
+            Assert.NotNull(queryResponse.Results);
+            Assert.Contains(page.Id, queryResponse.Results.Select(x => x.Id));
+        }
+        
+        [Fact]
+        public async Task QueryDataSourceAsync_ShouldReturnResults2()
+        {
+            // Arrange
+            var dataSourceId = "24e7ae0e-1154-8026-a2d5-000b7df0f007";
+            var queryRequest = new QueryDataSourceRequest
+            {
+                DataSourceId = dataSourceId,
+                PageSize = 7
             };
 
             // Act
