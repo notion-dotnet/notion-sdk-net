@@ -26,6 +26,13 @@ namespace Notion.IntegrationTests
         }
 
         [Fact]
+        public async Task CanLoadDatasourceWithIcon()
+        {
+            var db = await Client.DataSources.RetrieveAsync(
+                new RetrieveDataSourceRequest {DataSourceId = "32e7ae0e-1154-8011-8950-000bf24b9d2c"});
+        }
+
+        [Fact]
         public async Task CreateDataSource_ShouldReturnSuccess()
         {
             // Arrange
