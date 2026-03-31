@@ -1,0 +1,177 @@
+name: Auto-publish Draft Release
+
+on:
+  # schedule:
+  #   # Run daily at 11 PM UTC - end of day
+  #   - cron: '0 23 * * *'
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      force_publish:
+        description: 'Force publish even if no significant changes'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  check-and-publish-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get draft release info
+        id: draft-info
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get all releases including drafts
+            const { data: releases } = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 10
+            });
+            
+            // Find the draft release
+            const draftRelease = releases.find(release => release.draft);
+            
+            if (!draftRelease) {
+              console.log('No draft release found');
+              core.setOutput('has-draft', 'false');
+              return;
+            }
+            
+            console.log(`Found draft release: ${draftRelease.name || draftRelease.tag_name}`);
+            console.log(`Draft body preview: ${draftRelease.body?.substring(0, 200)}...`);
+            
+            // Check if draft has meaningful content
+            const body = draftRelease.body || '';
+            
+            // Check for "no changes" indicators
+            const hasNoChanges = body.includes('🤷 No notable changes') || 
+                               body.includes('No changes yet') ||
+                               body.includes('_No changes yet_');
+            
+            // Check for categorized changes  
+            const hasFeatures = body.includes('🚀 Features');
+            const hasBugFixes = body.includes('🐛 Bug Fixes');
+            const hasMaintenance = body.includes('🧰 Maintenance');
+            const hasDocs = body.includes('📚 Documentation');
+            const hasSecurity = body.includes('🔒 Security');
+            const hasPerformance = body.includes('⚡ Performance');
+            const hasTests = body.includes('🧪 Tests');
+            const hasDependencies = body.includes('📦 Dependencies');
+            const hasOtherChanges = body.includes('🔧 Other Changes');
+            
+            const hasCategorizedChanges = hasFeatures || hasBugFixes || hasMaintenance || 
+                                        hasDocs || hasSecurity || hasPerformance || 
+                                        hasTests || hasDependencies || hasOtherChanges;
+            
+            // Check if there are any PR references
+            const hasPRs = body.includes('#') && body.includes('@');
+            
+            // Check if content is substantial (more than just template)
+            const hasSubstantialContent = body.trim().length > 150;
+            
+            const shouldPublish = !hasNoChanges && (hasCategorizedChanges || hasPRs || hasSubstantialContent);
+            
+            console.log(`Draft analysis:`);
+            console.log(`- Has "no changes" indicator: ${hasNoChanges}`);
+            console.log(`- Has categorized changes: ${hasCategorizedChanges}`);
+            console.log(`- Has PR references: ${hasPRs}`);
+            console.log(`- Has substantial content: ${hasSubstantialContent}`);
+            console.log(`- Should publish: ${shouldPublish}`);
+            
+            core.setOutput('has-draft', 'true');
+            core.setOutput('draft-id', draftRelease.id.toString());
+            core.setOutput('draft-name', draftRelease.name || draftRelease.tag_name || 'Draft Release');
+            core.setOutput('should-publish', shouldPublish.toString());
+            core.setOutput('content-preview', body.substring(0, 500));
+
+      - name: Generate version tag
+        id: version
+        if: steps.draft-info.outputs.has-draft == 'true' && (steps.draft-info.outputs.should-publish == 'true' || github.event.inputs.force_publish == 'true')
+        run: |
+          # Extract VersionPrefix from csproj
+          VERSION_PREFIX=$(grep -oPm1 '(?<=<VersionPrefix>)[^<]+' Src/Notion.Client/Notion.Client.csproj)
+          
+          # Get current date in MM.dd.yyyy format
+          BUILD_DATE=$(date +'%m.%d.%Y')
+          
+          # Check if we already have a release today by looking for existing tags
+          EXISTING_TAGS=$(git tag -l "v${VERSION_PREFIX}-*${BUILD_DATE}" | wc -l)
+          SERIAL=$((EXISTING_TAGS + 1))
+          
+          # Generate version following your pattern: 5.0.0-preview-1.12.25.2025
+          VERSION_TAG="v${VERSION_PREFIX}-${SERIAL}.${BUILD_DATE}"
+          RELEASE_NAME="${VERSION_PREFIX}-${SERIAL}.${BUILD_DATE}"
+          
+          echo "version-tag=${VERSION_TAG}" >> $GITHUB_OUTPUT
+          echo "release-name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
+          echo "version-prefix=${VERSION_PREFIX}" >> $GITHUB_OUTPUT
+          echo "build-date=${BUILD_DATE}" >> $GITHUB_OUTPUT
+          echo "serial=${SERIAL}" >> $GITHUB_OUTPUT
+          
+          echo "Generated version: ${RELEASE_NAME}"
+
+      - name: Publish draft release
+        id: publish
+        if: steps.version.outputs.version-tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const draftId = '${{ steps.draft-info.outputs.draft-id }}';
+            const versionTag = '${{ steps.version.outputs.version-tag }}';
+            const releaseName = '${{ steps.version.outputs.release-name }}';
+            
+            console.log(`Publishing draft release ${draftId} as ${releaseName} with tag ${versionTag}`);
+            
+            // Update and publish the draft release
+            const { data: release } = await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: draftId,
+              tag_name: versionTag,
+              name: releaseName,
+              draft: false,
+              prerelease: false
+            });
+            
+            console.log(`✅ Published release: ${release.name}`);
+            console.log(`🔗 Release URL: ${release.html_url}`);
+            console.log(`📦 This will trigger publish-code.yml workflow for NuGet publishing`);
+            
+            core.setOutput('published', 'true');
+            core.setOutput('release-url', release.html_url);
+            core.setOutput('release-id', release.id.toString());
+            
+            return release;
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Auto-publish Draft Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.draft-info.outputs.has-draft }}" == "true" ]; then
+            echo "📝 **Draft Release Found**: ${{ steps.draft-info.outputs.draft-name }}" >> $GITHUB_STEP_SUMMARY
+            echo "🔍 **Content Analysis**: Should publish = ${{ steps.draft-info.outputs.should-publish }}" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "${{ steps.publish.outputs.published }}" == "true" ]; then
+              echo "✅ **Status**: Published as ${{ steps.version.outputs.release-name }}" >> $GITHUB_STEP_SUMMARY
+              echo "🔗 **URL**: ${{ steps.publish.outputs.release-url }}" >> $GITHUB_STEP_SUMMARY
+              echo "📦 **Next**: publish-code.yml will handle NuGet publishing" >> $GITHUB_STEP_SUMMARY
+              echo "🔄 **Future**: Release Drafter will create new draft on next PR merge" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "⏭️ **Status**: Skipped - draft has no meaningful changes" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ **Status**: No draft release found" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ github.event.inputs.force_publish }}" == "true" ]; then
+            echo "⚠️ **Note**: Force publish was enabled" >> $GITHUB_STEP_SUMMARY
+          fi
