@@ -1,4 +1,4 @@
-using JsonSubTypes;
+﻿using JsonSubTypes;
 using Newtonsoft.Json;
 
 namespace Notion.Client
