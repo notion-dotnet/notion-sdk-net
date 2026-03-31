@@ -122,7 +122,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         assert.Invoke(updatedBlock, Client);
     }
 
-    private static IEnumerable<object[]> BlockData()
+    public static IEnumerable<object[]> BlockData()
     {
         return new List<object[]>
         {

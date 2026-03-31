@@ -62,6 +62,73 @@ namespace Notion.IntegrationTests
             Assert.True(response.Properties.ContainsKey("Name"));
             Assert.Equal("The name of the data source", response.Properties["Name"].Description);
         }
+        
+        [Fact]
+        public async Task DataSource_CanQueryPages()
+        {
+            // Arrange
+            var titlePropertyName = "Name";
+            var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
+            var request = new CreateDataSourceRequest
+            {
+                Parent = new DatabaseParentRequest
+                {
+                    DatabaseId = database.Id
+                },
+                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
+                {
+                    {
+                        titlePropertyName,
+                        new TitleDataSourcePropertyConfigRequest {
+                            Description = "The name of the data source",
+                            Title = new Dictionary<string, object>()
+                        }
+                    }
+                },
+                Title = new List<RichTextBaseInput>
+                {
+                    new RichTextTextInput {  Text =  new Text { Content = "Test Data Source" } }
+                }
+            };
+            var dataSource = await Client.DataSources.CreateAsync(request);
+            var page = await Client.Pages.CreateAsync(new PagesCreateParameters
+            {
+                Children = new List<IBlock>(),
+                Parent = new DataSourceParentRequest
+                {
+                    DataSourceId = dataSource.Id
+                },
+                Properties = new Dictionary<string, PropertyValue>
+                {
+                    {titlePropertyName, new TitlePropertyValue {Title = [new RichTextText {Text = new Text {Content = "hello"}}]}}
+                }
+            });
+            var otherPage = await Client.Pages.CreateAsync(new PagesCreateParameters
+            {
+                Children = new List<IBlock>(),
+                Parent = new DataSourceParentRequest
+                {
+                    DataSourceId = dataSource.Id
+                },
+                Properties = new Dictionary<string, PropertyValue>
+                {
+                    {titlePropertyName, new TitlePropertyValue {Title = [new RichTextText {Text = new Text {Content = "xxx"}}]}}
+                }
+            });
+            
+            // Act
+            var queryResult = await Client.DataSources.QueryAsync(new QueryDataSourceRequest
+            {
+                DataSourceId = dataSource.Id,
+                Filter = new TitleFilter(titlePropertyName, startsWith: "he")
+            });
+
+            // Assert
+            Assert.NotNull(page);
+            Assert.True(queryResult.Results.OfType<Page>().Any());
+            Assert.Contains(page.Id, queryResult.Results.Select(x => x.Id));
+            Assert.DoesNotContain(otherPage.Id, queryResult.Results.Select(x => x.Id));
+        }
 
         // add tests for update
         [Fact]
