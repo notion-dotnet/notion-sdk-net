@@ -16,7 +16,7 @@ namespace Notion.Client
     {
         private readonly ClientOptions _options;
 
-        protected readonly JsonSerializerSettings DefaultSerializerSettings = new()
+        internal static readonly JsonSerializerSettings DefaultSerializerSettings = new()
         {
             NullValueHandling = NullValueHandling.Ignore,
             ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
