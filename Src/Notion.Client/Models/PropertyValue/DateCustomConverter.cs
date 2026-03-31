@@ -21,10 +21,10 @@ namespace Notion.Client
 
             var date = new Date
             {
-                Start = ParseDateTime(jsonObject.Start, out bool includeTime),
-                End = ParseDateTime(jsonObject.End, out _),
+                Start = ParseDateTime(jsonObject.Start, out bool startIncludeTime),
+                End = ParseDateTime(jsonObject.End, out bool endIncludeTime),
                 TimeZone = jsonObject.TimeZone,
-                IncludeTime = includeTime,
+                IncludeTime = startIncludeTime || endIncludeTime,
             };
 
             return date;
@@ -45,14 +45,14 @@ namespace Notion.Client
             {
                 string startFormat = value.IncludeTime ? DateTimeFormat : DateFormat;
                 writer.WritePropertyName("start");
-                writer.WriteValue(value.Start.Value.ToString(startFormat, CultureInfo.InvariantCulture));
+                writer.WriteValue(value.Start.Value.ToUniversalTime().ToString(startFormat, CultureInfo.InvariantCulture));
             }
 
             if (value.End.HasValue)
             {
                 string endFormat = value.IncludeTime ? DateTimeFormat : DateFormat;
                 writer.WritePropertyName("end");
-                writer.WriteValue(value.End.Value.ToString(endFormat, CultureInfo.InvariantCulture));
+                writer.WriteValue(value.End.Value.ToUniversalTime().ToString(endFormat, CultureInfo.InvariantCulture));
             }
 
             if (!string.IsNullOrEmpty(value.TimeZone))
@@ -64,7 +64,7 @@ namespace Notion.Client
             writer.WriteEndObject();
         }
 
-        private static DateTime? ParseDateTime(string dateTimeString, out bool includeTime)
+        private static DateTimeOffset? ParseDateTime(string dateTimeString, out bool includeTime)
         {
             includeTime = false;
 
@@ -75,7 +75,7 @@ namespace Notion.Client
 
             includeTime = dateTimeString.Contains("T") || dateTimeString.Contains(" ");
 
-            return DateTimeOffset.Parse(dateTimeString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).UtcDateTime;
+            return DateTimeOffset.Parse(dateTimeString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
         }
     }
 }

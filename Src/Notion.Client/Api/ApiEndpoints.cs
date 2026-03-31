@@ -136,6 +136,27 @@
         {
             public static string CreateToken() => "/v1/oauth/token";
             public static string RevokeToken() => "/v1/oauth/revoke";
+            public static string IntrospectToken() => "/v1/oauth/introspect";
+            public static string RefreshToken() => "/v1/oauth/token";
+        }
+
+        public static class FileUploadsApiUrls
+        {
+            public static string Create() => "/v1/file_uploads";
+            public static string Send(string fileUploadId) => $"/v1/file_uploads/{fileUploadId}/send";
+            public static string Complete(string fileUploadId) => $"/v1/file_uploads/{fileUploadId}/complete";
+            public static string List => "/v1/file_uploads";
+            public static string Retrieve(IRetrieveFileUploadPathParameters pathParameters) => $"/v1/file_uploads/{pathParameters.FileUploadId}";
+        }
+
+        public static class DataSourcesApiUrls
+        {
+            private const string BasePath = "/v1/data_sources";
+            public static string Retrieve(IRetrieveDataSourcePathParameters pathParameters) => $"{BasePath}/{pathParameters.DataSourceId}";
+            internal static string CreateDataSource() => BasePath;
+            internal static string Update(IUpdateDataSourcePathParameters pathParameters) => $"{BasePath}/{pathParameters.DataSourceId}";
+            internal static string ListDataSourceTemplates(IListDataSourceTemplatesPathParameters pathParameters) => $"/v1/data-sources/{pathParameters.DataSourceId}/templates";
+            internal static string Query(IQueryDataSourcePathParameters pathParameters) => $"{BasePath}/{pathParameters.DataSourceId}/query";
         }
     }
 }

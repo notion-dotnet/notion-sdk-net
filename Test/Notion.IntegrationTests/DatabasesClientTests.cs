@@ -16,7 +16,7 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
     {
         _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = ParentPageId }
+                new PageParentRequest { PageId = ParentPageId }
             ).Build()
         );
     }
@@ -26,84 +26,9 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
         await Client.Pages.UpdateAsync(_page.Id, new PagesUpdateParameters { InTrash = true });
     }
 
-    [Fact]
-    public async Task QueryDatabase()
-    {
-        // Arrange
-        var createdDatabase = await CreateDatabaseWithAPageAsync("Test List");
-
-        // Act
-        var response = await Client.Databases.QueryAsync(createdDatabase.Id, new DatabasesQueryParameters());
-
-        // Assert
-        response.Results.Should().NotBeNull();
-        var page = response.Results.Should().ContainSingle().Subject.As<Page>();
-
-        page.Properties["Name"].As<TitlePropertyValue>()
-            .Title.Cast<RichTextText>().First()
-            .Text.Content.Should().Be("Test Title");
-    }
-
-    [Fact]
-    public async Task UpdateDatabaseRelationProperties()
-    {
-        // Arrange
-        var createdSourceDatabase = await CreateDatabaseWithAPageAsync("Test Relation Source");
-        var createdDestinationDatabase = await CreateDatabaseWithAPageAsync("Test Relation Destination");
-
-        // Act
-        var response = await Client.Databases.UpdateAsync(createdDestinationDatabase.Id,
-            new DatabasesUpdateParameters
-            {
-                Properties = new Dictionary<string, IUpdatePropertySchema>
-                {
-                    {
-                        "Single Relation",
-                        new RelationUpdatePropertySchema
-                        {
-                            Relation = new SinglePropertyRelation
-                            {
-                                DatabaseId = createdSourceDatabase.Id,
-                                SingleProperty = new Dictionary<string, object>()
-                            }
-                        }
-                    },
-                    {
-                        "Dual Relation",
-                        new RelationUpdatePropertySchema
-                        {
-                            Relation = new DualPropertyRelation
-                            {
-                                DatabaseId = createdSourceDatabase.Id,
-                                DualProperty = new DualPropertyRelation.Data()
-                            }
-                        }
-                    }
-                }
-            });
-
-        // Assert
-        response.Properties.Should().NotBeNull();
-
-        response.Properties.Should().ContainKey("Single Relation");
-        var singleRelation = response.Properties["Single Relation"].As<RelationProperty>().Relation;
-        singleRelation.Should().BeEquivalentTo(
-            new SinglePropertyRelation
-            {
-                DatabaseId = createdSourceDatabase.Id,
-                SingleProperty = new Dictionary<string, object>()
-            });
-
-        response.Properties.Should().ContainKey("Dual Relation");
-        var dualRelation = response.Properties["Dual Relation"].As<RelationProperty>().Relation;
-        dualRelation.DatabaseId.Should().Be(createdSourceDatabase.Id);
-        dualRelation.Type.Should().Be(RelationType.Dual);
-        dualRelation.Should().BeOfType<DualPropertyRelation>();
-    }
-
     private async Task<Database> CreateDatabaseWithAPageAsync(string databaseName)
     {
-        var createDbRequest = new DatabasesCreateParameters
+        var createDbRequest = new DatabasesCreateRequest
         {
             Title = new List<RichTextBaseInput>
             {
@@ -116,17 +41,20 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
                     }
                 }
             },
-            Properties = new Dictionary<string, IPropertySchema>
+            InitialDataSource = new InitialDataSourceRequest
             {
-                { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
+                {
+                    { "Name", new TitleDataSourcePropertyConfigRequest { Title = new Dictionary<string, object>() } },
+                }
             },
-            Parent = new ParentPageInput { PageId = _page.Id }
+            Parent = new PageParentOfDatabaseRequest { PageId = _page.Id }
         };
 
         var createdDatabase = await Client.Databases.CreateAsync(createDbRequest);
 
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = createdDatabase.Id })
+            .Create(new DatabaseParentRequest { DatabaseId = createdDatabase.Id })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
@@ -146,7 +74,7 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
     public async Task Verify_mention_date_property_parsed_properly()
     {
         // Arrange
-        var createDbRequest = new DatabasesCreateParameters
+        var createDbRequest = new DatabasesCreateRequest
         {
             Title = new List<RichTextBaseInput>
             {
@@ -170,11 +98,14 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
                     }
                 }
             },
-            Properties = new Dictionary<string, IPropertySchema>
+            InitialDataSource = new InitialDataSourceRequest
             {
-                { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
+                {
+                    { "Name", new TitleDataSourcePropertyConfigRequest { Title = new Dictionary<string, object>() } },
+                }
             },
-            Parent = new ParentPageInput { PageId = _page.Id }
+            Parent = new PageParentOfDatabaseRequest { PageId = _page.Id }
         };
 
         // Act
@@ -184,5 +115,48 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
         var mention = createdDatabase.Title.OfType<RichTextMention>().First().Mention;
         mention.Date.Start.Should().NotBeNull();
         mention.Date.End.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task UpdateDatabase()
+    {
+        // Arrange
+        var createdDatabase = await CreateDatabaseWithAPageAsync("Initial DB Name");
+        var updateRequest = new DatabasesUpdateRequest
+        {
+            DatabaseId = createdDatabase.Id,
+            Title = new List<RichTextBaseInput>
+            {
+                new RichTextTextInput
+                {
+                    Text = new Text
+                    {
+                        Content = "Updated DB Name",
+                        Link = null
+                    }
+                }
+            }
+        };
+
+        // Act
+        var updatedDatabase = await Client.Databases.UpdateAsync(updateRequest);
+
+        // Assert
+        updatedDatabase.Title.OfType<RichTextText>().First().Text.Content.Should().Be("Updated DB Name");
+    }
+
+    [Fact]
+    public async Task RetrieveDatabase()
+    {
+        // Arrange
+        var createdDatabase = await CreateDatabaseWithAPageAsync("Retrieve Test DB");
+
+        // Act
+        var retrievedDatabase = await Client.Databases.RetrieveAsync(createdDatabase.Id);
+
+        // Assert
+        retrievedDatabase.Id.Should().Be(createdDatabase.Id);
+        retrievedDatabase.Title.OfType<RichTextText>().First().Text.Content.Should().Be("Retrieve Test DB");
+        retrievedDatabase.DataSources.Should().ContainSingle();
     }
 }

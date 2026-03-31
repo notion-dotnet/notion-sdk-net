@@ -6,7 +6,7 @@ namespace Notion.Client
     public interface IPagesCreateBodyParameters
     {
         [JsonProperty("parent")]
-        IPageParentInput Parent { get; set; }
+        IParentOfPageRequest Parent { get; set; }
 
         [JsonProperty("properties")]
         IDictionary<string, PropertyValue> Properties { get; set; }
@@ -15,9 +15,9 @@ namespace Notion.Client
         IList<IBlock> Children { get; set; }
 
         [JsonProperty("icon")]
-        IPageIcon Icon { get; set; }
+        IPageIconRequest Icon { get; set; }
 
         [JsonProperty("cover")]
-        FileObject Cover { get; set; }
+        IPageCoverRequest Cover { get; set; }
     }
 }

@@ -19,6 +19,10 @@ namespace Notion.Client
 
         ICommentsClient Comments { get; }
 
+        IFileUploadsClient FileUploads { get; }
+
+        IDataSourcesClient DataSources { get; }
+
         IRestClient RestClient { get; }
     }
 
@@ -32,7 +36,9 @@ namespace Notion.Client
             ISearchClient search,
             ICommentsClient comments,
             IBlocksClient blocks,
-            IAuthenticationClient authenticationClient)
+            IAuthenticationClient authenticationClient,
+            IFileUploadsClient fileUploadsClient,
+            IDataSourcesClient dataSourcesClient)
         {
             RestClient = restClient;
             Users = users;
@@ -42,6 +48,8 @@ namespace Notion.Client
             Comments = comments;
             Blocks = blocks;
             AuthenticationClient = authenticationClient;
+            FileUploads = fileUploadsClient;
+            DataSources = dataSourcesClient;
         }
 
         public IAuthenticationClient AuthenticationClient { get; }
@@ -57,6 +65,10 @@ namespace Notion.Client
         public IBlocksClient Blocks { get; }
 
         public ICommentsClient Comments { get; }
+
+        public IFileUploadsClient FileUploads { get; }
+
+        public IDataSourcesClient DataSources { get; }
 
         public IRestClient RestClient { get; }
     }

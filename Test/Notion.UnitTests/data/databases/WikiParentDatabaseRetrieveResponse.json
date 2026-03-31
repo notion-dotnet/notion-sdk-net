@@ -1,0 +1,69 @@
+﻿{
+    "object": "database",
+    "id": "7g82e3a3-2c13-07e8-h7d9-d36cab1fd6f9",
+    "cover": null,
+    "icon": null,
+    "created_time": "2025-11-11T09:29:00.000Z",
+    "created_by": {
+        "object": "user",
+        "id": "641217ad-5167-4955-a206-f512e67214k7"
+    },
+    "last_edited_by": {
+        "object": "user",
+        "id": "641217ad-5167-4955-a206-f512e67214k7"
+    },
+    "last_edited_time": "2025-11-20T02:27:00.000Z",
+    "title": [
+        {
+            "type": "text",
+            "text": {
+                "content": "Database within Wiki page",
+                "link": null
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            },
+            "plain_text": "Database within Wiki page",
+            "href": null
+        }
+    ],
+    "description": [],
+    "is_inline": true,
+    "properties": {
+        "Text": {
+            "id": "N%5EPy",
+            "name": "Text",
+            "description": null,
+            "type": "rich_text",
+            "rich_text": {}
+        },
+        "Date": {
+            "id": "%5EE_%5C",
+            "name": "Date",
+            "description": null,
+            "type": "date",
+            "date": {}
+        },
+        "Name": {
+            "id": "title",
+            "name": "Name",
+            "description": null,
+            "type": "title",
+            "title": {}
+        }
+    },
+    "parent": {
+        "type": "database_id",
+        "database_id": "6a82a3a3-9c10-802c-9c8a-de6564be71fm"
+    },
+    "url": "https://www.notion.so/4f6ff1bac6d9d1a8e0831c93a3e28a2",
+    "public_url": null,
+    "archived": false,
+    "in_trash": false,
+    "request_id": "f1e6eg7c-8c27-4fc3-fab6-da6f311d1zh9"
+}

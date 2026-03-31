@@ -25,6 +25,6 @@ namespace Notion.Client
         /// <summary>
         ///     Information about the block's parent.
         /// </summary>
-        public IBlockParent Parent { get; set; }
+        public IParentOfBlock Parent { get; set; }
     }
 }

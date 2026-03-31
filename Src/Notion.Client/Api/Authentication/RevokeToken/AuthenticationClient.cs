@@ -9,11 +9,13 @@ namespace Notion.Client
             RevokeTokenRequest revokeTokenRequest,
             CancellationToken cancellationToken = default)
         {
-            var body = (IRevokeTokenBodyParameters)revokeTokenRequest;
+            IRevokeTokenBodyParameters body = revokeTokenRequest;
+            IBasicAuthenticationParameters basicAuth = revokeTokenRequest;
 
             await _client.PostAsync<RevokeTokenResponse>(
                 ApiEndpoints.AuthenticationUrls.RevokeToken(),
                 body,
+                basicAuthenticationParameters: basicAuth,
                 cancellationToken: cancellationToken
             );
         }

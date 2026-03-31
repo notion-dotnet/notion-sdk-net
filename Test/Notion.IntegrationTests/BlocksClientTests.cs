@@ -16,7 +16,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
     {
         _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = ParentPageId }
+                new PageParentRequest { PageId = ParentPageId }
             ).Build()
         );
     }
@@ -35,7 +35,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                 BlockId = _page.Id,
                 Children = new List<IBlockObjectRequest>
                 {
-                    new BreadcrumbBlockRequest { Breadcrumb = new BreadcrumbBlockRequest.Data() },
+                    new BreadcrumbBlockRequest { Parent= new PageParent() {PageId = Guid.NewGuid().ToString()}, Breadcrumb = new BreadcrumbBlockRequest.Data() },
                     new DividerBlockRequest { Divider = new DividerBlockRequest.Data() },
                     new TableOfContentsBlockRequest { TableOfContents = new TableOfContentsBlockRequest.Data() },
                     new CalloutBlockRequest
@@ -122,7 +122,7 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         assert.Invoke(updatedBlock, Client);
     }
 
-    private static IEnumerable<object[]> BlockData()
+    public static IEnumerable<object[]> BlockData()
     {
         return new List<object[]>
         {
@@ -338,22 +338,21 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
             {
                 new LinkToPageBlockRequest
                 {
-                    LinkToPage = new PageParent
+                    LinkToPage = new LinkPageToPage
                     {
-                        Type = ParentType.PageId,
                         PageId = "533578e3edf14c0a91a9da6b09bac3ee"
                     }
                 },
                 new LinkToPageUpdateBlock
                 {
-                    LinkToPage = new ParentPageInput { PageId = "3c357473a28149a488c010d2b245a589" }
+                    LinkToPage = new LinkPageToPage { PageId = "3c357473a28149a488c010d2b245a589" }
                 },
                 new Action<IBlock, INotionClient>((block, _) =>
                 {
                     Assert.NotNull(block);
                     var linkToPageBlock = Assert.IsType<LinkToPageBlock>(block);
 
-                    var pageParent = Assert.IsType<PageParent>(linkToPageBlock.LinkToPage);
+                    var pageParent = Assert.IsType<LinkPageToPage>(linkToPageBlock.LinkToPage);
 
                     // TODO: Currently the api doesn't allow to update the link_to_page block type
                     // This will change to updated ID once api start to support

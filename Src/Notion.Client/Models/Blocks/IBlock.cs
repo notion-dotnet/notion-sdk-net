@@ -51,6 +51,6 @@ namespace Notion.Client
         bool InTrash { get; set; }
 
         [JsonProperty("parent")]
-        IBlockParent Parent { get; set; }
+        IParentOfBlock Parent { get; set; }
     }
 }

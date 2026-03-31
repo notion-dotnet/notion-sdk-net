@@ -14,7 +14,7 @@ public class CommentsClientTests : IntegrationTestBase, IAsyncLifetime
     {
         _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = ParentPageId }
+                new PageParentRequest { PageId = ParentPageId }
             ).Build()
         );
     }
@@ -28,7 +28,7 @@ public class CommentsClientTests : IntegrationTestBase, IAsyncLifetime
     public async Task ShouldCreatePageComment()
     {
         // Arrange
-        var parameters = CreateCommentParameters.CreatePageComment(
+        var parameters = CreateCommentRequest.CreatePageComment(
             new ParentPageInput { PageId = _page.Id },
             new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "This is a comment" } } }
         );
@@ -56,7 +56,7 @@ public class CommentsClientTests : IntegrationTestBase, IAsyncLifetime
     {
         // Arrange
         var comment = await Client.Comments.CreateAsync(
-            CreateCommentParameters.CreatePageComment(
+            CreateCommentRequest.CreatePageComment(
                 new ParentPageInput { PageId = _page.Id },
                 new List<RichTextBaseInput>
                 {
@@ -67,7 +67,7 @@ public class CommentsClientTests : IntegrationTestBase, IAsyncLifetime
 
         // Act
         var response = await Client.Comments.CreateAsync(
-            CreateCommentParameters.CreateDiscussionComment(
+            CreateCommentRequest.CreateDiscussionComment(
                 comment.DiscussionId,
                 new List<RichTextBaseInput>
                 {

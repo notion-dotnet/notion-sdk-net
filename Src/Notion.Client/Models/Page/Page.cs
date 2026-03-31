@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Page : IObject, IObjectModificationData, IWikiDatabase
+    public class Page : IObject, IObjectModificationData, IQueryDataSourceResponseObject, ISearchResponseObject
     {
         /// <summary>
         ///     The parent of this page. Can be a database, page, or workspace.
         /// </summary>
         [JsonProperty("parent")]
-        public IPageParent Parent { get; set; }
+        public IParentOfPage Parent { get; set; }
 
         /// <summary>
         ///     Indicates whether the page is currently in the trash.
@@ -37,10 +37,10 @@ namespace Notion.Client
         public IPageIcon Icon { get; set; }
 
         /// <summary>
-        ///     Page cover image.
+        /// The cover image of the page.
         /// </summary>
         [JsonProperty("cover")]
-        public FileObject Cover { get; set; }
+        public IPageCover Cover { get; set; }
 
         /// <summary>
         ///     Object type

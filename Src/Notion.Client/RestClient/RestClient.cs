@@ -48,16 +48,69 @@ namespace Notion.Client
             IEnumerable<KeyValuePair<string, string>> queryParams = null,
             IDictionary<string, string> headers = null,
             JsonSerializerSettings serializerSettings = null,
+            IBasicAuthenticationParameters basicAuthenticationParameters = null,
             CancellationToken cancellationToken = default)
         {
             void AttachContent(HttpRequestMessage httpRequest)
             {
-                httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body, DefaultSerializerSettings),
-                    Encoding.UTF8, "application/json");
+                if (body == null)
+                {
+                    return;
+                }
+
+                var jsonObjectString = JsonConvert.SerializeObject(body, DefaultSerializerSettings);
+                httpRequest.Content = new StringContent(jsonObjectString, Encoding.UTF8, "application/json");
             }
 
-            var response = await SendAsync(uri, HttpMethod.Post, queryParams, headers, AttachContent,
-                cancellationToken);
+            var response = await SendAsync(
+                uri,
+                HttpMethod.Post,
+                queryParams,
+                headers,
+                AttachContent,
+                basicAuthenticationParameters,
+                cancellationToken
+            );
+
+            return await response.ParseStreamAsync<T>(serializerSettings);
+        }
+
+        public async Task<T> PostAsync<T>(
+            string uri,
+            ISendFileUploadFormDataParameters formData,
+            IEnumerable<KeyValuePair<string, string>> queryParams = null,
+            IDictionary<string, string> headers = null,
+            JsonSerializerSettings serializerSettings = null,
+            IBasicAuthenticationParameters basicAuthenticationParameters = null,
+            CancellationToken cancellationToken = default)
+        {
+            void AttachContent(HttpRequestMessage httpRequest)
+            {
+                var fileContent = new StreamContent(formData.File.Data);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(formData.File.ContentType);
+
+                var form = new MultipartFormDataContent
+                {
+                    { fileContent, "file", formData.File.FileName }
+                };
+
+                if (!string.IsNullOrEmpty(formData.PartNumber))
+                {
+                    form.Add(new StringContent(formData.PartNumber), "part_number");
+                }
+
+                httpRequest.Content = form;
+            }
+
+            var response = await SendAsync(
+                uri,
+                HttpMethod.Post,
+                queryParams,
+                headers,
+                AttachContent,
+                basicAuthenticationParameters,
+                cancellationToken
+            );
 
             return await response.ParseStreamAsync<T>(serializerSettings);
         }
@@ -77,7 +130,7 @@ namespace Notion.Client
             }
 
             var response = await SendAsync(uri, new HttpMethod("PATCH"), queryParams, headers, AttachContent,
-                cancellationToken);
+                basicAuthenticationParameters: null, cancellationToken);
 
             return await response.ParseStreamAsync<T>(serializerSettings);
         }
@@ -88,7 +141,8 @@ namespace Notion.Client
             IDictionary<string, string> headers = null,
             CancellationToken cancellationToken = default)
         {
-            await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null, cancellationToken);
+            await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null,
+                basicAuthenticationParameters: null, cancellationToken);
         }
 
         private static ClientOptions MergeOptions(ClientOptions options)
@@ -116,6 +170,7 @@ namespace Notion.Client
                     if (errorResponse.ErrorCode == NotionAPIErrorCode.RateLimited)
                     {
                         var retryAfter = response.Headers.RetryAfter.Delta;
+
                         return new NotionApiRateLimitException(
                             response.StatusCode,
                             errorResponse.ErrorCode,
@@ -139,6 +194,7 @@ namespace Notion.Client
             IEnumerable<KeyValuePair<string, string>> queryParams = null,
             IDictionary<string, string> headers = null,
             Action<HttpRequestMessage> attachContent = null,
+            IBasicAuthenticationParameters basicAuthenticationParameters = null,
             CancellationToken cancellationToken = default)
         {
             EnsureHttpClient();
@@ -146,7 +202,8 @@ namespace Notion.Client
             requestUri = AddQueryString(requestUri, queryParams);
 
             using var httpRequest = new HttpRequestMessage(httpMethod, requestUri);
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _options.AuthToken);
+
+            httpRequest.Headers.Authorization = CreateAuthenticationHeader(basicAuthenticationParameters);
             httpRequest.Headers.Add("Notion-Version", _options.NotionVersion);
 
             if (headers != null)
@@ -164,6 +221,13 @@ namespace Notion.Client
             }
 
             return response;
+        }
+
+        private AuthenticationHeaderValue CreateAuthenticationHeader(IBasicAuthenticationParameters basicAuth)
+        {
+            return basicAuth != null
+                ? new AuthenticationHeaderValue("Basic", HeaderHelpers.GetBasicAuthHeaderValue(basicAuth))
+                : new AuthenticationHeaderValue("Bearer", _options.AuthToken);
         }
 
         private static void AddHeaders(HttpRequestMessage request, IDictionary<string, string> headers)

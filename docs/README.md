@@ -10,6 +10,17 @@ A simple and easy to use client for the [Notion API](https://developers.notion.c
 dotnet add package Notion.Net
 ```
 
+**Note:** Default Notion-Version used by NuGet package versions
+| Package version | Notion-Version |
+| --- | --- |
+| 5.0.0-preview+ | 2025-09-03 |
+| 4.4.0+ | 2022-06-28 |
+| 4.3.0+ | 2022-06-28 | 
+| 4.0.0+ | 2022-06-28 | 
+| 3.0.0+ | 2022-02-22 |
+| 2.0.0+ | 2021-08-16 |
+| 1.0.0+ | 2021-05-13 |
+
 ## Usage
 
 > Before getting started, you need to [create an integration](https://www.notion.com/my-integrations) and find the token. You can learn more about authorization [here](https://developers.notion.com/docs/authorization).
@@ -33,70 +44,56 @@ var usersList = await client.Users.ListAsync();
 
 Library also provides extension method to register NotionClient with Microsoft dependency injection.
 
-```
+```csharp
 services.AddNotionClient(options => {
-  AuthToken = "<Token>"
+  options.AuthToken = "<Token>";
 });
 ```
 
-### Querying a database
-
-After you initialized your client and got an id of a database, you can query it for any contained pages. You can add filters and sorts to your request. Here is a simple example:
-
-```C#
-// Date filter for page property called "When"
-var dateFilter = new DateFilter("When", onOrAfter: DateTime.Now);
-
-var queryParams = new DatabasesQueryParameters { Filter = dateFilter };
-var pages = await client.Databases.QueryAsync(databaseId, queryParams);
-```
-
-Filters constructors contain all possible filter conditions, but you need to choose only condition per filter, all other should be `null`. So, for example this code would not filter by 2 conditions as one might expect:
-
-```C#
-var filter = new TextFilter("Name", startsWith: "Mr", contains: "John"); // WRONG FILTER USAGE
-
-```
-
-To use complex filters, use class `CompoundFilter`. It allows adding many filters and even nesting compound filters into each other (it works as filter group in Notion interface). Here is an example of filter that would return pages that were due in past month AND either had a certain assignee OR had high urgency:
-
-```C#
-var selectFilter = new SelectFilter("Urgency", equal: "High");
-var assigneeFilter = new PeopleFilter("Assignee", contains: "some-uuid");
-var dateFilter = new DateFilter("Due", pastMonth: new Dictionary<string, object>());
-
-var orGroup = new List<Filter> { assigneeFilter, selectFilter };
-var complexFiler = new CompoundFilter(
-    and: new List<Filter> { dateFilter, new CompoundFilter(or: orGroup) }
-);
-```
 
 ## Supported Endpoints
 
-- [x] Databases
-  - [x] Query a database
-  - [x] Create a database
-  - [x] Update database
+- [x] **Authentication**
+  - [x] Create access token
+  - [x] Revoke access token  
+  - [x] Introspect token (get token status and details)
+  - [x] Refresh access token
+- [x] **Databases**
   - [x] Retrieve a database
-- [x] Pages
+  - [x] Create a database
+  - [x] Update a database
+- [x] **Pages**
   - [x] Retrieve a page
   - [x] Create a page
-  - [x] Update page
+  - [x] Update page properties
   - [x] Retrieve page property item
-- [x] Blocks
+- [x] **Blocks**
   - [x] Retrieve a block
   - [x] Update a block
   - [x] Retrieve block children
   - [x] Append block children
   - [x] Delete a block
-- [x] Comments
+- [x] **Comments**
   - [x] Retrieve comments
   - [x] Create comment
-- [x] Users
-  - [x] Retrieve a User
+- [x] **Users**
+  - [x] Retrieve a user
   - [x] List all users
-  - [x] Retrieve your token's bot user
-- [x] Search
+  - [x] Retrieve your token's bot user (me)
+- [x] **Search**
+  - [x] Search across pages and databases
+- [x] **File Uploads**
+  - [x] Create file upload
+  - [x] Send file upload
+  - [x] Complete file upload (for multi-part uploads)
+  - [x] List file uploads
+  - [x] Retrieve file upload
+- [x] **Data Sources**
+  - [x] Retrieve a data source
+  - [x] Create a data source
+  - [x] Update a data source
+  - [x] Query a data source
+  - [x] List data source templates
 
 ## Enable internal logs
 The library make use of `ILoggerFactory` interface exposed by `Microsoft.Extensions.Logging`. Which allow you to have ability to enable the internal logs when developing application to get additional information.

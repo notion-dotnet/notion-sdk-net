@@ -18,12 +18,12 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         // Create a page
         _page = await Client.Pages.CreateAsync(
             PagesCreateParametersBuilder.Create(
-                new ParentPageInput { PageId = ParentPageId }
+                new PageParentRequest { PageId = ParentPageId }
             ).Build()
         );
 
         // Create a database
-        var createDbRequest = new DatabasesCreateParameters
+        var createDbRequest = new DatabasesCreateRequest
         {
             Title = new List<RichTextBaseInput>
             {
@@ -36,26 +36,29 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                     }
                 }
             },
-            Properties = new Dictionary<string, IPropertySchema>
+            InitialDataSource = new InitialDataSourceRequest
             {
-                { "Name", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
                 {
-                    "TestSelect",
-                    new SelectPropertySchema
+                    { "Name", new TitleDataSourcePropertyConfigRequest { Title = new Dictionary<string, object>() } },
                     {
-                        Select = new OptionWrapper<SelectOptionSchema>
+                        "TestSelect",
+                        new SelectDataSourcePropertyConfigRequest
                         {
-                            Options = new List<SelectOptionSchema>
+                            Select = new SelectDataSourcePropertyConfigRequest.SelectOptions
                             {
-                                new() { Name = "Red" },
-                                new() { Name = "Blue" }
+                                Options = new List<SelectOptionRequest>
+                                {
+                                    new() { Name = "Red" },
+                                    new() { Name = "Blue" }
+                                }
                             }
                         }
-                    }
-                },
-                { "Number", new NumberPropertySchema { Number = new Number { Format = "number" } } }
+                    },
+                    { "Number", new NumberDataSourcePropertyConfigRequest { Number = new NumberDataSourcePropertyConfigRequest.NumberFormat { Format = "number" } } }
+                }
             },
-            Parent = new ParentPageInput { PageId = _page.Id }
+            Parent = new PageParentOfDatabaseRequest { PageId = _page.Id }
         };
 
         _database = await Client.Databases.CreateAsync(createDbRequest);
@@ -70,7 +73,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
     public async Task CreateAsync_CreatesANewPage()
     {
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = _database.Id })
+            .Create(new DataSourceParentRequest { DataSourceId = _database.DataSources.First().DataSourceId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
@@ -85,8 +88,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
 
         page.Should().NotBeNull();
 
-        page.Parent.Should().BeOfType<DatabaseParent>().Which
-            .DatabaseId.Should().Be(_database.Id);
+        page.Parent.Should().BeOfType<DatasourceParent>().Which
+            .DataSourceId.Should().Be(_database.DataSources.First().DataSourceId);
 
         page.Properties.Should().ContainKey("Name");
         var pageProperty = page.Properties["Name"].Should().BeOfType<TitlePropertyValue>().Subject;
@@ -107,7 +110,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
     {
         // Arrange
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = _database.Id })
+            .Create(new DataSourceParentRequest { DataSourceId = _database.DataSources.First().DataSourceId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
@@ -126,8 +129,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         // Asserts
         page.Should().NotBeNull();
 
-        page.Parent.Should().BeOfType<DatabaseParent>().Which
-            .DatabaseId.Should().Be(_database.Id);
+        page.Parent.Should().BeOfType<DatasourceParent>().Which
+            .DataSourceId.Should().Be(_database.DataSources.First().DataSourceId);
 
         page.Properties.Should().ContainKey("Name");
         var titlePropertyValue = page.Properties["Name"].Should().BeOfType<TitlePropertyValue>().Subject;
@@ -143,7 +146,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
     {
         // Arrange
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = _database.Id })
+            .Create(new DataSourceParentRequest { DataSourceId = _database.DataSources.First().DataSourceId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
@@ -188,21 +191,34 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         // Add property Date property to database
         const string DatePropertyName = "Test Date Property";
 
-        var updateDatabaseParameters = new DatabasesUpdateParameters
+        var updateDatabaseParameters = new UpdateDataSourceRequest
         {
-            Properties = new Dictionary<string, IUpdatePropertySchema>
+            DataSourceId = _database.DataSources.First().DataSourceId,
+            Properties = new Dictionary<string, IUpdatePropertyConfigurationRequest>
             {
-                { "Name", new TitleUpdatePropertySchema { Title = new Dictionary<string, object>() } },
+                {
+                    "Name",
+                    new UpdatePropertyConfigurationRequest<TitleDataSourcePropertyConfigRequest> {
+                        PropertyRequest = new TitleDataSourcePropertyConfigRequest { Title = new Dictionary<string, object>() }
+                    }
+                },
                 {
                     "Test Date Property",
-                    new DateUpdatePropertySchema { Date = new Dictionary<string, object>() }
+                    new UpdatePropertyConfigurationRequest<DateDataSourcePropertyConfigRequest>
+                    {
+                        Name = DatePropertyName,
+                        PropertyRequest = new DateDataSourcePropertyConfigRequest
+                        {
+                            Date = new Dictionary<string, object>()
+                        }
+                    }
                 }
             }
         };
 
         // Create a page with the property having a date
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = _database.Id })
+            .Create(new DataSourceParentRequest { DataSourceId = _database.DataSources.First().DataSourceId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
@@ -217,12 +233,13 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
                     Date = new Date
                     {
                         Start = DateTimeOffset.Parse("2024-06-26T00:00:00.000+01:00"),
-                        End = DateTimeOffset.Parse("2025-12-08").Date
+                        End = DateTimeOffset.Parse("2025-12-08").Date,
+                        IncludeTime = true
                     }
                 })
             .Build();
 
-        await Client.Databases.UpdateAsync(_database.Id, updateDatabaseParameters);
+        await Client.DataSources.UpdateAsync(updateDatabaseParameters);
 
         var page = await Client.Pages.CreateAsync(pagesCreateParameters);
 
@@ -237,7 +254,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
 
         // Assert
         setDate?.Date?.Start.Should().Be(DateTimeOffset.Parse("2024-06-26T00:00:00.000+01:00"));
-        setDate?.Date?.End.Should().Be(DateTimeOffset.Parse("2025-12-08T00:00:00.000+01:00"));
+        setDate?.Date?.End.Should().Be(DateTimeOffset.Parse("2025-12-08").Date);
 
         var pageUpdateParameters = new PagesUpdateParameters
         {
@@ -265,7 +282,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
     {
         // Arrange
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = _database.Id })
+            .Create(new DataSourceParentRequest { DataSourceId = _database.DataSources.First().DataSourceId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
@@ -281,8 +298,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
 
         // Assert
         Assert.NotNull(page);
-        var pageParent = Assert.IsType<DatabaseParent>(page.Parent);
-        Assert.Equal(_database.Id, pageParent.DatabaseId);
+        var pageParent = Assert.IsType<DatasourceParent>(page.Parent);
+        Assert.Equal(_database.DataSources.First().DataSourceId, pageParent.DataSourceId);
 
         var titleProperty = (ListPropertyItem)await Client.Pages.RetrievePagePropertyItemAsync(
             new RetrievePropertyItemParameters
@@ -307,51 +324,56 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
     public async Task Bug_exception_when_attempting_to_set_select_property_to_nothing()
     {
         // Arrange
-        var databaseCreateRequest = new DatabasesCreateParameters
+        var databaseCreateRequest = new DatabasesCreateRequest
         {
-            Title =
-                new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "Test Database" } } },
-            Parent = new ParentPageInput() { PageId = _page.Id },
-            Properties = new Dictionary<string, IPropertySchema>
+            Title = new List<RichTextBaseInput>
             {
-                { "title", new TitlePropertySchema { Title = new Dictionary<string, object>() } },
+                new RichTextTextInput { Text = new Text { Content = "Test Database" } }
+            },
+            Parent = new PageParentOfDatabaseRequest() { PageId = _page.Id },
+            InitialDataSource = new InitialDataSourceRequest
+            {
+                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
                 {
-                    "Colors1",
-                    new SelectPropertySchema
+                    { "title", new TitleDataSourcePropertyConfigRequest { Title = new Dictionary<string, object>() } },
                     {
-                        Select = new OptionWrapper<SelectOptionSchema>
+                        "Colors1",
+                        new SelectDataSourcePropertyConfigRequest
                         {
-                            Options = new List<SelectOptionSchema>
+                            Select = new SelectDataSourcePropertyConfigRequest.SelectOptions
                             {
-                                new() { Name = "Red" },
-                                new() { Name = "Green" },
-                                new() { Name = "Blue" }
+                                Options = new List<SelectOptionRequest>
+                                {
+                                    new() { Name = "Red" },
+                                    new() { Name = "Green" },
+                                    new() { Name = "Blue" }
+                                }
                             }
                         }
-                    }
-                },
-                {
-                    "Colors2",
-                    new SelectPropertySchema
+                    },
                     {
-                        Select = new OptionWrapper<SelectOptionSchema>
+                        "Colors2",
+                        new SelectDataSourcePropertyConfigRequest
                         {
-                            Options = new List<SelectOptionSchema>
+                            Select = new SelectDataSourcePropertyConfigRequest.SelectOptions
                             {
-                                new() { Name = "Red" },
-                                new() { Name = "Green" },
-                                new() { Name = "Blue" }
+                                Options = new List<SelectOptionRequest>
+                                {
+                                    new() { Name = "Red" },
+                                    new() { Name = "Green" },
+                                    new() { Name = "Blue" }
+                                }
                             }
                         }
-                    }
-                },
+                    },
+                }
             }
         };
 
         var database = await Client.Databases.CreateAsync(databaseCreateRequest);
 
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = database.Id })
+            .Create(new DataSourceParentRequest { DataSourceId = database.DataSources.First().DataSourceId })
             .AddProperty("title",
                 new TitlePropertyValue
                 {
@@ -390,7 +412,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
     public async Task Verify_date_property_is_parsed_correctly_in_mention_object()
     {
         var pageRequest = PagesCreateParametersBuilder
-            .Create(new DatabaseParentInput { DatabaseId = _database.Id })
+            .Create(new DataSourceParentRequest { DataSourceId = _database.DataSources.First().DataSourceId })
             .AddProperty("Name",
                 new TitlePropertyValue
                 {
@@ -414,8 +436,8 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
 
         page.Should().NotBeNull();
 
-        page.Parent.Should().BeOfType<DatabaseParent>().Which
-            .DatabaseId.Should().Be(_database.Id);
+        page.Parent.Should().BeOfType<DatasourceParent>().Which
+            .DataSourceId.Should().Be(_database.DataSources.First().DataSourceId);
 
         page.Properties.Should().ContainKey("Name");
         var pageProperty = page.Properties["Name"].Should().BeOfType<TitlePropertyValue>().Subject;

@@ -8,15 +8,15 @@ namespace Notion.Client
     {
         private readonly IList<IBlock> _children = new List<IBlock>();
         private readonly Dictionary<string, PropertyValue> _properties = new();
-        private FileObject _cover;
-        private IPageIcon _icon;
-        private IPageParentInput _parent;
+        private IPageCoverRequest _cover;
+        private IPageIconRequest _icon;
+        private IParentOfPageRequest _parent;
 
         private PagesCreateParametersBuilder()
         {
         }
 
-        public static PagesCreateParametersBuilder Create(IPageParentInput parent)
+        public static PagesCreateParametersBuilder Create(IParentOfPageRequest parent)
         {
             return new PagesCreateParametersBuilder { _parent = parent };
         }
@@ -35,14 +35,14 @@ namespace Notion.Client
             return this;
         }
 
-        public PagesCreateParametersBuilder SetIcon(IPageIcon pageIcon)
+        public PagesCreateParametersBuilder SetIcon(IPageIconRequest pageIcon)
         {
             _icon = pageIcon;
 
             return this;
         }
 
-        public PagesCreateParametersBuilder SetCover(FileObject pageCover)
+        public PagesCreateParametersBuilder SetCover(IPageCoverRequest pageCover)
         {
             _cover = pageCover;
 

@@ -14,7 +14,7 @@ public class PageWithPageParentTests : IntegrationTestBase, IAsyncLifetime
     public async Task InitializeAsync()
     {
         var pagesCreateParameters = PagesCreateParametersBuilder
-            .Create(new ParentPageInput() { PageId = ParentPageId })
+            .Create(new PageParentRequest() { PageId = ParentPageId })
             .AddProperty("title",
                 new TitlePropertyValue
                 {

@@ -29,5 +29,27 @@ namespace Notion.Client
             RevokeTokenRequest revokeTokenRequest,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// Get a token's active status, scope, and issued time.
+        /// </summary>
+        /// <param name="introspectTokenRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IntrospectTokenResponse> IntrospectTokenAsync(
+            IntrospectTokenRequest introspectTokenRequest,
+            CancellationToken cancellationToken = default
+        );
+
+        /// <summary>
+        /// Refreshes an access token, generating a new access token and new refresh token.
+        /// </summary>
+        /// <param name="refreshTokenRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<RefreshTokenResponse> RefreshTokenAsync(
+            RefreshTokenRequest refreshTokenRequest,
+            CancellationToken cancellationToken = default
+        );
     }
 }

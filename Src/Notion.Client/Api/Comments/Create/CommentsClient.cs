@@ -5,11 +5,11 @@ namespace Notion.Client
 {
     public partial class CommentsClient
     {
-        public async Task<CreateCommentResponse> CreateAsync(CreateCommentParameters parameters, CancellationToken cancellationToken = default)
+        public async Task<Comment> CreateAsync(CreateCommentRequest parameters, CancellationToken cancellationToken = default)
         {
             var body = (ICreateCommentsBodyParameters)parameters;
 
-            return await _client.PostAsync<CreateCommentResponse>(
+            return await _client.PostAsync<Comment>(
                 ApiEndpoints.CommentsApiUrls.Create(),
                 body,
                 cancellationToken: cancellationToken

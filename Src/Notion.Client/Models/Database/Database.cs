@@ -4,41 +4,38 @@ using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public class Database : IObject, IObjectModificationData, IWikiDatabase
+    public class Database : IObject, IObjectModificationData
     {
+        public ObjectType Object => ObjectType.Database;
+
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The title of the database.
+        /// </summary>
         [JsonProperty("title")]
         public List<RichTextBase> Title { get; set; }
 
-        [JsonProperty("properties")]
-        public Dictionary<string, Property> Properties { get; set; }
-
-        [JsonProperty("parent")]
-        public IDatabaseParent Parent { get; set; }
-
-        [JsonProperty("icon")]
-        public IPageIcon Icon { get; set; }
-
-        [JsonProperty("cover")]
-        public FileObject Cover { get; set; }
+        /// <summary>
+        /// The description of the database.
+        /// </summary>
+        [JsonProperty("description")]
+        public IEnumerable<RichTextBase> Description { get; set; }
 
         /// <summary>
-        ///     The URL of the Notion database.
+        /// Parent of the database.
         /// </summary>
-        [JsonProperty("url")]
-        public string Url { get; set; }
-
-        [JsonProperty("in_trash")]
-        public bool InTrash { get; set; }
+        [JsonProperty("parent")]
+        public IParentOfDatabase Parent { get; set; }
 
         [JsonProperty("is_inline")]
         public bool IsInline { get; set; }
 
-        [JsonProperty("description")]
-        public IEnumerable<RichTextBase> Description { get; set; }
+        [JsonProperty("in_trash")]
+        public bool InTrash { get; set; }
 
-        public ObjectType Object => ObjectType.Database;
-
-        public string Id { get; set; }
+        [JsonProperty("is_locked")]
+        public bool IsLocked { get; set; }
 
         [JsonProperty("created_time")]
         public DateTime CreatedTime { get; set; }
@@ -51,7 +48,28 @@ namespace Notion.Client
         public PartialUser LastEditedBy { get; set; }
 
         /// <summary>
-        ///     The public page URL if the page has been published to the web. Otherwise, null.
+        /// The data sources associated with the database.
+        /// </summary>
+        [JsonProperty("data_sources")]
+        public IEnumerable<DataSourceReferenceResponse> DataSources { get; set; }
+
+        [JsonProperty("icon")]
+        public IPageIcon Icon { get; set; }
+
+        /// <summary>
+        /// The cover image of the database.
+        /// </summary>
+        [JsonProperty("cover")]
+        public IPageCover Cover { get; set; }
+
+        /// <summary>
+        ///     The URL of the Notion database.
+        /// </summary>
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// The public page URL if the page has been published to the web. Otherwise, null.
         /// </summary>
         [JsonProperty("public_url")]
         public string PublicUrl { get; set; }

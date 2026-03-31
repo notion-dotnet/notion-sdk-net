@@ -14,7 +14,7 @@ namespace Notion.Client
             public IEnumerable<RichTextBaseInput> RichText { get; set; }
 
             [JsonProperty("icon")]
-            public IPageIcon Icon { get; set; }
+            public IPageIconRequest Icon { get; set; }
         }
     }
 }

@@ -1,16 +1,140 @@
+# Release Drafter Configuration
+name-template: 'v$RESOLVED_VERSION 🚀'
+tag-template: 'v$RESOLVED_VERSION'
+
+# Include pre-releases when calculating changes
+include-pre-releases: true
+
 categories:
   - title: '🚀 Features'
     labels:
       - 'feature'
       - 'enhancement'
+      - 'new-feature'
   - title: '🐛 Bug Fixes'
     labels:
       - 'fix'
       - 'bugfix'
       - 'bug'
+      - 'hotfix'
   - title: '🧰 Maintenance'
-    label: 'chore'
+    labels:
+      - 'chore'
+      - 'maintenance' 
+      - 'refactor'
+      - 'config'
+  - title: '📚 Documentation'
+    labels:
+      - 'documentation'
+      - 'docs'
+      - 'readme'
+  - title: '🔒 Security'
+    labels:
+      - 'security'
+      - 'vulnerability'
+  - title: '⚡ Performance'
+    labels:
+      - 'performance'
+      - 'optimization'
+  - title: '🧪 Tests'
+    labels:
+      - 'test'
+      - 'tests'
+      - 'testing'
+  - title: '📦 Dependencies'
+    collapse-after: 5
+    labels:
+      - 'dependencies'
+      - 'dependency'
+      - 'deps'
+  - title: '🔧 Other Changes'
+    labels:
+      - '*' # Catch-all for unlabeled PRs
+
+# Exclude certain types from changelog
+exclude-labels:
+  - 'skip-changelog'
+  - 'no-changelog'
+  - 'duplicate'
+  - 'wontfix'
+  - 'invalid'
+
+# Version resolution based on labels
+version-resolver:
+  major:
+    labels:
+      - 'major'
+      - 'breaking-change'
+      - 'breaking'
+  minor:
+    labels:
+      - 'minor'
+      - 'feature'
+      - 'enhancement'
+  patch:
+    labels:
+      - 'patch'
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+      - 'hotfix'
+  default: patch
+
+# Detailed change template
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+change-title-escapes: '\<*_&'
+
+# Template for when there are no changes
+no-changes-template: '🤷 No notable changes in this release'
+
+# Main template with better structure
 template: |
-  ## Changes
+  ## What's Changed
 
   $CHANGES
+  
+  ---
+  
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+  
+  ## Contributors
+  
+  $CONTRIBUTORS
+
+# Autolabeler configuration for better categorization
+autolabeler:
+  - label: 'bug'
+    title:
+      - '/\b(fix|bug|issue)\b/i'
+    branch:
+      - '/^(fix|bugfix|hotfix)\/.+/'
+  - label: 'feature' 
+    title:
+      - '/\b(feat|feature|add|new)\b/i'
+    branch:
+      - '/^(feat|feature)\/.+/'
+  - label: 'documentation'
+    files:
+      - '*.md'
+      - 'docs/**/*'
+    title:
+      - '/\b(doc|docs|documentation)\b/i'
+  - label: 'test'
+    files:
+      - 'Test/**/*'
+      - '**/*test*'
+      - '**/*Test*'
+    title:
+      - '/\b(test|tests|testing)\b/i'
+  - label: 'chore'
+    title:
+      - '/\b(chore|maintenance|refactor|cleanup)\b/i'
+    branch:
+      - '/^(chore|maint|maintenance|refactor)\/.+/'
+  - label: 'dependencies'
+    files:
+      - '*.csproj'
+      - 'packages.lock.json'
+      - 'nuget.config'
+    title:
+      - '/\b(dep|deps|dependencies|dependency|upgrade|update)\b/i'

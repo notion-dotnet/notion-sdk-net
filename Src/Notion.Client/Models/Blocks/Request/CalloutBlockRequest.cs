@@ -17,7 +17,7 @@ namespace Notion.Client
             public IEnumerable<RichTextBase> RichText { get; set; }
 
             [JsonProperty("icon")]
-            public IPageIcon Icon { get; set; }
+            public IPageIconRequest Icon { get; set; }
 
             [JsonProperty("color")]
             [JsonConverter(typeof(StringEnumConverter))]

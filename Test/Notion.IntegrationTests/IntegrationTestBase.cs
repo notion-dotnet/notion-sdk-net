@@ -15,10 +15,13 @@ public abstract class IntegrationTestBase
 
         Client = NotionClientFactory.Create(options);
 
-        ParentPageId = Environment.GetEnvironmentVariable("NOTION_PARENT_PAGE_ID")
-                       ?? throw new InvalidOperationException("Parent page id is required.");
+        ParentPageId = GetEnvironmentVariableRequired("NOTION_PARENT_PAGE_ID");
+        ParentDatabaseId = GetEnvironmentVariableRequired("NOTION_PARENT_DATABASE_ID");
+    }
 
-        ParentDatabaseId = Environment.GetEnvironmentVariable("NOTION_PARENT_DATABASE_ID")
-                           ?? throw new InvalidOperationException("Parent database id is required.");
+    protected static string GetEnvironmentVariableRequired(string envName)
+    {
+        return Environment.GetEnvironmentVariable(envName) ??
+               throw new InvalidOperationException($"Environment variable '{envName}' is required.");
     }
 }
