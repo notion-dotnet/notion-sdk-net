@@ -12,7 +12,7 @@ namespace Notion.Client
 
         public class Data
         {
-            [JsonProperty("synced_from")]
+            [JsonProperty("synced_from", NullValueHandling = NullValueHandling.Include)]
             public SyncedFromBlockId SyncedFrom { get; set; }
 
             [JsonProperty("children")]
