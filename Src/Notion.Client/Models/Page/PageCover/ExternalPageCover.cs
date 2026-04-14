@@ -5,6 +5,7 @@ namespace Notion.Client
 {
     public class ExternalPageCover : IPageCover
     {
+        [JsonProperty("type")]
         public string Type { get; set; } = "external";
 
         [JsonProperty("external")]
