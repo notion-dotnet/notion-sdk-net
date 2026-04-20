@@ -24,5 +24,6 @@
         public const string Status = "status";
         public const string UniqueId = "unique_id";
         public const string Button = "button";
+        public const string Place = "place";
     }
 }

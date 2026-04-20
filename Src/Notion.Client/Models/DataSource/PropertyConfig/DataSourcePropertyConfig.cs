@@ -28,6 +28,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UrlDataSourcePropertyConfig), DataSourcePropertyTypes.Url)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UniqueIdDataSourcePropertyConfig), DataSourcePropertyTypes.UniqueId)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ButtonDataSourcePropertyConfig), DataSourcePropertyTypes.Button)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(PlaceDataSourcePropertyConfig), DataSourcePropertyTypes.Place)]
     public class DataSourcePropertyConfig
     {
         [JsonProperty("id")]
