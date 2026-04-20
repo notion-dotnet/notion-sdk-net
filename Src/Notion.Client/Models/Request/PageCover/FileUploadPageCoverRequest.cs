@@ -6,7 +6,7 @@ namespace Notion.Client
     {
         public string Type { get; set; } = PageCoverRequestTypes.FileUpload;
 
-        [JsonProperty("file")]
+        [JsonProperty(PageCoverRequestTypes.FileUpload)]
         public Info File { get; set; }
 
         public class Info
