@@ -32,6 +32,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UniqueIdPropertyValue), PropertyValueType.UniqueId)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ButtonPropertyValue), PropertyValueType.Button)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(VerificationPropertyValue), PropertyValueType.Verification)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(PlacePropertyValue), PropertyValueType.Place)]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty")]
     public class PropertyValue

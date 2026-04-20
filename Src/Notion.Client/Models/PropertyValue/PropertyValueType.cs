@@ -80,5 +80,8 @@ namespace Notion.Client
 
         [EnumMember(Value = "button")]
         Button,
+
+        [EnumMember(Value = "place")]
+        Place,
     }
 }
