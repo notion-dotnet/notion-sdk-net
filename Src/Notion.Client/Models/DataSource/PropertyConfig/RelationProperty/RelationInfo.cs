@@ -10,9 +10,6 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(DualPropertyRelationInfo), "dual_property")]
     public abstract class RelationInfo
     {
-        [JsonProperty("database_id")]
-        public string DatabaseId { get; set; }
-
         [JsonProperty("data_source_id")]
         public string DataSourceId { get; set; }
 

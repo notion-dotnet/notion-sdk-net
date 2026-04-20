@@ -79,18 +79,6 @@ namespace Notion.Client
         [JsonProperty("cover")]
         public IPageCover Cover { get; set; }
 
-        /// <summary>
-        /// The URL of the data source.
-        /// </summary>
-        [JsonProperty("url")]
-        public string Url { get; set; }
-
-        /// <summary>
-        /// The public page URL if the data source has been published to the web. Otherwise, null.
-        /// </summary>
-        [JsonProperty("public_url")]
-        public string PublicUrl { get; set; }
-
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
     }

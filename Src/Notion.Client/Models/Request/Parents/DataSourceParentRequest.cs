@@ -11,9 +11,6 @@ namespace Notion.Client
         [JsonProperty("data_source_id")]
         public string DataSourceId { get; set; }
 
-        [JsonProperty("database_id")]
-        public string DatabaseId { get; set; }
-
         /// <summary>
         /// Additional data for future compatibility
         /// If you encounter properties that are not yet supported, please open an issue on GitHub.
