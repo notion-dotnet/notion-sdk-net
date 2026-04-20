@@ -155,7 +155,7 @@
             public static string Retrieve(IRetrieveDataSourcePathParameters pathParameters) => $"{BasePath}/{pathParameters.DataSourceId}";
             internal static string CreateDataSource() => BasePath;
             internal static string Update(IUpdateDataSourcePathParameters pathParameters) => $"{BasePath}/{pathParameters.DataSourceId}";
-            internal static string ListDataSourceTemplates(IListDataSourceTemplatesPathParameters pathParameters) => $"/v1/data-sources/{pathParameters.DataSourceId}/templates";
+            internal static string ListDataSourceTemplates(IListDataSourceTemplatesPathParameters pathParameters) => $"/v1/data_sources/{pathParameters.DataSourceId}/templates";
             internal static string Query(IQueryDataSourcePathParameters pathParameters) => $"{BasePath}/{pathParameters.DataSourceId}/query";
         }
     }
