@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -150,7 +150,7 @@ public class DataSourcesClientTests
             DataSourceId = dataSourceId
         };
 
-        var expectedEndpoint = $"/v1/data-sources/{dataSourceId}/templates";
+        var expectedEndpoint = $"/v1/data_sources/{dataSourceId}/templates";
         var expectedQueryParams = new Dictionary<string, string>
         {
             { "name", null },
@@ -209,7 +209,7 @@ public class DataSourcesClientTests
             PageSize = pageSize
         };
 
-        var expectedEndpoint = $"/v1/data-sources/{dataSourceId}/templates";
+        var expectedEndpoint = $"/v1/data_sources/{dataSourceId}/templates";
         var expectedQueryParams = new Dictionary<string, string>
         {
             { "name", templateName },
@@ -261,7 +261,7 @@ public class DataSourcesClientTests
             DataSourceId = dataSourceId
         };
 
-        var expectedEndpoint = $"/v1/data-sources/{dataSourceId}/templates";
+        var expectedEndpoint = $"/v1/data_sources/{dataSourceId}/templates";
 
         _restClient
             .Setup(client => client.GetAsync<ListDataSourceTemplatesResponse>(
@@ -302,7 +302,7 @@ public class DataSourcesClientTests
             NextCursor = null
         };
 
-        var expectedEndpoint = $"/v1/data-sources/{dataSourceId}/templates";
+        var expectedEndpoint = $"/v1/data_sources/{dataSourceId}/templates";
         var expectedQueryParams = new Dictionary<string, string>
         {
             { "name", "Test Template" },
