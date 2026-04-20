@@ -76,6 +76,9 @@ namespace Notion.Client
         Button,
 
         [EnumMember(Value = "verification")]
-        Verification
+        Verification,
+
+        [EnumMember(Value = "place")]
+        Place
     }
 }
