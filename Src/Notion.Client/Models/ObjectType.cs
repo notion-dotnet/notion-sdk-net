@@ -24,5 +24,8 @@ namespace Notion.Client
 
         [EnumMember(Value = "data_source")]
         DataSource,
+
+        [EnumMember(Value = "page_markdown")]
+        PageMarkdown,
     }
 }

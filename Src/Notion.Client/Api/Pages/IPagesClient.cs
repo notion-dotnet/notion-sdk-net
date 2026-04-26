@@ -65,5 +65,16 @@ namespace Notion.Client
         /// </returns>
         Task<IPropertyItemObject> RetrievePagePropertyItemAsync(
             RetrievePropertyItemParameters retrievePropertyItemParameters, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///    Retrieves the content of a page as markdown. The markdown content is returned as a string in the markdown property of the response.
+        /// </summary>
+        /// <param name="request">Request parameters for retrieving the page as markdown</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Returns a <see cref="PageMarkdownResponse" /> containing the markdown content of the page</returns>
+        Task<PageMarkdownResponse> RetrieveAsMarkdownAsync(
+            RetrievePageAsMarkdownRequest request,
+            CancellationToken cancellationToken = default
+        );
     }
 }

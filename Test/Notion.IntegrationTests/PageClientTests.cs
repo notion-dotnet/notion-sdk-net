@@ -453,7 +453,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         mention.Date.Start.Should().NotBeNull();
         mention.Date.End.Should().BeNull();
     }
-    
+
     [Fact]
     public async Task Verify_CanCreateAndLoadPageWithCover()
     {
@@ -465,7 +465,7 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
             {
                 Cover = new ExternalPageCoverRequest
                 {
-                    External = new ExternalPageCoverRequest.Info {Url = externalImageUrl}
+                    External = new ExternalPageCoverRequest.Info { Url = externalImageUrl }
                 }
             });
 
@@ -479,5 +479,36 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         var externalCover = Assert.IsType<ExternalPageCover>(page.Cover);
         Assert.NotNull(externalCover.External);
         Assert.NotNull(externalCover.External.Url);
+    }
+
+    // add test to verify retrieve page as markdown endpoint works and returns the expected markdown content
+    [Fact]
+    public async Task RetrieveAsMarkdownAsync_Returns_Markdown_Content()
+    {
+        // Arrange
+        var pageRequest = PagesCreateParametersBuilder
+            .Create(new PageParentRequest { PageId = _page.Id })
+            .AddPageContent(new ParagraphBlock
+            {
+                Paragraph = new ParagraphBlock.Info
+                {
+                    RichText = new List<RichTextBase>
+                    {
+                        new RichTextText { Text = new Text { Content = "This is a test page." } }
+                    }
+                }
+            })
+            .Build();
+
+        var page = await Client.Pages.CreateAsync(pageRequest);
+
+        // Act
+        var markdownResponse = await Client.Pages.RetrieveAsMarkdownAsync(
+            new RetrievePageAsMarkdownRequest { PageId = page.Id });
+
+        // Assert
+        Assert.NotNull(markdownResponse);
+        Assert.NotNull(markdownResponse.Markdown);
+        Assert.Contains("This is a test page.", markdownResponse.Markdown);
     }
 }

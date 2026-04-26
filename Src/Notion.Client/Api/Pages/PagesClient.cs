@@ -7,7 +7,7 @@ using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
 {
-    public class PagesClient : IPagesClient
+    public partial class PagesClient : IPagesClient
     {
         private readonly IRestClient _client;
 
