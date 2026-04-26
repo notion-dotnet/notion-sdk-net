@@ -11,6 +11,7 @@ namespace Notion.Client
         private IPageCoverRequest _cover;
         private IPageIconRequest _icon;
         private IParentOfPageRequest _parent;
+        private string _markdown;
 
         private PagesCreateParametersBuilder()
         {
@@ -49,6 +50,13 @@ namespace Notion.Client
             return this;
         }
 
+        public PagesCreateParametersBuilder SetMarkdown(string markdown)
+        {
+            _markdown = markdown;
+
+            return this;
+        }
+
         public PagesCreateParameters Build()
         {
             return new PagesCreateParameters
@@ -58,6 +66,7 @@ namespace Notion.Client
                 Children = _children,
                 Icon = _icon,
                 Cover = _cover
+                Markdown = _markdown
             };
         }
     }

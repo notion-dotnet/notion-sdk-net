@@ -19,5 +19,8 @@ namespace Notion.Client
 
         [JsonProperty("cover")]
         IPageCoverRequest Cover { get; set; }
+
+        [JsonProperty("markdown")]
+        string Markdown { get; set; }
     }
 }
