@@ -105,6 +105,9 @@ namespace Notion.Client
         LinkPreview,
 
         [EnumMember(Value = "unsupported")]
-        Unsupported
+        Unsupported,
+
+        [EnumMember(Value = "transcription")]
+        Transcription,
     }
 }
