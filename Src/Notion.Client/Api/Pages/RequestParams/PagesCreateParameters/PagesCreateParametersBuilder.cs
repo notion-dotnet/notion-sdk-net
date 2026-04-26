@@ -65,7 +65,7 @@ namespace Notion.Client
                 Properties = _properties,
                 Children = _children,
                 Icon = _icon,
-                Cover = _cover
+                Cover = _cover,
                 Markdown = _markdown
             };
         }
