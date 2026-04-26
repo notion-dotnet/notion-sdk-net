@@ -13,7 +13,7 @@ namespace Notion.Client
         public IPageIconRequest Icon { get; set; }
 
         public IPageCoverRequest Cover { get; set; }
-        public string Markdown { get; set; }
 
+        public string Markdown { get; set; }
     }
 }
