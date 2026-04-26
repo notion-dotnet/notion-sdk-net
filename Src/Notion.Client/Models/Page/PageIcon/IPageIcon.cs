@@ -9,6 +9,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(CustomEmojiPageIcon), PageIconTypes.CustomEmoji)]
     [JsonSubtypes.KnownSubType(typeof(FilePageIcon), PageIconTypes.File)]
     [JsonSubtypes.KnownSubType(typeof(ExternalPageIcon), PageIconTypes.External)]
+    [JsonSubtypes.KnownSubType(typeof(IconPageIcon), PageIconTypes.Icon)]
     public interface IPageIcon
     {
         [JsonProperty("type")]
