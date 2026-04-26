@@ -79,25 +79,14 @@
 
         public static class PagesApiUrls
         {
-            public static string Create()
-            {
-                return "/v1/pages";
-            }
+            private const string BasePath = "/v1/pages";
+            public static string Create() => BasePath;
 
-            public static string Retrieve(string pageId)
-            {
-                return $"/v1/pages/{pageId}";
-            }
+            public static string Retrieve(string pageId) => $"{BasePath}/{pageId}";
 
-            public static string Update(string pageId)
-            {
-                return $"/v1/pages/{pageId}";
-            }
+            public static string Update(string pageId) => $"{BasePath}/{pageId}";
 
-            public static string UpdateProperties(string pageId)
-            {
-                return $"/v1/pages/{pageId}";
-            }
+            public static string UpdateProperties(string pageId) => $"{BasePath}/{pageId}";
 
             /// <summary>
             ///     Get the Uri <see cref="string" /> for retrieve page property item
@@ -105,10 +94,11 @@
             /// <param name="pageId">Identifier for a Notion Page</param>
             /// <param name="propertyId">Identifier for a Notion Property</param>
             /// <returns>Returns a Uri <see cref="string" /> for Retrieve page property item</returns>
-            public static string RetrievePropertyItem(string pageId, string propertyId)
-            {
-                return $"/v1/pages/{pageId}/properties/{propertyId}";
-            }
+            public static string RetrievePropertyItem(string pageId, string propertyId) =>
+                $"{BasePath}/{pageId}/properties/{propertyId}";
+
+            public static string RetrieveAsMarkdown(IRetrievePageAsMarkdownPathParameters pathParameters) =>
+                $"{BasePath}/{pathParameters.PageId}/markdown";
         }
 
         public static class SearchApiUrls
