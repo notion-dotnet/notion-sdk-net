@@ -67,6 +67,7 @@ services.AddNotionClient(options => {
   - [x] Create a page
   - [x] Update page properties
   - [x] Retrieve page property item
+  - [x] Retrieve page as markdown
 - [x] **Blocks**
   - [x] Retrieve a block
   - [x] Update a block
