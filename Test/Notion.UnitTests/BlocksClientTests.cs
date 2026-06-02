@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Newtonsoft.Json;
 using Notion.Client;
 using WireMock.ResponseBuilders;
 using Xunit;
@@ -126,6 +127,73 @@ public class BlocksClientTests : ApiTestBase
                 text.Text.Link.Url.Should().Be("https://en.wikipedia.org/wiki/Lacinato_kale");
             }
         );
+    }
+
+    [Fact]
+    public void AppendBlockChildren_Serializes_StartPosition()
+    {
+        var request = new BlockAppendChildrenRequest
+        {
+            BlockId = "parent-block-id",
+            Children = new List<IBlockObjectRequest>(),
+            Position = new StartBlockChildrenPositionRequest()
+        };
+
+        var json = JsonConvert.SerializeObject(new BlockAppendChildrenBodyParameters(request), RestClient.DefaultSerializerSettings);
+
+        json.Should().Contain(@"""position"":{""type"":""start""}");
+        json.Should().NotContain(@"""after"":");
+    }
+
+    [Fact]
+    public void AppendBlockChildren_Serializes_EndPosition()
+    {
+        var request = new BlockAppendChildrenRequest
+        {
+            BlockId = "parent-block-id",
+            Children = new List<IBlockObjectRequest>(),
+            Position = new EndBlockChildrenPositionRequest()
+        };
+
+        var json = JsonConvert.SerializeObject(new BlockAppendChildrenBodyParameters(request), RestClient.DefaultSerializerSettings);
+
+        json.Should().Contain(@"""position"":{""type"":""end""}");
+        json.Should().NotContain(@"""after"":");
+    }
+
+    [Fact]
+    public void AppendBlockChildren_Serializes_AfterBlockPosition()
+    {
+        var request = new BlockAppendChildrenRequest
+        {
+            BlockId = "parent-block-id",
+            Children = new List<IBlockObjectRequest>(),
+            Position = new AfterBlockChildrenPositionRequest
+            {
+                AfterBlock = new BlockChildrenPositionReference { Id = "child-block-id" }
+            }
+        };
+
+        var json = JsonConvert.SerializeObject(new BlockAppendChildrenBodyParameters(request), RestClient.DefaultSerializerSettings);
+
+        json.Should().Contain(@"""position"":{""type"":""after_block"",""after_block"":{""id"":""child-block-id""}}");
+        json.Should().NotContain(@"""after"":");
+    }
+
+    [Fact]
+    public async Task AppendBlockChildren_Throws_When_After_And_Position_Are_Both_Set()
+    {
+        var request = new BlockAppendChildrenRequest
+        {
+            BlockId = "parent-block-id",
+            Children = new List<IBlockObjectRequest>(),
+            After = "child-block-id",
+            Position = new EndBlockChildrenPositionRequest()
+        };
+
+        var act = async () => await _client.AppendChildrenAsync(request);
+
+        (await act.Should().ThrowAsync<System.ArgumentException>()).And.ParamName.Should().Be("Position");
     }
 
     [Fact]

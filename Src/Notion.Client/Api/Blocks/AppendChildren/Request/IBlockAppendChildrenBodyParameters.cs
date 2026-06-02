@@ -13,6 +13,12 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("after")]
         public string After { get; set; }
+
+        /// <summary>
+        ///     Controls where the new children should be inserted in the parent block.
+        /// </summary>
+        [JsonProperty("position")]
+        public IBlockChildrenPositionRequest Position { get; set; }
     }
 
     internal class BlockAppendChildrenBodyParameters : IBlockAppendChildrenBodyParameters
@@ -21,10 +27,13 @@ namespace Notion.Client
 
         public string After { get; set; }
 
+        public IBlockChildrenPositionRequest Position { get; set; }
+
         public BlockAppendChildrenBodyParameters(BlockAppendChildrenRequest request)
         {
             Children = request.Children;
             After = request.After;
+            Position = request.Position;
         }
     }
 }

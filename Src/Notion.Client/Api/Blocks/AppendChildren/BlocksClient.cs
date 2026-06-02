@@ -15,6 +15,11 @@ namespace Notion.Client
                 throw new ArgumentNullException(nameof(request.BlockId));
             }
 
+            if (!string.IsNullOrWhiteSpace(request.After) && request.Position != null)
+            {
+                throw new ArgumentException("After and Position cannot both be specified.", nameof(request.Position));
+            }
+
             var url = ApiEndpoints.BlocksApiUrls.AppendChildren(request.BlockId);
 
             var body = new BlockAppendChildrenBodyParameters(request);
