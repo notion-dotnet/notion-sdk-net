@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Newtonsoft.Json;
 using Notion.Client;
 using WireMock.ResponseBuilders;
 using Xunit;
@@ -75,6 +76,51 @@ public class PagesClientTests : ApiTestBase
         page.InTrash.Should().BeFalse();
         page.Parent.Should().NotBeNull();
         ((DatabaseParent)page.Parent).DatabaseId.Should().Be("3c357473-a281-49a4-88c0-10d2b245a589");
+    }
+
+    [Fact]
+    public void CreateAsync_Serializes_PageStartPosition()
+    {
+        var pagesCreateParameters = PagesCreateParametersBuilder
+            .Create(new PageParentRequest { PageId = "parent-page-id" })
+            .AddProperty(
+                "title",
+                new TitlePropertyValue
+                {
+                    Title = new List<RichTextBase> { new RichTextText { Text = new Text { Content = "Test" } } }
+                }
+            )
+            .SetPosition(new PageStartPositionRequest())
+            .Build();
+
+        var json = JsonConvert.SerializeObject((IPagesCreateBodyParameters)pagesCreateParameters, RestClient.DefaultSerializerSettings);
+
+        json.Should().Contain(@"""position"":{""type"":""page_start""}");
+    }
+
+    [Fact]
+    public void CreateAsync_Serializes_AfterBlockPosition()
+    {
+        var pagesCreateParameters = PagesCreateParametersBuilder
+            .Create(new PageParentRequest { PageId = "parent-page-id" })
+            .AddProperty(
+                "title",
+                new TitlePropertyValue
+                {
+                    Title = new List<RichTextBase> { new RichTextText { Text = new Text { Content = "Test" } } }
+                }
+            )
+            .SetPosition(
+                new AfterBlockPagePositionRequest
+                {
+                    AfterBlock = new AfterBlockReference { Id = "block-id" }
+                }
+            )
+            .Build();
+
+        var json = JsonConvert.SerializeObject((IPagesCreateBodyParameters)pagesCreateParameters, RestClient.DefaultSerializerSettings);
+
+        json.Should().Contain(@"""position"":{""type"":""after_block"",""after_block"":{""id"":""block-id""}}");
     }
 
     [Fact]

@@ -15,5 +15,7 @@ namespace Notion.Client
         public IPageCoverRequest Cover { get; set; }
 
         public string Markdown { get; set; }
+
+        public IPagePositionRequest Position { get; set; }
     }
 }

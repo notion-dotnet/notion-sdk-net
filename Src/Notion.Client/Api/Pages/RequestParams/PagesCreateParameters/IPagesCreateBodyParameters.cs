@@ -22,5 +22,8 @@ namespace Notion.Client
 
         [JsonProperty("markdown")]
         string Markdown { get; set; }
+
+        [JsonProperty("position")]
+        IPagePositionRequest Position { get; set; }
     }
 }
