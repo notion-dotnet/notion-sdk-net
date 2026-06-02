@@ -12,6 +12,7 @@ namespace Notion.Client
         private IPageIconRequest _icon;
         private IParentOfPageRequest _parent;
         private string _markdown;
+        private IPagePositionRequest _position;
 
         private PagesCreateParametersBuilder()
         {
@@ -57,6 +58,13 @@ namespace Notion.Client
             return this;
         }
 
+        public PagesCreateParametersBuilder SetPosition(IPagePositionRequest position)
+        {
+            _position = position;
+
+            return this;
+        }
+
         public PagesCreateParameters Build()
         {
             return new PagesCreateParameters
@@ -66,7 +74,8 @@ namespace Notion.Client
                 Children = _children,
                 Icon = _icon,
                 Cover = _cover,
-                Markdown = _markdown
+                Markdown = _markdown,
+                Position = _position
             };
         }
     }
