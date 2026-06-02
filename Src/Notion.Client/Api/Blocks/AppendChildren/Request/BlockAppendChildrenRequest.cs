@@ -8,6 +8,8 @@ namespace Notion.Client
 
         public string After { get; set; }
 
+        public IBlockChildrenPositionRequest Position { get; set; }
+
         public string BlockId { get; set; }
     }
 }
