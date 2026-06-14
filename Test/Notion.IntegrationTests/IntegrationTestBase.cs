@@ -11,7 +11,11 @@ public abstract class IntegrationTestBase
 
     protected IntegrationTestBase()
     {
-        var options = new ClientOptions { AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN") };
+        var options = new ClientOptions
+        {
+            AuthToken = Environment.GetEnvironmentVariable("NOTION_AUTH_TOKEN"),
+            RetryPolicy = new DefaultRetryPolicy()
+        };
 
         Client = NotionClientFactory.Create(options);
 
