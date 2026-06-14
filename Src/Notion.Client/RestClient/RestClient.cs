@@ -27,15 +27,25 @@ namespace Notion.Client
         public RestClient(ClientOptions options)
         {
             _options = MergeOptions(options);
-            _httpClient = ResolveHttpClient(options.HttpClient, _options.BaseUrl);
+            _httpClient = ResolveHttpClient(options.HttpClient, options.RetryPolicy, _options.BaseUrl);
         }
 
         /// <summary>
         /// Returns the <see cref="HttpClient"/> to use for all requests.
-        /// If the caller supplied one, it is used as-is (with <c>BaseAddress</c> set when absent).
-        /// Otherwise a default client backed by a <see cref="LoggingHandler"/> pipeline is created.
+        /// <para>
+        /// When <paramref name="provided"/> is supplied it is used as-is (only <c>BaseAddress</c> is set
+        /// if absent). <paramref name="retryPolicy"/> is ignored in this case — the caller owns the
+        /// pipeline and can add <see cref="RetryHandler"/> themselves.
+        /// </para>
+        /// <para>
+        /// When <paramref name="provided"/> is <c>null</c>, a default pipeline is built:
+        /// <c>RetryHandler (optional) → LoggingHandler → HttpClientHandler</c>.
+        /// </para>
         /// </summary>
-        private static HttpClient ResolveHttpClient(HttpClient provided, string baseUrl)
+        private static HttpClient ResolveHttpClient(
+            HttpClient provided,
+            IRetryPolicy retryPolicy,
+            string baseUrl)
         {
             if (provided != null)
             {
@@ -47,7 +57,13 @@ namespace Notion.Client
                 return provided;
             }
 
-            var pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
+            // Build the handler chain innermost-first.
+            DelegatingHandler pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
+
+            if (retryPolicy != null)
+            {
+                pipeline = new RetryHandler(retryPolicy) { InnerHandler = pipeline };
+            }
 
             return new HttpClient(pipeline) { BaseAddress = new Uri(baseUrl) };
         }

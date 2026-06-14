@@ -23,12 +23,17 @@ namespace Microsoft.Extensions.DependencyInjection
             // Register a named HttpClient managed by IHttpClientFactory.
             // IHttpClientFactory rotates the underlying HttpClientHandler periodically,
             // preventing stale DNS and socket exhaustion while keeping HttpClient reuse safe.
-            services
-                .AddHttpClient(Constants.HttpClientName, client =>
-                {
-                    client.BaseAddress = new Uri(clientOptions.BaseUrl ?? Constants.BaseUrl);
-                })
-                .AddHttpMessageHandler(() => new LoggingHandler());
+            var builder = services.AddHttpClient(Constants.HttpClientName, client =>
+            {
+                client.BaseAddress = new Uri(clientOptions.BaseUrl ?? Constants.BaseUrl);
+            });
+
+            if (clientOptions.RetryPolicy != null)
+            {
+                builder.AddHttpMessageHandler(() => new RetryHandler(clientOptions.RetryPolicy));
+            }
+
+            builder.AddHttpMessageHandler(() => new LoggingHandler());
 
             services.AddSingleton<INotionClient>(sp =>
             {
