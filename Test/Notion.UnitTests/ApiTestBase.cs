@@ -55,4 +55,13 @@ public class ApiTestBase : IDisposable
             .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
             .WithHeader("Notion-Version", Constants.DefaultNotionVersion, MatchBehaviour.AcceptOnMatch);
     }
+
+    protected IRequestBuilder CreateDeleteRequestBuilder(string path)
+    {
+        return Request.Create()
+            .WithPath(path)
+            .UsingDelete()
+            .WithHeader("Authorization", $"Bearer {ClientOptions.AuthToken}", MatchBehaviour.AcceptOnMatch)
+            .WithHeader("Notion-Version", Constants.DefaultNotionVersion, MatchBehaviour.AcceptOnMatch);
+    }
 }
