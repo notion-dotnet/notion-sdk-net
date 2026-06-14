@@ -8,6 +8,7 @@ namespace Notion.Client
     [JsonConverter(typeof(JsonSubtypes), "type")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(SinglePropertyRelationInfo), "single_property")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(DualPropertyRelationInfo), "dual_property")]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(SinglePropertyRelationInfo))]
     public abstract class RelationInfo
     {
         [JsonProperty("database_id")]

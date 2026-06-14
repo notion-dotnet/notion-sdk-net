@@ -8,6 +8,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UploadedFile), "file")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(NewFileUpload), "file_upload")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ExternalFile), "external")]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(FileObject))]
     public abstract class FileObject
     {
         [JsonProperty("caption")]

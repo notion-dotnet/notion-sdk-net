@@ -7,6 +7,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(LinkPageToPage), "page_id")]
     [JsonSubtypes.KnownSubType(typeof(LinkDatabaseToPage), "database_id")]
     [JsonSubtypes.KnownSubType(typeof(LinkCommentToPage), "comment_id")]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(LinkPageToPage))]
     public interface ILinkToPage
     {
         [JsonProperty("type")]
