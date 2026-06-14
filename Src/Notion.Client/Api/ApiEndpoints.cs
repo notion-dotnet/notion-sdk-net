@@ -100,6 +100,8 @@
             public static string RetrieveAsMarkdown(IRetrievePageAsMarkdownPathParameters pathParameters) =>
                 $"{BasePath}/{pathParameters.PageId}/markdown";
 
+            public static string UpdateMarkdown(string pageId) => $"{BasePath}/{pageId}/markdown";
+
             public static string Move(string pageId) => $"{BasePath}/{pageId}/move";
         }
 
