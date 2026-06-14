@@ -16,6 +16,12 @@ namespace Notion.Client
         /// or implement <see cref="IRetryPolicy"/> to supply a custom strategy (e.g. wrapping Polly).
         /// The retry logic is applied at the <c>RestClient</c> level, so it works regardless of whether
         /// <see cref="HttpClient"/> is provided externally or created internally.
+        /// <para>
+        /// <b>Avoid configuring retry in two places.</b> If the <see cref="HttpClient"/> you supply already
+        /// has retry behaviour in its pipeline (e.g. via Polly registered through
+        /// <see cref="System.Net.Http.IHttpClientFactory"/>), leave this property <c>null</c>.
+        /// Setting both results in nested retries.
+        /// </para>
         /// </summary>
         public IRetryPolicy RetryPolicy { get; set; }
 
