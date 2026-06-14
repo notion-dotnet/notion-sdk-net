@@ -8,6 +8,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(PageParent), "page_id")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(WorkspaceParent), "workspace")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(BlockParent), "block_id")]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(PageParent))]
     public interface IParentOfDatabase
     {
         [JsonProperty("type")]

@@ -6,6 +6,7 @@ namespace Notion.Client
     [JsonConverter(typeof(JsonSubtypes), "type")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(PageParent), ParentTypes.Page)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(BlockParent), ParentTypes.Block)]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(BlockParent))]
     public interface IParentOfComment
     {
         [JsonProperty("type")]
