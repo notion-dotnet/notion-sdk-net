@@ -1,22 +1,21 @@
-﻿using JsonSubTypes;
+using JsonSubTypes;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "object")]
-    [JsonSubtypes.KnownSubType(typeof(Page), ObjectType.Page)]
-    [JsonSubtypes.KnownSubType(typeof(Database), ObjectType.Database)]
-    [JsonSubtypes.KnownSubType(typeof(IBlock), ObjectType.Block)]
-    [JsonSubtypes.KnownSubType(typeof(User), ObjectType.User)]
-    [JsonSubtypes.KnownSubType(typeof(PageMarkdownResponse), ObjectType.PageMarkdown)]
+    [JsonSubtypes.KnownSubType(typeof(Page), ObjectType.PageValue)]
+    [JsonSubtypes.KnownSubType(typeof(Database), ObjectType.DatabaseValue)]
+    [JsonSubtypes.KnownSubType(typeof(IBlock), ObjectType.BlockValue)]
+    [JsonSubtypes.KnownSubType(typeof(User), ObjectType.UserValue)]
+    [JsonSubtypes.KnownSubType(typeof(PageMarkdownResponse), ObjectType.PageMarkdownValue)]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(NotionObject))]
     public interface IObject
     {
         [JsonProperty("id")]
         string Id { get; set; }
 
         [JsonProperty("object")]
-        [JsonConverter(typeof(StringEnumConverter))]
         ObjectType Object { get; }
     }
 }
