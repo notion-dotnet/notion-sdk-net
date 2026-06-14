@@ -76,5 +76,16 @@ namespace Notion.Client
             RetrievePageAsMarkdownRequest request,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        ///    Moves a page to a new parent. The parent can be a database or another page.
+        /// </summary>
+        /// <param name="request">Request parameters for moving the page</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Returns the updated <see cref="Page" /> after the move operation</returns>
+        Task<Page> MoveAsync(
+            MovePageRequest request,
+            CancellationToken cancellationToken = default
+        );
     }
 }
