@@ -1,19 +1,37 @@
-using System.Runtime.Serialization;
+using System;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     /// <summary>
-    /// Verification status values.
+    /// Represents the verification status of a Notion page.
+    /// New values introduced by Notion are preserved as-is rather than causing a deserialization failure.
     /// </summary>
-    public enum VerificationStatus
+    [JsonConverter(typeof(ExtensibleEnumConverter<VerificationStatus>))]
+    public readonly struct VerificationStatus : IEquatable<VerificationStatus>
     {
-        [EnumMember(Value = "verified")]
-        Verified,
+        private readonly string _value;
 
-        [EnumMember(Value = "expired")]
-        Expired,
+        public VerificationStatus(string value) => _value = value;
 
-        [EnumMember(Value = "none")]
-        None
+        public const string VerifiedValue = "verified";
+        public const string ExpiredValue = "expired";
+        public const string NoneValue = "none";
+
+        public static readonly VerificationStatus Verified = new VerificationStatus(VerifiedValue);
+        public static readonly VerificationStatus Expired = new VerificationStatus(ExpiredValue);
+        public static readonly VerificationStatus None = new VerificationStatus(NoneValue);
+
+        public static implicit operator VerificationStatus(string value) => new VerificationStatus(value);
+
+        public static bool operator ==(VerificationStatus left, VerificationStatus right) => left.Equals(right);
+        public static bool operator !=(VerificationStatus left, VerificationStatus right) => !left.Equals(right);
+
+        public bool Equals(VerificationStatus other) =>
+            string.Equals(_value, other._value, StringComparison.Ordinal);
+
+        public override bool Equals(object obj) => obj is VerificationStatus other && Equals(other);
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        public override string ToString() => _value ?? string.Empty;
     }
 }

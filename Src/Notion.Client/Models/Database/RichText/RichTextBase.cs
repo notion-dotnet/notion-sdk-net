@@ -1,13 +1,13 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
     [JsonConverter(typeof(JsonSubtypes), "type")]
-    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextText), RichTextType.Text)]
-    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextEquation), RichTextType.Equation)]
-    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextMention), RichTextType.Mention)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextText), RichTextType.TextValue)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextEquation), RichTextType.EquationValue)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(RichTextMention), RichTextType.MentionValue)]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(RichTextBase))]
     public class RichTextBase
     {
         [JsonProperty("plain_text")]
@@ -20,7 +20,6 @@ namespace Notion.Client
         public Annotations Annotations { get; set; }
 
         [JsonProperty("type")]
-        [JsonConverter(typeof(StringEnumConverter))]
         public virtual RichTextType Type { get; set; }
     }
 
@@ -42,7 +41,6 @@ namespace Notion.Client
         public bool IsCode { get; set; }
 
         [JsonProperty("color")]
-        [JsonConverter(typeof(StringEnumConverter))]
         public Color? Color { get; set; }
     }
 }
