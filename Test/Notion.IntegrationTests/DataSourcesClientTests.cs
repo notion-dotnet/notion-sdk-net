@@ -26,16 +26,20 @@ namespace Notion.IntegrationTests
         }
 
         [Fact]
-        public async Task CanLoadDatasourceWithIcon()
+        public async Task CanLoadDatasource()
         {
-            var db = await Client.DataSources.RetrieveAsync(
-                new RetrieveDataSourceRequest {DataSourceId = "32e7ae0e-1154-8011-8950-000bf24b9d2c"});
+            var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
+            var dataSourceId = database.DataSources.First().DataSourceId;
+
+            var dataSource = await Client.DataSources.RetrieveAsync(
+                new RetrieveDataSourceRequest { DataSourceId = dataSourceId });
+
+            Assert.NotNull(dataSource);
         }
 
         [Fact]
         public async Task CreateDataSource_ShouldReturnSuccess()
         {
-            // Arrange
             var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
             var request = new CreateDataSourceRequest
             {
@@ -59,21 +63,18 @@ namespace Notion.IntegrationTests
                 }
             };
 
-            // Act
             var response = await Client.DataSources.CreateAsync(request);
 
-            // Assert
             Assert.NotNull(response);
             Assert.Equal("Test Data Source", response.Title.OfType<RichTextText>().First().Text.Content);
             Assert.Single(response.Properties);
             Assert.True(response.Properties.ContainsKey("Name"));
             Assert.Equal("The name of the data source", response.Properties["Name"].Description);
         }
-        
+
         [Fact]
         public async Task DataSource_CanQueryPages()
         {
-            // Arrange
             var titlePropertyName = "Name";
             var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
             var request = new CreateDataSourceRequest
@@ -100,7 +101,6 @@ namespace Notion.IntegrationTests
             var dataSource = await Client.DataSources.CreateAsync(request);
             var page = await Client.Pages.CreateAsync(new PagesCreateParameters
             {
-                Children = new List<IBlock>(),
                 Parent = new DataSourceParentRequest
                 {
                     DataSourceId = dataSource.Id
@@ -112,7 +112,6 @@ namespace Notion.IntegrationTests
             });
             var otherPage = await Client.Pages.CreateAsync(new PagesCreateParameters
             {
-                Children = new List<IBlock>(),
                 Parent = new DataSourceParentRequest
                 {
                     DataSourceId = dataSource.Id
@@ -122,26 +121,22 @@ namespace Notion.IntegrationTests
                     {titlePropertyName, new TitlePropertyValue {Title = [new RichTextText {Text = new Text {Content = "xxx"}}]}}
                 }
             });
-            
-            // Act
+
             var queryResult = await Client.DataSources.QueryAsync(new QueryDataSourceRequest
             {
                 DataSourceId = dataSource.Id,
                 Filter = new TitleFilter(titlePropertyName, startsWith: "he")
             });
 
-            // Assert
             Assert.NotNull(page);
             Assert.True(queryResult.Results.OfType<Page>().Any());
             Assert.Contains(page.Id, queryResult.Results.Select(x => x.Id));
             Assert.DoesNotContain(otherPage.Id, queryResult.Results.Select(x => x.Id));
         }
 
-        // add tests for update
         [Fact]
         public async Task UpdateDataSource_ShouldReturnSuccess()
         {
-            // Arrange
             var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
             var createRequest = new CreateDataSourceRequest
             {
@@ -212,24 +207,19 @@ namespace Notion.IntegrationTests
                 }
             };
 
-            // Act
             var updateResponse = await Client.DataSources.UpdateAsync(updateRequest);
 
-            // Assert
             Assert.NotNull(updateResponse);
             Assert.Equal("Updated Data Source", updateResponse.Title.OfType<RichTextText>().First().Text.Content);
             Assert.Equal(2, updateResponse.Properties.Count);
             Assert.True(updateResponse.Properties.ContainsKey("Item Status"));
             Assert.True(updateResponse.Properties.ContainsKey("Name"));
         }
-        
-        // add tests for update
+
         [Fact]
         public async Task UpdateDataSource_CanAddProperty()
         {
-            // Arrange
             var propertyName = "Test Property";
-            var desiredId = "asdf";
             var database = await CreateDatabaseWithAPageAsync("Test Data Source DB to add property");
 
             var createRequest = new CreateDataSourceRequest
@@ -278,126 +268,81 @@ namespace Notion.IntegrationTests
                 }
             };
 
-            // Act
             var updateResponse = await Client.DataSources.UpdateAsync(updateRequest);
 
-            // Assert
             Assert.NotNull(updateResponse);
             Assert.Equal("Updated Data Source", updateResponse.Title.OfType<RichTextText>().First().Text.Content);
             Assert.Equal(2, updateResponse.Properties.Count);
             Assert.True(updateResponse.Properties.ContainsKey("Name"));
             Assert.True(updateResponse.Properties.ContainsKey(propertyName));
-            var property = updateResponse.Properties[propertyName];
         }
 
-        // write test for query
         [Fact]
         public async Task QueryDataSourceAsync_ShouldReturnResults()
         {
-            // Arrange
-            var databaseId = "2557ae0e115480e19a21f56ef36ad6a1";
-            var dataSourceId = await CreateAndGetDatasourceIdAsync(databaseId);
-            var queryRequest = new QueryDataSourceRequest
+            var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
+            var dataSourceId = database.DataSources.First().DataSourceId;
+
+            var queryResponse = await Client.DataSources.QueryAsync(new QueryDataSourceRequest
             {
-                DataSourceId = dataSourceId,
-            };
+                DataSourceId = dataSourceId
+            });
 
-            // Act
-            var queryResponse = await Client.DataSources.QueryAsync(queryRequest);
-
-            // Assert
             Assert.NotNull(queryResponse);
             Assert.NotNull(queryResponse.Results);
         }
-        
+
         [Fact]
         public async Task QueryDataSourceAsync_ForNewPage()
         {
-            // Arrange
-            var databaseId = "2557ae0e115480e19a21f56ef36ad6a1";
-            var dataSourceId = await CreateAndGetDatasourceIdAsync(databaseId);
-            var queryRequest = new QueryDataSourceRequest
-            {
-                DataSourceId = dataSourceId,
-            };
+            var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
+            var dataSourceId = database.DataSources.First().DataSourceId;
 
             var page = await Client.Pages.CreateAsync(new PagesCreateParameters
             {
-                Parent = new DataSourceParentRequest {DataSourceId = dataSourceId},
-                Icon = new EmojiPageIconRequest{Emoji = "🏗️"},
+                Parent = new DataSourceParentRequest { DataSourceId = dataSourceId },
+                Icon = new EmojiPageIconRequest { Emoji = "🏗️" },
                 Properties = new Dictionary<string, PropertyValue>
                 {
                     {
                         "Name",
-                        new TitlePropertyValue {Title = [new RichTextText {Text = new Text {Content = "hello"}}]}
+                        new TitlePropertyValue { Title = [new RichTextText { Text = new Text { Content = "hello" } }] }
                     }
                 }
             });
-            
-            // Act
-            var queryResponse = await Client.DataSources.QueryAsync(queryRequest);
 
-            // Assert
+            var queryResponse = await Client.DataSources.QueryAsync(new QueryDataSourceRequest
+            {
+                DataSourceId = dataSourceId
+            });
+
             Assert.NotNull(queryResponse);
             Assert.NotNull(queryResponse.Results);
             Assert.Contains(page.Id, queryResponse.Results.Select(x => x.Id));
         }
-        
+
         [Fact]
-        public async Task QueryDataSourceAsync_ShouldReturnResults2()
+        public async Task QueryDataSourceAsync_WithPageSize_ShouldReturnResults()
         {
-            // Arrange
-            var dataSourceId = "24e7ae0e-1154-8026-a2d5-000b7df0f007";
-            var queryRequest = new QueryDataSourceRequest
+            var database = await CreateDatabaseWithAPageAsync("Test Data Source DB");
+            var dataSourceId = database.DataSources.First().DataSourceId;
+
+            var queryResponse = await Client.DataSources.QueryAsync(new QueryDataSourceRequest
             {
                 DataSourceId = dataSourceId,
                 PageSize = 7
-            };
+            });
 
-            // Act
-            var queryResponse = await Client.DataSources.QueryAsync(queryRequest);
-
-            // Assert
             Assert.NotNull(queryResponse);
             Assert.NotNull(queryResponse.Results);
-        }
-
-        private async Task<string> CreateAndGetDatasourceIdAsync(string databaseId)
-        {
-            var request = new CreateDataSourceRequest
-            {
-                Parent = new DatabaseParentRequest
-                {
-                    DatabaseId = databaseId
-                },
-                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
-                {
-                    {
-                        "Name",
-                        new TitleDataSourcePropertyConfigRequest {
-                            Description = "The name of the data source",
-                            Title = new Dictionary<string, object>()
-                        }
-                    }
-                },
-                Title = new List<RichTextBaseInput>
-                {
-                    new RichTextTextInput {  Text =  new Text { Content = "Test Data Source" } }
-                }
-            };
-
-            var response = await Client.DataSources.CreateAsync(request);
-            return response.Id;
         }
 
         [Fact]
         public async Task UpdateDatabaseRelationProperties()
         {
-            // Arrange
             var createdSourceDatabase = await CreateDatabaseWithAPageAsync("Test Relation Source");
             var createdDestinationDatabase = await CreateDatabaseWithAPageAsync("Test Relation Destination");
 
-            // Act
             var response = await Client.DataSources.UpdateAsync(
                 new UpdateDataSourceRequest
                 {
@@ -437,8 +382,9 @@ namespace Notion.IntegrationTests
                     }
                 });
 
-            // Assert
-            await ValidateDatasourceProperties(createdDestinationDatabase.DataSources.First().DataSourceId, createdSourceDatabase.DataSources.First().DataSourceId);
+            await ValidateDatasourceProperties(
+                createdDestinationDatabase.DataSources.First().DataSourceId,
+                createdSourceDatabase.DataSources.First().DataSourceId);
         }
 
         private async Task ValidateDatasourceProperties(string dataSourceId, string sourceDataSourceId)
