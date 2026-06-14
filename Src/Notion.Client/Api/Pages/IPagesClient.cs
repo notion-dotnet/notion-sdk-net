@@ -87,5 +87,23 @@ namespace Notion.Client
             MovePageRequest request,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        ///     Updates the content of a page using Notion-flavored Markdown.
+        ///     Supports inserting, replacing a range, targeted search-and-replace, or replacing all content.
+        /// </summary>
+        /// <param name="pageId">Identifier for a Notion page</param>
+        /// <param name="body">
+        ///     The update operation. Use one of: <see cref="InsertContentMarkdownBody"/>,
+        ///     <see cref="ReplaceContentRangeMarkdownBody"/>, <see cref="UpdateContentMarkdownBody"/>,
+        ///     or <see cref="ReplaceContentMarkdownBody"/>.
+        /// </param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Returns a <see cref="PageMarkdownResponse"/> reflecting the updated page content</returns>
+        Task<PageMarkdownResponse> UpdateMarkdownAsync(
+            string pageId,
+            UpdatePageMarkdownBody body,
+            CancellationToken cancellationToken = default
+        );
     }
 }
