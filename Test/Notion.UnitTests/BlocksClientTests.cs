@@ -109,7 +109,7 @@ public class BlocksClientTests : ApiTestBase
         blocks.Should().SatisfyRespectively(
             block =>
             {
-                block.Type.Should().Be(BlockType.Heading_2);
+                block.Type.Should().Be(BlockType.Heading2);
                 var headingBlock = (HeadingTwoBlock)block;
                 var text = headingBlock.Heading_2.RichText.OfType<RichTextText>().First();
                 text.Text.Content.Should().Be("Lacinato kale");

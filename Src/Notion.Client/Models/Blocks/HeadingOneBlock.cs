@@ -10,7 +10,7 @@ namespace Notion.Client
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public Info Heading_1 { get; set; }
 
-        public override BlockType Type => BlockType.Heading_1;
+        public override BlockType Type => BlockType.Heading1;
 
         public class Info
         {
