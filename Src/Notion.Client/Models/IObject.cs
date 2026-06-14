@@ -9,7 +9,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(IBlock), ObjectType.BlockValue)]
     [JsonSubtypes.KnownSubType(typeof(User), ObjectType.UserValue)]
     [JsonSubtypes.KnownSubType(typeof(PageMarkdownResponse), ObjectType.PageMarkdownValue)]
-    [JsonSubtypes.FallBackSubTypeAttribute(typeof(NotionObject))]
+    [JsonSubtypes.FallBackSubTypeAttribute(typeof(UnknownObject))]
     public interface IObject
     {
         [JsonProperty("id")]
