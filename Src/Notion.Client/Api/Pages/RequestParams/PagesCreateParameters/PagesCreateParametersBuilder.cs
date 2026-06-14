@@ -79,7 +79,7 @@ namespace Notion.Client
             {
                 Parent = _parent,
                 Properties = _properties,
-                Children = _children,
+                Children = _children.Count > 0 ? _children : null,
                 Icon = _icon,
                 Cover = _cover,
                 Markdown = _markdown,
