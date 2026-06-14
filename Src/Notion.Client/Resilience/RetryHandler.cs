@@ -7,9 +7,11 @@ namespace Notion.Client
 {
     /// <summary>
     /// A <see cref="DelegatingHandler"/> that retries failed requests according to an <see cref="IRetryPolicy"/>.
-    /// Add this to the <see cref="HttpClient"/> pipeline when constructing the client manually,
-    /// or pass a <see cref="IRetryPolicy"/> via <see cref="ClientOptions.RetryPolicy"/> to have it
-    /// inserted automatically.
+    /// <para>
+    /// The library applies retry logic internally via <see cref="ClientOptions.RetryPolicy"/> —
+    /// use this handler only when you need to embed retry behaviour directly in an <see cref="HttpClient"/>
+    /// pipeline outside of the standard <c>NotionClientFactory</c> / DI setup.
+    /// </para>
     /// </summary>
     public class RetryHandler : DelegatingHandler
     {

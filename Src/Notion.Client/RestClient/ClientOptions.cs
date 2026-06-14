@@ -14,11 +14,8 @@ namespace Notion.Client
         /// Opt-in retry policy. When set, failed requests are automatically retried according to the policy.
         /// Use <see cref="DefaultRetryPolicy"/> for the built-in exponential-backoff behaviour,
         /// or implement <see cref="IRetryPolicy"/> to supply a custom strategy (e.g. wrapping Polly).
-        /// <para>
-        /// When <see cref="HttpClient"/> is also provided, the caller is responsible for adding
-        /// <see cref="RetryHandler"/> to that client's pipeline — setting <see cref="RetryPolicy"/> alone
-        /// has no effect on an externally supplied <see cref="HttpClient"/>.
-        /// </para>
+        /// The retry logic is applied at the <c>RestClient</c> level, so it works regardless of whether
+        /// <see cref="HttpClient"/> is provided externally or created internally.
         /// </summary>
         public IRetryPolicy RetryPolicy { get; set; }
 
