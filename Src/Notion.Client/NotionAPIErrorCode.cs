@@ -1,57 +1,63 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
+using System;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public enum NotionAPIErrorCode
+    /// <summary>
+    /// Represents a Notion API error code.
+    /// New codes introduced by Notion are preserved as-is rather than causing a deserialization failure.
+    /// </summary>
+    [JsonConverter(typeof(ExtensibleEnumConverter<NotionAPIErrorCode>))]
+    public readonly struct NotionAPIErrorCode : IEquatable<NotionAPIErrorCode>
     {
-        [EnumMember(Value = "invalid_json")]
-        InvalidJSON,
+        private readonly string _value;
 
-        [EnumMember(Value = "invalid_request_url")]
-        InvalidRequestUrl,
+        public NotionAPIErrorCode(string value) => _value = value;
 
-        [EnumMember(Value = "invalid_request")]
-        InvalidRequest,
+        public const string InvalidJSONValue = "invalid_json";
+        public const string InvalidRequestUrlValue = "invalid_request_url";
+        public const string InvalidRequestValue = "invalid_request";
+        public const string InvalidGrantValue = "invalid_grant";
+        public const string ValidationErrorValue = "validation_error";
+        public const string MissingVersionValue = "missing_version";
+        public const string UnauthorizedValue = "unauthorized";
+        public const string RestrictedResourceValue = "restricted_resource";
+        public const string ObjectNotFoundValue = "object_not_found";
+        public const string ConflictErrorValue = "conflict_error";
+        public const string RateLimitedValue = "rate_limited";
+        public const string InternalServerErrorValue = "internal_server_error";
+        public const string BadGatewayValue = "bad_gateway";
+        public const string ServiceUnavailableValue = "service_unavailable";
+        public const string DatabaseConnectionUnavailableValue = "database_connection_unavailable";
+        public const string GatewayTimeoutValue = "gateway_timeout";
 
-        [EnumMember(Value = "invalid_grant")]
-        InvalidGrant,
+        public static readonly NotionAPIErrorCode InvalidJSON = new NotionAPIErrorCode(InvalidJSONValue);
+        public static readonly NotionAPIErrorCode InvalidRequestUrl = new NotionAPIErrorCode(InvalidRequestUrlValue);
+        public static readonly NotionAPIErrorCode InvalidRequest = new NotionAPIErrorCode(InvalidRequestValue);
+        public static readonly NotionAPIErrorCode InvalidGrant = new NotionAPIErrorCode(InvalidGrantValue);
+        public static readonly NotionAPIErrorCode ValidationError = new NotionAPIErrorCode(ValidationErrorValue);
+        public static readonly NotionAPIErrorCode MissingVersion = new NotionAPIErrorCode(MissingVersionValue);
+        public static readonly NotionAPIErrorCode Unauthorized = new NotionAPIErrorCode(UnauthorizedValue);
+        public static readonly NotionAPIErrorCode RestrictedResource = new NotionAPIErrorCode(RestrictedResourceValue);
+        public static readonly NotionAPIErrorCode ObjectNotFound = new NotionAPIErrorCode(ObjectNotFoundValue);
+        public static readonly NotionAPIErrorCode ConflictError = new NotionAPIErrorCode(ConflictErrorValue);
+        public static readonly NotionAPIErrorCode RateLimited = new NotionAPIErrorCode(RateLimitedValue);
+        public static readonly NotionAPIErrorCode InternalServerError = new NotionAPIErrorCode(InternalServerErrorValue);
+        public static readonly NotionAPIErrorCode BadGateway = new NotionAPIErrorCode(BadGatewayValue);
+        public static readonly NotionAPIErrorCode ServiceUnavailable = new NotionAPIErrorCode(ServiceUnavailableValue);
+        public static readonly NotionAPIErrorCode DatabaseConnectionUnavailable = new NotionAPIErrorCode(DatabaseConnectionUnavailableValue);
+        public static readonly NotionAPIErrorCode GatewayTimeout = new NotionAPIErrorCode(GatewayTimeoutValue);
 
-        [EnumMember(Value = "validation_error")]
-        ValidationError,
+        public static implicit operator NotionAPIErrorCode(string value) => new NotionAPIErrorCode(value);
 
-        [EnumMember(Value = "missing_version")]
-        MissingVersion,
+        public static bool operator ==(NotionAPIErrorCode left, NotionAPIErrorCode right) => left.Equals(right);
+        public static bool operator !=(NotionAPIErrorCode left, NotionAPIErrorCode right) => !left.Equals(right);
 
-        [EnumMember(Value = "unauthorized")]
-        Unauthorized,
+        public bool Equals(NotionAPIErrorCode other) =>
+            string.Equals(_value, other._value, StringComparison.Ordinal);
 
-        [EnumMember(Value = "restricted_resource")]
-        RestrictedResource,
-
-        [EnumMember(Value = "object_not_found")]
-        ObjectNotFound,
-
-        [EnumMember(Value = "conflict_error")]
-        ConflictError,
-
-        [EnumMember(Value = "rate_limited")]
-        RateLimited,
-
-        [EnumMember(Value = "internal_server_error")]
-        InternalServerError,
-
-        [EnumMember(Value = "bad_gateway")]
-        BadGateway,
-
-        [EnumMember(Value = "service_unavailable")]
-        ServiceUnavailable,
-
-        [EnumMember(Value = "database_connection_unavailable")]
-        DatabaseConnectionUnavailable,
-
-        [EnumMember(Value = "gateway_timeout")]
-        GatewayTimeout
+        public override bool Equals(object obj) => obj is NotionAPIErrorCode other && Equals(other);
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        public override string ToString() => _value ?? string.Empty;
     }
 }
