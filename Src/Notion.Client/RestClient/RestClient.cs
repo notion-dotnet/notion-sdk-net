@@ -22,11 +22,34 @@ namespace Notion.Client
             ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
         };
 
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         public RestClient(ClientOptions options)
         {
             _options = MergeOptions(options);
+            _httpClient = ResolveHttpClient(options.HttpClient, _options.BaseUrl);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="HttpClient"/> to use for all requests.
+        /// If the caller supplied one, it is used as-is (with <c>BaseAddress</c> set when absent).
+        /// Otherwise a default client backed by a <see cref="LoggingHandler"/> pipeline is created.
+        /// </summary>
+        private static HttpClient ResolveHttpClient(HttpClient provided, string baseUrl)
+        {
+            if (provided != null)
+            {
+                if (provided.BaseAddress == null)
+                {
+                    provided.BaseAddress = new Uri(baseUrl);
+                }
+
+                return provided;
+            }
+
+            var pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
+
+            return new HttpClient(pipeline) { BaseAddress = new Uri(baseUrl) };
         }
 
         public async Task<T> GetAsync<T>(
@@ -197,8 +220,6 @@ namespace Notion.Client
             IBasicAuthenticationParameters basicAuthenticationParameters = null,
             CancellationToken cancellationToken = default)
         {
-            EnsureHttpClient();
-
             requestUri = AddQueryString(requestUri, queryParams);
 
             using var httpRequest = new HttpRequestMessage(httpMethod, requestUri);
@@ -236,19 +257,6 @@ namespace Notion.Client
             {
                 request.Headers.Add(header.Key, header.Value);
             }
-        }
-
-        private void EnsureHttpClient()
-        {
-            if (_httpClient != null)
-            {
-                return;
-            }
-
-            var pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
-
-            _httpClient = new HttpClient(pipeline);
-            _httpClient.BaseAddress = new Uri(_options.BaseUrl);
         }
 
         private static string AddQueryString(string uri, IEnumerable<KeyValuePair<string, string>> queryParams)
