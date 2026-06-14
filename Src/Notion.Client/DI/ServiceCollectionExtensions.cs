@@ -28,23 +28,20 @@ namespace Microsoft.Extensions.DependencyInjection
                 client.BaseAddress = new Uri(clientOptions.BaseUrl ?? Constants.BaseUrl);
             });
 
-            if (clientOptions.RetryPolicy != null)
-            {
-                builder.AddHttpMessageHandler(() => new RetryHandler(clientOptions.RetryPolicy));
-            }
-
             builder.AddHttpMessageHandler(() => new LoggingHandler());
 
             services.AddSingleton<INotionClient>(sp =>
             {
                 var httpClientFactory = sp.GetRequiredService<System.Net.Http.IHttpClientFactory>();
 
-                // Shallow-copy options so the factory-created HttpClient is used in RestClient.
+                // Pass RetryPolicy through; RestClient applies it in its own SendAsync loop
+                // so it works regardless of which HttpClient is in use.
                 var options = new ClientOptions
                 {
                     AuthToken = clientOptions.AuthToken,
                     BaseUrl = clientOptions.BaseUrl,
                     NotionVersion = clientOptions.NotionVersion,
+                    RetryPolicy = clientOptions.RetryPolicy,
                     HttpClient = httpClientFactory.CreateClient(Constants.HttpClientName)
                 };
 

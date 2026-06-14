@@ -23,29 +23,27 @@ namespace Notion.Client
         };
 
         private readonly HttpClient _httpClient;
+        private readonly IRetryPolicy _retryPolicy;
 
         public RestClient(ClientOptions options)
         {
             _options = MergeOptions(options);
-            _httpClient = ResolveHttpClient(options.HttpClient, options.RetryPolicy, _options.BaseUrl);
+            _retryPolicy = options.RetryPolicy;
+            _httpClient = ResolveHttpClient(options.HttpClient, _options.BaseUrl);
         }
 
         /// <summary>
         /// Returns the <see cref="HttpClient"/> to use for all requests.
         /// <para>
         /// When <paramref name="provided"/> is supplied it is used as-is (only <c>BaseAddress</c> is set
-        /// if absent). <paramref name="retryPolicy"/> is ignored in this case — the caller owns the
-        /// pipeline and can add <see cref="RetryHandler"/> themselves.
+        /// if absent). The caller owns the lifetime of the provided client.
         /// </para>
         /// <para>
         /// When <paramref name="provided"/> is <c>null</c>, a default pipeline is built:
-        /// <c>RetryHandler (optional) → LoggingHandler → HttpClientHandler</c>.
+        /// <c>LoggingHandler → HttpClientHandler</c>.
         /// </para>
         /// </summary>
-        private static HttpClient ResolveHttpClient(
-            HttpClient provided,
-            IRetryPolicy retryPolicy,
-            string baseUrl)
+        private static HttpClient ResolveHttpClient(HttpClient provided, string baseUrl)
         {
             if (provided != null)
             {
@@ -57,13 +55,7 @@ namespace Notion.Client
                 return provided;
             }
 
-            // Build the handler chain innermost-first.
-            DelegatingHandler pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
-
-            if (retryPolicy != null)
-            {
-                pipeline = new RetryHandler(retryPolicy) { InnerHandler = pipeline };
-            }
+            var pipeline = new LoggingHandler { InnerHandler = new HttpClientHandler() };
 
             return new HttpClient(pipeline) { BaseAddress = new Uri(baseUrl) };
         }
@@ -238,26 +230,45 @@ namespace Notion.Client
         {
             requestUri = AddQueryString(requestUri, queryParams);
 
-            using var httpRequest = new HttpRequestMessage(httpMethod, requestUri);
-
-            httpRequest.Headers.Authorization = CreateAuthenticationHeader(basicAuthenticationParameters);
-            httpRequest.Headers.Add("Notion-Version", _options.NotionVersion);
-
-            if (headers != null)
+            for (var attempt = 0; ; attempt++)
             {
-                AddHeaders(httpRequest, headers);
+                // HttpRequestMessage is single-use; rebuild it for every attempt.
+                using var httpRequest = new HttpRequestMessage(httpMethod, requestUri);
+
+                httpRequest.Headers.Authorization = CreateAuthenticationHeader(basicAuthenticationParameters);
+                httpRequest.Headers.Add("Notion-Version", _options.NotionVersion);
+
+                if (headers != null)
+                {
+                    AddHeaders(httpRequest, headers);
+                }
+
+                attachContent?.Invoke(httpRequest);
+
+                var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return response;
+                }
+
+                if (_retryPolicy == null || !_retryPolicy.ShouldRetry(response, httpMethod, attempt))
+                {
+                    throw await BuildException(response);
+                }
+
+                var delay = _retryPolicy.GetDelay(response, attempt);
+
+                Log.Trace(
+                    "Retry attempt {attempt} after {delay}ms (HTTP {status})",
+                    attempt + 1,
+                    (int)delay.TotalMilliseconds,
+                    (int)response.StatusCode);
+
+                response.Dispose();
+
+                await Task.Delay(delay, cancellationToken);
             }
-
-            attachContent?.Invoke(httpRequest);
-
-            var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw await BuildException(response);
-            }
-
-            return response;
         }
 
         private AuthenticationHeaderValue CreateAuthenticationHeader(IBasicAuthenticationParameters basicAuth)

@@ -53,17 +53,17 @@ public class HttpClientOptionsTests : IntegrationTestBase
     }
 
     [Fact]
-    public async Task NotionClient_With_RetryPolicy_And_Custom_HttpClient_Respects_External_Pipeline()
+    public async Task NotionClient_With_RetryPolicy_And_Custom_HttpClient_Both_Work_Together()
     {
-        // When an external HttpClient is provided, RetryPolicy in ClientOptions is documented
-        // as having no effect — the caller owns the pipeline. Verify normal calls succeed.
+        // RetryPolicy is applied at the RestClient level, so it works even when the caller
+        // provides a custom HttpClient. Verify normal calls succeed with both configured.
         var httpClient = new HttpClient();
 
         var options = new ClientOptions
         {
             AuthToken = GetEnvironmentVariableRequired("NOTION_AUTH_TOKEN"),
             HttpClient = httpClient,
-            RetryPolicy = new DefaultRetryPolicy() // ignored for external HttpClient
+            RetryPolicy = new DefaultRetryPolicy(maxRetries: 2)
         };
 
         var client = NotionClientFactory.Create(options);
@@ -71,5 +71,6 @@ public class HttpClientOptionsTests : IntegrationTestBase
         var user = await client.Users.MeAsync();
 
         user.Should().NotBeNull();
+        user.Id.Should().NotBeNullOrEmpty();
     }
 }
