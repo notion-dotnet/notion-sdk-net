@@ -1,7 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -9,11 +7,11 @@ namespace Notion.Client
     {
         public DateFilter(
             string propertyName,
-            DateTime? equal = null,
-            DateTime? before = null,
-            DateTime? after = null,
-            DateTime? onOrBefore = null,
-            DateTime? onOrAfter = null,
+            RelativeDateValue? equal = null,
+            RelativeDateValue? before = null,
+            RelativeDateValue? after = null,
+            RelativeDateValue? onOrBefore = null,
+            RelativeDateValue? onOrAfter = null,
             Dictionary<string, object> pastWeek = null,
             Dictionary<string, object> pastMonth = null,
             Dictionary<string, object> pastYear = null,
@@ -48,11 +46,11 @@ namespace Notion.Client
         public class Condition
         {
             public Condition(
-                DateTime? equal = null,
-                DateTime? before = null,
-                DateTime? after = null,
-                DateTime? onOrBefore = null,
-                DateTime? onOrAfter = null,
+                RelativeDateValue? equal = null,
+                RelativeDateValue? before = null,
+                RelativeDateValue? after = null,
+                RelativeDateValue? onOrBefore = null,
+                RelativeDateValue? onOrAfter = null,
                 Dictionary<string, object> pastWeek = null,
                 Dictionary<string, object> pastMonth = null,
                 Dictionary<string, object> pastYear = null,
@@ -78,24 +76,19 @@ namespace Notion.Client
             }
 
             [JsonProperty("equals")]
-            [JsonConverter(typeof(IsoDateTimeConverter))]
-            public DateTime? Equal { get; set; }
+            public RelativeDateValue? Equal { get; set; }
 
             [JsonProperty("before")]
-            [JsonConverter(typeof(IsoDateTimeConverter))]
-            public DateTime? Before { get; set; }
+            public RelativeDateValue? Before { get; set; }
 
             [JsonProperty("after")]
-            [JsonConverter(typeof(IsoDateTimeConverter))]
-            public DateTime? After { get; set; }
+            public RelativeDateValue? After { get; set; }
 
             [JsonProperty("on_or_before")]
-            [JsonConverter(typeof(IsoDateTimeConverter))]
-            public DateTime? OnOrBefore { get; set; }
+            public RelativeDateValue? OnOrBefore { get; set; }
 
             [JsonProperty("on_or_after")]
-            [JsonConverter(typeof(IsoDateTimeConverter))]
-            public DateTime? OnOrAfter { get; set; }
+            public RelativeDateValue? OnOrAfter { get; set; }
 
             [JsonProperty("past_week")]
             public Dictionary<string, object> PastWeek { get; set; }
