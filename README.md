@@ -198,8 +198,13 @@ public class AggressiveRetryPolicy : DefaultRetryPolicy
   - [x] Append block children
   - [x] Delete a block
 - [x] **Comments**
-  - [x] Retrieve comments
+  - [x] Retrieve comments (list by block)
+  - [x] Retrieve a single comment
   - [x] Create comment
+  - [x] Update comment
+  - [x] Delete comment
+- [x] **Custom Emojis**
+  - [x] List custom emojis
 - [x] **Users**
   - [x] Retrieve a user
   - [x] List all users
