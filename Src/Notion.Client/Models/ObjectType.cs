@@ -1,31 +1,47 @@
-﻿using System.Runtime.Serialization;
+using System;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    public enum ObjectType
+    /// <summary>
+    /// Represents the Notion object type discriminator.
+    /// New values introduced by Notion are preserved as-is rather than causing a deserialization failure.
+    /// </summary>
+    [JsonConverter(typeof(ExtensibleEnumConverter<ObjectType>))]
+    public readonly struct ObjectType : IEquatable<ObjectType>
     {
-        [EnumMember(Value = "page")]
-        Page,
+        private readonly string _value;
 
-        [EnumMember(Value = "database")]
-        Database,
+        public ObjectType(string value) => _value = value;
 
-        [EnumMember(Value = "block")]
-        Block,
+        public const string PageValue = "page";
+        public const string DatabaseValue = "database";
+        public const string BlockValue = "block";
+        public const string UserValue = "user";
+        public const string CommentValue = "comment";
+        public const string FileUploadValue = "file_upload";
+        public const string DataSourceValue = "data_source";
+        public const string PageMarkdownValue = "page_markdown";
 
-        [EnumMember(Value = "user")]
-        User,
+        public static readonly ObjectType Page = new ObjectType(PageValue);
+        public static readonly ObjectType Database = new ObjectType(DatabaseValue);
+        public static readonly ObjectType Block = new ObjectType(BlockValue);
+        public static readonly ObjectType User = new ObjectType(UserValue);
+        public static readonly ObjectType Comment = new ObjectType(CommentValue);
+        public static readonly ObjectType FileUpload = new ObjectType(FileUploadValue);
+        public static readonly ObjectType DataSource = new ObjectType(DataSourceValue);
+        public static readonly ObjectType PageMarkdown = new ObjectType(PageMarkdownValue);
 
-        [EnumMember(Value = "comment")]
-        Comment,
+        public static implicit operator ObjectType(string value) => new ObjectType(value);
 
-        [EnumMember(Value = "file_upload")]
-        FileUpload,
+        public static bool operator ==(ObjectType left, ObjectType right) => left.Equals(right);
+        public static bool operator !=(ObjectType left, ObjectType right) => !left.Equals(right);
 
-        [EnumMember(Value = "data_source")]
-        DataSource,
+        public bool Equals(ObjectType other) =>
+            string.Equals(_value, other._value, StringComparison.Ordinal);
 
-        [EnumMember(Value = "page_markdown")]
-        PageMarkdown,
+        public override bool Equals(object obj) => obj is ObjectType other && Equals(other);
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        public override string ToString() => _value ?? string.Empty;
     }
 }

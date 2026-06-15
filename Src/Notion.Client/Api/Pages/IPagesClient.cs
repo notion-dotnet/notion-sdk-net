@@ -76,5 +76,34 @@ namespace Notion.Client
             RetrievePageAsMarkdownRequest request,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        ///    Moves a page to a new parent. The parent can be a database or another page.
+        /// </summary>
+        /// <param name="request">Request parameters for moving the page</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Returns the updated <see cref="Page" /> after the move operation</returns>
+        Task<Page> MoveAsync(
+            MovePageRequest request,
+            CancellationToken cancellationToken = default
+        );
+
+        /// <summary>
+        ///     Updates the content of a page using Notion-flavored Markdown.
+        ///     Supports inserting, replacing a range, targeted search-and-replace, or replacing all content.
+        /// </summary>
+        /// <param name="pageId">Identifier for a Notion page</param>
+        /// <param name="body">
+        ///     The update operation. Use one of: <see cref="InsertContentMarkdownBody"/>,
+        ///     <see cref="ReplaceContentRangeMarkdownBody"/>, <see cref="UpdateContentMarkdownBody"/>,
+        ///     or <see cref="ReplaceContentMarkdownBody"/>.
+        /// </param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Returns a <see cref="PageMarkdownResponse"/> reflecting the updated page content</returns>
+        Task<PageMarkdownResponse> UpdateMarkdownAsync(
+            string pageId,
+            UpdatePageMarkdownBody body,
+            CancellationToken cancellationToken = default
+        );
     }
 }

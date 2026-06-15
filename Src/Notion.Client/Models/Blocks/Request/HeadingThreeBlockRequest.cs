@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -11,7 +10,7 @@ namespace Notion.Client
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public Info Heading_3 { get; set; }
 
-        public override BlockType Type => BlockType.Heading_3;
+        public override BlockType Type => BlockType.Heading3;
 
         public class Info
         {
@@ -19,7 +18,6 @@ namespace Notion.Client
             public IEnumerable<RichTextBase> RichText { get; set; }
 
             [JsonProperty("color")]
-            [JsonConverter(typeof(StringEnumConverter))]
             public Color? Color { get; set; }
 
             [JsonProperty("is_toggleable")]

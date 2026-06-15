@@ -70,7 +70,9 @@ var usersList = await client.Users.ListAsync();
 
 ## Dependency Injection
 
-The library provides an extension method to register NotionClient with Microsoft dependency injection.
+The library provides an extension method to register `INotionClient` with Microsoft dependency injection.
+It uses `IHttpClientFactory` internally, which correctly manages `HttpClientHandler` lifetimes to prevent
+stale DNS and socket exhaustion in long-running applications.
 
 ```csharp
 services.AddNotionClient(options => {
@@ -97,6 +99,78 @@ public class MyService
 }
 ```
 
+### Providing your own HttpClient
+
+For console apps or non-DI scenarios where you manage a long-lived singleton `HttpClient`:
+
+```csharp
+var httpClient = new HttpClient();
+
+var client = NotionClientFactory.Create(new ClientOptions
+{
+    AuthToken = "<Token>",
+    HttpClient = httpClient  // the library uses it as-is and does not dispose it
+});
+```
+
+## Retry Policy
+
+The library ships with an opt-in exponential-backoff retry policy. When enabled it automatically
+retries on HTTP 429 (rate limited) for all methods, and on HTTP 500/503 for idempotent methods
+(GET, DELETE). The `Retry-After` response header is honoured for rate-limited responses.
+
+```csharp
+var client = NotionClientFactory.Create(new ClientOptions
+{
+    AuthToken = "<Token>",
+    RetryPolicy = new DefaultRetryPolicy(
+        maxRetries: 3,          // default
+        initialDelay: TimeSpan.FromSeconds(1),  // doubles each attempt
+        maxDelay: TimeSpan.FromSeconds(60)
+    )
+});
+```
+
+Works with DI too:
+
+```csharp
+services.AddNotionClient(options =>
+{
+    options.AuthToken = "<Token>";
+    options.RetryPolicy = new DefaultRetryPolicy(maxRetries: 3);
+});
+```
+
+### Custom retry policy
+
+Implement `IRetryPolicy` to fully control retry behaviour, or subclass `DefaultRetryPolicy`
+to override individual aspects:
+
+```csharp
+// Full custom implementation — e.g. wrapping Polly
+public class PollyRetryPolicy : IRetryPolicy
+{
+    public bool ShouldRetry(HttpResponseMessage response, HttpMethod method, int attempt)
+        => attempt < 3 && (int)response.StatusCode is 429 or 500 or 503;
+
+    public TimeSpan GetDelay(HttpResponseMessage response, int attempt)
+        => TimeSpan.FromSeconds(Math.Pow(2, attempt));
+}
+
+// Or subclass DefaultRetryPolicy to tweak a single aspect
+public class AggressiveRetryPolicy : DefaultRetryPolicy
+{
+    public AggressiveRetryPolicy() : base(maxRetries: 5) { }
+
+    public override bool ShouldRetry(HttpResponseMessage response, HttpMethod method, int attempt)
+        => base.ShouldRetry(response, method, attempt)
+            || (int)response.StatusCode == 502; // also retry on bad gateway
+}
+```
+
+> **Note:** If the `HttpClient` you supply already has retry in its pipeline (e.g. via Polly registered
+> through `IHttpClientFactory`), leave `RetryPolicy` null. Setting both causes nested retries.
+
 
 ## Supported Endpoints
 
@@ -116,6 +190,7 @@ public class MyService
   - [x] Update page properties
   - [x] Retrieve page property item
   - [x] Retrieve page as markdown
+  - [x] Update page as markdown
 - [x] **Blocks**
   - [x] Retrieve a block
   - [x] Update a block
@@ -214,6 +289,55 @@ var newPage = await client.Pages.CreateAsync(new PagesCreateParameters
                     new RichTextText { Text = new Text { Content = "My New Page" } }
                 }
             }
+        }
+    }
+});
+```
+
+### Creating a Page with Markdown Content
+
+Use the `Markdown` property to supply initial page content as markdown, and `Position` to control
+where the page appears within its parent:
+
+```csharp
+var newPage = await client.Pages.CreateAsync(
+    PagesCreateParametersBuilder
+        .Create(new PageParentRequest { PageId = parentPageId })
+        .SetMarkdown("## Hello\n\nThis is the initial content.")
+        .SetPosition(new PageStartPosition())  // or PageEndPosition / AfterBlockPagePosition
+        .Build());
+```
+
+### Updating Page Content as Markdown
+
+```csharp
+// Insert new content at the end of the page
+await client.Pages.UpdateMarkdownAsync(pageId, new InsertContentMarkdownBody
+{
+    InsertContent = new InsertContentData
+    {
+        Content = "## New section\n\nAppended content.",
+        Position = new EndMarkdownInsertPosition()
+    }
+});
+
+// Replace all page content
+await client.Pages.UpdateMarkdownAsync(pageId, new ReplaceContentMarkdownBody
+{
+    ReplaceContent = new ReplaceContentData
+    {
+        NewStr = "# Replaced\n\nEntire page replaced."
+    }
+});
+
+// Targeted string replacement (like a search-and-replace)
+await client.Pages.UpdateMarkdownAsync(pageId, new UpdateContentMarkdownBody
+{
+    UpdateContent = new UpdateContentData
+    {
+        Updates = new List<ContentUpdate>
+        {
+            new ContentUpdate { OldStr = "old text", NewStr = "new text" }
         }
     }
 });

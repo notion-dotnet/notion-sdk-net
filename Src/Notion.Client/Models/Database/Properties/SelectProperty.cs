@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Notion.Client
 {
@@ -38,7 +37,6 @@ namespace Notion.Client
         ///     "purple", "pink". Defaults to "default".
         /// </summary>
         [JsonProperty("color")]
-        [JsonConverter(typeof(StringEnumConverter))]
         public Color? Color { get; set; }
     }
 

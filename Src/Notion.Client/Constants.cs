@@ -8,5 +8,6 @@ namespace Notion.Client
     {
         internal const string BaseUrl = "https://api.notion.com/";
         internal const string DefaultNotionVersion = "2025-09-03";
+        internal const string HttpClientName = "NotionClient";
     }
 }
