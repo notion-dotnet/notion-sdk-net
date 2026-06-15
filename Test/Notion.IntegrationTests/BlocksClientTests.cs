@@ -56,6 +56,77 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
     }
 
     [Fact]
+    public async Task AppendChildrenAsync_WithStartPosition_PrependsBlocks()
+    {
+        // Append an initial block
+        var first = await Client.Blocks.AppendChildrenAsync(new BlockAppendChildrenRequest
+        {
+            BlockId = _page.Id,
+            Children = new List<IBlockObjectRequest>
+            {
+                new DividerBlockRequest { Divider = new DividerBlockRequest.Data() }
+            }
+        });
+
+        // Prepend a block using StartContentPosition
+        await Client.Blocks.AppendChildrenAsync(new BlockAppendChildrenRequest
+        {
+            BlockId = _page.Id,
+            Position = new StartContentPosition(),
+            Children = new List<IBlockObjectRequest>
+            {
+                new TableOfContentsBlockRequest { TableOfContents = new TableOfContentsBlockRequest.Data() }
+            }
+        });
+
+        var children = await Client.Blocks.RetrieveChildrenAsync(
+            new BlockRetrieveChildrenRequest { BlockId = _page.Id });
+
+        children.Results.Should().HaveCount(2);
+        children.Results.First().Type.Should().Be(BlockType.TableOfContents);
+        children.Results.Last().Type.Should().Be(BlockType.Divider);
+    }
+
+    [Fact]
+    public async Task AppendChildrenAsync_WithAfterBlockPosition_InsertsAfterSpecifiedBlock()
+    {
+        // Append two initial blocks: A, B
+        var initial = await Client.Blocks.AppendChildrenAsync(new BlockAppendChildrenRequest
+        {
+            BlockId = _page.Id,
+            Children = new List<IBlockObjectRequest>
+            {
+                new DividerBlockRequest { Divider = new DividerBlockRequest.Data() },
+                new TableOfContentsBlockRequest { TableOfContents = new TableOfContentsBlockRequest.Data() }
+            }
+        });
+
+        var blockA = initial.Results.First();
+
+        // Insert a breadcrumb after block A → order should be: A, Breadcrumb, B
+        await Client.Blocks.AppendChildrenAsync(new BlockAppendChildrenRequest
+        {
+            BlockId = _page.Id,
+            Position = new AfterBlockContentPosition
+            {
+                AfterBlock = new AfterBlockReference { Id = blockA.Id }
+            },
+            Children = new List<IBlockObjectRequest>
+            {
+                new BreadcrumbBlockRequest { Breadcrumb = new BreadcrumbBlockRequest.Data() }
+            }
+        });
+
+        var children = await Client.Blocks.RetrieveChildrenAsync(
+            new BlockRetrieveChildrenRequest { BlockId = _page.Id });
+
+        children.Results.Should().HaveCount(3);
+        children.Results[0].Id.Should().Be(blockA.Id);
+        children.Results[1].Type.Should().Be(BlockType.Breadcrumb);
+        children.Results[2].Type.Should().Be(BlockType.TableOfContents);
+    }
+
+    [Fact]
     public async Task UpdateBlockAsync_UpdatesGivenBlock()
     {
         var blocks = await Client.Blocks.AppendChildrenAsync(
