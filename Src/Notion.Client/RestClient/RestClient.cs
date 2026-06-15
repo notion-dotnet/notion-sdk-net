@@ -176,6 +176,19 @@ namespace Notion.Client
                 basicAuthenticationParameters: null, cancellationToken);
         }
 
+        public async Task<T> DeleteAsync<T>(
+            string uri,
+            IDictionary<string, string> queryParams = null,
+            IDictionary<string, string> headers = null,
+            JsonSerializerSettings serializerSettings = null,
+            CancellationToken cancellationToken = default)
+        {
+            var response = await SendAsync(uri, HttpMethod.Delete, queryParams, headers, null,
+                basicAuthenticationParameters: null, cancellationToken);
+
+            return await response.ParseStreamAsync<T>(serializerSettings);
+        }
+
         private static ClientOptions MergeOptions(ClientOptions options)
         {
             return new ClientOptions
