@@ -37,6 +37,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ToDoBlock), BlockType.ToDoValue)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(ToggleBlock), BlockType.ToggleValue)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(VideoBlock), BlockType.VideoValue)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(TabBlock), BlockType.TabValue)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(UnsupportedBlock), BlockType.UnsupportedValue)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(MeetingNotesBlock), BlockType.MeetingNotesValue)]
 #pragma warning disable CS0618

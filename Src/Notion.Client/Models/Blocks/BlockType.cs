@@ -54,6 +54,7 @@ namespace Notion.Client
 
         [Obsolete("Use MeetingNotesValue instead. 'transcription' was renamed to 'meeting_notes' in Notion API version 2026-03-11.")]
         public const string TranscriptionValue = "transcription";
+        public const string TabValue = "tab";
 
         public static readonly BlockType Paragraph = new BlockType(ParagraphValue);
         public static readonly BlockType Heading1 = new BlockType(Heading1Value);
@@ -94,6 +95,8 @@ namespace Notion.Client
         [Obsolete("Use MeetingNotes instead. 'transcription' was renamed to 'meeting_notes' in Notion API version 2026-03-11.")]
         public static readonly BlockType Transcription = new BlockType(TranscriptionValue);
 #pragma warning restore CS0618
+
+        public static readonly BlockType Tab = new BlockType(TabValue);
 
         public static implicit operator BlockType(string value) => new BlockType(value);
 
