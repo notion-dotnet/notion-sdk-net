@@ -15,10 +15,12 @@ namespace Notion.Client
         public VerificationStatus(string value) => _value = value;
 
         public const string VerifiedValue = "verified";
+        public const string UnverifiedValue = "unverified";
         public const string ExpiredValue = "expired";
         public const string NoneValue = "none";
 
         public static readonly VerificationStatus Verified = new VerificationStatus(VerifiedValue);
+        public static readonly VerificationStatus Unverified = new VerificationStatus(UnverifiedValue);
         public static readonly VerificationStatus Expired = new VerificationStatus(ExpiredValue);
         public static readonly VerificationStatus None = new VerificationStatus(NoneValue);
 
