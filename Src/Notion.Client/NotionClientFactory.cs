@@ -1,4 +1,4 @@
-﻿namespace Notion.Client
+namespace Notion.Client
 {
     public static class NotionClientFactory
     {
@@ -18,6 +18,7 @@
                 , new FileUploadsClient(restClient)
                 , new DataSourcesClient(restClient)
                 , new ViewsClient(restClient)
+                , new EmojisClient(restClient)
             );
         }
     }

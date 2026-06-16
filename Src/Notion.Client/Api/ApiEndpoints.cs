@@ -165,5 +165,10 @@
             internal static string ListDataSourceTemplates(IListDataSourceTemplatesPathParameters pathParameters) => $"/v1/data_sources/{pathParameters.DataSourceId}/templates";
             internal static string Query(IQueryDataSourcePathParameters pathParameters) => $"{BasePath}/{pathParameters.DataSourceId}/query";
         }
+
+        public static class EmojisApiUrls
+        {
+            public static string List => "/v1/custom_emojis";
+        }
     }
 }
