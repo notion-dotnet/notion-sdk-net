@@ -14,6 +14,12 @@ namespace Notion.Client
         {
             [JsonProperty("children")]
             public IEnumerable<IColumnChildrenBlockRequest> Children { get; set; }
+
+            /// <summary>
+            /// Proportional width of this column relative to its siblings.
+            /// </summary>
+            [JsonProperty("width_ratio")]
+            public double? WidthRatio { get; set; }
         }
     }
 }
