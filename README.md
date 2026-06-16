@@ -41,10 +41,10 @@ dotnet add package Notion.Net
 **Note:** Default Notion-Version used by NuGet package versions
 | Package version | Notion-Version |
 | --- | --- |
-| 5.0.0-preview+ | 2025-09-03 |
+| 6.0.0+ | 2026-03-11 |
+| 5.0.0+ | 2025-09-03 |
 | 4.4.0+ | 2022-06-28 |
-| 4.3.0+ | 2022-06-28 | 
-| 4.0.0+ | 2022-06-28 | 
+| 4.0.0+ | 2022-06-28 |
 | 3.0.0+ | 2022-02-22 |
 | 2.0.0+ | 2021-08-16 |
 | 1.0.0+ | 2021-05-13 |
