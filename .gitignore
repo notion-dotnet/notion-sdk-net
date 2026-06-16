@@ -356,3 +356,6 @@ MigrationBackup/
 .idea/
 
 .DS_Store
+
+# Claude AI
+.claude/
