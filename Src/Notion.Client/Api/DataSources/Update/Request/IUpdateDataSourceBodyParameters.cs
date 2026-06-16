@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -24,10 +25,7 @@ namespace Notion.Client
         [JsonProperty("in_trash")]
         bool InTrash { get; set; }
 
-        /// <summary>
-        /// Whether the database should be moved to or from the trash. If not provided, the trash
-        /// status will not be updated. Equivalent to `in_trash`.
-        /// </summary>
+        [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
         bool Archived { get; set; }
 
