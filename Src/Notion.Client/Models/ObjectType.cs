@@ -22,6 +22,7 @@ namespace Notion.Client
         public const string FileUploadValue = "file_upload";
         public const string DataSourceValue = "data_source";
         public const string PageMarkdownValue = "page_markdown";
+        public const string ViewValue = "view";
 
         public static readonly ObjectType Page = new ObjectType(PageValue);
         public static readonly ObjectType Database = new ObjectType(DatabaseValue);
@@ -31,6 +32,7 @@ namespace Notion.Client
         public static readonly ObjectType FileUpload = new ObjectType(FileUploadValue);
         public static readonly ObjectType DataSource = new ObjectType(DataSourceValue);
         public static readonly ObjectType PageMarkdown = new ObjectType(PageMarkdownValue);
+        public static readonly ObjectType View = new ObjectType(ViewValue);
 
         public static implicit operator ObjectType(string value) => new ObjectType(value);
 

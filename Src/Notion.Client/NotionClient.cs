@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Notion.Client
 {
@@ -23,6 +23,8 @@ namespace Notion.Client
 
         IDataSourcesClient DataSources { get; }
 
+        IViewsClient Views { get; }
+
         IEmojisClient Emojis { get; }
 
         IRestClient RestClient { get; }
@@ -41,6 +43,7 @@ namespace Notion.Client
             IAuthenticationClient authenticationClient,
             IFileUploadsClient fileUploadsClient,
             IDataSourcesClient dataSourcesClient,
+            IViewsClient viewsClient,
             IEmojisClient emojisClient)
         {
             RestClient = restClient;
@@ -53,6 +56,7 @@ namespace Notion.Client
             AuthenticationClient = authenticationClient;
             FileUploads = fileUploadsClient;
             DataSources = dataSourcesClient;
+            Views = viewsClient;
             Emojis = emojisClient;
         }
 
@@ -73,6 +77,8 @@ namespace Notion.Client
         public IFileUploadsClient FileUploads { get; }
 
         public IDataSourcesClient DataSources { get; }
+
+        public IViewsClient Views { get; }
 
         public IEmojisClient Emojis { get; }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -37,9 +38,7 @@ namespace Notion.Client
         [JsonProperty("page_size")]
         public int? PageSize { get; set; }
 
-        /// <summary>
-        /// Whether to include archived results.
-        /// </summary>
+        [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
         public bool? Archived { get; set; }
 

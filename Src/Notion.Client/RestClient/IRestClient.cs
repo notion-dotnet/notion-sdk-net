@@ -45,5 +45,12 @@ namespace Notion.Client
             IDictionary<string, string> queryParams = null,
             IDictionary<string, string> headers = null,
             CancellationToken cancellationToken = default);
+
+        Task<T> DeleteAsync<T>(
+            string uri,
+            IDictionary<string, string> queryParams = null,
+            IDictionary<string, string> headers = null,
+            JsonSerializerSettings serializerSettings = null,
+            CancellationToken cancellationToken = default);
     }
 }

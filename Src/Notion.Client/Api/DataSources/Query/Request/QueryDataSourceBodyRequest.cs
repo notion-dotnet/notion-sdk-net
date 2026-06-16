@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -34,9 +35,7 @@ namespace Notion.Client
         [JsonProperty("page_size")]
         public int? PageSize { get; set; }
 
-        /// <summary>
-        /// Whether to include archived results.
-        /// </summary>
+        [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
         public bool? Archived { get; set; }
 
@@ -60,6 +59,7 @@ namespace Notion.Client
         /// <returns>A new QueryDataSourceBodyRequest with only body parameters</returns>
         internal static QueryDataSourceBodyRequest FromRequest(QueryDataSourceRequest source)
         {
+#pragma warning disable CS0618
             return new QueryDataSourceBodyRequest
             {
                 Sorts = source.Sorts,
@@ -70,6 +70,7 @@ namespace Notion.Client
                 InTrash = source.InTrash,
                 ResultType = source.ResultType
             };
+#pragma warning restore CS0618
         }
     }
 }
