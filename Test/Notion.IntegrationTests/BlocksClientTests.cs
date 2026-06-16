@@ -282,6 +282,39 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         }
     }
 
+    [Fact]
+    public async Task AppendChildrenAsync_WithNumberedListItem_ListStartIndexAndFormatAreReturned()
+    {
+        // Arrange & Act
+        var blocks = await Client.Blocks.AppendChildrenAsync(
+            new BlockAppendChildrenRequest
+            {
+                BlockId = _page.Id,
+                Children = new List<IBlockObjectRequest>
+                {
+                    new NumberedListItemBlockRequest
+                    {
+                        NumberedListItem = new NumberedListItemBlockRequest.Info
+                        {
+                            RichText = new List<RichTextBaseInput>
+                            {
+                                new RichTextTextInput { Text = new Text { Content = "Item one" } }
+                            },
+                            ListStartIndex = 5,
+                            ListFormat = NumberedListFormat.Letters
+                        }
+                    }
+                }
+            }
+        );
+
+        // Assert
+        var block = blocks.Results.Should().ContainSingle().Subject.Should().BeOfType<NumberedListItemBlock>().Subject;
+        block.NumberedListItem.ListStartIndex.Should().Be(5);
+        block.NumberedListItem.ListFormat.Should().Be(NumberedListFormat.Letters);
+        block.NumberedListItem.RichText.OfType<RichTextText>().First().Text.Content.Should().Be("Item one");
+    }
+
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(
