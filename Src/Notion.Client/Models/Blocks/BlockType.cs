@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -51,10 +52,10 @@ namespace Notion.Client
         public const string TableRowValue = "table_row";
         public const string LinkPreviewValue = "link_preview";
         public const string UnsupportedValue = "unsupported";
-        public const string MeetingNotesValue = "meeting_notes";
 
         [Obsolete("Use MeetingNotesValue instead. 'transcription' was renamed to 'meeting_notes' in Notion API version 2026-03-11.")]
         public const string TranscriptionValue = "transcription";
+        public const string MeetingNotesValue = "meeting_notes";
         public const string TabValue = "tab";
 
         public static readonly BlockType Paragraph = new BlockType(ParagraphValue);
@@ -91,13 +92,11 @@ namespace Notion.Client
         public static readonly BlockType TableRow = new BlockType(TableRowValue);
         public static readonly BlockType LinkPreview = new BlockType(LinkPreviewValue);
         public static readonly BlockType Unsupported = new BlockType(UnsupportedValue);
-        public static readonly BlockType MeetingNotes = new BlockType(MeetingNotesValue);
 
-#pragma warning disable CS0618
         [Obsolete("Use MeetingNotes instead. 'transcription' was renamed to 'meeting_notes' in Notion API version 2026-03-11.")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static readonly BlockType Transcription = new BlockType(TranscriptionValue);
-#pragma warning restore CS0618
-
+        public static readonly BlockType MeetingNotes = new BlockType(MeetingNotesValue);
         public static readonly BlockType Tab = new BlockType(TabValue);
 
         public static implicit operator BlockType(string value) => new BlockType(value);

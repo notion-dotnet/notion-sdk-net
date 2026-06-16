@@ -46,6 +46,8 @@
 
         public static class BlocksApiUrls
         {
+            public static string QueryMeetingNotes() => "/v1/blocks/meeting_notes/query";
+
             public static string Retrieve(string blockId)
             {
                 return $"/v1/blocks/{blockId}";
