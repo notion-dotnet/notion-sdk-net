@@ -6,7 +6,12 @@ namespace Notion.Client
     {
         public IEnumerable<IBlockObjectRequest> Children { get; set; }
 
-        public string After { get; set; }
+        /// <summary>
+        ///     Controls where the new blocks are placed within the parent.
+        ///     Use <see cref="AfterBlockContentPosition"/>, <see cref="StartContentPosition"/>,
+        ///     or <see cref="EndContentPosition"/>. Defaults to end when omitted.
+        /// </summary>
+        public ContentPosition Position { get; set; }
 
         public string BlockId { get; set; }
     }

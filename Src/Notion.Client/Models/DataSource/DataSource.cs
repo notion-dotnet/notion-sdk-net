@@ -41,9 +41,7 @@ namespace Notion.Client
         [JsonProperty("is_inline")]
         public bool IsInline { get; set; }
 
-        /// <summary>
-        /// Indicates whether the data source is archived.
-        /// </summary>
+        [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
         public bool Archived { get; set; }
 

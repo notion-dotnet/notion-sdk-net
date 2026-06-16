@@ -17,6 +17,10 @@ namespace Notion.Client
         [JsonProperty("last_edited_time")]
         public DateTime LastEditedTime { get; set; }
 
+        [JsonProperty("in_trash")]
+        public bool InTrash { get; set; }
+
+        [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
         public bool Archived { get; set; }
 

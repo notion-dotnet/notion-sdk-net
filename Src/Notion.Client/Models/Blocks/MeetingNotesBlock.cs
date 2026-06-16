@@ -1,21 +1,17 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Notion.Client
 {
-    [Obsolete("Use MeetingNotesBlock instead. The 'transcription' block type was renamed to 'meeting_notes' in Notion API version 2026-03-11.")]
-    public class TranscriptionBlock : Block
+    public class MeetingNotesBlock : Block
     {
-#pragma warning disable CS0618
-        public override BlockType Type => BlockType.Transcription;
-#pragma warning restore CS0618
+        public override BlockType Type => BlockType.MeetingNotes;
 
-        [JsonProperty("transcription")]
-        public TranscriptionBlockResponse Transcription { get; set; }
+        [JsonProperty("meeting_notes")]
+        public MeetingNotesBlockData MeetingNotes { get; set; }
     }
 
-    public class TranscriptionBlockResponse
+    public class MeetingNotesBlockData
     {
         [JsonProperty("title")]
         public IEnumerable<RichTextBase> Title { get; set; }
@@ -24,16 +20,16 @@ namespace Notion.Client
         public string Status { get; set; }
 
         [JsonProperty("children")]
-        public TranscriptionChildrenResponse Children { get; set; }
+        public MeetingNotesChildrenData Children { get; set; }
 
         [JsonProperty("calendar_event")]
-        public TranscriptionCalendarEventResponse CalendarEvent { get; set; }
+        public MeetingNotesCalendarEventData CalendarEvent { get; set; }
 
         [JsonProperty("recording")]
-        public TranscriptionRecordingResponse Recording { get; set; }
+        public MeetingNotesRecordingData Recording { get; set; }
     }
 
-    public class TranscriptionChildrenResponse
+    public class MeetingNotesChildrenData
     {
         [JsonProperty("summary_block_id")]
         public string SummaryBlockId { get; set; }
@@ -45,7 +41,7 @@ namespace Notion.Client
         public string TranscriptBlockId { get; set; }
     }
 
-    public class TranscriptionCalendarEventResponse
+    public class MeetingNotesCalendarEventData
     {
         [JsonProperty("start_time")]
         public string StartTime { get; set; }
@@ -57,7 +53,7 @@ namespace Notion.Client
         public IEnumerable<string> Attendees { get; set; }
     }
 
-    public class TranscriptionRecordingResponse
+    public class MeetingNotesRecordingData
     {
         [JsonProperty("start_time")]
         public string StartTime { get; set; }
