@@ -9,22 +9,24 @@ namespace Notion.Client
         IEnumerable<IBlockObjectRequest> Children { get; set; }
 
         /// <summary>
-        ///     The ID of the existing block that the new block should be appended after.
+        ///     Controls where the new blocks are placed within the parent.
+        ///     Supports <see cref="AfterBlockContentPosition"/>, <see cref="StartContentPosition"/>,
+        ///     and <see cref="EndContentPosition"/>. Defaults to end when omitted.
         /// </summary>
-        [JsonProperty("after")]
-        public string After { get; set; }
+        [JsonProperty("position")]
+        ContentPosition Position { get; set; }
     }
 
     internal class BlockAppendChildrenBodyParameters : IBlockAppendChildrenBodyParameters
     {
         public IEnumerable<IBlockObjectRequest> Children { get; set; }
 
-        public string After { get; set; }
+        public ContentPosition Position { get; set; }
 
         public BlockAppendChildrenBodyParameters(BlockAppendChildrenRequest request)
         {
             Children = request.Children;
-            After = request.After;
+            Position = request.Position;
         }
     }
 }
