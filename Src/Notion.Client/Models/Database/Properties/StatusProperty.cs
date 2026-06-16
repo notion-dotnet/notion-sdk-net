@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -8,6 +7,6 @@ namespace Notion.Client
         public override PropertyType Type => PropertyType.Status;
 
         [JsonProperty("status")]
-        public Dictionary<string, object> Status { get; set; }
+        public StatusConfig Status { get; set; }
     }
 }
