@@ -167,6 +167,56 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         blocks.Results.Should().HaveCount(2);
     }
 
+    [Fact]
+    public async Task AppendChildrenAsync_WithTabBlock_AppendsTabBlock()
+    {
+        // Arrange & Act
+        var blocks = await Client.Blocks.AppendChildrenAsync(
+            new BlockAppendChildrenRequest
+            {
+                BlockId = _page.Id,
+                Children = new List<IBlockObjectRequest>
+                {
+                    new TabBlockRequest
+                    {
+                        Tab = new TabBlockRequest.Data
+                        {
+                            Children = new List<ParagraphBlockRequest>
+                            {
+                                new ParagraphBlockRequest
+                                {
+                                    Paragraph = new ParagraphBlockRequest.Info
+                                    {
+                                        RichText = new List<RichTextBaseInput>
+                                        {
+                                            new RichTextTextInput { Text = new Text { Content = "Tab 1" } }
+                                        }
+                                    }
+                                },
+                                new ParagraphBlockRequest
+                                {
+                                    Paragraph = new ParagraphBlockRequest.Info
+                                    {
+                                        RichText = new List<RichTextBaseInput>
+                                        {
+                                            new RichTextTextInput { Text = new Text { Content = "Tab 2" } }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        // Assert
+        var block = blocks.Results.Should().ContainSingle().Subject;
+        block.Should().BeOfType<TabBlock>();
+        block.Type.Should().Be(BlockType.Tab);
+        block.HasChildren.Should().BeTrue();
+    }
+
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(
