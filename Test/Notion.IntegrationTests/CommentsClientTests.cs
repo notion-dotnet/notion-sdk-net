@@ -89,4 +89,78 @@ public class CommentsClientTests : IntegrationTestBase, IAsyncLifetime
         var pageParent = Assert.IsType<PageParent>(response.Parent);
         Assert.Equal(_page.Id, pageParent.PageId);
     }
+
+    [Fact]
+    public async Task ShouldRetrieveSingleComment()
+    {
+        // Arrange — create a comment first
+        var created = await Client.Comments.CreateAsync(
+            CreateCommentRequest.CreatePageComment(
+                new ParentPageInput { PageId = _page.Id },
+                new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "Comment to retrieve" } } }
+            )
+        );
+
+        // Act
+        var retrieved = await Client.Comments.RetrieveSingleAsync(
+            new RetrieveSingleCommentRequest { CommentId = created.Id }
+        );
+
+        // Assert
+        Assert.NotNull(retrieved);
+        Assert.Equal(created.Id, retrieved.Id);
+        Assert.Equal(created.DiscussionId, retrieved.DiscussionId);
+        var richText = Assert.IsType<RichTextText>(retrieved.RichText.First());
+        Assert.Equal("Comment to retrieve", richText.Text.Content);
+    }
+
+    [Fact]
+    public async Task ShouldUpdateComment()
+    {
+        // Arrange — create a comment first
+        var created = await Client.Comments.CreateAsync(
+            CreateCommentRequest.CreatePageComment(
+                new ParentPageInput { PageId = _page.Id },
+                new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "Original text" } } }
+            )
+        );
+
+        // Act
+        var updated = await Client.Comments.UpdateAsync(new UpdateCommentRequest
+        {
+            CommentId = created.Id,
+            RichText = new List<RichTextBase>
+            {
+                new RichTextText { Text = new Text { Content = "Updated text" } }
+            }
+        });
+
+        // Assert
+        Assert.NotNull(updated);
+        Assert.Equal(created.Id, updated.Id);
+        var richText = Assert.IsType<RichTextText>(updated.RichText.First());
+        Assert.Equal("Updated text", richText.Text.Content);
+    }
+
+    [Fact]
+    public async Task ShouldDeleteComment()
+    {
+        // Arrange — create a comment first
+        var created = await Client.Comments.CreateAsync(
+            CreateCommentRequest.CreatePageComment(
+                new ParentPageInput { PageId = _page.Id },
+                new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "Comment to delete" } } }
+            )
+        );
+
+        // Act — delete should not throw
+        await Client.Comments.DeleteAsync(created.Id);
+
+        // Assert — retrieving the deleted comment should fail or return nothing
+        var comments = await Client.Comments.RetrieveAsync(
+            new RetrieveCommentsRequest { BlockId = _page.Id }
+        );
+
+        Assert.DoesNotContain(comments.Results, c => c.Id == created.Id);
+    }
 }
