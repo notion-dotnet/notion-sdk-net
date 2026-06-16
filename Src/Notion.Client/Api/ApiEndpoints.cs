@@ -143,6 +143,19 @@
             public static string Retrieve(IRetrieveFileUploadPathParameters pathParameters) => $"/v1/file_uploads/{pathParameters.FileUploadId}";
         }
 
+        public static class ViewsApiUrls
+        {
+            private const string BasePath = "/v1/views";
+            public static string List() => BasePath;
+            public static string Create() => BasePath;
+            public static string Retrieve(string viewId) => $"{BasePath}/{viewId}";
+            public static string Update(string viewId) => $"{BasePath}/{viewId}";
+            public static string Delete(string viewId) => $"{BasePath}/{viewId}";
+            public static string CreateQuery(string viewId) => $"{BasePath}/{viewId}/queries";
+            public static string GetQueryResults(string viewId, string queryId) => $"{BasePath}/{viewId}/queries/{queryId}";
+            public static string DeleteQuery(string viewId, string queryId) => $"{BasePath}/{viewId}/queries/{queryId}";
+        }
+
         public static class DataSourcesApiUrls
         {
             private const string BasePath = "/v1/data_sources";

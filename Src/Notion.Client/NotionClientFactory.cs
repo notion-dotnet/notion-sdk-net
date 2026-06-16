@@ -17,6 +17,7 @@
                 , new AuthenticationClient(restClient)
                 , new FileUploadsClient(restClient)
                 , new DataSourcesClient(restClient)
+                , new ViewsClient(restClient)
             );
         }
     }
