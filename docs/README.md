@@ -10,17 +10,6 @@ A simple and easy to use client for the [Notion API](https://developers.notion.c
 dotnet add package Notion.Net
 ```
 
-**Note:** Default Notion-Version used by NuGet package versions
-| Package version | Notion-Version |
-| --- | --- |
-| 5.0.0-preview+ | 2025-09-03 |
-| 4.4.0+ | 2022-06-28 |
-| 4.3.0+ | 2022-06-28 | 
-| 4.0.0+ | 2022-06-28 | 
-| 3.0.0+ | 2022-02-22 |
-| 2.0.0+ | 2021-08-16 |
-| 1.0.0+ | 2021-05-13 |
-
 ## Usage
 
 > Before getting started, you need to [create an integration](https://www.notion.com/my-integrations) and find the token. You can learn more about authorization [here](https://developers.notion.com/docs/authorization).
@@ -40,9 +29,9 @@ Make A request to any Endpoint. For example you can call below to fetch the pagi
 var usersList = await client.Users.ListAsync();
 ```
 
-## Register using Microsoft.Extensions.DependencyInjection
+## Dependency Injection
 
-Library also provides extension method to register NotionClient with Microsoft dependency injection.
+The library provides an extension method to register `INotionClient` with Microsoft dependency injection.
 
 ```csharp
 services.AddNotionClient(options => {
@@ -55,11 +44,12 @@ services.AddNotionClient(options => {
 
 - [x] **Authentication**
   - [x] Create access token
-  - [x] Revoke access token  
+  - [x] Revoke access token
   - [x] Introspect token (get token status and details)
   - [x] Refresh access token
 - [x] **Databases**
   - [x] Retrieve a database
+  - [x] Query a database
   - [x] Create a database
   - [x] Update a database
 - [x] **Pages**
@@ -68,6 +58,7 @@ services.AddNotionClient(options => {
   - [x] Update page properties
   - [x] Retrieve page property item
   - [x] Retrieve page as markdown
+  - [x] Update page as markdown
 - [x] **Blocks**
   - [x] Retrieve a block
   - [x] Update a block
@@ -75,8 +66,13 @@ services.AddNotionClient(options => {
   - [x] Append block children
   - [x] Delete a block
 - [x] **Comments**
-  - [x] Retrieve comments
+  - [x] Retrieve comments (list by block)
+  - [x] Retrieve a single comment
   - [x] Create comment
+  - [x] Update comment
+  - [x] Delete comment
+- [x] **Custom Emojis**
+  - [x] List custom emojis
 - [x] **Users**
   - [x] Retrieve a user
   - [x] List all users
@@ -118,7 +114,7 @@ You can set the LogLevel in config file.
 }
 ```
 
-You can also refer `examples/list-users` example.
+You can also refer to the `examples/list-users` example.
 
 ## Contribution Guideline
 
