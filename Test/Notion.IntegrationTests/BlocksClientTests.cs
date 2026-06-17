@@ -217,6 +217,52 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         block.HasChildren.Should().BeTrue();
     }
 
+    [Fact]
+    public async Task AppendChildrenAsync_WithTabBlockAndParagraphIcon_ParagraphIconIsReturned()
+    {
+        // Act — create a tab block whose paragraph children have emoji icons
+        var blocks = await Client.Blocks.AppendChildrenAsync(
+            new BlockAppendChildrenRequest
+            {
+                BlockId = _page.Id,
+                Children = new List<IBlockObjectRequest>
+                {
+                    new TabBlockRequest
+                    {
+                        Tab = new TabBlockRequest.Data
+                        {
+                            Children = new List<ParagraphBlockRequest>
+                            {
+                                new ParagraphBlockRequest
+                                {
+                                    Paragraph = new ParagraphBlockRequest.Info
+                                    {
+                                        RichText = new List<RichTextBaseInput>
+                                        {
+                                            new RichTextTextInput { Text = new Text { Content = "Tab with icon" } }
+                                        },
+                                        Icon = new EmojiPageIconRequest { Emoji = "🎯" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        // Assert — retrieve children of the tab block and verify the paragraph has an icon
+        var tabBlock = blocks.Results.Should().ContainSingle().Subject.Should().BeOfType<TabBlock>().Subject;
+
+        var tabChildren = await Client.Blocks.RetrieveChildrenAsync(
+            new BlockRetrieveChildrenRequest { BlockId = tabBlock.Id });
+
+        var paragraph = tabChildren.Results.Should().ContainSingle().Subject.Should().BeOfType<ParagraphBlock>().Subject;
+        paragraph.Paragraph.Icon.Should().NotBeNull();
+        paragraph.Paragraph.Icon.Should().BeOfType<EmojiPageIcon>();
+        ((EmojiPageIcon)paragraph.Paragraph.Icon).Emoji.Should().Be("🎯");
+    }
+
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(
