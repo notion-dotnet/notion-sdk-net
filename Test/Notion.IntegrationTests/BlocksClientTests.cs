@@ -613,6 +613,35 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
                         .Subject.Should().BeOfType<RichTextText>().Subject
                         .Text.Content.Should().Be("Test file caption");
                 })
+            },
+            new object[]
+            {
+                new HeadingFourBlockRequest
+                {
+                    Heading_4 = new HeadingFourBlockRequest.Info
+                    {
+                        RichText = new List<RichTextBaseInput>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Heading 4 original" } }
+                        }
+                    }
+                },
+                new HeadingFourUpdateBlock
+                {
+                    Heading_4 = new HeadingFourUpdateBlock.Info
+                    {
+                        RichText = new List<RichTextBaseInput>
+                        {
+                            new RichTextTextInput { Text = new Text { Content = "Heading 4 updated" } }
+                        }
+                    }
+                },
+                new Action<IBlock, INotionClient>((block, _) =>
+                {
+                    var heading4 = block.Should().NotBeNull().And.BeOfType<HeadingFourBlock>().Subject;
+                    heading4.Heading_4.RichText.OfType<RichTextText>().First().Text.Content
+                        .Should().Be("Heading 4 updated");
+                })
             }
         };
     }
