@@ -19,6 +19,12 @@ namespace Notion.Client
         public bool InTrash { get; set; }
 
         /// <summary>
+        ///     Whether the page is locked from editing in the Notion app UI.
+        /// </summary>
+        [JsonProperty("is_locked")]
+        public bool? IsLocked { get; set; }
+
+        /// <summary>
         ///     Property values of this page.
         /// </summary>
         [JsonProperty("properties")]

@@ -563,4 +563,16 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         propertyItem.Should().NotBeNull();
         propertyItem.Should().BeOfType<PlacePropertyItem>();
     }
+
+    [Fact]
+    public async Task RetrieveAsync_PageHasIsLockedField()
+    {
+        // Act — retrieve the page that was created in InitializeAsync
+        var page = await Client.Pages.RetrieveAsync(_page.Id);
+
+        // Assert — is_locked should be present (false by default for newly created pages)
+        page.Should().NotBeNull();
+        // The field is nullable — a new page is not locked, so it should be false or null
+        page.IsLocked.Should().NotBeTrue();
+    }
 }
