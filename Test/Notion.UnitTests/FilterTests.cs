@@ -56,12 +56,91 @@ public class FilterTests
     }
 
     [Fact]
-    public void DateFilterTest()
+    public void DateFilterTest_WithDateTime_UnspecifiedKind()
     {
         var filter = new DateFilter("When", onOrAfter: new DateTime(2042, 11, 29));
 
         Assert.Equal(
             "{\"date\":{\"on_or_after\":\"2042-11-29T00:00:00\"},\"property\":\"When\"}",
+            SerializeFilter(filter)
+        );
+    }
+
+    [Fact]
+    public void DateFilterTest_WithDateTime_UtcKind()
+    {
+        var filter = new DateFilter("When", after: new DateTime(2042, 11, 29, 10, 30, 0, DateTimeKind.Utc));
+
+        Assert.Equal(
+            "{\"date\":{\"after\":\"2042-11-29T10:30:00Z\"},\"property\":\"When\"}",
+            SerializeFilter(filter)
+        );
+    }
+
+    [Fact]
+    public void DateFilterTest_WithDateTimeOffset()
+    {
+        var offset = new DateTimeOffset(2042, 11, 29, 10, 30, 0, TimeSpan.FromHours(5));
+        var filter = new DateFilter("When", before: offset);
+
+        Assert.Equal(
+            "{\"date\":{\"before\":\"2042-11-29T10:30:00+05:00\"},\"property\":\"When\"}",
+            SerializeFilter(filter)
+        );
+    }
+
+    [Fact]
+    public void DateFilterTest_WithRelativeDateKeyword_Today()
+    {
+        var filter = new DateFilter("Due", onOrAfter: RelativeDateValue.Today);
+
+        Assert.Equal(
+            "{\"date\":{\"on_or_after\":\"today\"},\"property\":\"Due\"}",
+            SerializeFilter(filter)
+        );
+    }
+
+    [Fact]
+    public void DateFilterTest_WithRelativeDateKeyword_Tomorrow()
+    {
+        var filter = new DateFilter("Due", before: RelativeDateValue.Tomorrow);
+
+        Assert.Equal(
+            "{\"date\":{\"before\":\"tomorrow\"},\"property\":\"Due\"}",
+            SerializeFilter(filter)
+        );
+    }
+
+    [Fact]
+    public void DateFilterTest_WithRelativeDateKeyword_OneWeekFromNow()
+    {
+        var filter = new DateFilter("Due", onOrBefore: RelativeDateValue.OneWeekFromNow);
+
+        Assert.Equal(
+            "{\"date\":{\"on_or_before\":\"one_week_from_now\"},\"property\":\"Due\"}",
+            SerializeFilter(filter)
+        );
+    }
+
+    [Fact]
+    public void DateFilterTest_WithRelativeDateKeyword_OneMonthAgo()
+    {
+        var filter = new DateFilter("Modified", equal: RelativeDateValue.OneMonthAgo);
+
+        Assert.Equal(
+            "{\"date\":{\"equals\":\"one_month_ago\"},\"property\":\"Modified\"}",
+            SerializeFilter(filter)
+        );
+    }
+
+    [Fact]
+    public void DateFilterTest_WithRelativeDateKeyword_CustomString()
+    {
+        RelativeDateValue custom = "yesterday";
+        var filter = new DateFilter("Due", after: custom);
+
+        Assert.Equal(
+            "{\"date\":{\"after\":\"yesterday\"},\"property\":\"Due\"}",
             SerializeFilter(filter)
         );
     }
