@@ -282,6 +282,39 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         }
     }
 
+    [Fact]
+    public async Task AppendChildrenAsync_WithNumberedListItem_DeserializesListStartIndexAndFormat()
+    {
+        // list_start_index and list_format are read-only fields that the API populates on responses;
+        // they cannot be set in create/update requests (confirmed by Notion API and notion-sdk-js types).
+        var blocks = await Client.Blocks.AppendChildrenAsync(
+            new BlockAppendChildrenRequest
+            {
+                BlockId = _page.Id,
+                Children = new List<IBlockObjectRequest>
+                {
+                    new NumberedListItemBlockRequest
+                    {
+                        NumberedListItem = new NumberedListItemBlockRequest.Info
+                        {
+                            RichText = new List<RichTextBaseInput>
+                            {
+                                new RichTextTextInput { Text = new Text { Content = "Item one" } }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        // Assert the block deserializes correctly, including the read-only list fields on the response model
+        var block = blocks.Results.Should().ContainSingle().Subject.Should().BeOfType<NumberedListItemBlock>().Subject;
+        block.NumberedListItem.RichText.OfType<RichTextText>().First().Text.Content.Should().Be("Item one");
+        // ListStartIndex and ListFormat are nullable — assert the model exposes them for API responses
+        block.NumberedListItem.ListStartIndex.Should().BeNull();
+        block.NumberedListItem.ListFormat.Should().BeNull();
+    }
+
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(

@@ -20,6 +20,12 @@ namespace Notion.Client
 
             [JsonProperty("children")]
             public IEnumerable<INonColumnBlock> Children { get; set; }
+
+            [JsonProperty("list_start_index")]
+            public int? ListStartIndex { get; set; }
+
+            [JsonProperty("list_format")]
+            public NumberedListFormat? ListFormat { get; set; }
         }
     }
 }
