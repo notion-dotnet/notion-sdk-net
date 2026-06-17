@@ -263,6 +263,25 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         ((EmojiPageIcon)paragraph.Paragraph.Icon).Emoji.Should().Be("🎯");
     }
 
+    [Fact]
+    public async Task QueryMeetingNotesAsync_ReturnsValidResponse()
+    {
+        // Act — query meeting notes (result may be empty if no meeting notes exist in the workspace)
+        var response = await Client.Blocks.QueryMeetingNotesAsync(
+            new QueryMeetingNotesRequest { PageSize = 10 }
+        );
+
+        // Assert — the response should be a valid paginated list
+        response.Should().NotBeNull();
+        response.Results.Should().NotBeNull();
+        // Each result, if any, should deserialize as a MeetingNotesBlock
+        foreach (var block in response.Results)
+        {
+            block.Should().BeOfType<MeetingNotesBlock>();
+            block.Type.Should().Be(BlockType.MeetingNotes);
+        }
+    }
+
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(
