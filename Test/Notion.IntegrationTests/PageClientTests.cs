@@ -512,4 +512,55 @@ public class PageClientTests : IntegrationTestBase, IAsyncLifetime
         Assert.NotNull(markdownResponse.Markdown);
         Assert.Contains("This is a test page.", markdownResponse.Markdown);
     }
+
+    [Fact]
+    public async Task RetrievePagePropertyItemAsync_PlaceProperty_DeserializesAsPlacePropertyItem()
+    {
+        // Arrange — create a database with a Place property
+        const string PlacePropertyName = "Location";
+
+        var databaseCreateRequest = new DatabasesCreateRequest
+        {
+            Title = new List<RichTextBaseInput>
+            {
+                new RichTextTextInput { Text = new Text { Content = "Place Property Test DB" } }
+            },
+            Parent = new PageParentOfDatabaseRequest { PageId = _page.Id },
+            InitialDataSource = new InitialDataSourceRequest
+            {
+                Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
+                {
+                    { "Name", new TitleDataSourcePropertyConfigRequest { Title = new Dictionary<string, object>() } },
+                    { PlacePropertyName, new PlaceDataSourcePropertyConfigRequest { Place = new Dictionary<string, object>() } }
+                }
+            }
+        };
+
+        var database = await Client.Databases.CreateAsync(databaseCreateRequest);
+
+        var page = await Client.Pages.CreateAsync(
+            PagesCreateParametersBuilder
+                .Create(new DataSourceParentRequest { DataSourceId = database.DataSources.First().DataSourceId })
+                .AddProperty("Name", new TitlePropertyValue
+                {
+                    Title = new List<RichTextBase>
+                    {
+                        new RichTextText { Text = new Text { Content = "Place test page" } }
+                    }
+                })
+                .Build()
+        );
+
+        // Act — retrieve the place property item
+        var propertyId = page.Properties[PlacePropertyName].Id;
+        var propertyItem = await Client.Pages.RetrievePagePropertyItemAsync(new RetrievePropertyItemParameters
+        {
+            PageId = page.Id,
+            PropertyId = propertyId
+        });
+
+        // Assert — the property item should be a PlacePropertyItem
+        propertyItem.Should().NotBeNull();
+        propertyItem.Should().BeOfType<PlacePropertyItem>();
+    }
 }
