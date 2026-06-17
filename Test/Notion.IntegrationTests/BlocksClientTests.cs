@@ -315,6 +315,83 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
         block.NumberedListItem.ListFormat.Should().BeNull();
     }
 
+        [Fact]
+    public async Task AppendChildrenAsync_WithColumnBlockWidthRatio_WidthRatioIsReturned()
+    {
+        // Arrange & Act — create a column list with two columns, one having an explicit width_ratio
+        var blocks = await Client.Blocks.AppendChildrenAsync(
+            new BlockAppendChildrenRequest
+            {
+                BlockId = _page.Id,
+                Children = new List<IBlockObjectRequest>
+                {
+                    new ColumnListBlockRequest
+                    {
+                        ColumnList = new ColumnListBlockRequest.Info
+                        {
+                            Children = new List<ColumnBlockRequest>
+                            {
+                                new ColumnBlockRequest
+                                {
+                                    Column = new ColumnBlockRequest.Info
+                                    {
+                                        WidthRatio = 0.25,
+                                        Children = new List<IColumnChildrenBlockRequest>
+                                        {
+                                            new ParagraphBlockRequest
+                                            {
+                                                Paragraph = new ParagraphBlockRequest.Info
+                                                {
+                                                    RichText = new List<RichTextBaseInput>
+                                                    {
+                                                        new RichTextTextInput { Text = new Text { Content = "Narrow column" } }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                new ColumnBlockRequest
+                                {
+                                    Column = new ColumnBlockRequest.Info
+                                    {
+                                        WidthRatio = 0.75,
+                                        Children = new List<IColumnChildrenBlockRequest>
+                                        {
+                                            new ParagraphBlockRequest
+                                            {
+                                                Paragraph = new ParagraphBlockRequest.Info
+                                                {
+                                                    RichText = new List<RichTextBaseInput>
+                                                    {
+                                                        new RichTextTextInput { Text = new Text { Content = "Wide column" } }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        // Assert — retrieve the columns inside the column list
+        var columnList = blocks.Results.Should().ContainSingle().Subject.Should().BeOfType<ColumnListBlock>().Subject;
+
+        var columns = await Client.Blocks.RetrieveChildrenAsync(
+            new BlockRetrieveChildrenRequest { BlockId = columnList.Id });
+
+        columns.Results.Should().HaveCount(2);
+        var firstColumn = columns.Results[0].Should().BeOfType<ColumnBlock>().Subject;
+        firstColumn.Column.WidthRatio.Should().Be(0.25);
+
+        var secondColumn = columns.Results[1].Should().BeOfType<ColumnBlock>().Subject;
+        secondColumn.Column.WidthRatio.Should().Be(0.75);
+    }
+
     [Theory]
     [MemberData(nameof(BlockData))]
     public async Task UpdateAsync_UpdatesGivenBlock(
