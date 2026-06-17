@@ -124,6 +124,12 @@
             {
                 return "/v1/comments";
             }
+
+            public static string RetrieveSingle(string commentId) => $"/v1/comments/{commentId}";
+
+            public static string Update(string commentId) => $"/v1/comments/{commentId}";
+
+            public static string Delete(string commentId) => $"/v1/comments/{commentId}";
         }
 
         public static class AuthenticationUrls
