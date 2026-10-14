@@ -43,6 +43,12 @@ namespace Notion.Client
         [JsonProperty("sorts")]
         public IEnumerable<ViewSort> Sorts { get; set; }
 
+        /// <summary>
+        /// Quick filters pinned in the view's filter bar, keyed by property.
+        /// </summary>
+        [JsonProperty("quick_filters")]
+        public IDictionary<string, object> QuickFilters { get; set; }
+
         [JsonProperty("configuration")]
         public ViewConfiguration Configuration { get; set; }
     }
