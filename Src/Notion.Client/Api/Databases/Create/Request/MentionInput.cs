@@ -18,5 +18,11 @@ namespace Notion.Client
 
         [JsonProperty("date")]
         public Date Date { get; set; }
+
+        [JsonProperty("template_mention")]
+        public TemplateMention TemplateMention { get; set; }
+
+        [JsonProperty("custom_emoji")]
+        public CustomEmojiRequest CustomEmoji { get; set; }
     }
 }
