@@ -9,10 +9,12 @@ namespace Notion.Client
     /// <summary>
     /// The built-in retry policy with exponential backoff and jitter.
     /// <list type="bullet">
-    ///   <item><description>HTTP 429 (rate limited) — retried for all HTTP methods; honours the <c>Retry-After</c> header when present.</description></item>
+    ///   <item><description>HTTP 429 (rate limited) — retried for all HTTP methods.</description></item>
+    ///   <item><description>HTTP 529 (service overload) — retried for all HTTP methods.</description></item>
     ///   <item><description>HTTP 500 (internal server error) — retried only for idempotent methods (GET, DELETE).</description></item>
     ///   <item><description>HTTP 503 (service unavailable) — retried only for idempotent methods (GET, DELETE).</description></item>
     /// </list>
+    /// A <c>Retry-After</c> header on a retried response (seconds or an HTTP date) is honoured, capped at <see cref="MaxDelay"/>.
     /// Subclass and override <see cref="ShouldRetry"/> or <see cref="GetDelay"/> to customise individual aspects
     /// while reusing the rest of the default behaviour.
     /// </summary>
@@ -60,7 +62,7 @@ namespace Notion.Client
 
             return (int)response.StatusCode switch
             {
-                429 => true,
+                429 or 529 => true,
                 500 or 503 => IdempotentMethods.Contains(method),
                 _ => false
             };
@@ -69,11 +71,19 @@ namespace Notion.Client
         /// <inheritdoc/>
         public virtual TimeSpan GetDelay(HttpResponseMessage response, int attempt)
         {
-            // Honour the Retry-After header for rate-limited responses.
-            if (response.StatusCode == (HttpStatusCode)429
-                && response.Headers.RetryAfter?.Delta is { } serverDelay)
+            // Honour the Retry-After header (delta seconds or HTTP date), capped at MaxDelay.
+            var retryAfter = response.Headers.RetryAfter;
+            var serverDelay = retryAfter?.Delta
+                ?? (retryAfter?.Date is { } date ? date - DateTimeOffset.UtcNow : (TimeSpan?)null);
+
+            if (serverDelay is { } fromServer)
             {
-                return serverDelay;
+                if (fromServer < TimeSpan.Zero)
+                {
+                    fromServer = TimeSpan.Zero;
+                }
+
+                return fromServer > MaxDelay ? MaxDelay : fromServer;
             }
 
             // Exponential backoff: initialDelay * 2^attempt, capped at MaxDelay, plus random jitter.
