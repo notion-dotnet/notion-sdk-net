@@ -295,6 +295,19 @@ namespace Notion.Client
         {
             foreach (var header in headers)
             {
+                // Authorization and Notion-Version are already set on every request; replace them
+                // instead of adding a second value, so a caller can override them per request.
+                if (string.Equals(header.Key, "Authorization", StringComparison.OrdinalIgnoreCase))
+                {
+                    request.Headers.Authorization = AuthenticationHeaderValue.Parse(header.Value);
+                    continue;
+                }
+
+                if (string.Equals(header.Key, "Notion-Version", StringComparison.OrdinalIgnoreCase))
+                {
+                    request.Headers.Remove("Notion-Version");
+                }
+
                 request.Headers.Add(header.Key, header.Value);
             }
         }
