@@ -30,6 +30,8 @@ namespace Notion.Client
         public const string ServiceUnavailableValue = "service_unavailable";
         public const string DatabaseConnectionUnavailableValue = "database_connection_unavailable";
         public const string GatewayTimeoutValue = "gateway_timeout";
+        public const string ServiceOverloadValue = "service_overload";
+        public const string InvalidBetaValue = "invalid_beta";
 
         public static readonly NotionAPIErrorCode InvalidJSON = new NotionAPIErrorCode(InvalidJSONValue);
         public static readonly NotionAPIErrorCode InvalidRequestUrl = new NotionAPIErrorCode(InvalidRequestUrlValue);
@@ -47,6 +49,8 @@ namespace Notion.Client
         public static readonly NotionAPIErrorCode ServiceUnavailable = new NotionAPIErrorCode(ServiceUnavailableValue);
         public static readonly NotionAPIErrorCode DatabaseConnectionUnavailable = new NotionAPIErrorCode(DatabaseConnectionUnavailableValue);
         public static readonly NotionAPIErrorCode GatewayTimeout = new NotionAPIErrorCode(GatewayTimeoutValue);
+        public static readonly NotionAPIErrorCode ServiceOverload = new NotionAPIErrorCode(ServiceOverloadValue);
+        public static readonly NotionAPIErrorCode InvalidBeta = new NotionAPIErrorCode(InvalidBetaValue);
 
         public static implicit operator NotionAPIErrorCode(string value) => new NotionAPIErrorCode(value);
 
