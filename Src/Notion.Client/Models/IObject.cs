@@ -8,6 +8,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubType(typeof(Database), ObjectType.DatabaseValue)]
     [JsonSubtypes.KnownSubType(typeof(IBlock), ObjectType.BlockValue)]
     [JsonSubtypes.KnownSubType(typeof(User), ObjectType.UserValue)]
+    [JsonSubtypes.KnownSubType(typeof(Group), ObjectType.GroupValue)]
     [JsonSubtypes.KnownSubType(typeof(PageMarkdownResponse), ObjectType.PageMarkdownValue)]
     [JsonSubtypes.FallBackSubTypeAttribute(typeof(UnknownObject))]
     public interface IObject

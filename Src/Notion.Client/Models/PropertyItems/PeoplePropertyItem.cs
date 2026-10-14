@@ -7,6 +7,6 @@ namespace Notion.Client
         public override string Type => "people";
 
         [JsonProperty("people")]
-        public User People { get; set; }
+        public IPeopleValue People { get; set; }
     }
 }
