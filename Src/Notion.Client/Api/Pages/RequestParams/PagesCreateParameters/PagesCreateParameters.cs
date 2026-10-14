@@ -19,5 +19,12 @@ namespace Notion.Client
         public PageTemplate Template { get; set; }
 
         public PagePosition Position { get; set; }
+
+        /// <summary>
+        /// Limits the returned page properties to the given property ids (sent as the
+        /// <c>filter_properties</c> query parameter, not in the body).
+        /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        public IEnumerable<string> FilterProperties { get; set; }
     }
 }
