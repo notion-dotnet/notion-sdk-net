@@ -11,6 +11,13 @@ namespace Notion.Client
         public string AuthToken { get; set; }
 
         /// <summary>
+        /// Maximum time to wait for each request (every retry attempt gets the full time). When exceeded a
+        /// <see cref="NotionRequestTimeoutException" /> is thrown. <c>null</c> (default) leaves the timeout to the
+        /// <see cref="HttpClient" /> (100 seconds unless configured otherwise). The Notion JavaScript SDK uses 60 seconds.
+        /// </summary>
+        public System.TimeSpan? Timeout { get; set; }
+
+        /// <summary>
         /// Opt-in retry policy. When set, failed requests are automatically retried according to the policy.
         /// Use <see cref="DefaultRetryPolicy"/> for the built-in exponential-backoff behaviour,
         /// or implement <see cref="IRetryPolicy"/> to supply a custom strategy (e.g. wrapping Polly).
