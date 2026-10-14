@@ -14,6 +14,13 @@ namespace Notion.Client
         [JsonProperty("children")]
         IList<IBlock> Children { get; set; }
 
+        /// <summary>
+        /// Page content as blocks, sent as <c>content</c>. The Notion JavaScript SDK accepts it next to
+        /// <see cref="Children"/> and passes it through unchanged. Mutually exclusive with <see cref="Markdown"/>.
+        /// </summary>
+        [JsonProperty("content")]
+        IList<IBlock> Content { get; set; }
+
         [JsonProperty("icon")]
         IPageIconRequest Icon { get; set; }
 
