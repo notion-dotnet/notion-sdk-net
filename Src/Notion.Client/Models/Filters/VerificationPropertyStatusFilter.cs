@@ -15,7 +15,7 @@ namespace Notion.Client
         /// <summary>
         /// Gets or sets the verification status condition.
         /// </summary>
-        [JsonProperty("verification_status")]
+        [JsonProperty("verification")]
         public Condition VerificationStatus { get; set; }
 
         public class Condition

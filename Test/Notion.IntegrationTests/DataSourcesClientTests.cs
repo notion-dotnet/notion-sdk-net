@@ -406,6 +406,45 @@ namespace Notion.IntegrationTests
             dualRelation.Should().BeOfType<DualPropertyRelationInfo>();
         }
 
+        [Fact]
+        public async Task QueryDataSourceAsync_WithVerificationFilters()
+        {
+            var database = await Client.Databases.CreateAsync(new DatabasesCreateRequest
+            {
+                Title = new List<RichTextBaseInput>
+                {
+                    new RichTextTextInput { Text = new Text { Content = "Verification filter DB" } }
+                },
+                InitialDataSource = new InitialDataSourceRequest
+                {
+                    Properties = new Dictionary<string, DataSourcePropertyConfigRequest>
+                    {
+                        { "Name", new TitleDataSourcePropertyConfigRequest { Title = new Dictionary<string, object>() } },
+                        { "Verification", new VerificationDataSourcePropertyConfigRequest { Verification = new Dictionary<string, object>() } }
+                    }
+                },
+                Parent = new PageParentOfDatabaseRequest { PageId = _page.Id }
+            });
+            var dataSourceId = database.DataSources.First().DataSourceId;
+
+            var statusResponse = await Client.DataSources.QueryAsync(new QueryDataSourceRequest
+            {
+                DataSourceId = dataSourceId,
+                Filter = new VerificationPropertyStatusFilter(
+                    "Verification",
+                    new VerificationPropertyStatusFilter.Condition(VerificationStatus.Verified))
+            });
+
+            var doesNotEqualResponse = await Client.DataSources.QueryAsync(new QueryDataSourceRequest
+            {
+                DataSourceId = dataSourceId,
+                Filter = new VerificationPropertyDoesNotEqualFilter("Verification", VerificationStatus.Expired)
+            });
+
+            Assert.NotNull(statusResponse.Results);
+            Assert.NotNull(doesNotEqualResponse.Results);
+        }
+
         private async Task<Database> CreateDatabaseWithAPageAsync(string databaseName)
         {
             var createDbRequest = new DatabasesCreateRequest
