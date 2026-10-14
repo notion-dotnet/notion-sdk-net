@@ -30,6 +30,17 @@ namespace Notion.Client
         Task<Page> RetrieveAsync(string pageId, CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     Retrieves a Page object, limiting the returned properties to the given property ids.
+        /// </summary>
+        /// <param name="pageId">Identifier for a Notion page</param>
+        /// <param name="filterProperties">Property ids to include in the response (<c>filter_properties</c>)</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        Task<Page> RetrieveAsync(
+            string pageId,
+            IEnumerable<string> filterProperties,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
         ///     Updates page property values for the specified page.
         ///     Note: Properties that are not set via the properties parameter will remain unchanged.
         /// </summary>

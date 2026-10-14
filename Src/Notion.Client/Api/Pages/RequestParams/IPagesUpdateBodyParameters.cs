@@ -12,7 +12,7 @@ namespace Notion.Client
         IPageCoverRequest Cover { get; set; }
 
         [JsonProperty("in_trash")]
-        bool InTrash { get; set; }
+        bool? InTrash { get; set; }
 
         [JsonProperty("properties")]
         IDictionary<string, PropertyValue> Properties { get; set; }
@@ -35,5 +35,11 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("is_locked")]
         bool? IsLocked { get; set; }
+
+        /// <summary>
+        /// Whether the page should be archived. If not provided, the archived state will not be updated.
+        /// </summary>
+        [JsonProperty("is_archived")]
+        bool? IsArchived { get; set; }
     }
 }

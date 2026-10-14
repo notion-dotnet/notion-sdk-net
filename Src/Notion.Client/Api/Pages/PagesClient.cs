@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using static Notion.Client.ApiEndpoints;
@@ -45,12 +46,27 @@ namespace Notion.Client
                 throw new ArgumentNullException(nameof(bodyParameters.Properties), "Properties are required!");
             }
 
-            return await _client.PostAsync<Page>(PagesApiUrls.Create(), bodyParameters, cancellationToken: cancellationToken);
+            var queryParams = ((IPagesCreateQueryParameters)pagesCreateParameters).FilterProperties?
+                .Select(x => new KeyValuePair<string, string>("filter_properties", x));
+
+            return await _client.PostAsync<Page>(
+                PagesApiUrls.Create(),
+                bodyParameters,
+                queryParams,
+                cancellationToken: cancellationToken);
         }
 
         public async Task<Page> RetrieveAsync(string pageId, CancellationToken cancellationToken = default)
         {
-            var url = PagesApiUrls.Retrieve(pageId);
+            return await RetrieveAsync(pageId, null, cancellationToken);
+        }
+
+        public async Task<Page> RetrieveAsync(
+            string pageId,
+            IEnumerable<string> filterProperties,
+            CancellationToken cancellationToken = default)
+        {
+            var url = WithFilterProperties(PagesApiUrls.Retrieve(pageId), filterProperties);
 
             return await _client.GetAsync<Page>(url, cancellationToken: cancellationToken);
         }
@@ -74,7 +90,7 @@ namespace Notion.Client
 
         public async Task<Page> UpdateAsync(string pageId, PagesUpdateParameters pagesUpdateParameters, CancellationToken cancellationToken = default)
         {
-            var url = PagesApiUrls.Update(pageId);
+            var url = WithFilterProperties(PagesApiUrls.Update(pageId), pagesUpdateParameters?.FilterProperties);
             var body = (IPagesUpdateBodyParameters)pagesUpdateParameters;
 
             return await _client.PatchAsync<Page>(url, body, cancellationToken: cancellationToken);
@@ -90,6 +106,23 @@ namespace Notion.Client
             var body = new UpdatePropertiesParameters { Properties = updatedProperties };
 
             return await _client.PatchAsync<Page>(url, body, cancellationToken: cancellationToken);
+        }
+
+        /// <summary>
+        ///     Appends one <c>filter_properties</c> query parameter per property id (the key is repeated).
+        /// </summary>
+        private static string WithFilterProperties(string url, IEnumerable<string> filterProperties)
+        {
+            var ids = filterProperties?.ToList();
+
+            if (ids == null || ids.Count == 0)
+            {
+                return url;
+            }
+
+            var query = string.Join("&", ids.Select(id => "filter_properties=" + Uri.EscapeDataString(id)));
+
+            return url + (url.Contains("?") ? "&" : "?") + query;
         }
 
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
