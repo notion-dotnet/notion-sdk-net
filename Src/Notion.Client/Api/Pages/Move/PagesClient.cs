@@ -20,7 +20,7 @@ namespace Notion.Client
 
             var body = MovePageBodyParameters.FromRequest(request);
 
-            return await _client.PatchAsync<Page>(url, body, cancellationToken: cancellationToken);
+            return await _client.PostAsync<Page>(url, body, cancellationToken: cancellationToken);
         }
     }
 }
