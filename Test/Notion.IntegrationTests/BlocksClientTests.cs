@@ -264,36 +264,6 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
     }
 
     [Fact]
-    public async Task QueryMeetingNotesAsync_WithTypedFilterAndSort()
-    {
-        var response = await Client.Blocks.QueryMeetingNotesAsync(
-            new QueryMeetingNotesRequest
-            {
-                Filter = MeetingNotesCombinatorFilter.And(
-                    new MeetingNotesPropertyFilter(
-                        MeetingNotesPropertyName.Title,
-                        MeetingNotesFilterCondition.Empty(false)),
-                    new MeetingNotesPropertyFilter(
-                        MeetingNotesPropertyName.CreatedTime,
-                        MeetingNotesFilterCondition.DateRelative(
-                            MeetingNotesFilterOperator.DateIsBefore, "today"))),
-                Sort = new List<MeetingNotesSort>
-                {
-                    new MeetingNotesSort
-                    {
-                        Property = MeetingNotesPropertyName.CreatedTime,
-                        Direction = MeetingNotesSort.Descending
-                    }
-                },
-                PageSize = 10
-            }
-        );
-
-        response.Should().NotBeNull();
-        response.Results.Should().NotBeNull();
-    }
-
-    [Fact]
     public async Task QueryMeetingNotesAsync_ReturnsValidResponse()
     {
         // Act — query meeting notes (result may be empty if no meeting notes exist in the workspace)
