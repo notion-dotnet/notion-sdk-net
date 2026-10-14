@@ -16,6 +16,8 @@ namespace Notion.Client
 
         public string Markdown { get; set; }
 
+        public bool? AllowAsync { get; set; }
+
         public PageTemplate Template { get; set; }
 
         public PagePosition Position { get; set; }

@@ -37,5 +37,13 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("position")]
         PagePosition Position { get; set; }
+
+        /// <summary>
+        /// Opt into receiving an async task when the work is accepted for background execution.
+        /// Set by <see cref="IPagesClient.CreateWithAsyncTaskAsync" />; the plain method rejects it because its
+        /// return type cannot represent an async task.
+        /// </summary>
+        [JsonProperty("allow_async")]
+        bool? AllowAsync { get; set; }
     }
 }

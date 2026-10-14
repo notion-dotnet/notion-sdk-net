@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using static Notion.Client.ApiEndpoints;
 
 namespace Notion.Client
@@ -35,6 +36,13 @@ namespace Notion.Client
 
             var bodyParameters = (IPagesCreateBodyParameters)pagesCreateParameters;
 
+            if (bodyParameters.AllowAsync == true)
+            {
+                throw new ArgumentException(
+                    "AllowAsync is only supported by CreateWithAsyncTaskAsync.",
+                    nameof(pagesCreateParameters));
+            }
+
             if (bodyParameters.Parent == null)
             {
                 throw new ArgumentNullException(nameof(bodyParameters.Parent), "Parent is required!");
@@ -46,6 +54,38 @@ namespace Notion.Client
             }
 
             return await _client.PostAsync<Page>(PagesApiUrls.Create(), bodyParameters, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<AsyncOperationResult<Page>> CreateWithAsyncTaskAsync(
+            PagesCreateParameters pagesCreateParameters,
+            CancellationToken cancellationToken = default)
+        {
+            if (pagesCreateParameters is null)
+            {
+                throw new ArgumentNullException(nameof(pagesCreateParameters));
+            }
+
+            var bodyParameters = (IPagesCreateBodyParameters)pagesCreateParameters;
+
+            if (bodyParameters.Parent == null)
+            {
+                throw new ArgumentNullException(nameof(bodyParameters.Parent), "Parent is required!");
+            }
+
+            if (bodyParameters.Properties == null)
+            {
+                throw new ArgumentNullException(nameof(bodyParameters.Properties), "Properties are required!");
+            }
+
+            bodyParameters.AllowAsync = true;
+
+            var response = await _client.PostAsync<JObject>(
+                PagesApiUrls.Create(),
+                bodyParameters,
+                cancellationToken: cancellationToken);
+
+            return AsyncOperationResultParser.Parse<Page>(response);
         }
 
         public async Task<Page> RetrieveAsync(string pageId, CancellationToken cancellationToken = default)

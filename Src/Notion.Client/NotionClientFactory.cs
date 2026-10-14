@@ -19,6 +19,7 @@ namespace Notion.Client
                 , new DataSourcesClient(restClient)
                 , new ViewsClient(restClient)
                 , new EmojisClient(restClient)
+                , new AsyncTasksClient(restClient)
             );
         }
     }

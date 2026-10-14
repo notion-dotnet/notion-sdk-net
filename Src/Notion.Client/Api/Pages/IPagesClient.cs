@@ -20,6 +20,16 @@ namespace Notion.Client
         Task<Page> CreateAsync(PagesCreateParameters pagesCreateParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     Creates a page like <see cref="CreateAsync" /> but opts into <c>allow_async</c>: when the API accepts the
+        ///     work for background execution (only supported when <c>markdown</c> is provided) the result is an
+        ///     <see cref="AsyncTask" /> to poll with <see cref="IAsyncTasksClient.RetrieveAsync" />; otherwise it is the
+        ///     created <see cref="Page" />.
+        /// </summary>
+        Task<AsyncOperationResult<Page>> CreateWithAsyncTaskAsync(
+            PagesCreateParameters pagesCreateParameters,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
         ///     Retrieves a Page object using the ID specified.
         /// </summary>
         /// <param name="pageId">Identifier for a Notion page</param>
@@ -101,6 +111,17 @@ namespace Notion.Client
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Returns a <see cref="PageMarkdownResponse"/> reflecting the updated page content</returns>
         Task<PageMarkdownResponse> UpdateMarkdownAsync(
+            string pageId,
+            UpdatePageMarkdownBody body,
+            CancellationToken cancellationToken = default
+        );
+
+        /// <summary>
+        ///     Like <see cref="UpdateMarkdownAsync" /> but opts into <c>allow_async</c>: when the API accepts the update
+        ///     for background execution the result is an <see cref="AsyncTask" /> to poll with
+        ///     <see cref="IAsyncTasksClient.RetrieveAsync" />; otherwise it is the usual <see cref="PageMarkdownResponse" />.
+        /// </summary>
+        Task<AsyncOperationResult<PageMarkdownResponse>> UpdateMarkdownWithAsyncTaskAsync(
             string pageId,
             UpdatePageMarkdownBody body,
             CancellationToken cancellationToken = default
