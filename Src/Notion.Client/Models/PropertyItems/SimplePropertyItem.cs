@@ -26,6 +26,9 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(RelationPropertyItem), "relation")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(RollupPropertyItem), "rollup")]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(PlacePropertyItem), "place")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(UniqueIdPropertyItem), "unique_id")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(VerificationPropertyItem), "verification")]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(ButtonPropertyItem), "button")]
     [JsonSubtypes.FallBackSubTypeAttribute(typeof(SimplePropertyItem))]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public abstract class SimplePropertyItem : IPropertyItemObject
