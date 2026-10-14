@@ -24,11 +24,13 @@ namespace Notion.Client
 
         private readonly HttpClient _httpClient;
         private readonly IRetryPolicy _retryPolicy;
+        private readonly TimeSpan? _timeout;
 
         public RestClient(ClientOptions options)
         {
             _options = MergeOptions(options);
             _retryPolicy = options.RetryPolicy;
+            _timeout = options.Timeout;
             _httpClient = ResolveHttpClient(options.HttpClient, _options.BaseUrl);
         }
 
@@ -195,7 +197,8 @@ namespace Notion.Client
             {
                 AuthToken = options.AuthToken,
                 BaseUrl = options.BaseUrl ?? Constants.BaseUrl,
-                NotionVersion = options.NotionVersion ?? Constants.DefaultNotionVersion
+                NotionVersion = options.NotionVersion ?? Constants.DefaultNotionVersion,
+                Timeout = options.Timeout
             };
         }
 
@@ -241,6 +244,8 @@ namespace Notion.Client
             IBasicAuthenticationParameters basicAuthenticationParameters = null,
             CancellationToken cancellationToken = default)
         {
+            ValidatePath(requestUri);
+
             requestUri = AddQueryString(requestUri, queryParams);
 
             for (var attempt = 0; ; attempt++)
@@ -250,6 +255,7 @@ namespace Notion.Client
 
                 httpRequest.Headers.Authorization = CreateAuthenticationHeader(basicAuthenticationParameters);
                 httpRequest.Headers.Add("Notion-Version", _options.NotionVersion);
+                httpRequest.Headers.UserAgent.ParseAdd(Constants.UserAgent);
 
                 if (headers != null)
                 {
@@ -258,7 +264,7 @@ namespace Notion.Client
 
                 attachContent?.Invoke(httpRequest);
 
-                var response = await _httpClient.SendAsync(httpRequest, cancellationToken);
+                var response = await SendWithTimeoutAsync(httpRequest, cancellationToken);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -281,6 +287,42 @@ namespace Notion.Client
                 response.Dispose();
 
                 await Task.Delay(delay, cancellationToken);
+            }
+        }
+
+        private async Task<HttpResponseMessage> SendWithTimeoutAsync(
+            HttpRequestMessage httpRequest,
+            CancellationToken cancellationToken)
+        {
+            if (_timeout == null)
+            {
+                return await _httpClient.SendAsync(httpRequest, cancellationToken);
+            }
+
+            using var timeoutSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            timeoutSource.CancelAfter(_timeout.Value);
+
+            try
+            {
+                return await _httpClient.SendAsync(httpRequest, timeoutSource.Token);
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            {
+                throw new NotionRequestTimeoutException(_timeout.Value);
+            }
+        }
+
+        /// <summary>
+        /// Rejects path-traversal sequences in the path part of the request URI.
+        /// </summary>
+        private static void ValidatePath(string requestUri)
+        {
+            var queryIndex = requestUri.IndexOf('?');
+            var path = queryIndex >= 0 ? requestUri.Substring(0, queryIndex) : requestUri;
+
+            if (path.Contains("..") || path.IndexOf("%2e%2e", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                throw new InvalidPathParameterException(path);
             }
         }
 

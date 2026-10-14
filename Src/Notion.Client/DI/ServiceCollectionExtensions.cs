@@ -42,6 +42,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     BaseUrl = clientOptions.BaseUrl,
                     NotionVersion = clientOptions.NotionVersion,
                     RetryPolicy = clientOptions.RetryPolicy,
+                    Timeout = clientOptions.Timeout,
                     HttpClient = httpClientFactory.CreateClient(Constants.HttpClientName)
                 };
 
