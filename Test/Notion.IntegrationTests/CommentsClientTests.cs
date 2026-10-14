@@ -143,6 +143,88 @@ public class CommentsClientTests : IntegrationTestBase, IAsyncLifetime
     }
 
     [Fact]
+    public async Task ShouldCreatePageCommentFromMarkdown()
+    {
+        var response = await Client.Comments.CreateAsync(
+            CreateCommentRequest.CreatePageMarkdownComment(
+                new ParentPageInput { PageId = _page.Id },
+                "Some **bold** text"
+            )
+        );
+
+        Assert.NotNull(response);
+        Assert.Contains(
+            response.RichText.OfType<RichTextText>(),
+            t => t.Text.Content.Contains("bold") && t.Annotations.IsBold);
+    }
+
+    [Fact]
+    public async Task ShouldUpdateCommentFromMarkdown()
+    {
+        var created = await Client.Comments.CreateAsync(
+            CreateCommentRequest.CreatePageComment(
+                new ParentPageInput { PageId = _page.Id },
+                new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "Original" } } }
+            )
+        );
+
+        var updated = await Client.Comments.UpdateAsync(
+            new UpdateCommentRequest { CommentId = created.Id, Markdown = "Edited with *markdown*" }
+        );
+
+        Assert.Equal(created.Id, updated.Id);
+        Assert.Contains(
+            updated.RichText.OfType<RichTextText>(),
+            t => t.Text.Content.Contains("markdown") && t.Annotations.IsItalic);
+    }
+
+    [Fact]
+    public async Task ShouldCreateCommentWithCustomDisplayName()
+    {
+        var request = CreateCommentRequest.CreatePageComment(
+            new ParentPageInput { PageId = _page.Id },
+            new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "Signed comment" } } }
+        );
+        request.DisplayName = CommentDisplayName.CustomName("Release Bot");
+
+        var response = await Client.Comments.CreateAsync(request);
+
+        Assert.NotNull(response.DisplayName);
+        Assert.Equal("custom", response.DisplayName.Type);
+        Assert.Equal("Release Bot", response.DisplayName.ResolvedName);
+    }
+
+    [Fact]
+    public async Task ShouldCreateCommentWithAttachment()
+    {
+        var upload = await Client.FileUploads.CreateAsync(
+            new CreateFileUploadRequest { Mode = FileUploadMode.SinglePart, FileName = "notion-logo.png" });
+
+        using (var fileStream = System.IO.File.OpenRead("assets/notion-logo.png"))
+        {
+            await Client.FileUploads.SendAsync(
+                SendFileUploadRequest.Create(
+                    upload.Id,
+                    new FileData
+                    {
+                        FileName = "notion-logo.png", Data = fileStream, ContentType = upload.ContentType
+                    }));
+        }
+
+        var request = CreateCommentRequest.CreatePageComment(
+            new ParentPageInput { PageId = _page.Id },
+            new List<RichTextBaseInput> { new RichTextTextInput { Text = new Text { Content = "See attachment" } } }
+        );
+        request.Attachments = new[] { new CommentAttachmentRequest(upload.Id) };
+
+        var response = await Client.Comments.CreateAsync(request);
+
+        var attachment = Assert.Single(response.Attachments);
+        Assert.Equal("image", attachment.Category);
+        Assert.False(string.IsNullOrEmpty(attachment.File.Url));
+    }
+
+    [Fact]
     public async Task ShouldDeleteComment()
     {
         // Arrange — create a comment first
