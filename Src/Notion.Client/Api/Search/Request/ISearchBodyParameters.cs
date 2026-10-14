@@ -19,7 +19,7 @@ namespace Notion.Client
         SearchSort Sort { get; set; }
 
         /// <summary>
-        /// A set of criteria, value and property keys, that limits the results to either only pages or only data_sources.
+        /// A set of criteria that limits the results to only pages or only data_sources (value + property "object"), and/or by trash status (in_trash).
         /// Possible value values are "page" or "data_source". The only supported property value is "object".
         /// </summary>
         [JsonProperty("filter")]
