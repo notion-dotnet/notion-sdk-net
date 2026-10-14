@@ -115,19 +115,28 @@ var client = NotionClientFactory.Create(new ClientOptions
 
 ## Retry Policy
 
-The library ships with an opt-in exponential-backoff retry policy. When enabled it automatically
-retries on HTTP 429 (rate limited) for all methods, and on HTTP 500/503 for idempotent methods
-(GET, DELETE). The `Retry-After` response header is honoured for rate-limited responses.
+Requests are retried by default (as in the official JS SDK): up to 2 retries with exponential backoff on
+HTTP 429 (rate limited) and 529 (service overload) for all methods, and on HTTP 500/503 for idempotent methods
+(GET, DELETE). The `Retry-After` response header is honoured. File uploads are never retried.
+
+To tune the policy, pass your own `DefaultRetryPolicy`; to turn retries off, use `NoRetryPolicy.Instance`:
 
 ```csharp
 var client = NotionClientFactory.Create(new ClientOptions
 {
     AuthToken = "<Token>",
     RetryPolicy = new DefaultRetryPolicy(
-        maxRetries: 3,          // default
+        maxRetries: 2,          // default
         initialDelay: TimeSpan.FromSeconds(1),  // doubles each attempt
         maxDelay: TimeSpan.FromSeconds(60)
     )
+});
+
+// Disable retries entirely
+var noRetryClient = NotionClientFactory.Create(new ClientOptions
+{
+    AuthToken = "<Token>",
+    RetryPolicy = NoRetryPolicy.Instance
 });
 ```
 
@@ -169,7 +178,7 @@ public class AggressiveRetryPolicy : DefaultRetryPolicy
 ```
 
 > **Note:** If the `HttpClient` you supply already has retry in its pipeline (e.g. via Polly registered
-> through `IHttpClientFactory`), leave `RetryPolicy` null. Setting both causes nested retries.
+> through `IHttpClientFactory`), set `RetryPolicy = NoRetryPolicy.Instance`. Otherwise the retries are nested.
 
 
 ## Supported Endpoints
