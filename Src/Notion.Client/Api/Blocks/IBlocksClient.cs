@@ -53,6 +53,15 @@ namespace Notion.Client
         Task DeleteAsync(string blockId, CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     Creates a meeting notes block from an audio or video source (a completed file upload or an
+        ///     existing audio, video or file block).
+        /// </summary>
+        Task<CreateMeetingNotesResponse> CreateMeetingNotesAsync(
+            CreateMeetingNotesRequest request,
+            CancellationToken cancellationToken = default
+        );
+
+        /// <summary>
         ///     Queries meeting notes blocks across the workspace.
         /// </summary>
         Task<QueryMeetingNotesResponse> QueryMeetingNotesAsync(
