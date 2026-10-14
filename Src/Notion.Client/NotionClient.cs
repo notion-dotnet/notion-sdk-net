@@ -27,6 +27,8 @@ namespace Notion.Client
 
         IEmojisClient Emojis { get; }
 
+        IAsyncTasksClient AsyncTasks { get; }
+
         IRestClient RestClient { get; }
     }
 
@@ -44,7 +46,8 @@ namespace Notion.Client
             IFileUploadsClient fileUploadsClient,
             IDataSourcesClient dataSourcesClient,
             IViewsClient viewsClient,
-            IEmojisClient emojisClient)
+            IEmojisClient emojisClient,
+            IAsyncTasksClient asyncTasksClient = null)
         {
             RestClient = restClient;
             Users = users;
@@ -58,6 +61,7 @@ namespace Notion.Client
             DataSources = dataSourcesClient;
             Views = viewsClient;
             Emojis = emojisClient;
+            AsyncTasks = asyncTasksClient ?? new AsyncTasksClient(restClient);
         }
 
         public IAuthenticationClient AuthenticationClient { get; }
@@ -81,6 +85,8 @@ namespace Notion.Client
         public IViewsClient Views { get; }
 
         public IEmojisClient Emojis { get; }
+
+        public IAsyncTasksClient AsyncTasks { get; }
 
         public IRestClient RestClient { get; }
     }

@@ -178,5 +178,10 @@
         {
             public static string List => "/v1/custom_emojis";
         }
+
+        public static class AsyncTasksApiUrls
+        {
+            public static string Retrieve(string taskId) => $"/v1/async_tasks/{taskId}";
+        }
     }
 }

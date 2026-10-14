@@ -19,5 +19,7 @@ namespace Notion.Client
         public PageTemplate Template { get; set; }
 
         public PagePosition Position { get; set; }
+
+        public bool? AllowAsync { get; set; }
     }
 }
