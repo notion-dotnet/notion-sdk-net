@@ -15,6 +15,18 @@ namespace Notion.Client
         [JsonProperty("rich_text")]
         public IEnumerable<RichTextBase> RichText { get; set; }
 
+        /// <summary>
+        /// The display name of the comment.
+        /// </summary>
+        [JsonProperty("display_name")]
+        public CommentDisplayName DisplayName { get; set; }
+
+        /// <summary>
+        /// Files attached to the comment, if any.
+        /// </summary>
+        [JsonProperty("attachments")]
+        public IEnumerable<CommentAttachment> Attachments { get; set; }
+
         [JsonProperty("created_by")]
         public PartialUser CreatedBy { get; set; }
 
