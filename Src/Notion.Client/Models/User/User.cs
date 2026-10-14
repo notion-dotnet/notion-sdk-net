@@ -2,7 +2,7 @@
 
 namespace Notion.Client
 {
-    public class User : IObject
+    public class User : IObject, IPeopleValue
     {
         [JsonProperty("type")]
         public string Type { get; set; }

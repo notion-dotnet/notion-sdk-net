@@ -11,9 +11,9 @@ namespace Notion.Client
         public override PropertyValueType Type => PropertyValueType.People;
 
         /// <summary>
-        ///     List of users.
+        ///     List of users and groups. Each entry is a <see cref="User"/> or a <see cref="Group"/>.
         /// </summary>
         [JsonProperty("people")]
-        public List<User> People { get; set; }
+        public List<IPeopleValue> People { get; set; }
     }
 }

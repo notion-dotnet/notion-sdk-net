@@ -23,6 +23,7 @@ namespace Notion.Client
         public const string DataSourceValue = "data_source";
         public const string PageMarkdownValue = "page_markdown";
         public const string ViewValue = "view";
+        public const string GroupValue = "group";
 
         public static readonly ObjectType Page = new ObjectType(PageValue);
         public static readonly ObjectType Database = new ObjectType(DatabaseValue);
@@ -33,6 +34,7 @@ namespace Notion.Client
         public static readonly ObjectType DataSource = new ObjectType(DataSourceValue);
         public static readonly ObjectType PageMarkdown = new ObjectType(PageMarkdownValue);
         public static readonly ObjectType View = new ObjectType(ViewValue);
+        public static readonly ObjectType Group = new ObjectType(GroupValue);
 
         public static implicit operator ObjectType(string value) => new ObjectType(value);
 
