@@ -20,6 +20,13 @@ namespace Notion.Client
         [JsonProperty("sorts")]
         public IEnumerable<UpdateViewSort> Sorts { get; set; }
 
+        /// <summary>
+        /// Quick filters for the view's filter bar. Keys are property names or ids. Set a key to a filter condition to
+        /// add or update that quick filter, or to <c>null</c> to remove it. Quick filters that are not mentioned are kept.
+        /// </summary>
+        [JsonProperty("quick_filters")]
+        public IDictionary<string, object> QuickFilters { get; set; }
+
         [JsonProperty("configuration")]
         public ViewConfiguration Configuration { get; set; }
     }
