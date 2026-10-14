@@ -41,6 +41,12 @@ namespace Notion.Client
         [JsonProperty("is_inline")]
         public bool IsInline { get; set; }
 
+        /// <summary>
+        /// The type of typed database this data source belongs to, or null for a regular data source.
+        /// </summary>
+        [JsonProperty("database_type")]
+        public DatabaseType? DatabaseType { get; set; }
+
         [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
         public bool Archived { get; set; }

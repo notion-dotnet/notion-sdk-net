@@ -159,4 +159,22 @@ public class DatabasesClientTests : IntegrationTestBase, IAsyncLifetime
         retrievedDatabase.Title.OfType<RichTextText>().First().Text.Content.Should().Be("Retrieve Test DB");
         retrievedDatabase.DataSources.Should().ContainSingle();
     }
+
+    [Fact]
+    public async Task CreateAsync_WithDatabaseType_CreatesTypedDatabase()
+    {
+        var created = await Client.Databases.CreateAsync(new DatabasesCreateRequest
+        {
+            Parent = new PageParentOfDatabaseRequest { PageId = _page.Id },
+            DatabaseType = DatabaseType.Tasks
+        });
+
+        created.DatabaseType.Should().Be(DatabaseType.Tasks);
+
+        var dataSourceId = created.DataSources.First().DataSourceId;
+        var dataSource = await Client.DataSources.RetrieveAsync(
+            new RetrieveDataSourceRequest { DataSourceId = dataSourceId });
+
+        dataSource.DatabaseType.Should().Be(DatabaseType.Tasks);
+    }
 }
