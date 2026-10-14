@@ -33,11 +33,11 @@ namespace Notion.Client
         /// status will not be updated.
         /// </summary>
         [JsonProperty("in_trash")]
-        public bool InTrash { get; set; }
+        public bool? InTrash { get; set; }
 
         [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
-        public bool Archived { get; set; }
+        public bool? Archived { get; set; }
 
         /// <summary>
         /// The parent of the data source.
