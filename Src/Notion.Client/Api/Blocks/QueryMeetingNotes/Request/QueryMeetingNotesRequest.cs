@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Notion.Client
@@ -8,13 +9,13 @@ namespace Notion.Client
         /// Filter criteria for the meeting notes query.
         /// </summary>
         [JsonProperty("filter")]
-        public object Filter { get; set; }
+        public MeetingNotesCombinatorFilter Filter { get; set; }
 
         /// <summary>
         /// Sort criteria for the meeting notes query.
         /// </summary>
         [JsonProperty("sort")]
-        public object Sort { get; set; }
+        public List<MeetingNotesSort> Sort { get; set; }
 
         /// <summary>
         /// Maximum number of results to return. Defaults to 100.
