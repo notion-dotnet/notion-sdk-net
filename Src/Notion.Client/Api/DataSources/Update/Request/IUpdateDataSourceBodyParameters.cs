@@ -16,6 +16,10 @@ namespace Notion.Client
         /// </summary>
         IPageIconRequest Icon { get; set; }
 
+        /// <summary>
+        /// Properties to add or change, keyed by property name or id. Use <see cref="UpdatePropertyConfigurationRequest{T}.Name" />
+        /// alone to rename a property, and a <c>null</c> value to remove it.
+        /// </summary>
         IDictionary<string, IUpdatePropertyConfigurationRequest> Properties { get; set; }
 
         /// <summary>
@@ -23,11 +27,11 @@ namespace Notion.Client
         /// status will not be updated.
         /// </summary>
         [JsonProperty("in_trash")]
-        bool InTrash { get; set; }
+        bool? InTrash { get; set; }
 
         [Obsolete("Use InTrash instead. The 'archived' field is deprecated as of Notion API version 2026-03-11.")]
         [JsonProperty("archived")]
-        bool Archived { get; set; }
+        bool? Archived { get; set; }
 
         /// <summary>
         /// The parent of the data source.

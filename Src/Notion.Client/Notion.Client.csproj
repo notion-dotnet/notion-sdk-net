@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>5.0.0</VersionPrefix>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
     <LangVersion>9.0</LangVersion>
     
     <PackageId>Notion.Net</PackageId>
@@ -24,6 +24,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.9" />
+  </ItemGroup>
+
+  <!-- IAsyncEnumerable<T> is built in from netstandard2.1 / .NET Core 3.0; netstandard2.0 needs the polyfill package. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>
