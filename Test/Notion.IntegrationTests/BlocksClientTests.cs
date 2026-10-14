@@ -264,6 +264,38 @@ public class IBlocksClientTests : IntegrationTestBase, IAsyncLifetime
     }
 
     [Fact]
+    public async Task CreateMeetingNotesAsync_FromAudioBlock_ReturnsBlock()
+    {
+        // Needs the id of an existing audio, video or file block in your workspace.
+        var audioBlockId = GetEnvironmentVariableRequired("NOTION_AUDIO_BLOCK_ID");
+
+        var response = await Client.Blocks.CreateMeetingNotesAsync(
+            new CreateMeetingNotesRequest
+            {
+                Title = "Integration test meeting",
+                Language = MeetingNotesLanguage.English,
+                Options = new CreateMeetingNotesOptions { KickoffSummary = false },
+                Source = MeetingNotesSource.FromBlock(audioBlockId)
+            }
+        );
+
+        response.Should().NotBeNull();
+        response.Object.Should().Be("block");
+        response.Id.Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task CreateMeetingNotesAsync_WithUnknownBlock_ThrowsNotionApiException()
+    {
+        var act = () => Client.Blocks.CreateMeetingNotesAsync(
+            new CreateMeetingNotesRequest { Source = MeetingNotesSource.FromBlock(Guid.NewGuid().ToString()) }
+        );
+
+        // The request reaches the endpoint and is rejected by the API (not found / validation).
+        await act.Should().ThrowAsync<NotionApiException>();
+    }
+
+    [Fact]
     public async Task QueryMeetingNotesAsync_ReturnsValidResponse()
     {
         // Act — query meeting notes (result may be empty if no meeting notes exist in the workspace)
