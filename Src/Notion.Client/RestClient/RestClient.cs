@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -210,18 +212,6 @@ namespace Notion.Client
                 try
                 {
                     errorResponse = JsonConvert.DeserializeObject<NotionApiErrorResponse>(errorBody);
-
-                    if (errorResponse.ErrorCode == NotionAPIErrorCode.RateLimited)
-                    {
-                        var retryAfter = response.Headers.RetryAfter.Delta;
-
-                        return new NotionApiRateLimitException(
-                            response.StatusCode,
-                            errorResponse.ErrorCode,
-                            errorResponse.Message,
-                            retryAfter
-                        );
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -229,7 +219,86 @@ namespace Notion.Client
                 }
             }
 
-            return new NotionApiException(response.StatusCode, errorResponse?.ErrorCode, errorResponse?.Message);
+            var responseHeaders = GetResponseHeaders(response);
+            responseHeaders.TryGetValue("cf-ray", out var rayId);
+            responseHeaders.TryGetValue("x-notion-request-id", out var requestIdHeader);
+
+            // A Notion error always has a code and/or a message; anything else (an empty body, an HTML
+            // error page from the edge proxy, ...) is an unknown response.
+            var isNotionError = errorResponse != null
+                                && (errorResponse.Message != null
+                                    || !string.IsNullOrEmpty(errorResponse.ErrorCode.ToString()));
+
+            NotionApiException exception;
+
+            if (!isNotionError)
+            {
+                exception = new NotionUnknownResponseException(
+                    response.StatusCode,
+                    BuildUnknownResponseMessage(response.StatusCode, rayId));
+            }
+            else if (errorResponse.ErrorCode == NotionAPIErrorCode.RateLimited)
+            {
+                exception = new NotionApiRateLimitException(
+                    response.StatusCode,
+                    errorResponse.ErrorCode,
+                    errorResponse.Message,
+                    GetRetryAfter(response)
+                );
+            }
+            else
+            {
+                exception = new NotionApiException(response.StatusCode, errorResponse.ErrorCode, errorResponse.Message);
+            }
+
+            exception.RequestId = errorResponse?.RequestId ?? requestIdHeader;
+            exception.RayId = rayId;
+            exception.AdditionalData = errorResponse?.AdditionalData;
+            exception.ResponseBody = errorBody;
+            exception.ResponseHeaders = responseHeaders;
+
+            return exception;
+        }
+
+        private static string BuildUnknownResponseMessage(HttpStatusCode statusCode, string rayId)
+        {
+            var message = $"Request to Notion API failed with status: {(int)statusCode}.";
+
+            if (rayId != null)
+            {
+                message += $" The response came from Notion's edge proxy (Cloudflare Ray ID: {rayId}).";
+
+                if (statusCode == HttpStatusCode.Forbidden)
+                {
+                    message += " A 403 from the edge proxy usually means the request was blocked before reaching the API.";
+                }
+            }
+
+            return message;
+        }
+
+        private static Dictionary<string, string> GetResponseHeaders(HttpResponseMessage response)
+        {
+            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var header in response.Headers.Concat(response.Content.Headers))
+            {
+                headers[header.Key] = string.Join(", ", header.Value);
+            }
+
+            return headers;
+        }
+
+        private static TimeSpan? GetRetryAfter(HttpResponseMessage response)
+        {
+            var retryAfter = response.Headers.RetryAfter;
+
+            if (retryAfter?.Delta is { } delta)
+            {
+                return delta;
+            }
+
+            return retryAfter?.Date is { } date ? date - DateTimeOffset.UtcNow : (TimeSpan?)null;
         }
 
         private async Task<HttpResponseMessage> SendAsync(

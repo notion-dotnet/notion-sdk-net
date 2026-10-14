@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Notion.Client
 {
@@ -9,5 +10,11 @@ namespace Notion.Client
 
         [JsonProperty("message")]
         public string Message { get; set; }
+
+        [JsonProperty("request_id")]
+        public string RequestId { get; set; }
+
+        [JsonProperty("additional_data")]
+        public Dictionary<string, object> AdditionalData { get; set; }
     }
 }
