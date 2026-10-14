@@ -12,10 +12,11 @@ namespace Notion.Client
 
         /// <summary>
         /// Maximum time to wait for each request (every retry attempt gets the full time). When exceeded a
-        /// <see cref="NotionRequestTimeoutException" /> is thrown. <c>null</c> (default) leaves the timeout to the
-        /// <see cref="HttpClient" /> (100 seconds unless configured otherwise). The Notion JavaScript SDK uses 60 seconds.
+        /// <see cref="NotionRequestTimeoutException" /> is thrown. Defaults to 60 seconds, like the Notion
+        /// JavaScript SDK. Set to <c>null</c> to leave the timeout to the <see cref="HttpClient" /> (100 seconds
+        /// unless configured otherwise).
         /// </summary>
-        public System.TimeSpan? Timeout { get; set; }
+        public System.TimeSpan? Timeout { get; set; } = System.TimeSpan.FromSeconds(60);
 
         /// <summary>
         /// Opt-in retry policy. When set, failed requests are automatically retried according to the policy.
