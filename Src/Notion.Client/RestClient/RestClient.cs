@@ -28,7 +28,7 @@ namespace Notion.Client
         public RestClient(ClientOptions options)
         {
             _options = MergeOptions(options);
-            _retryPolicy = options.RetryPolicy;
+            _retryPolicy = options.RetryPolicy ?? new DefaultRetryPolicy();
             _httpClient = ResolveHttpClient(options.HttpClient, _options.BaseUrl);
         }
 
@@ -140,7 +140,8 @@ namespace Notion.Client
                 headers,
                 AttachContent,
                 basicAuthenticationParameters,
-                cancellationToken
+                cancellationToken,
+                replayable: false
             );
 
             return await response.ParseStreamAsync<T>(serializerSettings);
@@ -239,7 +240,8 @@ namespace Notion.Client
             IDictionary<string, string> headers = null,
             Action<HttpRequestMessage> attachContent = null,
             IBasicAuthenticationParameters basicAuthenticationParameters = null,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default,
+            bool replayable = true)
         {
             requestUri = AddQueryString(requestUri, queryParams);
 
@@ -265,7 +267,7 @@ namespace Notion.Client
                     return response;
                 }
 
-                if (_retryPolicy == null || !_retryPolicy.ShouldRetry(response, httpMethod, attempt))
+                if (!replayable || _retryPolicy == null || !_retryPolicy.ShouldRetry(response, httpMethod, attempt))
                 {
                     throw await BuildException(response);
                 }

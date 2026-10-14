@@ -30,7 +30,7 @@ namespace Notion.Client
         private static readonly ThreadLocal<Random> Rng =
             new ThreadLocal<Random>(() => new Random());
 
-        /// <summary>Maximum number of retry attempts. Defaults to 3.</summary>
+        /// <summary>Maximum number of retry attempts. Defaults to 2, as in notion-sdk-js.</summary>
         public int MaxRetries { get; }
 
         /// <summary>Delay before the first retry. Doubles on each subsequent attempt. Defaults to 1 second.</summary>
@@ -39,11 +39,11 @@ namespace Notion.Client
         /// <summary>Upper bound on the computed delay (before jitter). Defaults to 60 seconds.</summary>
         public TimeSpan MaxDelay { get; }
 
-        /// <param name="maxRetries">Maximum number of retry attempts (default 3).</param>
+        /// <param name="maxRetries">Maximum number of retry attempts (default 2).</param>
         /// <param name="initialDelay">Delay before first retry; doubles each attempt (default 1 s).</param>
         /// <param name="maxDelay">Upper bound on delay before jitter is applied (default 60 s).</param>
         public DefaultRetryPolicy(
-            int maxRetries = 3,
+            int maxRetries = 2,
             TimeSpan? initialDelay = null,
             TimeSpan? maxDelay = null)
         {
