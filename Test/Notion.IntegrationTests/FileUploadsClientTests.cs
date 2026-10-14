@@ -80,6 +80,8 @@ namespace Notion.IntegrationTests
             Assert.Equal("notion-logo.png", createResponse.FileName);
             Assert.Equal("image/png", createResponse.ContentType);
             Assert.Equal("pending", createResponse.Status);
+            Assert.NotNull(createResponse.NumberOfParts);
+            Assert.Equal(2, createResponse.NumberOfParts.Total);
 
             // Send file parts
             using (var fileStream = File.OpenRead("assets/notion-logo.png"))

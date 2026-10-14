@@ -45,6 +45,12 @@ namespace Notion.Client
         [JsonProperty("complete_url")]
         public string CompleteUrl { get; set; }
 
+        /// <summary>
+        ///     Only present for multi-part uploads.
+        /// </summary>
+        [JsonProperty("number_of_parts")]
+        public FileUploadNumberOfParts NumberOfParts { get; set; }
+
         [JsonProperty("file_import_result")]
         public FileImportResult FileImportResult { get; set; }
     }
