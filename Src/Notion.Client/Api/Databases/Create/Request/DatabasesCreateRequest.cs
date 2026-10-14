@@ -18,6 +18,8 @@ namespace Notion.Client
         public IPageIconRequest Icon { get; set; }
 
         public IPageCoverRequest Cover { get; set; }
+
+        public DatabaseType? DatabaseType { get; set; }
     }
 
     public class InitialDataSourceRequest

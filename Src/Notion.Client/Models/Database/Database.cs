@@ -31,6 +31,12 @@ namespace Notion.Client
         [JsonProperty("is_inline")]
         public bool IsInline { get; set; }
 
+        /// <summary>
+        /// The type of typed database, or null for a regular database.
+        /// </summary>
+        [JsonProperty("database_type")]
+        public DatabaseType? DatabaseType { get; set; }
+
         [JsonProperty("in_trash")]
         public bool InTrash { get; set; }
 

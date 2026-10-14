@@ -46,5 +46,12 @@ namespace Notion.Client
         /// </summary>
         [JsonProperty("cover")]
         public IPageCoverRequest Cover { get; set; }
+
+        /// <summary>
+        /// Creates a typed database with Notion's canonical schema: tasks, projects or skills.
+        /// Cannot be combined with <see cref="InitialDataSource" />. When no title is given, the database is named after the type.
+        /// </summary>
+        [JsonProperty("database_type")]
+        DatabaseType? DatabaseType { get; set; }
     }
 }
