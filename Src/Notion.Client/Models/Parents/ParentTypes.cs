@@ -7,5 +7,6 @@
         public const string Workspace = "workspace";
         public const string Block = "block_id";
         public const string Datasource = "data_source_id";
+        public const string Agent = "agent_id";
     }
 }
